@@ -1,0 +1,25 @@
+{
+  "source_image": "external_data/Object-Detection-and-Text-Recognition-of-Packaged-Foods-main/sample dataset/images/val/3.png",
+  "ocr_text": "Packed On:",
+  "ocr_confidence": 0.9347732663154602,
+  "original_ocr_coordinates": [
+    [
+      288.0,
+      90.0
+    ],
+    [
+      363.0,
+      90.0
+    ],
+    [
+      363.0,
+      106.0
+    ],
+    [
+      288.0,
+      106.0
+    ]
+  ],
+  "candidate_class": "PACKER",
+  "matching_rule": "Matched internal regex signature"
+}

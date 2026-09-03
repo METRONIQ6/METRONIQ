@@ -1,0 +1,25 @@
+{
+  "source_image": "external_data/Object-Detection-and-Text-Recognition-of-Packaged-Foods-main/sample dataset/images/train/13.png",
+  "ocr_text": "Condiments (Onion Powder Parsley Powder,",
+  "ocr_confidence": 0.9402241706848145,
+  "original_ocr_coordinates": [
+    [
+      328.0,
+      495.0
+    ],
+    [
+      623.0,
+      495.0
+    ],
+    [
+      623.0,
+      516.0
+    ],
+    [
+      328.0,
+      516.0
+    ]
+  ],
+  "candidate_class": "MRP",
+  "matching_rule": "Matched internal regex signature"
+}

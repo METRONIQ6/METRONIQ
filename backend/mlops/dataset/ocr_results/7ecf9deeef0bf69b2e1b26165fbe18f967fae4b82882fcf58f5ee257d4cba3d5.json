@@ -1,0 +1,1374 @@
+{
+  "image_path": "external_data/Object-Detection-and-Text-Recognition-of-Packaged-Foods-main/sample dataset/images/train/28.png",
+  "sha256": "7ecf9deeef0bf69b2e1b26165fbe18f967fae4b82882fcf58f5ee257d4cba3d5",
+  "ocr_engine": "PaddleOCR",
+  "ocr_version": "2.8.1",
+  "timestamp": "2026-08-30T20:00:58.659022",
+  "full_ocr_text": "25 years of Exce CHICKEN NUGGETS FROZEN PROCESSED POULTRY PRODUCTS FRY&SERVE Ingredients:Chicken Meat (56%)Water.Bread Crumb Wheat CHICKEN IN Flour lodized SaltDextroseYeastPreservative-INS282Acidity MINUTES Regulator-INS 260Refined Sunflower Oil,MaidaBatter Wheat Flour, Starch, Maize Flour lodized Salt, Stabilizer-INS 466 Caseinates, lodized Salt. Spices and Condiments White Pepper 508 PowderGarlic PowderRed ChilliPowderGinger PowderSugar aets Stabilizer (INS 451i.Acidity Regulator INS 330 iden StorageAlways store in the freezer at or below minus 18 degrees centigrade ALSO TRY Nutritional Information per 100 g Butter Chicken Chicken Sheek Kabab Energy 222.6 kcal Chicken Sausages -Chicken Samosa Protein 10.1 g Chicken Fingers and many more.. Carbohydrate 21.7 g Net Weight:300g of which Sugar 2.6 g Fat 10.6 9 Manufacturing Date Trans fat 0.0 g Saturated fat 3.4 9 Batch No. 'approximate) MRP For any queries suggestions or consumer complaints please contact Consumer (Inclusive of all taxes) Care Officer on telephone nos.+91-20-24250853 to55 BEST BEFORE SIX MONTHS FROM MANUFAC or email at consumercare@venkys.com or write to the addresses fssal Manufactured by:Venky's (India) Limited (Foods Division Lic.No.10012022 Venkateshwara HouseS.No.114/A/2.Pune-Sinhagad Road.Pune-411 030 NoteBEST BEFOREper ndia.Tel:+91-20-24251530 to41 applies when stored alr minus 18 degrees centi",
+  "regions": [
+    {
+      "text": "25 years of Exce",
+      "confidence": 0.9384263157844543,
+      "bounding_box": [
+        [
+          1125.0,
+          212.0
+        ],
+        [
+          1263.0,
+          214.0
+        ],
+        [
+          1262.0,
+          235.0
+        ],
+        [
+          1125.0,
+          234.0
+        ]
+      ]
+    },
+    {
+      "text": "CHICKEN NUGGETS",
+      "confidence": 0.9780846238136292,
+      "bounding_box": [
+        [
+          683.0,
+          237.0
+        ],
+        [
+          1051.0,
+          229.0
+        ],
+        [
+          1052.0,
+          257.0
+        ],
+        [
+          683.0,
+          265.0
+        ]
+      ]
+    },
+    {
+      "text": "FROZEN PROCESSED POULTRY PRODUCTS",
+      "confidence": 0.9593878388404846,
+      "bounding_box": [
+        [
+          505.0,
+          286.0
+        ],
+        [
+          792.0,
+          283.0
+        ],
+        [
+          792.0,
+          305.0
+        ],
+        [
+          505.0,
+          308.0
+        ]
+      ]
+    },
+    {
+      "text": "FRY&SERVE",
+      "confidence": 0.9918050765991211,
+      "bounding_box": [
+        [
+          1047.0,
+          280.0
+        ],
+        [
+          1174.0,
+          285.0
+        ],
+        [
+          1173.0,
+          307.0
+        ],
+        [
+          1047.0,
+          302.0
+        ]
+      ]
+    },
+    {
+      "text": "Ingredients:Chicken Meat (56%)Water.Bread Crumb Wheat",
+      "confidence": 0.9398263692855835,
+      "bounding_box": [
+        [
+          420.0,
+          316.0
+        ],
+        [
+          883.0,
+          306.0
+        ],
+        [
+          883.0,
+          328.0
+        ],
+        [
+          421.0,
+          338.0
+        ]
+      ]
+    },
+    {
+      "text": "CHICKEN IN",
+      "confidence": 0.9760124087333679,
+      "bounding_box": [
+        [
+          288.0,
+          344.0
+        ],
+        [
+          394.0,
+          332.0
+        ],
+        [
+          396.0,
+          349.0
+        ],
+        [
+          290.0,
+          361.0
+        ]
+      ]
+    },
+    {
+      "text": "Flour lodized SaltDextroseYeastPreservative-INS282Acidity",
+      "confidence": 0.9393641352653503,
+      "bounding_box": [
+        [
+          420.0,
+          336.0
+        ],
+        [
+          881.0,
+          326.0
+        ],
+        [
+          881.0,
+          348.0
+        ],
+        [
+          421.0,
+          358.0
+        ]
+      ]
+    },
+    {
+      "text": "MINUTES",
+      "confidence": 0.9961121678352356,
+      "bounding_box": [
+        [
+          296.0,
+          356.0
+        ],
+        [
+          384.0,
+          351.0
+        ],
+        [
+          385.0,
+          371.0
+        ],
+        [
+          298.0,
+          376.0
+        ]
+      ]
+    },
+    {
+      "text": "Regulator-INS 260Refined Sunflower Oil,MaidaBatter Wheat",
+      "confidence": 0.9417480230331421,
+      "bounding_box": [
+        [
+          420.0,
+          356.0
+        ],
+        [
+          882.0,
+          345.0
+        ],
+        [
+          883.0,
+          367.0
+        ],
+        [
+          421.0,
+          378.0
+        ]
+      ]
+    },
+    {
+      "text": "Flour, Starch, Maize Flour lodized Salt, Stabilizer-INS 466",
+      "confidence": 0.9064847826957703,
+      "bounding_box": [
+        [
+          420.0,
+          376.0
+        ],
+        [
+          878.0,
+          367.0
+        ],
+        [
+          878.0,
+          387.0
+        ],
+        [
+          421.0,
+          396.0
+        ]
+      ]
+    },
+    {
+      "text": "Caseinates, lodized Salt. Spices and Condiments White Pepper",
+      "confidence": 0.9394423365592957,
+      "bounding_box": [
+        [
+          419.0,
+          396.0
+        ],
+        [
+          881.0,
+          387.0
+        ],
+        [
+          881.0,
+          407.0
+        ],
+        [
+          419.0,
+          416.0
+        ]
+      ]
+    },
+    {
+      "text": "508",
+      "confidence": 0.5102449655532837,
+      "bounding_box": [
+        [
+          1247.0,
+          402.0
+        ],
+        [
+          1264.0,
+          402.0
+        ],
+        [
+          1264.0,
+          413.0
+        ],
+        [
+          1247.0,
+          413.0
+        ]
+      ]
+    },
+    {
+      "text": "PowderGarlic PowderRed ChilliPowderGinger PowderSugar",
+      "confidence": 0.9259032011032104,
+      "bounding_box": [
+        [
+          419.0,
+          415.0
+        ],
+        [
+          881.0,
+          408.0
+        ],
+        [
+          881.0,
+          430.0
+        ],
+        [
+          419.0,
+          437.0
+        ]
+      ]
+    },
+    {
+      "text": "aets",
+      "confidence": 0.8337559700012207,
+      "bounding_box": [
+        [
+          1238.0,
+          421.0
+        ],
+        [
+          1261.0,
+          421.0
+        ],
+        [
+          1261.0,
+          433.0
+        ],
+        [
+          1238.0,
+          433.0
+        ]
+      ]
+    },
+    {
+      "text": "Stabilizer (INS 451i.Acidity Regulator INS 330",
+      "confidence": 0.9001228213310242,
+      "bounding_box": [
+        [
+          417.0,
+          438.0
+        ],
+        [
+          767.0,
+          430.0
+        ],
+        [
+          767.0,
+          450.0
+        ],
+        [
+          417.0,
+          458.0
+        ]
+      ]
+    },
+    {
+      "text": "iden",
+      "confidence": 0.9016810655593872,
+      "bounding_box": [
+        [
+          1233.0,
+          440.0
+        ],
+        [
+          1261.0,
+          440.0
+        ],
+        [
+          1261.0,
+          457.0
+        ],
+        [
+          1233.0,
+          457.0
+        ]
+      ]
+    },
+    {
+      "text": "StorageAlways store in the freezer at or below minus 18 degrees centigrade",
+      "confidence": 0.9768429398536682,
+      "bounding_box": [
+        [
+          419.0,
+          461.0
+        ],
+        [
+          879.0,
+          452.0
+        ],
+        [
+          880.0,
+          472.0
+        ],
+        [
+          419.0,
+          481.0
+        ]
+      ]
+    },
+    {
+      "text": "ALSO TRY",
+      "confidence": 0.9403970241546631,
+      "bounding_box": [
+        [
+          905.0,
+          475.0
+        ],
+        [
+          1020.0,
+          475.0
+        ],
+        [
+          1020.0,
+          492.0
+        ],
+        [
+          905.0,
+          492.0
+        ]
+      ]
+    },
+    {
+      "text": "Nutritional Information per 100 g",
+      "confidence": 0.9403162002563477,
+      "bounding_box": [
+        [
+          358.0,
+          494.0
+        ],
+        [
+          576.0,
+          490.0
+        ],
+        [
+          577.0,
+          511.0
+        ],
+        [
+          358.0,
+          514.0
+        ]
+      ]
+    },
+    {
+      "text": "Butter Chicken",
+      "confidence": 0.9858052134513855,
+      "bounding_box": [
+        [
+          892.0,
+          498.0
+        ],
+        [
+          1002.0,
+          498.0
+        ],
+        [
+          1002.0,
+          515.0
+        ],
+        [
+          892.0,
+          515.0
+        ]
+      ]
+    },
+    {
+      "text": "Chicken Sheek Kabab",
+      "confidence": 0.9787213206291199,
+      "bounding_box": [
+        [
+          1024.0,
+          494.0
+        ],
+        [
+          1178.0,
+          498.0
+        ],
+        [
+          1178.0,
+          519.0
+        ],
+        [
+          1023.0,
+          514.0
+        ]
+      ]
+    },
+    {
+      "text": "Energy",
+      "confidence": 0.9964606165885925,
+      "bounding_box": [
+        [
+          353.0,
+          520.0
+        ],
+        [
+          400.0,
+          520.0
+        ],
+        [
+          400.0,
+          542.0
+        ],
+        [
+          353.0,
+          542.0
+        ]
+      ]
+    },
+    {
+      "text": "222.6 kcal",
+      "confidence": 0.9505650401115417,
+      "bounding_box": [
+        [
+          498.0,
+          520.0
+        ],
+        [
+          575.0,
+          520.0
+        ],
+        [
+          575.0,
+          537.0
+        ],
+        [
+          498.0,
+          537.0
+        ]
+      ]
+    },
+    {
+      "text": "Chicken Sausages -Chicken Samosa",
+      "confidence": 0.955773115158081,
+      "bounding_box": [
+        [
+          891.0,
+          517.0
+        ],
+        [
+          1152.0,
+          518.0
+        ],
+        [
+          1151.0,
+          539.0
+        ],
+        [
+          891.0,
+          537.0
+        ]
+      ]
+    },
+    {
+      "text": "Protein",
+      "confidence": 0.9945266842842102,
+      "bounding_box": [
+        [
+          353.0,
+          543.0
+        ],
+        [
+          403.0,
+          543.0
+        ],
+        [
+          403.0,
+          560.0
+        ],
+        [
+          353.0,
+          560.0
+        ]
+      ]
+    },
+    {
+      "text": "10.1",
+      "confidence": 0.9950505495071411,
+      "bounding_box": [
+        [
+          506.0,
+          542.0
+        ],
+        [
+          538.0,
+          542.0
+        ],
+        [
+          538.0,
+          559.0
+        ],
+        [
+          506.0,
+          559.0
+        ]
+      ]
+    },
+    {
+      "text": "g",
+      "confidence": 0.9128813147544861,
+      "bounding_box": [
+        [
+          562.0,
+          545.0
+        ],
+        [
+          578.0,
+          545.0
+        ],
+        [
+          578.0,
+          559.0
+        ],
+        [
+          562.0,
+          559.0
+        ]
+      ]
+    },
+    {
+      "text": "Chicken Fingers",
+      "confidence": 0.9815996885299683,
+      "bounding_box": [
+        [
+          892.0,
+          542.0
+        ],
+        [
+          1012.0,
+          542.0
+        ],
+        [
+          1012.0,
+          560.0
+        ],
+        [
+          892.0,
+          560.0
+        ]
+      ]
+    },
+    {
+      "text": "and many more..",
+      "confidence": 0.9378348588943481,
+      "bounding_box": [
+        [
+          1036.0,
+          542.0
+        ],
+        [
+          1158.0,
+          542.0
+        ],
+        [
+          1158.0,
+          557.0
+        ],
+        [
+          1036.0,
+          557.0
+        ]
+      ]
+    },
+    {
+      "text": "Carbohydrate",
+      "confidence": 0.9949126243591309,
+      "bounding_box": [
+        [
+          355.0,
+          563.0
+        ],
+        [
+          436.0,
+          563.0
+        ],
+        [
+          436.0,
+          580.0
+        ],
+        [
+          355.0,
+          580.0
+        ]
+      ]
+    },
+    {
+      "text": "21.7",
+      "confidence": 0.9962658882141113,
+      "bounding_box": [
+        [
+          506.0,
+          562.0
+        ],
+        [
+          538.0,
+          562.0
+        ],
+        [
+          538.0,
+          579.0
+        ],
+        [
+          506.0,
+          579.0
+        ]
+      ]
+    },
+    {
+      "text": "g",
+      "confidence": 0.9680814743041992,
+      "bounding_box": [
+        [
+          562.0,
+          565.0
+        ],
+        [
+          575.0,
+          565.0
+        ],
+        [
+          575.0,
+          580.0
+        ],
+        [
+          562.0,
+          580.0
+        ]
+      ]
+    },
+    {
+      "text": "Net Weight:300g",
+      "confidence": 0.9586684703826904,
+      "bounding_box": [
+        [
+          891.0,
+          571.0
+        ],
+        [
+          1064.0,
+          571.0
+        ],
+        [
+          1064.0,
+          597.0
+        ],
+        [
+          891.0,
+          597.0
+        ]
+      ]
+    },
+    {
+      "text": "of which Sugar",
+      "confidence": 0.9422178864479065,
+      "bounding_box": [
+        [
+          366.0,
+          583.0
+        ],
+        [
+          459.0,
+          583.0
+        ],
+        [
+          459.0,
+          600.0
+        ],
+        [
+          366.0,
+          600.0
+        ]
+      ]
+    },
+    {
+      "text": "2.6",
+      "confidence": 0.8799512982368469,
+      "bounding_box": [
+        [
+          512.0,
+          582.0
+        ],
+        [
+          538.0,
+          582.0
+        ],
+        [
+          538.0,
+          600.0
+        ],
+        [
+          512.0,
+          600.0
+        ]
+      ]
+    },
+    {
+      "text": "g",
+      "confidence": 0.9649233222007751,
+      "bounding_box": [
+        [
+          562.0,
+          585.0
+        ],
+        [
+          575.0,
+          585.0
+        ],
+        [
+          575.0,
+          600.0
+        ],
+        [
+          562.0,
+          600.0
+        ]
+      ]
+    },
+    {
+      "text": "Fat",
+      "confidence": 0.9947553277015686,
+      "bounding_box": [
+        [
+          356.0,
+          607.0
+        ],
+        [
+          377.0,
+          607.0
+        ],
+        [
+          377.0,
+          621.0
+        ],
+        [
+          356.0,
+          621.0
+        ]
+      ]
+    },
+    {
+      "text": "10.6",
+      "confidence": 0.9925084114074707,
+      "bounding_box": [
+        [
+          508.0,
+          602.0
+        ],
+        [
+          538.0,
+          602.0
+        ],
+        [
+          538.0,
+          621.0
+        ],
+        [
+          508.0,
+          621.0
+        ]
+      ]
+    },
+    {
+      "text": "9",
+      "confidence": 0.7600201964378357,
+      "bounding_box": [
+        [
+          559.0,
+          613.0
+        ],
+        [
+          569.0,
+          604.0
+        ],
+        [
+          578.0,
+          613.0
+        ],
+        [
+          569.0,
+          622.0
+        ]
+      ]
+    },
+    {
+      "text": "Manufacturing Date",
+      "confidence": 0.9695748090744019,
+      "bounding_box": [
+        [
+          892.0,
+          610.0
+        ],
+        [
+          1053.0,
+          610.0
+        ],
+        [
+          1053.0,
+          630.0
+        ],
+        [
+          892.0,
+          630.0
+        ]
+      ]
+    },
+    {
+      "text": "Trans fat",
+      "confidence": 0.9865283966064453,
+      "bounding_box": [
+        [
+          356.0,
+          626.0
+        ],
+        [
+          408.0,
+          622.0
+        ],
+        [
+          410.0,
+          640.0
+        ],
+        [
+          357.0,
+          644.0
+        ]
+      ]
+    },
+    {
+      "text": "0.0",
+      "confidence": 0.9873092174530029,
+      "bounding_box": [
+        [
+          512.0,
+          622.0
+        ],
+        [
+          538.0,
+          622.0
+        ],
+        [
+          538.0,
+          641.0
+        ],
+        [
+          512.0,
+          641.0
+        ]
+      ]
+    },
+    {
+      "text": "g",
+      "confidence": 0.9727442860603333,
+      "bounding_box": [
+        [
+          562.0,
+          627.0
+        ],
+        [
+          577.0,
+          627.0
+        ],
+        [
+          577.0,
+          641.0
+        ],
+        [
+          562.0,
+          641.0
+        ]
+      ]
+    },
+    {
+      "text": "Saturated fat",
+      "confidence": 0.9743630290031433,
+      "bounding_box": [
+        [
+          362.0,
+          645.0
+        ],
+        [
+          431.0,
+          645.0
+        ],
+        [
+          431.0,
+          662.0
+        ],
+        [
+          362.0,
+          662.0
+        ]
+      ]
+    },
+    {
+      "text": "3.4",
+      "confidence": 0.993185818195343,
+      "bounding_box": [
+        [
+          512.0,
+          644.0
+        ],
+        [
+          538.0,
+          644.0
+        ],
+        [
+          538.0,
+          662.0
+        ],
+        [
+          512.0,
+          662.0
+        ]
+      ]
+    },
+    {
+      "text": "9",
+      "confidence": 0.6624312400817871,
+      "bounding_box": [
+        [
+          564.0,
+          650.0
+        ],
+        [
+          575.0,
+          650.0
+        ],
+        [
+          575.0,
+          661.0
+        ],
+        [
+          564.0,
+          661.0
+        ]
+      ]
+    },
+    {
+      "text": "Batch No.",
+      "confidence": 0.9567143321037292,
+      "bounding_box": [
+        [
+          891.0,
+          645.0
+        ],
+        [
+          983.0,
+          645.0
+        ],
+        [
+          983.0,
+          667.0
+        ],
+        [
+          891.0,
+          667.0
+        ]
+      ]
+    },
+    {
+      "text": "'approximate)",
+      "confidence": 0.7889593839645386,
+      "bounding_box": [
+        [
+          365.0,
+          666.0
+        ],
+        [
+          446.0,
+          660.0
+        ],
+        [
+          447.0,
+          682.0
+        ],
+        [
+          367.0,
+          688.0
+        ]
+      ]
+    },
+    {
+      "text": "MRP",
+      "confidence": 0.9836671352386475,
+      "bounding_box": [
+        [
+          890.0,
+          680.0
+        ],
+        [
+          962.0,
+          676.0
+        ],
+        [
+          963.0,
+          699.0
+        ],
+        [
+          891.0,
+          703.0
+        ]
+      ]
+    },
+    {
+      "text": "For any queries suggestions or consumer complaints please contact Consumer",
+      "confidence": 0.9532533884048462,
+      "bounding_box": [
+        [
+          358.0,
+          700.0
+        ],
+        [
+          864.0,
+          696.0
+        ],
+        [
+          864.0,
+          717.0
+        ],
+        [
+          358.0,
+          720.0
+        ]
+      ]
+    },
+    {
+      "text": "(Inclusive of all taxes)",
+      "confidence": 0.9275856018066406,
+      "bounding_box": [
+        [
+          891.0,
+          701.0
+        ],
+        [
+          1058.0,
+          699.0
+        ],
+        [
+          1058.0,
+          721.0
+        ],
+        [
+          891.0,
+          723.0
+        ]
+      ]
+    },
+    {
+      "text": "Care Officer on telephone nos.+91-20-24250853 to55",
+      "confidence": 0.9435455203056335,
+      "bounding_box": [
+        [
+          350.0,
+          723.0
+        ],
+        [
+          856.0,
+          721.0
+        ],
+        [
+          856.0,
+          747.0
+        ],
+        [
+          350.0,
+          749.0
+        ]
+      ]
+    },
+    {
+      "text": "BEST BEFORE SIX MONTHS FROM MANUFAC",
+      "confidence": 0.9486045837402344,
+      "bounding_box": [
+        [
+          887.0,
+          728.0
+        ],
+        [
+          1203.0,
+          718.0
+        ],
+        [
+          1203.0,
+          744.0
+        ],
+        [
+          888.0,
+          754.0
+        ]
+      ]
+    },
+    {
+      "text": "or email at consumercare@venkys.com or write to the addresses",
+      "confidence": 0.9679958820343018,
+      "bounding_box": [
+        [
+          345.0,
+          751.0
+        ],
+        [
+          761.0,
+          749.0
+        ],
+        [
+          761.0,
+          771.0
+        ],
+        [
+          345.0,
+          772.0
+        ]
+      ]
+    },
+    {
+      "text": "fssal",
+      "confidence": 0.8826738595962524,
+      "bounding_box": [
+        [
+          1175.0,
+          749.0
+        ],
+        [
+          1212.0,
+          749.0
+        ],
+        [
+          1212.0,
+          774.0
+        ],
+        [
+          1175.0,
+          774.0
+        ]
+      ]
+    },
+    {
+      "text": "Manufactured by:Venky's (India) Limited (Foods Division",
+      "confidence": 0.9374027848243713,
+      "bounding_box": [
+        [
+          347.0,
+          775.0
+        ],
+        [
+          728.0,
+          775.0
+        ],
+        [
+          728.0,
+          795.0
+        ],
+        [
+          347.0,
+          795.0
+        ]
+      ]
+    },
+    {
+      "text": "Lic.No.10012022",
+      "confidence": 0.9627062678337097,
+      "bounding_box": [
+        [
+          1099.0,
+          782.0
+        ],
+        [
+          1220.0,
+          770.0
+        ],
+        [
+          1223.0,
+          796.0
+        ],
+        [
+          1102.0,
+          809.0
+        ]
+      ]
+    },
+    {
+      "text": "Venkateshwara HouseS.No.114/A/2.Pune-Sinhagad Road.Pune-411 030",
+      "confidence": 0.9085505604743958,
+      "bounding_box": [
+        [
+          347.0,
+          799.0
+        ],
+        [
+          837.0,
+          792.0
+        ],
+        [
+          838.0,
+          817.0
+        ],
+        [
+          347.0,
+          823.0
+        ]
+      ]
+    },
+    {
+      "text": "NoteBEST BEFOREper",
+      "confidence": 0.8797342777252197,
+      "bounding_box": [
+        [
+          1076.0,
+          807.0
+        ],
+        [
+          1216.0,
+          797.0
+        ],
+        [
+          1218.0,
+          818.0
+        ],
+        [
+          1078.0,
+          828.0
+        ]
+      ]
+    },
+    {
+      "text": "ndia.Tel:+91-20-24251530 to41",
+      "confidence": 0.9598891139030457,
+      "bounding_box": [
+        [
+          355.0,
+          825.0
+        ],
+        [
+          573.0,
+          825.0
+        ],
+        [
+          573.0,
+          840.0
+        ],
+        [
+          355.0,
+          840.0
+        ]
+      ]
+    },
+    {
+      "text": "applies when stored alr",
+      "confidence": 0.947526752948761,
+      "bounding_box": [
+        [
+          1076.0,
+          824.0
+        ],
+        [
+          1215.0,
+          814.0
+        ],
+        [
+          1216.0,
+          835.0
+        ],
+        [
+          1078.0,
+          845.0
+        ]
+      ]
+    },
+    {
+      "text": "minus 18 degrees centi",
+      "confidence": 0.9324609637260437,
+      "bounding_box": [
+        [
+          1076.0,
+          839.0
+        ],
+        [
+          1211.0,
+          834.0
+        ],
+        [
+          1211.0,
+          851.0
+        ],
+        [
+          1077.0,
+          856.0
+        ]
+      ]
+    }
+  ]
+}

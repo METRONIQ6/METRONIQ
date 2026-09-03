@@ -1,0 +1,15 @@
+FROM python:3.10-slim-bookworm
+
+RUN apt-get update && apt-get install -y \
+    libgl1-mesa-glx \
+    libglib2.0-0 \
+    wget \
+    libgomp1 \
+    zlib1g \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+COPY docker/requirements-clean.txt ./
+RUN pip install --no-cache-dir -r requirements-clean.txt --extra-index-url https://download.pytorch.org/whl/cpu
+
+COPY app/ai ./ai

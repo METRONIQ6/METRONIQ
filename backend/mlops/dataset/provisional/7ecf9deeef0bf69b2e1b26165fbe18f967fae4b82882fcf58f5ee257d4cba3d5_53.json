@@ -1,0 +1,25 @@
+{
+  "source_image": "external_data/Object-Detection-and-Text-Recognition-of-Packaged-Foods-main/sample dataset/images/train/28.png",
+  "ocr_text": "or email at consumercare@venkys.com or write to the addresses",
+  "ocr_confidence": 0.9679958820343018,
+  "original_ocr_coordinates": [
+    [
+      345.0,
+      751.0
+    ],
+    [
+      761.0,
+      749.0
+    ],
+    [
+      761.0,
+      771.0
+    ],
+    [
+      345.0,
+      772.0
+    ]
+  ],
+  "candidate_class": "CONSUMER_CARE",
+  "matching_rule": "Matched internal regex signature"
+}

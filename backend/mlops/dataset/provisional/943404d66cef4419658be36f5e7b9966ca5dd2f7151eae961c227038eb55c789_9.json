@@ -1,0 +1,25 @@
+{
+  "source_image": "external_data/Object-Detection-and-Text-Recognition-of-Packaged-Foods-main/sample dataset/images/val/5.png",
+  "ocr_text": "fatsCocoa solids 4.4%Emulsifier Soya lecithinRaising ",
+  "ocr_confidence": 0.8675110936164856,
+  "original_ocr_coordinates": [
+    [
+      316.0,
+      193.0
+    ],
+    [
+      540.0,
+      194.0
+    ],
+    [
+      540.0,
+      208.0
+    ],
+    [
+      316.0,
+      207.0
+    ]
+  ],
+  "candidate_class": "MRP",
+  "matching_rule": "Matched internal regex signature"
+}

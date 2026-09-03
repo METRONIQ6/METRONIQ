@@ -1,0 +1,25 @@
+{
+  "source_image": "external_data/Object-Detection-and-Text-Recognition-of-Packaged-Foods-main/sample dataset/images/train/11.png",
+  "ocr_text": "ing unt address,see first two charac rs ",
+  "ocr_confidence": 0.7702677845954895,
+  "original_ocr_coordinates": [
+    [
+      312.0,
+      120.0
+    ],
+    [
+      429.0,
+      120.0
+    ],
+    [
+      429.0,
+      127.0
+    ],
+    [
+      312.0,
+      127.0
+    ]
+  ],
+  "candidate_class": "MRP",
+  "matching_rule": "Matched internal regex signature"
+}

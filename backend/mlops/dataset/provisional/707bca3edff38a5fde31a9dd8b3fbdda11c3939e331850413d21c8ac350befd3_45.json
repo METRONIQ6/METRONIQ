@@ -1,0 +1,25 @@
+{
+  "source_image": "external_data/Object-Detection-and-Text-Recognition-of-Packaged-Foods-main/sample dataset/images/train/11.png",
+  "ocr_text": "Irars Fat",
+  "ocr_confidence": 0.7113444209098816,
+  "original_ocr_coordinates": [
+    [
+      288.0,
+      307.0
+    ],
+    [
+      315.0,
+      307.0
+    ],
+    [
+      315.0,
+      313.0
+    ],
+    [
+      288.0,
+      313.0
+    ]
+  ],
+  "candidate_class": "MRP",
+  "matching_rule": "Matched internal regex signature"
+}

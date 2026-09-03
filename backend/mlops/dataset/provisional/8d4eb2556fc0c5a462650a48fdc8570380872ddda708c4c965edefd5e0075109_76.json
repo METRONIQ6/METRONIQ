@@ -1,0 +1,25 @@
+{
+  "source_image": "external_data/Object-Detection-and-Text-Recognition-of-Packaged-Foods-main/sample dataset/images/train/13.png",
+  "ocr_text": "MRP Rs.65/-INCL.OFALL TAXES",
+  "ocr_confidence": 0.9347870349884033,
+  "original_ocr_coordinates": [
+    [
+      331.0,
+      1059.0
+    ],
+    [
+      606.0,
+      1059.0
+    ],
+    [
+      606.0,
+      1081.0
+    ],
+    [
+      331.0,
+      1081.0
+    ]
+  ],
+  "candidate_class": "MRP",
+  "matching_rule": "Matched internal regex signature"
+}

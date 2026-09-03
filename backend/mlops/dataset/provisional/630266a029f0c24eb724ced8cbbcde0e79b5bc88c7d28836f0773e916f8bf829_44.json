@@ -1,0 +1,25 @@
+{
+  "source_image": "external_data/Object-Detection-and-Text-Recognition-of-Packaged-Foods-main/sample dataset/images/train/32.png",
+  "ocr_text": "Customer CareInnovative Foods LimitedEpunna",
+  "ocr_confidence": 0.7590941786766052,
+  "original_ocr_coordinates": [
+    [
+      278.0,
+      369.0
+    ],
+    [
+      445.0,
+      369.0
+    ],
+    [
+      445.0,
+      382.0
+    ],
+    [
+      278.0,
+      382.0
+    ]
+  ],
+  "candidate_class": "CONSUMER_CARE",
+  "matching_rule": "Matched internal regex signature"
+}

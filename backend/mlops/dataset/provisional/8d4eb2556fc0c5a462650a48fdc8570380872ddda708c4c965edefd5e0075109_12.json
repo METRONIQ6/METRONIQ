@@ -1,0 +1,25 @@
+{
+  "source_image": "external_data/Object-Detection-and-Text-Recognition-of-Packaged-Foods-main/sample dataset/images/train/13.png",
+  "ocr_text": "of which Sugars",
+  "ocr_confidence": 0.967218816280365,
+  "original_ocr_coordinates": [
+    [
+      361.0,
+      242.0
+    ],
+    [
+      489.0,
+      244.0
+    ],
+    [
+      489.0,
+      266.0
+    ],
+    [
+      361.0,
+      264.0
+    ]
+  ],
+  "candidate_class": "MRP",
+  "matching_rule": "Matched internal regex signature"
+}

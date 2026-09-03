@@ -1,0 +1,934 @@
+{
+  "image_path": "external_data/Object-Detection-and-Text-Recognition-of-Packaged-Foods-main/sample dataset/images/val/5.png",
+  "sha256": "943404d66cef4419658be36f5e7b9966ca5dd2f7151eae961c227038eb55c789",
+  "ocr_engine": "PaddleOCR",
+  "ocr_version": "2.8.1",
+  "timestamp": "2026-08-30T20:01:54.713966",
+  "full_ocr_text": "For MFD.& Lot No.see under the seal fssal WAFER (COCOA) NETWEIGHT: 37.3g IngredientsSugar.Mk solids.Refined wheat four Maida) 100208 IRP? (incl.of all taxes fatsCocoa solids 4.4%Emulsifier Soya lecithinRaising  Hmdity and Temperature May Cause Product To Develop (500()YeastFlour tretment agents (5161101 and odz hich LaverThis Does Not Affect ts Fitness For Consumption. CONTAINSADDEDFLAVOUR ARTIFICIAL VANILAFAVOURING SUBSTANG serveisT Per Per SGOA When can enioy my K sestion ery Good to kn noy your tavourn Nestle.  breaks w   901058143102 TRITIONAL COMPASS Good to talk FG.BY:NESTLEINDIA LIMITED StratidFeg 23.0 NESTLE CONSUMER CARE 1/101.WORLDTRADE CENTRE BARAKHAMBA LANE D4 1122 P.O.BAG2NEWDELHI-11000 NDELHI-110001 WECAREGINNESTLECOM APLOTNO.294-297USGAOPONDA03406GOA +AcproximateValues 1800103 1947 lo.10012025000202",
+  "regions": [
+    {
+      "text": "For MFD.& Lot No.see under the seal",
+      "confidence": 0.9168720841407776,
+      "bounding_box": [
+        [
+          109.0,
+          121.0
+        ],
+        [
+          274.0,
+          121.0
+        ],
+        [
+          274.0,
+          134.0
+        ],
+        [
+          109.0,
+          134.0
+        ]
+      ]
+    },
+    {
+      "text": "fssal",
+      "confidence": 0.9650443196296692,
+      "bounding_box": [
+        [
+          396.0,
+          122.0
+        ],
+        [
+          451.0,
+          126.0
+        ],
+        [
+          450.0,
+          146.0
+        ],
+        [
+          394.0,
+          143.0
+        ]
+      ]
+    },
+    {
+      "text": "WAFER (COCOA)",
+      "confidence": 0.9620322585105896,
+      "bounding_box": [
+        [
+          108.0,
+          134.0
+        ],
+        [
+          170.0,
+          134.0
+        ],
+        [
+          170.0,
+          151.0
+        ],
+        [
+          108.0,
+          151.0
+        ]
+      ]
+    },
+    {
+      "text": "NETWEIGHT:",
+      "confidence": 0.9804741740226746,
+      "bounding_box": [
+        [
+          65.0,
+          165.0
+        ],
+        [
+          147.0,
+          163.0
+        ],
+        [
+          147.0,
+          183.0
+        ],
+        [
+          66.0,
+          186.0
+        ]
+      ]
+    },
+    {
+      "text": "37.3g",
+      "confidence": 0.9969965815544128,
+      "bounding_box": [
+        [
+          184.0,
+          162.0
+        ],
+        [
+          223.0,
+          165.0
+        ],
+        [
+          221.0,
+          188.0
+        ],
+        [
+          182.0,
+          185.0
+        ]
+      ]
+    },
+    {
+      "text": "IngredientsSugar.Mk solids.Refined wheat four Maida)",
+      "confidence": 0.8444843888282776,
+      "bounding_box": [
+        [
+          316.0,
+          169.0
+        ],
+        [
+          528.0,
+          168.0
+        ],
+        [
+          528.0,
+          182.0
+        ],
+        [
+          316.0,
+          183.0
+        ]
+      ]
+    },
+    {
+      "text": "100208",
+      "confidence": 0.9968240857124329,
+      "bounding_box": [
+        [
+          33.0,
+          198.0
+        ],
+        [
+          44.0,
+          197.0
+        ],
+        [
+          47.0,
+          232.0
+        ],
+        [
+          36.0,
+          233.0
+        ]
+      ]
+    },
+    {
+      "text": "IRP?",
+      "confidence": 0.722014307975769,
+      "bounding_box": [
+        [
+          66.0,
+          198.0
+        ],
+        [
+          92.0,
+          198.0
+        ],
+        [
+          92.0,
+          218.0
+        ],
+        [
+          66.0,
+          218.0
+        ]
+      ]
+    },
+    {
+      "text": "(incl.of all taxes",
+      "confidence": 0.8116679787635803,
+      "bounding_box": [
+        [
+          116.0,
+          199.0
+        ],
+        [
+          188.0,
+          199.0
+        ],
+        [
+          188.0,
+          216.0
+        ],
+        [
+          116.0,
+          216.0
+        ]
+      ]
+    },
+    {
+      "text": "fatsCocoa solids 4.4%Emulsifier Soya lecithinRaising ",
+      "confidence": 0.8675110936164856,
+      "bounding_box": [
+        [
+          316.0,
+          193.0
+        ],
+        [
+          540.0,
+          194.0
+        ],
+        [
+          540.0,
+          208.0
+        ],
+        [
+          316.0,
+          207.0
+        ]
+      ]
+    },
+    {
+      "text": "Hmdity and Temperature May Cause Product To Develop",
+      "confidence": 0.9298774600028992,
+      "bounding_box": [
+        [
+          64.0,
+          214.0
+        ],
+        [
+          277.0,
+          212.0
+        ],
+        [
+          277.0,
+          228.0
+        ],
+        [
+          64.0,
+          230.0
+        ]
+      ]
+    },
+    {
+      "text": "(500()YeastFlour tretment agents (5161101 and odz",
+      "confidence": 0.7737831473350525,
+      "bounding_box": [
+        [
+          317.0,
+          207.0
+        ],
+        [
+          541.0,
+          207.0
+        ],
+        [
+          541.0,
+          221.0
+        ],
+        [
+          317.0,
+          221.0
+        ]
+      ]
+    },
+    {
+      "text": "hich LaverThis Does Not Affect ts Fitness For Consumption.",
+      "confidence": 0.8297354578971863,
+      "bounding_box": [
+        [
+          66.0,
+          228.0
+        ],
+        [
+          310.0,
+          228.0
+        ],
+        [
+          310.0,
+          242.0
+        ],
+        [
+          66.0,
+          242.0
+        ]
+      ]
+    },
+    {
+      "text": "CONTAINSADDEDFLAVOUR ARTIFICIAL VANILAFAVOURING SUBSTANG",
+      "confidence": 0.8857593536376953,
+      "bounding_box": [
+        [
+          313.0,
+          223.0
+        ],
+        [
+          540.0,
+          223.0
+        ],
+        [
+          540.0,
+          236.0
+        ],
+        [
+          313.0,
+          236.0
+        ]
+      ]
+    },
+    {
+      "text": "serveisT",
+      "confidence": 0.8737750053405762,
+      "bounding_box": [
+        [
+          261.0,
+          293.0
+        ],
+        [
+          297.0,
+          293.0
+        ],
+        [
+          297.0,
+          300.0
+        ],
+        [
+          261.0,
+          300.0
+        ]
+      ]
+    },
+    {
+      "text": "Per",
+      "confidence": 0.8165884017944336,
+      "bounding_box": [
+        [
+          304.0,
+          303.0
+        ],
+        [
+          315.0,
+          303.0
+        ],
+        [
+          315.0,
+          312.0
+        ],
+        [
+          304.0,
+          312.0
+        ]
+      ]
+    },
+    {
+      "text": "Per",
+      "confidence": 0.7417109608650208,
+      "bounding_box": [
+        [
+          326.0,
+          303.0
+        ],
+        [
+          335.0,
+          303.0
+        ],
+        [
+          335.0,
+          313.0
+        ],
+        [
+          326.0,
+          313.0
+        ]
+      ]
+    },
+    {
+      "text": "SGOA",
+      "confidence": 0.7406399250030518,
+      "bounding_box": [
+        [
+          351.0,
+          302.0
+        ],
+        [
+          367.0,
+          302.0
+        ],
+        [
+          367.0,
+          310.0
+        ],
+        [
+          351.0,
+          310.0
+        ]
+      ]
+    },
+    {
+      "text": "When can enioy my K",
+      "confidence": 0.821294903755188,
+      "bounding_box": [
+        [
+          457.0,
+          307.0
+        ],
+        [
+          541.0,
+          307.0
+        ],
+        [
+          541.0,
+          320.0
+        ],
+        [
+          457.0,
+          320.0
+        ]
+      ]
+    },
+    {
+      "text": "sestion",
+      "confidence": 0.9693993330001831,
+      "bounding_box": [
+        [
+          505.0,
+          298.0
+        ],
+        [
+          533.0,
+          298.0
+        ],
+        [
+          533.0,
+          305.0
+        ],
+        [
+          505.0,
+          305.0
+        ]
+      ]
+    },
+    {
+      "text": "ery",
+      "confidence": 0.6462004780769348,
+      "bounding_box": [
+        [
+          326.0,
+          312.0
+        ],
+        [
+          335.0,
+          312.0
+        ],
+        [
+          335.0,
+          320.0
+        ],
+        [
+          326.0,
+          320.0
+        ]
+      ]
+    },
+    {
+      "text": "Good to kn",
+      "confidence": 0.9237842559814453,
+      "bounding_box": [
+        [
+          474.0,
+          320.0
+        ],
+        [
+          522.0,
+          320.0
+        ],
+        [
+          522.0,
+          327.0
+        ],
+        [
+          474.0,
+          327.0
+        ]
+      ]
+    },
+    {
+      "text": "noy your tavourn",
+      "confidence": 0.8321889638900757,
+      "bounding_box": [
+        [
+          459.0,
+          330.0
+        ],
+        [
+          513.0,
+          330.0
+        ],
+        [
+          513.0,
+          339.0
+        ],
+        [
+          459.0,
+          339.0
+        ]
+      ]
+    },
+    {
+      "text": "Nestle.",
+      "confidence": 0.9811840653419495,
+      "bounding_box": [
+        [
+          394.0,
+          343.0
+        ],
+        [
+          437.0,
+          343.0
+        ],
+        [
+          437.0,
+          357.0
+        ],
+        [
+          394.0,
+          357.0
+        ]
+      ]
+    },
+    {
+      "text": " breaks w  ",
+      "confidence": 0.7808002233505249,
+      "bounding_box": [
+        [
+          471.0,
+          340.0
+        ],
+        [
+          531.0,
+          337.0
+        ],
+        [
+          531.0,
+          347.0
+        ],
+        [
+          471.0,
+          349.0
+        ]
+      ]
+    },
+    {
+      "text": "901058143102",
+      "confidence": 0.9939741492271423,
+      "bounding_box": [
+        [
+          67.0,
+          369.0
+        ],
+        [
+          224.0,
+          370.0
+        ],
+        [
+          224.0,
+          387.0
+        ],
+        [
+          67.0,
+          386.0
+        ]
+      ]
+    },
+    {
+      "text": "TRITIONAL COMPASS",
+      "confidence": 0.9673810005187988,
+      "bounding_box": [
+        [
+          376.0,
+          371.0
+        ],
+        [
+          389.0,
+          371.0
+        ],
+        [
+          389.0,
+          449.0
+        ],
+        [
+          376.0,
+          449.0
+        ]
+      ]
+    },
+    {
+      "text": "Good to talk",
+      "confidence": 0.9211971163749695,
+      "bounding_box": [
+        [
+          415.0,
+          370.0
+        ],
+        [
+          475.0,
+          370.0
+        ],
+        [
+          475.0,
+          387.0
+        ],
+        [
+          415.0,
+          387.0
+        ]
+      ]
+    },
+    {
+      "text": "FG.BY:NESTLEINDIA LIMITED",
+      "confidence": 0.8924176096916199,
+      "bounding_box": [
+        [
+          57.0,
+          390.0
+        ],
+        [
+          165.0,
+          392.0
+        ],
+        [
+          165.0,
+          406.0
+        ],
+        [
+          57.0,
+          404.0
+        ]
+      ]
+    },
+    {
+      "text": "StratidFeg",
+      "confidence": 0.6895921230316162,
+      "bounding_box": [
+        [
+          254.0,
+          387.0
+        ],
+        [
+          293.0,
+          387.0
+        ],
+        [
+          293.0,
+          397.0
+        ],
+        [
+          254.0,
+          397.0
+        ]
+      ]
+    },
+    {
+      "text": "23.0",
+      "confidence": 0.947320282459259,
+      "bounding_box": [
+        [
+          302.0,
+          387.0
+        ],
+        [
+          315.0,
+          387.0
+        ],
+        [
+          315.0,
+          396.0
+        ],
+        [
+          302.0,
+          396.0
+        ]
+      ]
+    },
+    {
+      "text": "NESTLE CONSUMER CARE",
+      "confidence": 0.963873028755188,
+      "bounding_box": [
+        [
+          403.0,
+          387.0
+        ],
+        [
+          508.0,
+          386.0
+        ],
+        [
+          508.0,
+          404.0
+        ],
+        [
+          403.0,
+          405.0
+        ]
+      ]
+    },
+    {
+      "text": "1/101.WORLDTRADE CENTRE BARAKHAMBA LANE",
+      "confidence": 0.8707089424133301,
+      "bounding_box": [
+        [
+          56.0,
+          403.0
+        ],
+        [
+          241.0,
+          405.0
+        ],
+        [
+          241.0,
+          421.0
+        ],
+        [
+          56.0,
+          419.0
+        ]
+      ]
+    },
+    {
+      "text": "D4",
+      "confidence": 0.5121298432350159,
+      "bounding_box": [
+        [
+          305.0,
+          397.0
+        ],
+        [
+          315.0,
+          397.0
+        ],
+        [
+          315.0,
+          406.0
+        ],
+        [
+          305.0,
+          406.0
+        ]
+      ]
+    },
+    {
+      "text": "1122",
+      "confidence": 0.7914199829101562,
+      "bounding_box": [
+        [
+          302.0,
+          407.0
+        ],
+        [
+          315.0,
+          407.0
+        ],
+        [
+          315.0,
+          414.0
+        ],
+        [
+          302.0,
+          414.0
+        ]
+      ]
+    },
+    {
+      "text": "P.O.BAG2NEWDELHI-11000",
+      "confidence": 0.9161325097084045,
+      "bounding_box": [
+        [
+          410.0,
+          403.0
+        ],
+        [
+          529.0,
+          402.0
+        ],
+        [
+          529.0,
+          419.0
+        ],
+        [
+          411.0,
+          420.0
+        ]
+      ]
+    },
+    {
+      "text": "NDELHI-110001",
+      "confidence": 0.9087183475494385,
+      "bounding_box": [
+        [
+          57.0,
+          417.0
+        ],
+        [
+          123.0,
+          420.0
+        ],
+        [
+          122.0,
+          433.0
+        ],
+        [
+          56.0,
+          431.0
+        ]
+      ]
+    },
+    {
+      "text": "WECAREGINNESTLECOM",
+      "confidence": 0.9617738723754883,
+      "bounding_box": [
+        [
+          412.0,
+          418.0
+        ],
+        [
+          497.0,
+          418.0
+        ],
+        [
+          497.0,
+          436.0
+        ],
+        [
+          412.0,
+          436.0
+        ]
+      ]
+    },
+    {
+      "text": "APLOTNO.294-297USGAOPONDA03406GOA",
+      "confidence": 0.8179433941841125,
+      "bounding_box": [
+        [
+          56.0,
+          430.0
+        ],
+        [
+          236.0,
+          431.0
+        ],
+        [
+          236.0,
+          448.0
+        ],
+        [
+          56.0,
+          447.0
+        ]
+      ]
+    },
+    {
+      "text": "+AcproximateValues",
+      "confidence": 0.9307963252067566,
+      "bounding_box": [
+        [
+          297.0,
+          440.0
+        ],
+        [
+          361.0,
+          440.0
+        ],
+        [
+          361.0,
+          451.0
+        ],
+        [
+          297.0,
+          451.0
+        ]
+      ]
+    },
+    {
+      "text": "1800103 1947",
+      "confidence": 0.9251546263694763,
+      "bounding_box": [
+        [
+          411.0,
+          434.0
+        ],
+        [
+          462.0,
+          431.0
+        ],
+        [
+          463.0,
+          450.0
+        ],
+        [
+          412.0,
+          453.0
+        ]
+      ]
+    },
+    {
+      "text": "lo.10012025000202",
+      "confidence": 0.8750982880592346,
+      "bounding_box": [
+        [
+          57.0,
+          445.0
+        ],
+        [
+          133.0,
+          448.0
+        ],
+        [
+          133.0,
+          462.0
+        ],
+        [
+          56.0,
+          459.0
+        ]
+      ]
+    }
+  ]
+}

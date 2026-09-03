@@ -1,0 +1,25 @@
+{
+  "source_image": "external_data/Object-Detection-and-Text-Recognition-of-Packaged-Foods-main/sample dataset/images/train/17.png",
+  "ocr_text": "Every product has a story.ip to know ours.",
+  "ocr_confidence": 0.9033834338188171,
+  "original_ocr_coordinates": [
+    [
+      135.0,
+      462.0
+    ],
+    [
+      302.0,
+      467.0
+    ],
+    [
+      301.0,
+      481.0
+    ],
+    [
+      135.0,
+      475.0
+    ]
+  ],
+  "candidate_class": "MRP",
+  "matching_rule": "Matched internal regex signature"
+}

@@ -1,0 +1,25 @@
+{
+  "source_image": "external_data/Object-Detection-and-Text-Recognition-of-Packaged-Foods-main/sample dataset/images/train/28.png",
+  "ocr_text": "Chicken Fingers",
+  "ocr_confidence": 0.9815996885299683,
+  "original_ocr_coordinates": [
+    [
+      892.0,
+      542.0
+    ],
+    [
+      1012.0,
+      542.0
+    ],
+    [
+      1012.0,
+      560.0
+    ],
+    [
+      892.0,
+      560.0
+    ]
+  ],
+  "candidate_class": "MRP",
+  "matching_rule": "Matched internal regex signature"
+}

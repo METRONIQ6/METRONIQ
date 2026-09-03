@@ -1,0 +1,25 @@
+{
+  "source_image": "external_data/Object-Detection-and-Text-Recognition-of-Packaged-Foods-main/sample dataset/images/train/19.png",
+  "ocr_text": "NET WT.500g.",
+  "ocr_confidence": 0.9549930691719055,
+  "original_ocr_coordinates": [
+    [
+      343.0,
+      406.0
+    ],
+    [
+      396.0,
+      406.0
+    ],
+    [
+      396.0,
+      420.0
+    ],
+    [
+      343.0,
+      420.0
+    ]
+  ],
+  "candidate_class": "NET_QUANTITY",
+  "matching_rule": "Matched internal regex signature"
+}

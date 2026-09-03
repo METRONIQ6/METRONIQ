@@ -1,0 +1,25 @@
+{
+  "source_image": "external_data/Object-Detection-and-Text-Recognition-of-Packaged-Foods-main/sample dataset/images/train/2.png",
+  "ocr_text": "NESTLE CONSUMER CARE",
+  "ocr_confidence": 0.9662769436836243,
+  "original_ocr_coordinates": [
+    [
+      333.0,
+      466.0
+    ],
+    [
+      617.0,
+      466.0
+    ],
+    [
+      617.0,
+      498.0
+    ],
+    [
+      333.0,
+      498.0
+    ]
+  ],
+  "candidate_class": "CONSUMER_CARE",
+  "matching_rule": "Matched internal regex signature"
+}

@@ -1,0 +1,428 @@
+{
+  "image_path": "external_data/Object-Detection-and-Text-Recognition-of-Packaged-Foods-main/sample dataset/images/train/8.png",
+  "sha256": "48c963633f5d36ad1177fd37e8c8c44aa39812f88ba7600e94fef0fe3555fd39",
+  "ocr_engine": "PaddleOCR",
+  "ocr_version": "2.8.1",
+  "timestamp": "2026-08-30T20:01:33.966993",
+  "full_ocr_text": "Kellogg's Hos to Prepare? 1cups170m water Ad contents of pack slowyst UPMA Close with  and cook cook for1 min. on low flame tor 2 min.Serve hot VUTRIEION NOW.START YOUR DAY WITH 69.5gj THE TASTE OF MOM'S FOOD! VEGGIE MASALA BUR MRP20.00 (INCL.OFALL TAXES) OREMA Kconsumer DORCA 800-22-350 MFD./BATCH NO.",
+  "regions": [
+    {
+      "text": "Kellogg's",
+      "confidence": 0.8842792510986328,
+      "bounding_box": [
+        [
+          100.0,
+          47.0
+        ],
+        [
+          205.0,
+          56.0
+        ],
+        [
+          202.0,
+          95.0
+        ],
+        [
+          97.0,
+          86.0
+        ]
+      ]
+    },
+    {
+      "text": "Hos to Prepare?",
+      "confidence": 0.8561519384384155,
+      "bounding_box": [
+        [
+          282.0,
+          52.0
+        ],
+        [
+          362.0,
+          52.0
+        ],
+        [
+          362.0,
+          64.0
+        ],
+        [
+          282.0,
+          64.0
+        ]
+      ]
+    },
+    {
+      "text": "1cups170m water",
+      "confidence": 0.7894924879074097,
+      "bounding_box": [
+        [
+          281.0,
+          64.0
+        ],
+        [
+          386.0,
+          64.0
+        ],
+        [
+          386.0,
+          77.0
+        ],
+        [
+          281.0,
+          77.0
+        ]
+      ]
+    },
+    {
+      "text": "Ad contents of pack slowyst",
+      "confidence": 0.8112449645996094,
+      "bounding_box": [
+        [
+          281.0,
+          76.0
+        ],
+        [
+          398.0,
+          76.0
+        ],
+        [
+          398.0,
+          89.0
+        ],
+        [
+          281.0,
+          89.0
+        ]
+      ]
+    },
+    {
+      "text": "UPMA",
+      "confidence": 0.9971171617507935,
+      "bounding_box": [
+        [
+          108.0,
+          95.0
+        ],
+        [
+          182.0,
+          95.0
+        ],
+        [
+          182.0,
+          128.0
+        ],
+        [
+          108.0,
+          128.0
+        ]
+      ]
+    },
+    {
+      "text": "Close with  and cook",
+      "confidence": 0.9027141332626343,
+      "bounding_box": [
+        [
+          281.0,
+          95.0
+        ],
+        [
+          366.0,
+          95.0
+        ],
+        [
+          366.0,
+          107.0
+        ],
+        [
+          281.0,
+          107.0
+        ]
+      ]
+    },
+    {
+      "text": "cook for1 min.",
+      "confidence": 0.8311695456504822,
+      "bounding_box": [
+        [
+          293.0,
+          86.0
+        ],
+        [
+          340.0,
+          86.0
+        ],
+        [
+          340.0,
+          96.0
+        ],
+        [
+          293.0,
+          96.0
+        ]
+      ]
+    },
+    {
+      "text": "on low flame tor 2 min.Serve hot",
+      "confidence": 0.8284821510314941,
+      "bounding_box": [
+        [
+          292.0,
+          105.0
+        ],
+        [
+          393.0,
+          105.0
+        ],
+        [
+          393.0,
+          115.0
+        ],
+        [
+          292.0,
+          115.0
+        ]
+      ]
+    },
+    {
+      "text": "VUTRIEION",
+      "confidence": 0.8346021771430969,
+      "bounding_box": [
+        [
+          283.0,
+          121.0
+        ],
+        [
+          310.0,
+          121.0
+        ],
+        [
+          310.0,
+          128.0
+        ],
+        [
+          283.0,
+          128.0
+        ]
+      ]
+    },
+    {
+      "text": "NOW.START YOUR DAY WITH",
+      "confidence": 0.9140122532844543,
+      "bounding_box": [
+        [
+          104.0,
+          133.0
+        ],
+        [
+          202.0,
+          133.0
+        ],
+        [
+          202.0,
+          146.0
+        ],
+        [
+          104.0,
+          146.0
+        ]
+      ]
+    },
+    {
+      "text": "69.5gj",
+      "confidence": 0.6111050844192505,
+      "bounding_box": [
+        [
+          360.0,
+          133.0
+        ],
+        [
+          396.0,
+          133.0
+        ],
+        [
+          396.0,
+          143.0
+        ],
+        [
+          360.0,
+          143.0
+        ]
+      ]
+    },
+    {
+      "text": "THE TASTE OF MOM'S FOOD!",
+      "confidence": 0.8997965455055237,
+      "bounding_box": [
+        [
+          105.0,
+          144.0
+        ],
+        [
+          200.0,
+          143.0
+        ],
+        [
+          200.0,
+          153.0
+        ],
+        [
+          106.0,
+          154.0
+        ]
+      ]
+    },
+    {
+      "text": "VEGGIE MASALA BUR",
+      "confidence": 0.8855069875717163,
+      "bounding_box": [
+        [
+          122.0,
+          159.0
+        ],
+        [
+          178.0,
+          159.0
+        ],
+        [
+          178.0,
+          169.0
+        ],
+        [
+          122.0,
+          169.0
+        ]
+      ]
+    },
+    {
+      "text": "MRP20.00 (INCL.OFALL TAXES)",
+      "confidence": 0.9241175651550293,
+      "bounding_box": [
+        [
+          90.0,
+          291.0
+        ],
+        [
+          216.0,
+          291.0
+        ],
+        [
+          216.0,
+          304.0
+        ],
+        [
+          90.0,
+          304.0
+        ]
+      ]
+    },
+    {
+      "text": "OREMA",
+      "confidence": 0.9575262069702148,
+      "bounding_box": [
+        [
+          278.0,
+          294.0
+        ],
+        [
+          318.0,
+          294.0
+        ],
+        [
+          318.0,
+          304.0
+        ],
+        [
+          278.0,
+          304.0
+        ]
+      ]
+    },
+    {
+      "text": "Kconsumer",
+      "confidence": 0.8979349136352539,
+      "bounding_box": [
+        [
+          292.0,
+          309.0
+        ],
+        [
+          342.0,
+          309.0
+        ],
+        [
+          342.0,
+          318.0
+        ],
+        [
+          292.0,
+          318.0
+        ]
+      ]
+    },
+    {
+      "text": "DORCA",
+      "confidence": 0.8137519955635071,
+      "bounding_box": [
+        [
+          280.0,
+          323.0
+        ],
+        [
+          312.0,
+          323.0
+        ],
+        [
+          312.0,
+          330.0
+        ],
+        [
+          280.0,
+          330.0
+        ]
+      ]
+    },
+    {
+      "text": "800-22-350",
+      "confidence": 0.9715692400932312,
+      "bounding_box": [
+        [
+          326.0,
+          323.0
+        ],
+        [
+          375.0,
+          323.0
+        ],
+        [
+          375.0,
+          330.0
+        ],
+        [
+          326.0,
+          330.0
+        ]
+      ]
+    },
+    {
+      "text": "MFD./BATCH NO.",
+      "confidence": 0.9489410519599915,
+      "bounding_box": [
+        [
+          88.0,
+          344.0
+        ],
+        [
+          102.0,
+          344.0
+        ],
+        [
+          102.0,
+          429.0
+        ],
+        [
+          88.0,
+          429.0
+        ]
+      ]
+    }
+  ]
+}

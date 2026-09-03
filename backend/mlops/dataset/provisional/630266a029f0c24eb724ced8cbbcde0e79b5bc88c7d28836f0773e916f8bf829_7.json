@@ -1,0 +1,25 @@
+{
+  "source_image": "external_data/Object-Detection-and-Text-Recognition-of-Packaged-Foods-main/sample dataset/images/train/32.png",
+  "ocr_text": "MANUFACTURED &PACKED BY",
+  "ocr_confidence": 0.9397409558296204,
+  "original_ocr_coordinates": [
+    [
+      318.0,
+      129.0
+    ],
+    [
+      417.0,
+      129.0
+    ],
+    [
+      417.0,
+      142.0
+    ],
+    [
+      318.0,
+      142.0
+    ]
+  ],
+  "candidate_class": "AMBIGUOUS",
+  "matching_rule": "Multiple regex overlaps: MANUFACTURER,PACKER"
+}

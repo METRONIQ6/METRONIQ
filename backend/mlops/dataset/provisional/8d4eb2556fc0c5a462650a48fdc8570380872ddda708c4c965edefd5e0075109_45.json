@@ -1,0 +1,25 @@
+{
+  "source_image": "external_data/Object-Detection-and-Text-Recognition-of-Packaged-Foods-main/sample dataset/images/train/13.png",
+  "ocr_text": "For manufacturing unit address, see first two characters of",
+  "ocr_confidence": 0.9498745799064636,
+  "original_ocr_coordinates": [
+    [
+      328.0,
+      669.0
+    ],
+    [
+      698.0,
+      669.0
+    ],
+    [
+      698.0,
+      689.0
+    ],
+    [
+      328.0,
+      689.0
+    ]
+  ],
+  "candidate_class": "MRP",
+  "matching_rule": "Matched internal regex signature"
+}

@@ -1,0 +1,13 @@
+path: /app/workspace/backend/mlops/dataset
+train: images/train
+val: images/train
+test: images/test
+
+# Classes definitions matching exact Legal Metrology ontology requirement
+names:
+  0: MRP
+  1: NET_QUANTITY
+  2: MANUFACTURER
+  3: PACKER
+  4: IMPORTER
+  5: CONSUMER_CARE

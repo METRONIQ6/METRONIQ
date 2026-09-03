@@ -1,0 +1,25 @@
+{
+  "source_image": "external_data/Object-Detection-and-Text-Recognition-of-Packaged-Foods-main/sample dataset/images/train/2.png",
+  "ocr_text": "andAcdt qulaors5010500",
+  "ocr_confidence": 0.7239142060279846,
+  "original_ocr_coordinates": [
+    [
+      745.0,
+      800.0
+    ],
+    [
+      887.0,
+      800.0
+    ],
+    [
+      887.0,
+      820.0
+    ],
+    [
+      745.0,
+      820.0
+    ]
+  ],
+  "candidate_class": "MRP",
+  "matching_rule": "Matched internal regex signature"
+}

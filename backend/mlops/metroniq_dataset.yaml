@@ -1,0 +1,17 @@
+# MetronIQ Custom YOLOv11/v8 Dataset Configuration
+# Architecture mapped exactly per Data Engineering Workflow Requirements
+
+path: ../datasets/metroniq
+train: images/train
+val: images/val
+test: images/test
+
+# 6 Core Classes
+nc: 6
+names:
+  0: MRP
+  1: NET_QUANTITY
+  2: MANUFACTURER
+  3: CONSUMER_CARE
+  4: IMPORTER
+  5: PACKER

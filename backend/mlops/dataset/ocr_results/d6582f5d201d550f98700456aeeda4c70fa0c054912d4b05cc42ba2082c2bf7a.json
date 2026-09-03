@@ -1,0 +1,54 @@
+{
+  "image_path": "external_data/openfoodfacts/raw/7613035833272_front.jpg",
+  "sha256": "d6582f5d201d550f98700456aeeda4c70fa0c054912d4b05cc42ba2082c2bf7a",
+  "ocr_engine": "PaddleOCR",
+  "ocr_version": "2.8.1",
+  "timestamp": "2026-08-30T19:59:52.113071",
+  "full_ocr_text": "terrier C",
+  "regions": [
+    {
+      "text": "terrier",
+      "confidence": 0.9489954113960266,
+      "bounding_box": [
+        [
+          13.0,
+          256.0
+        ],
+        [
+          101.0,
+          254.0
+        ],
+        [
+          102.0,
+          288.0
+        ],
+        [
+          14.0,
+          291.0
+        ]
+      ]
+    },
+    {
+      "text": "C",
+      "confidence": 0.6620534658432007,
+      "bounding_box": [
+        [
+          28.0,
+          318.0
+        ],
+        [
+          90.0,
+          318.0
+        ],
+        [
+          90.0,
+          340.0
+        ],
+        [
+          28.0,
+          340.0
+        ]
+      ]
+    }
+  ]
+}

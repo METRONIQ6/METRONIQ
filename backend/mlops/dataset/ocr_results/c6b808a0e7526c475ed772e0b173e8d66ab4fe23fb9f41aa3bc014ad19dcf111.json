@@ -1,0 +1,252 @@
+{
+  "image_path": "external_data/Object-Detection-and-Text-Recognition-of-Packaged-Foods-main/sample dataset/images/val/4.png",
+  "sha256": "c6b808a0e7526c475ed772e0b173e8d66ab4fe23fb9f41aa3bc014ad19dcf111",
+  "ocr_engine": "PaddleOCR",
+  "ocr_version": "2.8.1",
+  "timestamp": "2026-08-30T20:01:50.750855",
+  "full_ocr_text": "ROPRIETARY FOOD:COCOA AND CHOCOLATE PRODUCTS (5.1.3 CONTAINS ADDED FLAVOUR-ARTIFICIAL FLAVOURING SUBSTANCE (VANILLIN) CONTAINS VEGETABLE FATIN ADDITIONTO COCOA BUTTER. Net Weight: 409 MRP< ssal all Taxes) (Incl.of MFD.: Lot No.:",
+  "regions": [
+    {
+      "text": "ROPRIETARY FOOD:COCOA AND CHOCOLATE PRODUCTS (5.1.3",
+      "confidence": 0.9520248174667358,
+      "bounding_box": [
+        [
+          184.0,
+          146.0
+        ],
+        [
+          429.0,
+          146.0
+        ],
+        [
+          429.0,
+          159.0
+        ],
+        [
+          184.0,
+          159.0
+        ]
+      ]
+    },
+    {
+      "text": "CONTAINS ADDED FLAVOUR-ARTIFICIAL FLAVOURING SUBSTANCE (VANILLIN)",
+      "confidence": 0.9465917944908142,
+      "bounding_box": [
+        [
+          160.0,
+          176.0
+        ],
+        [
+          398.0,
+          176.0
+        ],
+        [
+          398.0,
+          188.0
+        ],
+        [
+          160.0,
+          188.0
+        ]
+      ]
+    },
+    {
+      "text": "CONTAINS VEGETABLE FATIN ADDITIONTO COCOA BUTTER.",
+      "confidence": 0.927064061164856,
+      "bounding_box": [
+        [
+          159.0,
+          187.0
+        ],
+        [
+          343.0,
+          187.0
+        ],
+        [
+          343.0,
+          199.0
+        ],
+        [
+          159.0,
+          199.0
+        ]
+      ]
+    },
+    {
+      "text": "Net Weight:",
+      "confidence": 0.9892980456352234,
+      "bounding_box": [
+        [
+          313.0,
+          264.0
+        ],
+        [
+          358.0,
+          264.0
+        ],
+        [
+          358.0,
+          274.0
+        ],
+        [
+          313.0,
+          274.0
+        ]
+      ]
+    },
+    {
+      "text": "409",
+      "confidence": 0.8075966238975525,
+      "bounding_box": [
+        [
+          364.0,
+          262.0
+        ],
+        [
+          381.0,
+          265.0
+        ],
+        [
+          380.0,
+          276.0
+        ],
+        [
+          362.0,
+          273.0
+        ]
+      ]
+    },
+    {
+      "text": "MRP<",
+      "confidence": 0.8828014731407166,
+      "bounding_box": [
+        [
+          313.0,
+          279.0
+        ],
+        [
+          337.0,
+          279.0
+        ],
+        [
+          337.0,
+          291.0
+        ],
+        [
+          313.0,
+          291.0
+        ]
+      ]
+    },
+    {
+      "text": "ssal",
+      "confidence": 0.804938554763794,
+      "bounding_box": [
+        [
+          68.0,
+          296.0
+        ],
+        [
+          88.0,
+          296.0
+        ],
+        [
+          88.0,
+          304.0
+        ],
+        [
+          68.0,
+          304.0
+        ]
+      ]
+    },
+    {
+      "text": "all Taxes)",
+      "confidence": 0.841063380241394,
+      "bounding_box": [
+        [
+          312.0,
+          295.0
+        ],
+        [
+          349.0,
+          297.0
+        ],
+        [
+          348.0,
+          311.0
+        ],
+        [
+          311.0,
+          308.0
+        ]
+      ]
+    },
+    {
+      "text": "(Incl.of",
+      "confidence": 0.8072669506072998,
+      "bounding_box": [
+        [
+          314.0,
+          287.0
+        ],
+        [
+          342.0,
+          287.0
+        ],
+        [
+          342.0,
+          300.0
+        ],
+        [
+          314.0,
+          300.0
+        ]
+      ]
+    },
+    {
+      "text": "MFD.:",
+      "confidence": 0.8845611810684204,
+      "bounding_box": [
+        [
+          312.0,
+          311.0
+        ],
+        [
+          335.0,
+          311.0
+        ],
+        [
+          335.0,
+          325.0
+        ],
+        [
+          312.0,
+          325.0
+        ]
+      ]
+    },
+    {
+      "text": "Lot No.:",
+      "confidence": 0.9283955097198486,
+      "bounding_box": [
+        [
+          313.0,
+          327.0
+        ],
+        [
+          340.0,
+          327.0
+        ],
+        [
+          340.0,
+          338.0
+        ],
+        [
+          313.0,
+          338.0
+        ]
+      ]
+    }
+  ]
+}

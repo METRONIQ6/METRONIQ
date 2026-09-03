@@ -1,0 +1,25 @@
+{
+  "source_image": "external_data/Object-Detection-and-Text-Recognition-of-Packaged-Foods-main/sample dataset/images/train/8.png",
+  "ocr_text": "MRP20.00 (INCL.OFALL TAXES)",
+  "ocr_confidence": 0.9241175651550293,
+  "original_ocr_coordinates": [
+    [
+      90.0,
+      291.0
+    ],
+    [
+      216.0,
+      291.0
+    ],
+    [
+      216.0,
+      304.0
+    ],
+    [
+      90.0,
+      304.0
+    ]
+  ],
+  "candidate_class": "MRP",
+  "matching_rule": "Matched internal regex signature"
+}

@@ -1,0 +1,4 @@
+opencv-python-headless==4.9.0.80
+paddlepaddle==2.6.2
+paddleocr==2.8.1
+numpy<2.0.0

@@ -1,0 +1,32 @@
+# MetronIQ - Isolated Linux AI Runner Environment
+# Resolves Windows C++ Intel threading bugs for PaddleOCR/oneDNN
+# Built on safe Python 3.10 explicitly supporting stable PaddlePaddle builds
+
+FROM python:3.10-slim-bookworm
+
+# System dependencies for OpenCV & Paddle
+RUN apt-get update && apt-get install -y \
+    libgl1-mesa-glx \
+    libglib2.0-0 \
+    wget \
+    libgomp1 \
+    zlib1g \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Ensure exact compatible dependency tracking for ML models execution
+COPY docker/requirements-ai.txt ./
+RUN pip install --no-cache-dir -r requirements-ai.txt --extra-index-url https://download.pytorch.org/whl/cpu
+
+# Bind ML directories
+COPY app/ai ./ai
+COPY models/yolo ./models/yolo
+
+# Run FastApi as unprivileged user
+RUN useradd -m metroniq
+USER metroniq
+
+EXPOSE 8000
+
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]

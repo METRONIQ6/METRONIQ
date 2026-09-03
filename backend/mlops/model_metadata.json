@@ -1,0 +1,18 @@
+{
+    "model_name": "metroniq",
+    "model_version": null,
+    "model_type": "DOMAIN_NOT_CONFIGURED",
+    "training_date": null,
+    "dataset_version": null,
+    "base_model": "yolo11n.pt",
+    "classes": ["MRP", "NET_QUANTITY", "MANUFACTURER", "PACKER", "IMPORTER", "CONSUMER_CARE"],
+    "class_count": 6,
+    "training_configuration": {},
+    "metrics": {
+        "precision": null,
+        "recall": null,
+        "mAP50": null,
+        "mAP50-95": null
+    },
+    "sha256": null
+}

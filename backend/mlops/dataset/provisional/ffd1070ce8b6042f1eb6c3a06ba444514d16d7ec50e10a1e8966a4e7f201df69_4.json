@@ -1,0 +1,25 @@
+{
+  "source_image": "external_data/Object-Detection-and-Text-Recognition-of-Packaged-Foods-main/sample dataset/images/val/23.png",
+  "ocr_text": "Net Wt.40 g",
+  "ocr_confidence": 0.9292093515396118,
+  "original_ocr_coordinates": [
+    [
+      103.0,
+      382.0
+    ],
+    [
+      174.0,
+      384.0
+    ],
+    [
+      173.0,
+      402.0
+    ],
+    [
+      102.0,
+      399.0
+    ]
+  ],
+  "candidate_class": "NET_QUANTITY",
+  "matching_rule": "Matched internal regex signature"
+}

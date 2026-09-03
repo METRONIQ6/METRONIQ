@@ -1,0 +1,120 @@
+{
+  "image_path": "external_data/Object-Detection-and-Text-Recognition-of-Packaged-Foods-main/sample dataset/images/train/46.png",
+  "sha256": "892e7d8242f53726a0b41f54dd3f65d6e8c46deb0ee44dde4209b6dbe2f5974f",
+  "ocr_engine": "PaddleOCR",
+  "ocr_version": "2.8.1",
+  "timestamp": "2026-08-30T20:01:20.403293",
+  "full_ocr_text": "Seth's Discover Deliclously! GOLDEN AMERICANO CHICKENNUGGETS Net Weight250g",
+  "regions": [
+    {
+      "text": "Seth's",
+      "confidence": 0.9740784764289856,
+      "bounding_box": [
+        [
+          122.0,
+          41.0
+        ],
+        [
+          300.0,
+          43.0
+        ],
+        [
+          299.0,
+          104.0
+        ],
+        [
+          121.0,
+          102.0
+        ]
+      ]
+    },
+    {
+      "text": "Discover Deliclously!",
+      "confidence": 0.8878846764564514,
+      "bounding_box": [
+        [
+          195.0,
+          101.0
+        ],
+        [
+          297.0,
+          101.0
+        ],
+        [
+          297.0,
+          118.0
+        ],
+        [
+          195.0,
+          118.0
+        ]
+      ]
+    },
+    {
+      "text": "GOLDEN AMERICANO",
+      "confidence": 0.9732444286346436,
+      "bounding_box": [
+        [
+          63.0,
+          151.0
+        ],
+        [
+          176.0,
+          152.0
+        ],
+        [
+          176.0,
+          166.0
+        ],
+        [
+          63.0,
+          165.0
+        ]
+      ]
+    },
+    {
+      "text": "CHICKENNUGGETS",
+      "confidence": 0.9941777586936951,
+      "bounding_box": [
+        [
+          65.0,
+          167.0
+        ],
+        [
+          175.0,
+          167.0
+        ],
+        [
+          175.0,
+          181.0
+        ],
+        [
+          65.0,
+          181.0
+        ]
+      ]
+    },
+    {
+      "text": "Net Weight250g",
+      "confidence": 0.9015563130378723,
+      "bounding_box": [
+        [
+          60.0,
+          355.0
+        ],
+        [
+          170.0,
+          353.0
+        ],
+        [
+          170.0,
+          378.0
+        ],
+        [
+          60.0,
+          380.0
+        ]
+      ]
+    }
+  ]
+}

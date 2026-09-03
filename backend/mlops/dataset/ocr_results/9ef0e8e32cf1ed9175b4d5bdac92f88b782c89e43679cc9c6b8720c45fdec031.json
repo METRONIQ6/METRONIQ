@@ -1,0 +1,54 @@
+{
+  "image_path": "external_data/openfoodfacts/raw/90162602_front.jpg",
+  "sha256": "9ef0e8e32cf1ed9175b4d5bdac92f88b782c89e43679cc9c6b8720c45fdec031",
+  "ocr_engine": "PaddleOCR",
+  "ocr_version": "2.8.1",
+  "timestamp": "2026-08-30T19:59:54.981762",
+  "full_ocr_text": "Red Bull ENERGYDRINK",
+  "regions": [
+    {
+      "text": "Red Bull",
+      "confidence": 0.9343717098236084,
+      "bounding_box": [
+        [
+          136.0,
+          151.0
+        ],
+        [
+          264.0,
+          148.0
+        ],
+        [
+          265.0,
+          187.0
+        ],
+        [
+          137.0,
+          191.0
+        ]
+      ]
+    },
+    {
+      "text": "ENERGYDRINK",
+      "confidence": 0.99493807554245,
+      "bounding_box": [
+        [
+          139.0,
+          224.0
+        ],
+        [
+          258.0,
+          225.0
+        ],
+        [
+          258.0,
+          243.0
+        ],
+        [
+          138.0,
+          242.0
+        ]
+      ]
+    }
+  ]
+}

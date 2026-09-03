@@ -1,0 +1,25 @@
+{
+  "source_image": "external_data/Object-Detection-and-Text-Recognition-of-Packaged-Foods-main/sample dataset/images/val/23.png",
+  "ocr_text": "PRAWN CRACKERS",
+  "ocr_confidence": 0.9628215432167053,
+  "original_ocr_coordinates": [
+    [
+      118.0,
+      246.0
+    ],
+    [
+      306.0,
+      243.0
+    ],
+    [
+      306.0,
+      269.0
+    ],
+    [
+      118.0,
+      273.0
+    ]
+  ],
+  "candidate_class": "MRP",
+  "matching_rule": "Matched internal regex signature"
+}

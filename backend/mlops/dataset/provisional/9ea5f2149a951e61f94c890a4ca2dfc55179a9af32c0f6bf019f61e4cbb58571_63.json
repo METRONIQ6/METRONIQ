@@ -1,0 +1,25 @@
+{
+  "source_image": "external_data/Object-Detection-and-Text-Recognition-of-Packaged-Foods-main/sample dataset/images/train/2.png",
+  "ocr_text": "MasalaASMAKERxp22.5%Rsticewdr6.4%oder1.9%mc",
+  "ocr_confidence": 0.6959134936332703,
+  "original_ocr_coordinates": [
+    [
+      747.0,
+      820.0
+    ],
+    [
+      1161.0,
+      820.0
+    ],
+    [
+      1161.0,
+      842.0
+    ],
+    [
+      747.0,
+      842.0
+    ]
+  ],
+  "candidate_class": "MRP",
+  "matching_rule": "Matched internal regex signature"
+}

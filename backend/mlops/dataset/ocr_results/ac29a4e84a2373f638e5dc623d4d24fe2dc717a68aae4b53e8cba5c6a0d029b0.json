@@ -1,0 +1,54 @@
+{
+  "image_path": "external_data/openfoodfacts/raw/5449000000996_front.jpg",
+  "sha256": "ac29a4e84a2373f638e5dc623d4d24fe2dc717a68aae4b53e8cba5c6a0d029b0",
+  "ocr_engine": "PaddleOCR",
+  "ocr_version": "2.8.1",
+  "timestamp": "2026-08-30T19:59:51.464858",
+  "full_ocr_text": "ORiJiNAL TAT 9.m",
+  "regions": [
+    {
+      "text": "ORiJiNAL TAT",
+      "confidence": 0.9193269610404968,
+      "bounding_box": [
+        [
+          18.0,
+          32.0
+        ],
+        [
+          131.0,
+          32.0
+        ],
+        [
+          131.0,
+          53.0
+        ],
+        [
+          18.0,
+          53.0
+        ]
+      ]
+    },
+    {
+      "text": "9.m",
+      "confidence": 0.5854671597480774,
+      "bounding_box": [
+        [
+          1.0,
+          146.0
+        ],
+        [
+          150.0,
+          146.0
+        ],
+        [
+          150.0,
+          252.0
+        ],
+        [
+          1.0,
+          252.0
+        ]
+      ]
+    }
+  ]
+}

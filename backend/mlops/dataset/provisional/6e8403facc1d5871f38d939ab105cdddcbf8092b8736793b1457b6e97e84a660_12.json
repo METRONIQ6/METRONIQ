@@ -1,0 +1,25 @@
+{
+  "source_image": "external_data/Object-Detection-and-Text-Recognition-of-Packaged-Foods-main/sample dataset/images/train/24.png",
+  "ocr_text": "diversified balanced diet. Consume along with fruits &m",
+  "ocr_confidence": 0.9512936472892761,
+  "original_ocr_coordinates": [
+    [
+      753.0,
+      431.0
+    ],
+    [
+      1144.0,
+      431.0
+    ],
+    [
+      1144.0,
+      451.0
+    ],
+    [
+      753.0,
+      451.0
+    ]
+  ],
+  "candidate_class": "MRP",
+  "matching_rule": "Matched internal regex signature"
+}

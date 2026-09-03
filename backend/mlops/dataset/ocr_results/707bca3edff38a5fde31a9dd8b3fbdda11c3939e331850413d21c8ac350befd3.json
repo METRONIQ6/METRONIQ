@@ -1,0 +1,1374 @@
+{
+  "image_path": "external_data/Object-Detection-and-Text-Recognition-of-Packaged-Foods-main/sample dataset/images/train/11.png",
+  "sha256": "707bca3edff38a5fde31a9dd8b3fbdda11c3939e331850413d21c8ac350befd3",
+  "ocr_engine": "PaddleOCR",
+  "ocr_version": "2.8.1",
+  "timestamp": "2026-08-30T20:00:02.999384",
+  "full_ocr_text": "THE CONSUMER SERVICES MANAGER For feedback or gueries,write to au PEPSICO INDIA HOLDINGS PVT.LTD. GURUGRAM-122002,HARYANA P.O.BOX 27.DLF QUTAB ENCLAVE,PHASE-1 URAVOUR OR CALLUS AT 1800224020 takable OR EMAIL USAT rour of Lay's,cooke CONSUMER.FEEDBACK@PEPSICO.COM &DELICIOUSLYseasone tePERFECTION. ing unt address,see first two charac rs  Mfd.By.PEPSICO INDIA HOLDINGS PVT.LTD. .0012063000110 N1Vage Channo Patala-Sangr Ro N2:C-5.MDCPanjangon Taluka Shinut. Pune N3no.24endua PanchayMoua Joladhgo P.S.SanklDsttHowrhPin711302,Wst Bn Lc.No.10012031000120 Marketed By:PEPSICO INDIA HOLDINGS PVT.LD. Rod Jssal Gurugram122101.Harana.inda Li No.10054094000436 NUTRITIONAL INFORMATION(APPROX. Energy Per-100g ONLYTO Prcten .koal 560 QUALITYPOTATOES 10 SECOMELAY'S Total Carbohydrae of which Sugars 23 54 Total Fat Saturatod Fat 13 Irars Fat 510 'MRP INCL.OF ALL TAXES Guldeline Daily Amount (200 Lays is he Registered Trade Mark of PepsiCo,inc O kcal diet) N.QTY: INGREDIENTS:Potato. Edible Vegetabl POTATO CHIP Pein Oil, Rice Bran Cil), lodised.Salt. (%) \"PROPRIETARYFOOD\" B.NO MFD: BEST BE FOUR MONTHS FROM MANUFACTURE f",
+  "regions": [
+    {
+      "text": "THE CONSUMER SERVICES MANAGER",
+      "confidence": 0.9525476098060608,
+      "bounding_box": [
+        [
+          270.0,
+          41.0
+        ],
+        [
+          423.0,
+          42.0
+        ],
+        [
+          423.0,
+          55.0
+        ],
+        [
+          269.0,
+          54.0
+        ]
+      ]
+    },
+    {
+      "text": "For feedback or gueries,write to",
+      "confidence": 0.8864967823028564,
+      "bounding_box": [
+        [
+          271.0,
+          35.0
+        ],
+        [
+          353.0,
+          35.0
+        ],
+        [
+          353.0,
+          42.0
+        ],
+        [
+          271.0,
+          42.0
+        ]
+      ]
+    },
+    {
+      "text": "au",
+      "confidence": 0.6618256568908691,
+      "bounding_box": [
+        [
+          70.0,
+          49.0
+        ],
+        [
+          96.0,
+          49.0
+        ],
+        [
+          96.0,
+          61.0
+        ],
+        [
+          70.0,
+          61.0
+        ]
+      ]
+    },
+    {
+      "text": "PEPSICO INDIA HOLDINGS PVT.LTD.",
+      "confidence": 0.9356517195701599,
+      "bounding_box": [
+        [
+          271.0,
+          52.0
+        ],
+        [
+          427.0,
+          52.0
+        ],
+        [
+          427.0,
+          64.0
+        ],
+        [
+          271.0,
+          64.0
+        ]
+      ]
+    },
+    {
+      "text": "GURUGRAM-122002,HARYANA",
+      "confidence": 0.9286551475524902,
+      "bounding_box": [
+        [
+          270.0,
+          72.0
+        ],
+        [
+          386.0,
+          73.0
+        ],
+        [
+          386.0,
+          87.0
+        ],
+        [
+          269.0,
+          86.0
+        ]
+      ]
+    },
+    {
+      "text": "P.O.BOX 27.DLF QUTAB ENCLAVE,PHASE-1",
+      "confidence": 0.87501060962677,
+      "bounding_box": [
+        [
+          271.0,
+          63.0
+        ],
+        [
+          428.0,
+          63.0
+        ],
+        [
+          428.0,
+          76.0
+        ],
+        [
+          271.0,
+          76.0
+        ]
+      ]
+    },
+    {
+      "text": "URAVOUR",
+      "confidence": 0.9912275671958923,
+      "bounding_box": [
+        [
+          99.0,
+          77.0
+        ],
+        [
+          167.0,
+          68.0
+        ],
+        [
+          170.0,
+          85.0
+        ],
+        [
+          101.0,
+          94.0
+        ]
+      ]
+    },
+    {
+      "text": "OR CALLUS AT 1800224020",
+      "confidence": 0.9452703595161438,
+      "bounding_box": [
+        [
+          271.0,
+          85.0
+        ],
+        [
+          384.0,
+          85.0
+        ],
+        [
+          384.0,
+          98.0
+        ],
+        [
+          271.0,
+          98.0
+        ]
+      ]
+    },
+    {
+      "text": "takable",
+      "confidence": 0.9245724678039551,
+      "bounding_box": [
+        [
+          146.0,
+          104.0
+        ],
+        [
+          170.0,
+          104.0
+        ],
+        [
+          170.0,
+          110.0
+        ],
+        [
+          146.0,
+          110.0
+        ]
+      ]
+    },
+    {
+      "text": "OR EMAIL USAT",
+      "confidence": 0.93406742811203,
+      "bounding_box": [
+        [
+          271.0,
+          97.0
+        ],
+        [
+          336.0,
+          97.0
+        ],
+        [
+          336.0,
+          107.0
+        ],
+        [
+          271.0,
+          107.0
+        ]
+      ]
+    },
+    {
+      "text": "rour of Lay's,cooke",
+      "confidence": 0.8877667784690857,
+      "bounding_box": [
+        [
+          117.0,
+          111.0
+        ],
+        [
+          179.0,
+          111.0
+        ],
+        [
+          179.0,
+          118.0
+        ],
+        [
+          117.0,
+          118.0
+        ]
+      ]
+    },
+    {
+      "text": "CONSUMER.FEEDBACK@PEPSICO.COM",
+      "confidence": 0.9640190601348877,
+      "bounding_box": [
+        [
+          271.0,
+          106.0
+        ],
+        [
+          429.0,
+          106.0
+        ],
+        [
+          429.0,
+          119.0
+        ],
+        [
+          271.0,
+          119.0
+        ]
+      ]
+    },
+    {
+      "text": "&DELICIOUSLYseasone",
+      "confidence": 0.911004900932312,
+      "bounding_box": [
+        [
+          103.0,
+          119.0
+        ],
+        [
+          182.0,
+          119.0
+        ],
+        [
+          182.0,
+          126.0
+        ],
+        [
+          103.0,
+          126.0
+        ]
+      ]
+    },
+    {
+      "text": "tePERFECTION.",
+      "confidence": 0.9104241728782654,
+      "bounding_box": [
+        [
+          116.0,
+          125.0
+        ],
+        [
+          170.0,
+          125.0
+        ],
+        [
+          170.0,
+          135.0
+        ],
+        [
+          116.0,
+          135.0
+        ]
+      ]
+    },
+    {
+      "text": "ing unt address,see first two charac rs ",
+      "confidence": 0.7702677845954895,
+      "bounding_box": [
+        [
+          312.0,
+          120.0
+        ],
+        [
+          429.0,
+          120.0
+        ],
+        [
+          429.0,
+          127.0
+        ],
+        [
+          312.0,
+          127.0
+        ]
+      ]
+    },
+    {
+      "text": "Mfd.By.PEPSICO INDIA HOLDINGS PVT.LTD.",
+      "confidence": 0.8816390633583069,
+      "bounding_box": [
+        [
+          271.0,
+          133.0
+        ],
+        [
+          412.0,
+          133.0
+        ],
+        [
+          412.0,
+          143.0
+        ],
+        [
+          271.0,
+          143.0
+        ]
+      ]
+    },
+    {
+      "text": ".0012063000110",
+      "confidence": 0.7480589151382446,
+      "bounding_box": [
+        [
+          269.0,
+          150.0
+        ],
+        [
+          348.0,
+          150.0
+        ],
+        [
+          348.0,
+          163.0
+        ],
+        [
+          269.0,
+          163.0
+        ]
+      ]
+    },
+    {
+      "text": "N1Vage Channo Patala-Sangr Ro",
+      "confidence": 0.7776026725769043,
+      "bounding_box": [
+        [
+          271.0,
+          141.0
+        ],
+        [
+          389.0,
+          141.0
+        ],
+        [
+          389.0,
+          150.0
+        ],
+        [
+          271.0,
+          150.0
+        ]
+      ]
+    },
+    {
+      "text": "N2:C-5.MDCPanjangon",
+      "confidence": 0.7952896952629089,
+      "bounding_box": [
+        [
+          271.0,
+          160.0
+        ],
+        [
+          350.0,
+          160.0
+        ],
+        [
+          350.0,
+          170.0
+        ],
+        [
+          271.0,
+          170.0
+        ]
+      ]
+    },
+    {
+      "text": "Taluka Shinut. Pune",
+      "confidence": 0.8376755714416504,
+      "bounding_box": [
+        [
+          349.0,
+          162.0
+        ],
+        [
+          404.0,
+          162.0
+        ],
+        [
+          404.0,
+          169.0
+        ],
+        [
+          349.0,
+          169.0
+        ]
+      ]
+    },
+    {
+      "text": "N3no.24endua PanchayMoua Joladhgo",
+      "confidence": 0.7023552656173706,
+      "bounding_box": [
+        [
+          270.0,
+          174.0
+        ],
+        [
+          433.0,
+          175.0
+        ],
+        [
+          433.0,
+          186.0
+        ],
+        [
+          270.0,
+          185.0
+        ]
+      ]
+    },
+    {
+      "text": "P.S.SanklDsttHowrhPin711302,Wst Bn",
+      "confidence": 0.7882890105247498,
+      "bounding_box": [
+        [
+          271.0,
+          188.0
+        ],
+        [
+          424.0,
+          188.0
+        ],
+        [
+          424.0,
+          197.0
+        ],
+        [
+          271.0,
+          197.0
+        ]
+      ]
+    },
+    {
+      "text": "Lc.No.10012031000120",
+      "confidence": 0.9216784238815308,
+      "bounding_box": [
+        [
+          271.0,
+          194.0
+        ],
+        [
+          346.0,
+          194.0
+        ],
+        [
+          346.0,
+          204.0
+        ],
+        [
+          271.0,
+          204.0
+        ]
+      ]
+    },
+    {
+      "text": "Marketed By:PEPSICO INDIA HOLDINGS PVT.LD.",
+      "confidence": 0.9088486433029175,
+      "bounding_box": [
+        [
+          271.0,
+          202.0
+        ],
+        [
+          427.0,
+          202.0
+        ],
+        [
+          427.0,
+          212.0
+        ],
+        [
+          271.0,
+          212.0
+        ]
+      ]
+    },
+    {
+      "text": "Rod",
+      "confidence": 0.7881763577461243,
+      "bounding_box": [
+        [
+          350.0,
+          217.0
+        ],
+        [
+          360.0,
+          217.0
+        ],
+        [
+          360.0,
+          224.0
+        ],
+        [
+          350.0,
+          224.0
+        ]
+      ]
+    },
+    {
+      "text": "Jssal",
+      "confidence": 0.859188437461853,
+      "bounding_box": [
+        [
+          412.0,
+          213.0
+        ],
+        [
+          438.0,
+          213.0
+        ],
+        [
+          438.0,
+          224.0
+        ],
+        [
+          412.0,
+          224.0
+        ]
+      ]
+    },
+    {
+      "text": "Gurugram122101.Harana.inda",
+      "confidence": 0.7812433838844299,
+      "bounding_box": [
+        [
+          271.0,
+          223.0
+        ],
+        [
+          368.0,
+          223.0
+        ],
+        [
+          368.0,
+          232.0
+        ],
+        [
+          271.0,
+          232.0
+        ]
+      ]
+    },
+    {
+      "text": "Li No.10054094000436",
+      "confidence": 0.7257570028305054,
+      "bounding_box": [
+        [
+          381.0,
+          223.0
+        ],
+        [
+          438.0,
+          223.0
+        ],
+        [
+          438.0,
+          232.0
+        ],
+        [
+          381.0,
+          232.0
+        ]
+      ]
+    },
+    {
+      "text": "NUTRITIONAL INFORMATION(APPROX.",
+      "confidence": 0.9513229131698608,
+      "bounding_box": [
+        [
+          284.0,
+          233.0
+        ],
+        [
+          424.0,
+          233.0
+        ],
+        [
+          424.0,
+          243.0
+        ],
+        [
+          284.0,
+          243.0
+        ]
+      ]
+    },
+    {
+      "text": "Energy",
+      "confidence": 0.8787453770637512,
+      "bounding_box": [
+        [
+          278.0,
+          251.0
+        ],
+        [
+          303.0,
+          253.0
+        ],
+        [
+          302.0,
+          264.0
+        ],
+        [
+          277.0,
+          261.0
+        ]
+      ]
+    },
+    {
+      "text": "Per-100g",
+      "confidence": 0.8202314972877502,
+      "bounding_box": [
+        [
+          396.0,
+          242.0
+        ],
+        [
+          426.0,
+          242.0
+        ],
+        [
+          426.0,
+          252.0
+        ],
+        [
+          396.0,
+          252.0
+        ]
+      ]
+    },
+    {
+      "text": "ONLYTO",
+      "confidence": 0.9874603748321533,
+      "bounding_box": [
+        [
+          162.0,
+          256.0
+        ],
+        [
+          188.0,
+          256.0
+        ],
+        [
+          188.0,
+          263.0
+        ],
+        [
+          162.0,
+          263.0
+        ]
+      ]
+    },
+    {
+      "text": "Prcten",
+      "confidence": 0.7854602336883545,
+      "bounding_box": [
+        [
+          276.0,
+          261.0
+        ],
+        [
+          303.0,
+          261.0
+        ],
+        [
+          303.0,
+          271.0
+        ],
+        [
+          276.0,
+          271.0
+        ]
+      ]
+    },
+    {
+      "text": ".koal",
+      "confidence": 0.6759090423583984,
+      "bounding_box": [
+        [
+          358.0,
+          253.0
+        ],
+        [
+          374.0,
+          253.0
+        ],
+        [
+          374.0,
+          260.0
+        ],
+        [
+          358.0,
+          260.0
+        ]
+      ]
+    },
+    {
+      "text": "560",
+      "confidence": 0.9320538640022278,
+      "bounding_box": [
+        [
+          403.0,
+          252.0
+        ],
+        [
+          418.0,
+          252.0
+        ],
+        [
+          418.0,
+          262.0
+        ],
+        [
+          403.0,
+          262.0
+        ]
+      ]
+    },
+    {
+      "text": "QUALITYPOTATOES",
+      "confidence": 0.9824388027191162,
+      "bounding_box": [
+        [
+          146.0,
+          264.0
+        ],
+        [
+          204.0,
+          264.0
+        ],
+        [
+          204.0,
+          271.0
+        ],
+        [
+          146.0,
+          271.0
+        ]
+      ]
+    },
+    {
+      "text": "10",
+      "confidence": 0.7100619077682495,
+      "bounding_box": [
+        [
+          407.0,
+          258.0
+        ],
+        [
+          417.0,
+          263.0
+        ],
+        [
+          412.0,
+          272.0
+        ],
+        [
+          402.0,
+          268.0
+        ]
+      ]
+    },
+    {
+      "text": "SECOMELAY'S",
+      "confidence": 0.9346405267715454,
+      "bounding_box": [
+        [
+          154.0,
+          271.0
+        ],
+        [
+          197.0,
+          271.0
+        ],
+        [
+          197.0,
+          277.0
+        ],
+        [
+          154.0,
+          277.0
+        ]
+      ]
+    },
+    {
+      "text": "Total Carbohydrae",
+      "confidence": 0.7909839749336243,
+      "bounding_box": [
+        [
+          276.0,
+          270.0
+        ],
+        [
+          335.0,
+          270.0
+        ],
+        [
+          335.0,
+          279.0
+        ],
+        [
+          276.0,
+          279.0
+        ]
+      ]
+    },
+    {
+      "text": "of which Sugars",
+      "confidence": 0.8873927593231201,
+      "bounding_box": [
+        [
+          286.0,
+          278.0
+        ],
+        [
+          336.0,
+          278.0
+        ],
+        [
+          336.0,
+          288.0
+        ],
+        [
+          286.0,
+          288.0
+        ]
+      ]
+    },
+    {
+      "text": "23",
+      "confidence": 0.5050005912780762,
+      "bounding_box": [
+        [
+          402.0,
+          275.0
+        ],
+        [
+          414.0,
+          275.0
+        ],
+        [
+          414.0,
+          299.0
+        ],
+        [
+          402.0,
+          299.0
+        ]
+      ]
+    },
+    {
+      "text": "54",
+      "confidence": 0.6570816040039062,
+      "bounding_box": [
+        [
+          403.0,
+          269.0
+        ],
+        [
+          414.0,
+          269.0
+        ],
+        [
+          414.0,
+          278.0
+        ],
+        [
+          403.0,
+          278.0
+        ]
+      ]
+    },
+    {
+      "text": "Total Fat",
+      "confidence": 0.8296995162963867,
+      "bounding_box": [
+        [
+          276.0,
+          289.0
+        ],
+        [
+          306.0,
+          289.0
+        ],
+        [
+          306.0,
+          296.0
+        ],
+        [
+          276.0,
+          296.0
+        ]
+      ]
+    },
+    {
+      "text": "Saturatod Fat",
+      "confidence": 0.9698509573936462,
+      "bounding_box": [
+        [
+          286.0,
+          297.0
+        ],
+        [
+          328.0,
+          297.0
+        ],
+        [
+          328.0,
+          307.0
+        ],
+        [
+          286.0,
+          307.0
+        ]
+      ]
+    },
+    {
+      "text": "13",
+      "confidence": 0.9459896087646484,
+      "bounding_box": [
+        [
+          403.0,
+          296.0
+        ],
+        [
+          413.0,
+          296.0
+        ],
+        [
+          413.0,
+          305.0
+        ],
+        [
+          403.0,
+          305.0
+        ]
+      ]
+    },
+    {
+      "text": "Irars Fat",
+      "confidence": 0.7113444209098816,
+      "bounding_box": [
+        [
+          288.0,
+          307.0
+        ],
+        [
+          315.0,
+          307.0
+        ],
+        [
+          315.0,
+          313.0
+        ],
+        [
+          288.0,
+          313.0
+        ]
+      ]
+    },
+    {
+      "text": "510",
+      "confidence": 0.8141449093818665,
+      "bounding_box": [
+        [
+          404.0,
+          313.0
+        ],
+        [
+          416.0,
+          313.0
+        ],
+        [
+          416.0,
+          321.0
+        ],
+        [
+          404.0,
+          321.0
+        ]
+      ]
+    },
+    {
+      "text": "'MRP",
+      "confidence": 0.9403406977653503,
+      "bounding_box": [
+        [
+          62.0,
+          324.0
+        ],
+        [
+          86.0,
+          324.0
+        ],
+        [
+          86.0,
+          336.0
+        ],
+        [
+          62.0,
+          336.0
+        ]
+      ]
+    },
+    {
+      "text": "INCL.OF ALL TAXES",
+      "confidence": 0.9160756468772888,
+      "bounding_box": [
+        [
+          121.0,
+          323.0
+        ],
+        [
+          205.0,
+          323.0
+        ],
+        [
+          205.0,
+          336.0
+        ],
+        [
+          121.0,
+          336.0
+        ]
+      ]
+    },
+    {
+      "text": "Guldeline Daily Amount (200",
+      "confidence": 0.9388217329978943,
+      "bounding_box": [
+        [
+          272.0,
+          327.0
+        ],
+        [
+          360.0,
+          327.0
+        ],
+        [
+          360.0,
+          334.0
+        ],
+        [
+          272.0,
+          334.0
+        ]
+      ]
+    },
+    {
+      "text": "Lays is he Registered Trade Mark of PepsiCo,inc",
+      "confidence": 0.8563498854637146,
+      "bounding_box": [
+        [
+          272.0,
+          332.0
+        ],
+        [
+          425.0,
+          333.0
+        ],
+        [
+          425.0,
+          343.0
+        ],
+        [
+          271.0,
+          342.0
+        ]
+      ]
+    },
+    {
+      "text": "O kcal diet)",
+      "confidence": 0.8614875674247742,
+      "bounding_box": [
+        [
+          362.0,
+          327.0
+        ],
+        [
+          395.0,
+          327.0
+        ],
+        [
+          395.0,
+          334.0
+        ],
+        [
+          362.0,
+          334.0
+        ]
+      ]
+    },
+    {
+      "text": "N.QTY:",
+      "confidence": 0.9058414101600647,
+      "bounding_box": [
+        [
+          67.0,
+          348.0
+        ],
+        [
+          103.0,
+          348.0
+        ],
+        [
+          103.0,
+          361.0
+        ],
+        [
+          67.0,
+          361.0
+        ]
+      ]
+    },
+    {
+      "text": "INGREDIENTS:Potato. Edible Vegetabl",
+      "confidence": 0.9111009836196899,
+      "bounding_box": [
+        [
+          271.0,
+          342.0
+        ],
+        [
+          396.0,
+          342.0
+        ],
+        [
+          396.0,
+          349.0
+        ],
+        [
+          271.0,
+          349.0
+        ]
+      ]
+    },
+    {
+      "text": "POTATO CHIP",
+      "confidence": 0.9032030701637268,
+      "bounding_box": [
+        [
+          269.0,
+          355.0
+        ],
+        [
+          318.0,
+          353.0
+        ],
+        [
+          318.0,
+          364.0
+        ],
+        [
+          270.0,
+          365.0
+        ]
+      ]
+    },
+    {
+      "text": "Pein Oil, Rice Bran Cil), lodised.Salt. (%)",
+      "confidence": 0.8513030409812927,
+      "bounding_box": [
+        [
+          291.0,
+          350.0
+        ],
+        [
+          415.0,
+          350.0
+        ],
+        [
+          415.0,
+          356.0
+        ],
+        [
+          291.0,
+          356.0
+        ]
+      ]
+    },
+    {
+      "text": "\"PROPRIETARYFOOD\"",
+      "confidence": 0.9293997883796692,
+      "bounding_box": [
+        [
+          271.0,
+          362.0
+        ],
+        [
+          344.0,
+          362.0
+        ],
+        [
+          344.0,
+          372.0
+        ],
+        [
+          271.0,
+          372.0
+        ]
+      ]
+    },
+    {
+      "text": "B.NO",
+      "confidence": 0.9912301898002625,
+      "bounding_box": [
+        [
+          67.0,
+          374.0
+        ],
+        [
+          99.0,
+          374.0
+        ],
+        [
+          99.0,
+          388.0
+        ],
+        [
+          67.0,
+          388.0
+        ]
+      ]
+    },
+    {
+      "text": "MFD:",
+      "confidence": 0.9148066639900208,
+      "bounding_box": [
+        [
+          68.0,
+          402.0
+        ],
+        [
+          93.0,
+          402.0
+        ],
+        [
+          93.0,
+          413.0
+        ],
+        [
+          68.0,
+          413.0
+        ]
+      ]
+    },
+    {
+      "text": "BEST BE",
+      "confidence": 0.9311906695365906,
+      "bounding_box": [
+        [
+          64.0,
+          427.0
+        ],
+        [
+          92.0,
+          427.0
+        ],
+        [
+          92.0,
+          437.0
+        ],
+        [
+          64.0,
+          437.0
+        ]
+      ]
+    },
+    {
+      "text": "FOUR MONTHS FROM MANUFACTURE",
+      "confidence": 0.9260960817337036,
+      "bounding_box": [
+        [
+          106.0,
+          426.0
+        ],
+        [
+          223.0,
+          424.0
+        ],
+        [
+          224.0,
+          436.0
+        ],
+        [
+          107.0,
+          439.0
+        ]
+      ]
+    },
+    {
+      "text": "f",
+      "confidence": 0.8340258002281189,
+      "bounding_box": [
+        [
+          319.0,
+          428.0
+        ],
+        [
+          346.0,
+          428.0
+        ],
+        [
+          346.0,
+          438.0
+        ],
+        [
+          319.0,
+          438.0
+        ]
+      ]
+    }
+  ]
+}

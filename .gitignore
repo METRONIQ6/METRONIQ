@@ -1,0 +1,57 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+backend/venv/
+venv/
+.env
+.env.*
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Node / Next.js
+node_modules/
+.next/
+out/
+frontend/.next/
+frontend/node_modules/
+
+# Build
+dist/
+build/
+
+# Logs
+*.log
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Test/generated files
+test_*.jpg
+test_*.png
+upload_result.txt
+
+# Python temporary/helper scripts
+fix*.py
+patch*.py
+inject*.py
+auto_gen*.py
+modernize_ui.py
+remove_placeholders.py
+make_test_images.py
+debug_rectify.py
+
+# Large AI model files
+*.pt
+*.onnx
+*.onnxruntime
+# Ignore large datasets and temp uploads
+external_data/
+backend/app/temp_uploads/

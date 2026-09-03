@@ -1,0 +1,25 @@
+{
+  "source_image": "external_data/Object-Detection-and-Text-Recognition-of-Packaged-Foods-main/sample dataset/images/train/28.png",
+  "ocr_text": "Manufactured by:Venky's (India) Limited (Foods Division",
+  "ocr_confidence": 0.9374027848243713,
+  "original_ocr_coordinates": [
+    [
+      347.0,
+      775.0
+    ],
+    [
+      728.0,
+      775.0
+    ],
+    [
+      728.0,
+      795.0
+    ],
+    [
+      347.0,
+      795.0
+    ]
+  ],
+  "candidate_class": "MANUFACTURER",
+  "matching_rule": "Matched internal regex signature"
+}

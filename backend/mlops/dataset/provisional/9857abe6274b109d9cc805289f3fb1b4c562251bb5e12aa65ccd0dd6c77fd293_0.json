@@ -1,0 +1,25 @@
+{
+  "source_image": "external_data/Object-Detection-and-Text-Recognition-of-Packaged-Foods-main/sample dataset/images/val/24.png",
+  "ocr_text": "#FoodLabelsForSafety Jssa",
+  "ocr_confidence": 0.9534655809402466,
+  "original_ocr_coordinates": [
+    [
+      10.0,
+      4.0
+    ],
+    [
+      218.0,
+      6.0
+    ],
+    [
+      218.0,
+      23.0
+    ],
+    [
+      10.0,
+      21.0
+    ]
+  ],
+  "candidate_class": "MRP",
+  "matching_rule": "Matched internal regex signature"
+}

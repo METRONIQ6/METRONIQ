@@ -1,0 +1,25 @@
+{
+  "source_image": "external_data/Object-Detection-and-Text-Recognition-of-Packaged-Foods-main/sample dataset/images/train/28.png",
+  "ocr_text": "PowderGarlic PowderRed ChilliPowderGinger PowderSugar",
+  "ocr_confidence": 0.9259032011032104,
+  "original_ocr_coordinates": [
+    [
+      419.0,
+      415.0
+    ],
+    [
+      881.0,
+      408.0
+    ],
+    [
+      881.0,
+      430.0
+    ],
+    [
+      419.0,
+      437.0
+    ]
+  ],
+  "candidate_class": "MRP",
+  "matching_rule": "Matched internal regex signature"
+}

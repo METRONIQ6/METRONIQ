@@ -1,0 +1,25 @@
+{
+  "source_image": "external_data/Object-Detection-and-Text-Recognition-of-Packaged-Foods-main/sample dataset/images/val/3.png",
+  "ocr_text": "Emukifier and stabilizers (415.420,445)",
+  "ocr_confidence": 0.8655428886413574,
+  "original_ocr_coordinates": [
+    [
+      45.0,
+      214.0
+    ],
+    [
+      219.0,
+      214.0
+    ],
+    [
+      219.0,
+      227.0
+    ],
+    [
+      45.0,
+      227.0
+    ]
+  ],
+  "candidate_class": "MRP",
+  "matching_rule": "Matched internal regex signature"
+}

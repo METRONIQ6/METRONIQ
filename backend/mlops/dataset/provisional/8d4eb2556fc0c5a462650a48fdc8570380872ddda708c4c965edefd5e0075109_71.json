@@ -1,0 +1,25 @@
+{
+  "source_image": "external_data/Object-Detection-and-Text-Recognition-of-Packaged-Foods-main/sample dataset/images/train/13.png",
+  "ocr_text": "partnership with farmers,",
+  "ocr_confidence": 0.9683747887611389,
+  "original_ocr_coordinates": [
+    [
+      934.0,
+      995.0
+    ],
+    [
+      1148.0,
+      995.0
+    ],
+    [
+      1148.0,
+      1016.0
+    ],
+    [
+      934.0,
+      1016.0
+    ]
+  ],
+  "candidate_class": "MRP",
+  "matching_rule": "Matched internal regex signature"
+}

@@ -1,0 +1,1132 @@
+{
+  "image_path": "external_data/Object-Detection-and-Text-Recognition-of-Packaged-Foods-main/sample dataset/images/val/3.png",
+  "sha256": "704ab4c28504c3fd31bb2cfde58b6072bf7041ddee69aab8eba6ad0f683ea65a",
+  "ocr_engine": "PaddleOCR",
+  "ocr_version": "2.8.1",
+  "timestamp": "2026-08-30T20:01:48.914165",
+  "full_ocr_text": "Foodpecker Net weight: 35g Rs.18/- What's special? Packed On: We use lots of Real Dark Chocolate Chunks Best Before: and Rich Cocoa in making each cake.Enjoy the taste of goodness in every bite Batch Code: Ingredients: SugarWheat flourDark chocolate cocoa Storage Instructions: solids.sugarmilk solid.Milk solidsRefined Store in a cool, dry and hygienic place vegetable oil,Coffee powderAcidulant 260 Direction For Use: Raising agents540,541(1)lodised Salt Eat right out of the pack. Emukifier and stabilizers (415.420,445) Also try with ice-cream or crumble into a CONTAINSCLASS IPRESERVATIVES(282 glass of chocolate milk or cold coffee 200)CONTAINSADDED SYNTHETIC FLAVOURING SUBSTANCE (VANILLA), Nutritional Facts: Manufactured By: 1 serving per pack. Hungry Bird Serving size =35g 2104SunriseNeptune Living Point Total Energy 127 kcal LBSMarg.Bhandup WestMumbai 400078 Total Fat 3.3g Query/Feedback: Saturated Fat1.9g +91-8879859292 Monounsaturated Fat0.5g info@thehungrybird.co Polyunsaturated Fat 0.9g Trans Fat 0g Cholesterol 5mg Sodium 169mg Total Carbohydrate 22g Incl.added Sugar 13g Protein-3g Issa Jols a Real Dath Chocalate Chun Trans Fat Free. c.No.215160630000",
+  "regions": [
+    {
+      "text": "Foodpecker",
+      "confidence": 0.9563852548599243,
+      "bounding_box": [
+        [
+          60.0,
+          57.0
+        ],
+        [
+          215.0,
+          55.0
+        ],
+        [
+          215.0,
+          82.0
+        ],
+        [
+          61.0,
+          84.0
+        ]
+      ]
+    },
+    {
+      "text": "Net weight:",
+      "confidence": 0.9695417284965515,
+      "bounding_box": [
+        [
+          288.0,
+          53.0
+        ],
+        [
+          364.0,
+          55.0
+        ],
+        [
+          364.0,
+          69.0
+        ],
+        [
+          288.0,
+          67.0
+        ]
+      ]
+    },
+    {
+      "text": "35g",
+      "confidence": 0.9992069602012634,
+      "bounding_box": [
+        [
+          374.0,
+          52.0
+        ],
+        [
+          403.0,
+          55.0
+        ],
+        [
+          401.0,
+          71.0
+        ],
+        [
+          373.0,
+          68.0
+        ]
+      ]
+    },
+    {
+      "text": "Rs.18/-",
+      "confidence": 0.9676415324211121,
+      "bounding_box": [
+        [
+          376.0,
+          71.0
+        ],
+        [
+          422.0,
+          71.0
+        ],
+        [
+          422.0,
+          86.0
+        ],
+        [
+          376.0,
+          86.0
+        ]
+      ]
+    },
+    {
+      "text": "What's special?",
+      "confidence": 0.993364155292511,
+      "bounding_box": [
+        [
+          45.0,
+          98.0
+        ],
+        [
+          129.0,
+          98.0
+        ],
+        [
+          129.0,
+          111.0
+        ],
+        [
+          45.0,
+          111.0
+        ]
+      ]
+    },
+    {
+      "text": "Packed On:",
+      "confidence": 0.9347732663154602,
+      "bounding_box": [
+        [
+          288.0,
+          90.0
+        ],
+        [
+          363.0,
+          90.0
+        ],
+        [
+          363.0,
+          106.0
+        ],
+        [
+          288.0,
+          106.0
+        ]
+      ]
+    },
+    {
+      "text": "We use lots of Real Dark Chocolate Chunks",
+      "confidence": 0.9366173148155212,
+      "bounding_box": [
+        [
+          44.0,
+          111.0
+        ],
+        [
+          231.0,
+          111.0
+        ],
+        [
+          231.0,
+          124.0
+        ],
+        [
+          44.0,
+          124.0
+        ]
+      ]
+    },
+    {
+      "text": "Best Before:",
+      "confidence": 0.9629232287406921,
+      "bounding_box": [
+        [
+          289.0,
+          112.0
+        ],
+        [
+          365.0,
+          112.0
+        ],
+        [
+          365.0,
+          126.0
+        ],
+        [
+          289.0,
+          126.0
+        ]
+      ]
+    },
+    {
+      "text": "and Rich Cocoa in making each cake.Enjoy",
+      "confidence": 0.9517897367477417,
+      "bounding_box": [
+        [
+          43.0,
+          123.0
+        ],
+        [
+          232.0,
+          124.0
+        ],
+        [
+          232.0,
+          138.0
+        ],
+        [
+          43.0,
+          137.0
+        ]
+      ]
+    },
+    {
+      "text": "the taste of goodness in every bite",
+      "confidence": 0.9600039720535278,
+      "bounding_box": [
+        [
+          44.0,
+          137.0
+        ],
+        [
+          192.0,
+          136.0
+        ],
+        [
+          192.0,
+          149.0
+        ],
+        [
+          44.0,
+          150.0
+        ]
+      ]
+    },
+    {
+      "text": "Batch Code:",
+      "confidence": 0.9117894768714905,
+      "bounding_box": [
+        [
+          287.0,
+          129.0
+        ],
+        [
+          368.0,
+          131.0
+        ],
+        [
+          368.0,
+          148.0
+        ],
+        [
+          287.0,
+          145.0
+        ]
+      ]
+    },
+    {
+      "text": "Ingredients:",
+      "confidence": 0.9564170837402344,
+      "bounding_box": [
+        [
+          46.0,
+          151.0
+        ],
+        [
+          111.0,
+          151.0
+        ],
+        [
+          111.0,
+          162.0
+        ],
+        [
+          46.0,
+          162.0
+        ]
+      ]
+    },
+    {
+      "text": "SugarWheat flourDark chocolate cocoa",
+      "confidence": 0.9453480243682861,
+      "bounding_box": [
+        [
+          44.0,
+          163.0
+        ],
+        [
+          229.0,
+          163.0
+        ],
+        [
+          229.0,
+          176.0
+        ],
+        [
+          44.0,
+          176.0
+        ]
+      ]
+    },
+    {
+      "text": "Storage Instructions:",
+      "confidence": 0.9803528785705566,
+      "bounding_box": [
+        [
+          289.0,
+          158.0
+        ],
+        [
+          398.0,
+          158.0
+        ],
+        [
+          398.0,
+          172.0
+        ],
+        [
+          289.0,
+          172.0
+        ]
+      ]
+    },
+    {
+      "text": "solids.sugarmilk solid.Milk solidsRefined",
+      "confidence": 0.8786538243293762,
+      "bounding_box": [
+        [
+          45.0,
+          176.0
+        ],
+        [
+          231.0,
+          176.0
+        ],
+        [
+          231.0,
+          188.0
+        ],
+        [
+          45.0,
+          188.0
+        ]
+      ]
+    },
+    {
+      "text": "Store in a cool, dry and hygienic place",
+      "confidence": 0.9389195442199707,
+      "bounding_box": [
+        [
+          289.0,
+          173.0
+        ],
+        [
+          446.0,
+          173.0
+        ],
+        [
+          446.0,
+          186.0
+        ],
+        [
+          289.0,
+          186.0
+        ]
+      ]
+    },
+    {
+      "text": "vegetable oil,Coffee powderAcidulant 260",
+      "confidence": 0.9215599298477173,
+      "bounding_box": [
+        [
+          45.0,
+          188.0
+        ],
+        [
+          242.0,
+          188.0
+        ],
+        [
+          242.0,
+          201.0
+        ],
+        [
+          45.0,
+          201.0
+        ]
+      ]
+    },
+    {
+      "text": "Direction For Use:",
+      "confidence": 0.9292066097259521,
+      "bounding_box": [
+        [
+          291.0,
+          188.0
+        ],
+        [
+          387.0,
+          188.0
+        ],
+        [
+          387.0,
+          202.0
+        ],
+        [
+          291.0,
+          202.0
+        ]
+      ]
+    },
+    {
+      "text": "Raising agents540,541(1)lodised Salt",
+      "confidence": 0.8782957196235657,
+      "bounding_box": [
+        [
+          45.0,
+          201.0
+        ],
+        [
+          220.0,
+          201.0
+        ],
+        [
+          220.0,
+          214.0
+        ],
+        [
+          45.0,
+          214.0
+        ]
+      ]
+    },
+    {
+      "text": "Eat right out of the pack.",
+      "confidence": 0.9415721893310547,
+      "bounding_box": [
+        [
+          290.0,
+          202.0
+        ],
+        [
+          392.0,
+          202.0
+        ],
+        [
+          392.0,
+          215.0
+        ],
+        [
+          290.0,
+          215.0
+        ]
+      ]
+    },
+    {
+      "text": "Emukifier and stabilizers (415.420,445)",
+      "confidence": 0.8655428886413574,
+      "bounding_box": [
+        [
+          45.0,
+          214.0
+        ],
+        [
+          219.0,
+          214.0
+        ],
+        [
+          219.0,
+          227.0
+        ],
+        [
+          45.0,
+          227.0
+        ]
+      ]
+    },
+    {
+      "text": "Also try with ice-cream or crumble into a",
+      "confidence": 0.9357101917266846,
+      "bounding_box": [
+        [
+          290.0,
+          216.0
+        ],
+        [
+          454.0,
+          216.0
+        ],
+        [
+          454.0,
+          229.0
+        ],
+        [
+          290.0,
+          229.0
+        ]
+      ]
+    },
+    {
+      "text": "CONTAINSCLASS IPRESERVATIVES(282",
+      "confidence": 0.957382321357727,
+      "bounding_box": [
+        [
+          46.0,
+          228.0
+        ],
+        [
+          233.0,
+          228.0
+        ],
+        [
+          233.0,
+          237.0
+        ],
+        [
+          46.0,
+          237.0
+        ]
+      ]
+    },
+    {
+      "text": "glass of chocolate milk or cold coffee",
+      "confidence": 0.9612614512443542,
+      "bounding_box": [
+        [
+          289.0,
+          229.0
+        ],
+        [
+          444.0,
+          229.0
+        ],
+        [
+          444.0,
+          241.0
+        ],
+        [
+          289.0,
+          241.0
+        ]
+      ]
+    },
+    {
+      "text": "200)CONTAINSADDED SYNTHETIC",
+      "confidence": 0.9408274292945862,
+      "bounding_box": [
+        [
+          46.0,
+          240.0
+        ],
+        [
+          216.0,
+          240.0
+        ],
+        [
+          216.0,
+          250.0
+        ],
+        [
+          46.0,
+          250.0
+        ]
+      ]
+    },
+    {
+      "text": "FLAVOURING SUBSTANCE (VANILLA),",
+      "confidence": 0.9404247403144836,
+      "bounding_box": [
+        [
+          46.0,
+          253.0
+        ],
+        [
+          220.0,
+          253.0
+        ],
+        [
+          220.0,
+          263.0
+        ],
+        [
+          46.0,
+          263.0
+        ]
+      ]
+    },
+    {
+      "text": "Nutritional Facts:",
+      "confidence": 0.9664519429206848,
+      "bounding_box": [
+        [
+          291.0,
+          245.0
+        ],
+        [
+          385.0,
+          245.0
+        ],
+        [
+          385.0,
+          259.0
+        ],
+        [
+          291.0,
+          259.0
+        ]
+      ]
+    },
+    {
+      "text": "Manufactured By:",
+      "confidence": 0.9653729200363159,
+      "bounding_box": [
+        [
+          45.0,
+          265.0
+        ],
+        [
+          146.0,
+          265.0
+        ],
+        [
+          146.0,
+          277.0
+        ],
+        [
+          45.0,
+          277.0
+        ]
+      ]
+    },
+    {
+      "text": "1 serving per pack.",
+      "confidence": 0.9628721475601196,
+      "bounding_box": [
+        [
+          293.0,
+          261.0
+        ],
+        [
+          374.0,
+          261.0
+        ],
+        [
+          374.0,
+          273.0
+        ],
+        [
+          293.0,
+          273.0
+        ]
+      ]
+    },
+    {
+      "text": "Hungry Bird",
+      "confidence": 0.9721763730049133,
+      "bounding_box": [
+        [
+          43.0,
+          278.0
+        ],
+        [
+          100.0,
+          276.0
+        ],
+        [
+          101.0,
+          290.0
+        ],
+        [
+          43.0,
+          292.0
+        ]
+      ]
+    },
+    {
+      "text": "Serving size =35g",
+      "confidence": 0.9650822877883911,
+      "bounding_box": [
+        [
+          294.0,
+          271.0
+        ],
+        [
+          372.0,
+          271.0
+        ],
+        [
+          372.0,
+          284.0
+        ],
+        [
+          294.0,
+          284.0
+        ]
+      ]
+    },
+    {
+      "text": "2104SunriseNeptune Living Point",
+      "confidence": 0.8597339391708374,
+      "bounding_box": [
+        [
+          44.0,
+          290.0
+        ],
+        [
+          201.0,
+          290.0
+        ],
+        [
+          201.0,
+          303.0
+        ],
+        [
+          44.0,
+          303.0
+        ]
+      ]
+    },
+    {
+      "text": "Total Energy 127 kcal",
+      "confidence": 0.962062656879425,
+      "bounding_box": [
+        [
+          293.0,
+          286.0
+        ],
+        [
+          384.0,
+          286.0
+        ],
+        [
+          384.0,
+          299.0
+        ],
+        [
+          293.0,
+          299.0
+        ]
+      ]
+    },
+    {
+      "text": "LBSMarg.Bhandup WestMumbai 400078",
+      "confidence": 0.924745500087738,
+      "bounding_box": [
+        [
+          45.0,
+          303.0
+        ],
+        [
+          240.0,
+          303.0
+        ],
+        [
+          240.0,
+          316.0
+        ],
+        [
+          45.0,
+          316.0
+        ]
+      ]
+    },
+    {
+      "text": "Total Fat 3.3g",
+      "confidence": 0.9567838311195374,
+      "bounding_box": [
+        [
+          293.0,
+          301.0
+        ],
+        [
+          351.0,
+          301.0
+        ],
+        [
+          351.0,
+          312.0
+        ],
+        [
+          293.0,
+          312.0
+        ]
+      ]
+    },
+    {
+      "text": "Query/Feedback:",
+      "confidence": 0.9883912205696106,
+      "bounding_box": [
+        [
+          45.0,
+          317.0
+        ],
+        [
+          147.0,
+          317.0
+        ],
+        [
+          147.0,
+          331.0
+        ],
+        [
+          45.0,
+          331.0
+        ]
+      ]
+    },
+    {
+      "text": "Saturated Fat1.9g",
+      "confidence": 0.9555194973945618,
+      "bounding_box": [
+        [
+          294.0,
+          314.0
+        ],
+        [
+          369.0,
+          314.0
+        ],
+        [
+          369.0,
+          324.0
+        ],
+        [
+          294.0,
+          324.0
+        ]
+      ]
+    },
+    {
+      "text": "+91-8879859292",
+      "confidence": 0.9948086738586426,
+      "bounding_box": [
+        [
+          44.0,
+          331.0
+        ],
+        [
+          126.0,
+          331.0
+        ],
+        [
+          126.0,
+          344.0
+        ],
+        [
+          44.0,
+          344.0
+        ]
+      ]
+    },
+    {
+      "text": "Monounsaturated Fat0.5g",
+      "confidence": 0.9493629336357117,
+      "bounding_box": [
+        [
+          292.0,
+          325.0
+        ],
+        [
+          398.0,
+          326.0
+        ],
+        [
+          397.0,
+          340.0
+        ],
+        [
+          292.0,
+          339.0
+        ]
+      ]
+    },
+    {
+      "text": "info@thehungrybird.co",
+      "confidence": 0.9818054437637329,
+      "bounding_box": [
+        [
+          43.0,
+          343.0
+        ],
+        [
+          145.0,
+          344.0
+        ],
+        [
+          144.0,
+          357.0
+        ],
+        [
+          43.0,
+          356.0
+        ]
+      ]
+    },
+    {
+      "text": "Polyunsaturated Fat 0.9g",
+      "confidence": 0.9443184733390808,
+      "bounding_box": [
+        [
+          293.0,
+          338.0
+        ],
+        [
+          398.0,
+          340.0
+        ],
+        [
+          397.0,
+          353.0
+        ],
+        [
+          293.0,
+          351.0
+        ]
+      ]
+    },
+    {
+      "text": "Trans Fat 0g",
+      "confidence": 0.9307802319526672,
+      "bounding_box": [
+        [
+          295.0,
+          354.0
+        ],
+        [
+          350.0,
+          354.0
+        ],
+        [
+          350.0,
+          365.0
+        ],
+        [
+          295.0,
+          365.0
+        ]
+      ]
+    },
+    {
+      "text": "Cholesterol 5mg",
+      "confidence": 0.9734353423118591,
+      "bounding_box": [
+        [
+          294.0,
+          368.0
+        ],
+        [
+          362.0,
+          368.0
+        ],
+        [
+          362.0,
+          379.0
+        ],
+        [
+          294.0,
+          379.0
+        ]
+      ]
+    },
+    {
+      "text": "Sodium 169mg",
+      "confidence": 0.9565677046775818,
+      "bounding_box": [
+        [
+          293.0,
+          380.0
+        ],
+        [
+          357.0,
+          382.0
+        ],
+        [
+          356.0,
+          393.0
+        ],
+        [
+          293.0,
+          391.0
+        ]
+      ]
+    },
+    {
+      "text": "Total Carbohydrate 22g",
+      "confidence": 0.9676654934883118,
+      "bounding_box": [
+        [
+          293.0,
+          394.0
+        ],
+        [
+          393.0,
+          394.0
+        ],
+        [
+          393.0,
+          406.0
+        ],
+        [
+          293.0,
+          406.0
+        ]
+      ]
+    },
+    {
+      "text": "Incl.added Sugar 13g",
+      "confidence": 0.9279271364212036,
+      "bounding_box": [
+        [
+          298.0,
+          408.0
+        ],
+        [
+          383.0,
+          408.0
+        ],
+        [
+          383.0,
+          418.0
+        ],
+        [
+          298.0,
+          418.0
+        ]
+      ]
+    },
+    {
+      "text": "Protein-3g",
+      "confidence": 0.9438581466674805,
+      "bounding_box": [
+        [
+          292.0,
+          421.0
+        ],
+        [
+          338.0,
+          421.0
+        ],
+        [
+          338.0,
+          432.0
+        ],
+        [
+          292.0,
+          432.0
+        ]
+      ]
+    },
+    {
+      "text": "Issa",
+      "confidence": 0.9043852090835571,
+      "bounding_box": [
+        [
+          417.0,
+          414.0
+        ],
+        [
+          453.0,
+          414.0
+        ],
+        [
+          453.0,
+          429.0
+        ],
+        [
+          417.0,
+          429.0
+        ]
+      ]
+    },
+    {
+      "text": "Jols a Real Dath Chocalate Chun",
+      "confidence": 0.6969209909439087,
+      "bounding_box": [
+        [
+          41.0,
+          436.0
+        ],
+        [
+          162.0,
+          436.0
+        ],
+        [
+          162.0,
+          445.0
+        ],
+        [
+          41.0,
+          445.0
+        ]
+      ]
+    },
+    {
+      "text": "Trans Fat Free.",
+      "confidence": 0.9534515142440796,
+      "bounding_box": [
+        [
+          297.0,
+          435.0
+        ],
+        [
+          349.0,
+          435.0
+        ],
+        [
+          349.0,
+          445.0
+        ],
+        [
+          297.0,
+          445.0
+        ]
+      ]
+    },
+    {
+      "text": "c.No.215160630000",
+      "confidence": 0.972817599773407,
+      "bounding_box": [
+        [
+          403.0,
+          434.0
+        ],
+        [
+          463.0,
+          434.0
+        ],
+        [
+          463.0,
+          443.0
+        ],
+        [
+          403.0,
+          443.0
+        ]
+      ]
+    }
+  ]
+}

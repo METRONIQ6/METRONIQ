@@ -1,0 +1,25 @@
+{
+  "source_image": "external_data/Object-Detection-and-Text-Recognition-of-Packaged-Foods-main/sample dataset/images/train/18.png",
+  "ocr_text": "NET WEIGHT200g",
+  "ocr_confidence": 0.9570342898368835,
+  "original_ocr_coordinates": [
+    [
+      136.0,
+      395.0
+    ],
+    [
+      218.0,
+      395.0
+    ],
+    [
+      218.0,
+      407.0
+    ],
+    [
+      136.0,
+      407.0
+    ]
+  ],
+  "candidate_class": "NET_QUANTITY",
+  "matching_rule": "Matched internal regex signature"
+}

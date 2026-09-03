@@ -1,0 +1,25 @@
+{
+  "source_image": "external_data/Object-Detection-and-Text-Recognition-of-Packaged-Foods-main/sample dataset/images/train/26.png",
+  "ocr_text": "Mars",
+  "ocr_confidence": 0.9933176040649414,
+  "original_ocr_coordinates": [
+    [
+      70.0,
+      26.0
+    ],
+    [
+      371.0,
+      1.0
+    ],
+    [
+      377.0,
+      89.0
+    ],
+    [
+      76.0,
+      114.0
+    ]
+  ],
+  "candidate_class": "MRP",
+  "matching_rule": "Matched internal regex signature"
+}

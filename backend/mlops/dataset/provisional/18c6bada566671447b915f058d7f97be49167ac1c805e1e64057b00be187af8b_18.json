@@ -1,0 +1,25 @@
+{
+  "source_image": "external_data/Object-Detection-and-Text-Recognition-of-Packaged-Foods-main/sample dataset/images/train/49.png",
+  "ocr_text": "Net Wt.250g(8.81oz",
+  "ocr_confidence": 0.971878170967102,
+  "original_ocr_coordinates": [
+    [
+      580.0,
+      846.0
+    ],
+    [
+      758.0,
+      834.0
+    ],
+    [
+      760.0,
+      856.0
+    ],
+    [
+      581.0,
+      868.0
+    ]
+  ],
+  "candidate_class": "NET_QUANTITY",
+  "matching_rule": "Matched internal regex signature"
+}

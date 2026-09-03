@@ -1,0 +1,25 @@
+{
+  "source_image": "external_data/Object-Detection-and-Text-Recognition-of-Packaged-Foods-main/sample dataset/images/train/32.png",
+  "ocr_text": "MANUFACTURED FOR&MARKETED BY",
+  "ocr_confidence": 0.9664482474327087,
+  "original_ocr_coordinates": [
+    [
+      309.0,
+      209.0
+    ],
+    [
+      429.0,
+      209.0
+    ],
+    [
+      429.0,
+      222.0
+    ],
+    [
+      309.0,
+      222.0
+    ]
+  ],
+  "candidate_class": "MANUFACTURER",
+  "matching_rule": "Matched internal regex signature"
+}

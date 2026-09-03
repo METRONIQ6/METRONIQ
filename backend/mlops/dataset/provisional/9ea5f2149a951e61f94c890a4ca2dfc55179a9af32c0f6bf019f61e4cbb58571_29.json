@@ -1,0 +1,25 @@
+{
+  "source_image": "external_data/Object-Detection-and-Text-Recognition-of-Packaged-Foods-main/sample dataset/images/train/2.png",
+  "ocr_text": "-Total Sugars(g)",
+  "ocr_confidence": 0.8731775283813477,
+  "original_ocr_coordinates": [
+    [
+      936.0,
+      509.0
+    ],
+    [
+      1011.0,
+      509.0
+    ],
+    [
+      1011.0,
+      533.0
+    ],
+    [
+      936.0,
+      533.0
+    ]
+  ],
+  "candidate_class": "MRP",
+  "matching_rule": "Matched internal regex signature"
+}

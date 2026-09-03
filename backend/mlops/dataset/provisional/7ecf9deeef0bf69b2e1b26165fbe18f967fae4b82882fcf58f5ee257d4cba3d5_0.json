@@ -1,0 +1,25 @@
+{
+  "source_image": "external_data/Object-Detection-and-Text-Recognition-of-Packaged-Foods-main/sample dataset/images/train/28.png",
+  "ocr_text": "25 years of Exce",
+  "ocr_confidence": 0.9384263157844543,
+  "original_ocr_coordinates": [
+    [
+      1125.0,
+      212.0
+    ],
+    [
+      1263.0,
+      214.0
+    ],
+    [
+      1262.0,
+      235.0
+    ],
+    [
+      1125.0,
+      234.0
+    ]
+  ],
+  "candidate_class": "MRP",
+  "matching_rule": "Matched internal regex signature"
+}

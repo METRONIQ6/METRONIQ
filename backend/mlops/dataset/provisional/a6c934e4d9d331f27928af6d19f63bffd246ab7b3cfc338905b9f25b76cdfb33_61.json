@@ -1,0 +1,25 @@
+{
+  "source_image": "external_data/Object-Detection-and-Text-Recognition-of-Packaged-Foods-main/sample dataset/images/train/16.png",
+  "ocr_text": "FORSOG",
+  "ocr_confidence": 0.5834875106811523,
+  "original_ocr_coordinates": [
+    [
+      356.0,
+      465.0
+    ],
+    [
+      380.0,
+      465.0
+    ],
+    [
+      380.0,
+      472.0
+    ],
+    [
+      356.0,
+      472.0
+    ]
+  ],
+  "candidate_class": "MRP",
+  "matching_rule": "Matched internal regex signature"
+}

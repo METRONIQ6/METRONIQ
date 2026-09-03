@@ -1,0 +1,25 @@
+{
+  "source_image": "external_data/Object-Detection-and-Text-Recognition-of-Packaged-Foods-main/sample dataset/images/train/51.png",
+  "ocr_text": "Imported by",
+  "ocr_confidence": 0.954132080078125,
+  "original_ocr_coordinates": [
+    [
+      321.0,
+      447.0
+    ],
+    [
+      368.0,
+      447.0
+    ],
+    [
+      368.0,
+      458.0
+    ],
+    [
+      321.0,
+      458.0
+    ]
+  ],
+  "candidate_class": "IMPORTER",
+  "matching_rule": "Matched internal regex signature"
+}

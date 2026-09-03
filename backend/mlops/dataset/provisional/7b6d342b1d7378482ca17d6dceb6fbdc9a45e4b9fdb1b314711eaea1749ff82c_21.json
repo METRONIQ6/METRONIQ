@@ -1,0 +1,25 @@
+{
+  "source_image": "external_data/Object-Detection-and-Text-Recognition-of-Packaged-Foods-main/sample dataset/images/train/39.png",
+  "ocr_text": "India Food Processors' Association",
+  "ocr_confidence": 0.9422833919525146,
+  "original_ocr_coordinates": [
+    [
+      218.0,
+      454.0
+    ],
+    [
+      424.0,
+      454.0
+    ],
+    [
+      424.0,
+      468.0
+    ],
+    [
+      218.0,
+      468.0
+    ]
+  ],
+  "candidate_class": "MRP",
+  "matching_rule": "Matched internal regex signature"
+}

@@ -1,0 +1,25 @@
+{
+  "source_image": "external_data/Object-Detection-and-Text-Recognition-of-Packaged-Foods-main/sample dataset/images/train/16.png",
+  "ocr_text": "MRP:Rs.",
+  "ocr_confidence": 0.8596221804618835,
+  "original_ocr_coordinates": [
+    [
+      99.0,
+      411.0
+    ],
+    [
+      129.0,
+      411.0
+    ],
+    [
+      129.0,
+      422.0
+    ],
+    [
+      99.0,
+      422.0
+    ]
+  ],
+  "candidate_class": "MRP",
+  "matching_rule": "Matched internal regex signature"
+}

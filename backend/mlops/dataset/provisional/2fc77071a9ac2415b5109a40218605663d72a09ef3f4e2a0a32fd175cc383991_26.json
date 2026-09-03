@@ -1,0 +1,25 @@
+{
+  "source_image": "external_data/Object-Detection-and-Text-Recognition-of-Packaged-Foods-main/sample dataset/images/train/51.png",
+  "ocr_text": "MRP230.00 inclusive of al tam",
+  "ocr_confidence": 0.8512650728225708,
+  "original_ocr_coordinates": [
+    [
+      277.0,
+      216.0
+    ],
+    [
+      396.0,
+      216.0
+    ],
+    [
+      396.0,
+      226.0
+    ],
+    [
+      277.0,
+      226.0
+    ]
+  ],
+  "candidate_class": "MRP",
+  "matching_rule": "Matched internal regex signature"
+}

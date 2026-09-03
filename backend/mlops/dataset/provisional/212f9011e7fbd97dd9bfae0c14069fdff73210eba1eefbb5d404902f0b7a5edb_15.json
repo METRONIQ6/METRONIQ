@@ -1,0 +1,25 @@
+{
+  "source_image": "external_data/Object-Detection-and-Text-Recognition-of-Packaged-Foods-main/sample dataset/images/train/10.png",
+  "ocr_text": "Persere (40g)",
+  "ocr_confidence": 0.7605438828468323,
+  "original_ocr_coordinates": [
+    [
+      938.0,
+      1387.0
+    ],
+    [
+      1016.0,
+      1391.0
+    ],
+    [
+      1015.0,
+      1413.0
+    ],
+    [
+      937.0,
+      1409.0
+    ]
+  ],
+  "candidate_class": "MRP",
+  "matching_rule": "Matched internal regex signature"
+}

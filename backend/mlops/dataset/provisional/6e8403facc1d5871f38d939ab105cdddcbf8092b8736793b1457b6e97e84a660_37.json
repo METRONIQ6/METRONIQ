@@ -1,0 +1,25 @@
+{
+  "source_image": "external_data/Object-Detection-and-Text-Recognition-of-Packaged-Foods-main/sample dataset/images/train/24.png",
+  "ocr_text": "SugarSucroseg)",
+  "ocr_confidence": 0.9257065057754517,
+  "original_ocr_coordinates": [
+    [
+      910.0,
+      548.0
+    ],
+    [
+      1005.0,
+      550.0
+    ],
+    [
+      1004.0,
+      567.0
+    ],
+    [
+      909.0,
+      565.0
+    ]
+  ],
+  "candidate_class": "MRP",
+  "matching_rule": "Matched internal regex signature"
+}

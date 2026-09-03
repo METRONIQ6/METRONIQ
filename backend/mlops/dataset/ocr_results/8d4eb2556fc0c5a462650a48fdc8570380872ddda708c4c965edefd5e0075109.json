@@ -1,0 +1,2034 @@
+{
+  "image_path": "external_data/Object-Detection-and-Text-Recognition-of-Packaged-Foods-main/sample dataset/images/train/13.png",
+  "sha256": "8d4eb2556fc0c5a462650a48fdc8570380872ddda708c4c965edefd5e0075109",
+  "ocr_engine": "PaddleOCR",
+  "ocr_version": "2.8.1",
+  "timestamp": "2026-08-30T20:00:13.905989",
+  "full_ocr_text": "NUTRITIONAL INFORMATION (^APPROX.): Per 100g Lays Energy kcal 544 Protein g 7.8 Total Carbohydrate g 51.6 of which Sugars g 2.0 CREAM &ONION Total Fat g 34.0 Saturated Fat g 13.5 FLAVOUR Trans Fat g 0.1 Sodium mg 742 Guideline Daily Amount (2000 kcal diet Lay's is the Registered Trade Mark of PepsiCo, Inc. INGREDIENTS:PotatoEdible Vegetable Oil Palmolein CALM Oil,Rice Bran Oil)Sugar lodised SaltMilk Products (Milk Solids, Cheese Powder 1.4%~Spices & Condiments (Onion Powder Parsley Powder, SMILE Pepper Powder). Edible Starch. CONTAINS ADDED FLAVOUR (NATURAL & NATURE IDENTICAL FLAVOURING SUBSTANCES) ~Used as natural flavouring agent Known to cool tempers, POTATO CHIPS resolve arguments, and even \"PROPRIETARY FOOD\" For manufacturing unit address, see first two characters of Stop a break-up or two batch no.and see below the calm smile is our best Mfd.By:PEPSICO INDIA HOLDINGS PVT.LTD chance at peace N1Village ChannoPatiala -Sangrur Road, P.O.BhawanigarhDistt.SangrurPin-148026Punjab. Presenting the Lic.No.10012063000110 N2:C-5MIDC RanjangaonTaluka Shirur Pune Lay's Calm Cream and Onion Pin-412220,Maharashtra. Flavour smile Lic.No.10012022000339 N3JL No.2&4Kendua Panchayat, Take a deep breath. Mouja Jaladhulagori via Andul Mouri P.O.Dhulagarh, P.S.SankrailDistt.HowrahPin-711302West Bengal. Then, take a bite. Lic.No.10012031000120 Marketed By:PEPSICOINDIA HOLDINGS PVT.LTD., Level 3-6Pioneer SquareSector 62, *For details on PepsiCo Near Golf Course Extension Road, fssai partnership with farmers, Gurugram-122101, visit www.pepsicoindia.co.in Haryana, India. Lic.No.10014064000435 MRP Rs.65/-INCL.OFALL TAXES For feedback or queries,write to THE CONSUMER SERVICES MANAGER N.QTY: PEPSICO INDIA HOLDINGSPVT.LTD., P.O.BOX27DLF QUTAB ENCLAVE, B.NO: PHASE-1,GURUGRAM-122002,HARYANA MFD: ORCALLUSAT 1800224020 OR EMAIL US AT CONSUMER.FEEDBACK@PEPSICO.COM BEST BEFORE SIX MONTHS FROM MANUFACTURE Find us on facebook.com/laysindia 8901491105798",
+  "regions": [
+    {
+      "text": "NUTRITIONAL INFORMATION (^APPROX.):",
+      "confidence": 0.949404239654541,
+      "bounding_box": [
+        [
+          352.0,
+          109.0
+        ],
+        [
+          666.0,
+          111.0
+        ],
+        [
+          666.0,
+          131.0
+        ],
+        [
+          352.0,
+          130.0
+        ]
+      ]
+    },
+    {
+      "text": "Per 100g",
+      "confidence": 0.9600493311882019,
+      "bounding_box": [
+        [
+          606.0,
+          136.0
+        ],
+        [
+          681.0,
+          136.0
+        ],
+        [
+          681.0,
+          158.0
+        ],
+        [
+          606.0,
+          158.0
+        ]
+      ]
+    },
+    {
+      "text": "Lays",
+      "confidence": 0.9283807277679443,
+      "bounding_box": [
+        [
+          941.0,
+          141.0
+        ],
+        [
+          1058.0,
+          141.0
+        ],
+        [
+          1058.0,
+          198.0
+        ],
+        [
+          941.0,
+          198.0
+        ]
+      ]
+    },
+    {
+      "text": "Energy",
+      "confidence": 0.9975892901420593,
+      "bounding_box": [
+        [
+          342.0,
+          164.0
+        ],
+        [
+          402.0,
+          164.0
+        ],
+        [
+          402.0,
+          186.0
+        ],
+        [
+          342.0,
+          186.0
+        ]
+      ]
+    },
+    {
+      "text": "kcal",
+      "confidence": 0.9928703308105469,
+      "bounding_box": [
+        [
+          528.0,
+          162.0
+        ],
+        [
+          566.0,
+          162.0
+        ],
+        [
+          566.0,
+          186.0
+        ],
+        [
+          528.0,
+          186.0
+        ]
+      ]
+    },
+    {
+      "text": "544",
+      "confidence": 0.9986424446105957,
+      "bounding_box": [
+        [
+          627.0,
+          161.0
+        ],
+        [
+          661.0,
+          161.0
+        ],
+        [
+          661.0,
+          186.0
+        ],
+        [
+          627.0,
+          186.0
+        ]
+      ]
+    },
+    {
+      "text": "Protein",
+      "confidence": 0.9964173436164856,
+      "bounding_box": [
+        [
+          342.0,
+          189.0
+        ],
+        [
+          400.0,
+          189.0
+        ],
+        [
+          400.0,
+          211.0
+        ],
+        [
+          342.0,
+          211.0
+        ]
+      ]
+    },
+    {
+      "text": "g",
+      "confidence": 0.9694129228591919,
+      "bounding_box": [
+        [
+          541.0,
+          194.0
+        ],
+        [
+          555.0,
+          194.0
+        ],
+        [
+          555.0,
+          214.0
+        ],
+        [
+          541.0,
+          214.0
+        ]
+      ]
+    },
+    {
+      "text": "7.8",
+      "confidence": 0.9992707371711731,
+      "bounding_box": [
+        [
+          628.0,
+          188.0
+        ],
+        [
+          659.0,
+          188.0
+        ],
+        [
+          659.0,
+          212.0
+        ],
+        [
+          628.0,
+          212.0
+        ]
+      ]
+    },
+    {
+      "text": "Total Carbohydrate",
+      "confidence": 0.9769932627677917,
+      "bounding_box": [
+        [
+          344.0,
+          216.0
+        ],
+        [
+          491.0,
+          217.0
+        ],
+        [
+          490.0,
+          239.0
+        ],
+        [
+          344.0,
+          237.0
+        ]
+      ]
+    },
+    {
+      "text": "g",
+      "confidence": 0.9935385584831238,
+      "bounding_box": [
+        [
+          541.0,
+          220.0
+        ],
+        [
+          555.0,
+          220.0
+        ],
+        [
+          555.0,
+          239.0
+        ],
+        [
+          541.0,
+          239.0
+        ]
+      ]
+    },
+    {
+      "text": "51.6",
+      "confidence": 0.995197594165802,
+      "bounding_box": [
+        [
+          625.0,
+          216.0
+        ],
+        [
+          664.0,
+          216.0
+        ],
+        [
+          664.0,
+          239.0
+        ],
+        [
+          625.0,
+          239.0
+        ]
+      ]
+    },
+    {
+      "text": "of which Sugars",
+      "confidence": 0.967218816280365,
+      "bounding_box": [
+        [
+          361.0,
+          242.0
+        ],
+        [
+          489.0,
+          244.0
+        ],
+        [
+          489.0,
+          266.0
+        ],
+        [
+          361.0,
+          264.0
+        ]
+      ]
+    },
+    {
+      "text": "g",
+      "confidence": 0.9770240187644958,
+      "bounding_box": [
+        [
+          539.0,
+          247.0
+        ],
+        [
+          555.0,
+          247.0
+        ],
+        [
+          555.0,
+          264.0
+        ],
+        [
+          539.0,
+          264.0
+        ]
+      ]
+    },
+    {
+      "text": "2.0",
+      "confidence": 0.994896411895752,
+      "bounding_box": [
+        [
+          630.0,
+          244.0
+        ],
+        [
+          658.0,
+          244.0
+        ],
+        [
+          658.0,
+          264.0
+        ],
+        [
+          630.0,
+          264.0
+        ]
+      ]
+    },
+    {
+      "text": "CREAM &ONION",
+      "confidence": 0.9306612014770508,
+      "bounding_box": [
+        [
+          890.0,
+          246.0
+        ],
+        [
+          1103.0,
+          242.0
+        ],
+        [
+          1103.0,
+          290.0
+        ],
+        [
+          891.0,
+          294.0
+        ]
+      ]
+    },
+    {
+      "text": "Total Fat",
+      "confidence": 0.9649508595466614,
+      "bounding_box": [
+        [
+          342.0,
+          270.0
+        ],
+        [
+          412.0,
+          270.0
+        ],
+        [
+          412.0,
+          292.0
+        ],
+        [
+          342.0,
+          292.0
+        ]
+      ]
+    },
+    {
+      "text": "g",
+      "confidence": 0.9760480523109436,
+      "bounding_box": [
+        [
+          538.0,
+          272.0
+        ],
+        [
+          556.0,
+          272.0
+        ],
+        [
+          556.0,
+          294.0
+        ],
+        [
+          538.0,
+          294.0
+        ]
+      ]
+    },
+    {
+      "text": "34.0",
+      "confidence": 0.9941979050636292,
+      "bounding_box": [
+        [
+          623.0,
+          269.0
+        ],
+        [
+          664.0,
+          269.0
+        ],
+        [
+          664.0,
+          292.0
+        ],
+        [
+          623.0,
+          292.0
+        ]
+      ]
+    },
+    {
+      "text": "Saturated Fat",
+      "confidence": 0.9550894498825073,
+      "bounding_box": [
+        [
+          362.0,
+          297.0
+        ],
+        [
+          470.0,
+          297.0
+        ],
+        [
+          470.0,
+          319.0
+        ],
+        [
+          362.0,
+          319.0
+        ]
+      ]
+    },
+    {
+      "text": "g",
+      "confidence": 0.9727473258972168,
+      "bounding_box": [
+        [
+          538.0,
+          298.0
+        ],
+        [
+          556.0,
+          298.0
+        ],
+        [
+          556.0,
+          320.0
+        ],
+        [
+          538.0,
+          320.0
+        ]
+      ]
+    },
+    {
+      "text": "13.5",
+      "confidence": 0.9962273240089417,
+      "bounding_box": [
+        [
+          627.0,
+          295.0
+        ],
+        [
+          664.0,
+          295.0
+        ],
+        [
+          664.0,
+          320.0
+        ],
+        [
+          627.0,
+          320.0
+        ]
+      ]
+    },
+    {
+      "text": "FLAVOUR",
+      "confidence": 0.9926643967628479,
+      "bounding_box": [
+        [
+          950.0,
+          295.0
+        ],
+        [
+          1034.0,
+          295.0
+        ],
+        [
+          1034.0,
+          323.0
+        ],
+        [
+          950.0,
+          323.0
+        ]
+      ]
+    },
+    {
+      "text": "Trans Fat",
+      "confidence": 0.9620020985603333,
+      "bounding_box": [
+        [
+          362.0,
+          323.0
+        ],
+        [
+          438.0,
+          323.0
+        ],
+        [
+          438.0,
+          345.0
+        ],
+        [
+          362.0,
+          345.0
+        ]
+      ]
+    },
+    {
+      "text": "g",
+      "confidence": 0.994695246219635,
+      "bounding_box": [
+        [
+          538.0,
+          323.0
+        ],
+        [
+          556.0,
+          323.0
+        ],
+        [
+          556.0,
+          347.0
+        ],
+        [
+          538.0,
+          347.0
+        ]
+      ]
+    },
+    {
+      "text": "0.1",
+      "confidence": 0.8357627391815186,
+      "bounding_box": [
+        [
+          628.0,
+          322.0
+        ],
+        [
+          659.0,
+          322.0
+        ],
+        [
+          659.0,
+          347.0
+        ],
+        [
+          628.0,
+          347.0
+        ]
+      ]
+    },
+    {
+      "text": "Sodium",
+      "confidence": 0.9957208633422852,
+      "bounding_box": [
+        [
+          342.0,
+          348.0
+        ],
+        [
+          408.0,
+          348.0
+        ],
+        [
+          408.0,
+          370.0
+        ],
+        [
+          342.0,
+          370.0
+        ]
+      ]
+    },
+    {
+      "text": "mg",
+      "confidence": 0.9955729246139526,
+      "bounding_box": [
+        [
+          533.0,
+          350.0
+        ],
+        [
+          562.0,
+          350.0
+        ],
+        [
+          562.0,
+          370.0
+        ],
+        [
+          533.0,
+          370.0
+        ]
+      ]
+    },
+    {
+      "text": "742",
+      "confidence": 0.9994129538536072,
+      "bounding_box": [
+        [
+          627.0,
+          347.0
+        ],
+        [
+          662.0,
+          347.0
+        ],
+        [
+          662.0,
+          370.0
+        ],
+        [
+          627.0,
+          370.0
+        ]
+      ]
+    },
+    {
+      "text": "Guideline Daily Amount (2000 kcal diet",
+      "confidence": 0.9257214069366455,
+      "bounding_box": [
+        [
+          328.0,
+          380.0
+        ],
+        [
+          575.0,
+          381.0
+        ],
+        [
+          575.0,
+          403.0
+        ],
+        [
+          328.0,
+          402.0
+        ]
+      ]
+    },
+    {
+      "text": "Lay's is the Registered Trade Mark of PepsiCo, Inc.",
+      "confidence": 0.9614207148551941,
+      "bounding_box": [
+        [
+          330.0,
+          406.0
+        ],
+        [
+          670.0,
+          406.0
+        ],
+        [
+          670.0,
+          427.0
+        ],
+        [
+          330.0,
+          427.0
+        ]
+      ]
+    },
+    {
+      "text": "INGREDIENTS:PotatoEdible Vegetable Oil Palmolein",
+      "confidence": 0.9099122881889343,
+      "bounding_box": [
+        [
+          330.0,
+          430.0
+        ],
+        [
+          688.0,
+          430.0
+        ],
+        [
+          688.0,
+          450.0
+        ],
+        [
+          330.0,
+          450.0
+        ]
+      ]
+    },
+    {
+      "text": "CALM",
+      "confidence": 0.9970281720161438,
+      "bounding_box": [
+        [
+          908.0,
+          428.0
+        ],
+        [
+          1092.0,
+          428.0
+        ],
+        [
+          1092.0,
+          497.0
+        ],
+        [
+          908.0,
+          497.0
+        ]
+      ]
+    },
+    {
+      "text": "Oil,Rice Bran Oil)Sugar lodised SaltMilk Products",
+      "confidence": 0.8976520895957947,
+      "bounding_box": [
+        [
+          330.0,
+          455.0
+        ],
+        [
+          673.0,
+          455.0
+        ],
+        [
+          673.0,
+          470.0
+        ],
+        [
+          330.0,
+          470.0
+        ]
+      ]
+    },
+    {
+      "text": "(Milk Solids, Cheese Powder 1.4%~Spices &",
+      "confidence": 0.9081278443336487,
+      "bounding_box": [
+        [
+          328.0,
+          473.0
+        ],
+        [
+          644.0,
+          473.0
+        ],
+        [
+          644.0,
+          494.0
+        ],
+        [
+          328.0,
+          494.0
+        ]
+      ]
+    },
+    {
+      "text": "Condiments (Onion Powder Parsley Powder,",
+      "confidence": 0.9402241706848145,
+      "bounding_box": [
+        [
+          328.0,
+          495.0
+        ],
+        [
+          623.0,
+          495.0
+        ],
+        [
+          623.0,
+          516.0
+        ],
+        [
+          328.0,
+          516.0
+        ]
+      ]
+    },
+    {
+      "text": "SMILE",
+      "confidence": 0.9977920651435852,
+      "bounding_box": [
+        [
+          885.0,
+          492.0
+        ],
+        [
+          1108.0,
+          496.0
+        ],
+        [
+          1107.0,
+          568.0
+        ],
+        [
+          884.0,
+          564.0
+        ]
+      ]
+    },
+    {
+      "text": "Pepper Powder). Edible Starch.",
+      "confidence": 0.9404539465904236,
+      "bounding_box": [
+        [
+          328.0,
+          517.0
+        ],
+        [
+          534.0,
+          517.0
+        ],
+        [
+          534.0,
+          533.0
+        ],
+        [
+          328.0,
+          533.0
+        ]
+      ]
+    },
+    {
+      "text": "CONTAINS ADDED FLAVOUR (NATURAL & NATURE",
+      "confidence": 0.94195955991745,
+      "bounding_box": [
+        [
+          331.0,
+          547.0
+        ],
+        [
+          678.0,
+          548.0
+        ],
+        [
+          678.0,
+          566.0
+        ],
+        [
+          331.0,
+          564.0
+        ]
+      ]
+    },
+    {
+      "text": "IDENTICAL FLAVOURING SUBSTANCES)",
+      "confidence": 0.9710661172866821,
+      "bounding_box": [
+        [
+          331.0,
+          564.0
+        ],
+        [
+          608.0,
+          564.0
+        ],
+        [
+          608.0,
+          584.0
+        ],
+        [
+          331.0,
+          584.0
+        ]
+      ]
+    },
+    {
+      "text": "~Used as natural flavouring agent",
+      "confidence": 0.925237238407135,
+      "bounding_box": [
+        [
+          331.0,
+          597.0
+        ],
+        [
+          545.0,
+          598.0
+        ],
+        [
+          545.0,
+          619.0
+        ],
+        [
+          331.0,
+          617.0
+        ]
+      ]
+    },
+    {
+      "text": "Known to cool tempers,",
+      "confidence": 0.9358951449394226,
+      "bounding_box": [
+        [
+          875.0,
+          594.0
+        ],
+        [
+          1116.0,
+          597.0
+        ],
+        [
+          1115.0,
+          624.0
+        ],
+        [
+          875.0,
+          620.0
+        ]
+      ]
+    },
+    {
+      "text": "POTATO CHIPS",
+      "confidence": 0.958526074886322,
+      "bounding_box": [
+        [
+          330.0,
+          622.0
+        ],
+        [
+          439.0,
+          622.0
+        ],
+        [
+          439.0,
+          639.0
+        ],
+        [
+          330.0,
+          639.0
+        ]
+      ]
+    },
+    {
+      "text": "resolve arguments, and even",
+      "confidence": 0.9480290412902832,
+      "bounding_box": [
+        [
+          853.0,
+          628.0
+        ],
+        [
+          1144.0,
+          628.0
+        ],
+        [
+          1144.0,
+          655.0
+        ],
+        [
+          853.0,
+          655.0
+        ]
+      ]
+    },
+    {
+      "text": "\"PROPRIETARY FOOD\"",
+      "confidence": 0.9021005630493164,
+      "bounding_box": [
+        [
+          331.0,
+          644.0
+        ],
+        [
+          494.0,
+          644.0
+        ],
+        [
+          494.0,
+          664.0
+        ],
+        [
+          331.0,
+          664.0
+        ]
+      ]
+    },
+    {
+      "text": "For manufacturing unit address, see first two characters of",
+      "confidence": 0.9498745799064636,
+      "bounding_box": [
+        [
+          328.0,
+          669.0
+        ],
+        [
+          698.0,
+          669.0
+        ],
+        [
+          698.0,
+          689.0
+        ],
+        [
+          328.0,
+          689.0
+        ]
+      ]
+    },
+    {
+      "text": "Stop a break-up or two",
+      "confidence": 0.9153047800064087,
+      "bounding_box": [
+        [
+          872.0,
+          661.0
+        ],
+        [
+          1117.0,
+          661.0
+        ],
+        [
+          1117.0,
+          683.0
+        ],
+        [
+          872.0,
+          683.0
+        ]
+      ]
+    },
+    {
+      "text": "batch no.and see below",
+      "confidence": 0.9510719776153564,
+      "bounding_box": [
+        [
+          331.0,
+          691.0
+        ],
+        [
+          487.0,
+          691.0
+        ],
+        [
+          487.0,
+          706.0
+        ],
+        [
+          331.0,
+          706.0
+        ]
+      ]
+    },
+    {
+      "text": "the calm smile is our best",
+      "confidence": 0.9348586201667786,
+      "bounding_box": [
+        [
+          863.0,
+          687.0
+        ],
+        [
+          1130.0,
+          689.0
+        ],
+        [
+          1130.0,
+          716.0
+        ],
+        [
+          862.0,
+          714.0
+        ]
+      ]
+    },
+    {
+      "text": "Mfd.By:PEPSICO INDIA HOLDINGS PVT.LTD",
+      "confidence": 0.9301635026931763,
+      "bounding_box": [
+        [
+          331.0,
+          712.0
+        ],
+        [
+          650.0,
+          712.0
+        ],
+        [
+          650.0,
+          728.0
+        ],
+        [
+          331.0,
+          728.0
+        ]
+      ]
+    },
+    {
+      "text": "chance at peace",
+      "confidence": 0.9652788043022156,
+      "bounding_box": [
+        [
+          914.0,
+          723.0
+        ],
+        [
+          1078.0,
+          723.0
+        ],
+        [
+          1078.0,
+          745.0
+        ],
+        [
+          914.0,
+          745.0
+        ]
+      ]
+    },
+    {
+      "text": "N1Village ChannoPatiala -Sangrur Road,",
+      "confidence": 0.8893257975578308,
+      "bounding_box": [
+        [
+          328.0,
+          734.0
+        ],
+        [
+          608.0,
+          734.0
+        ],
+        [
+          608.0,
+          755.0
+        ],
+        [
+          328.0,
+          755.0
+        ]
+      ]
+    },
+    {
+      "text": "P.O.BhawanigarhDistt.SangrurPin-148026Punjab.",
+      "confidence": 0.9590563178062439,
+      "bounding_box": [
+        [
+          328.0,
+          755.0
+        ],
+        [
+          678.0,
+          755.0
+        ],
+        [
+          678.0,
+          775.0
+        ],
+        [
+          328.0,
+          775.0
+        ]
+      ]
+    },
+    {
+      "text": "Presenting the",
+      "confidence": 0.979210376739502,
+      "bounding_box": [
+        [
+          922.0,
+          762.0
+        ],
+        [
+          1072.0,
+          762.0
+        ],
+        [
+          1072.0,
+          789.0
+        ],
+        [
+          922.0,
+          789.0
+        ]
+      ]
+    },
+    {
+      "text": "Lic.No.10012063000110",
+      "confidence": 0.9807557463645935,
+      "bounding_box": [
+        [
+          331.0,
+          777.0
+        ],
+        [
+          498.0,
+          777.0
+        ],
+        [
+          498.0,
+          792.0
+        ],
+        [
+          331.0,
+          792.0
+        ]
+      ]
+    },
+    {
+      "text": "N2:C-5MIDC RanjangaonTaluka Shirur Pune",
+      "confidence": 0.9119074940681458,
+      "bounding_box": [
+        [
+          330.0,
+          798.0
+        ],
+        [
+          638.0,
+          798.0
+        ],
+        [
+          638.0,
+          819.0
+        ],
+        [
+          330.0,
+          819.0
+        ]
+      ]
+    },
+    {
+      "text": "Lay's Calm Cream and Onion",
+      "confidence": 0.9479519128799438,
+      "bounding_box": [
+        [
+          858.0,
+          792.0
+        ],
+        [
+          1136.0,
+          794.0
+        ],
+        [
+          1136.0,
+          820.0
+        ],
+        [
+          858.0,
+          819.0
+        ]
+      ]
+    },
+    {
+      "text": "Pin-412220,Maharashtra.",
+      "confidence": 0.9509522914886475,
+      "bounding_box": [
+        [
+          330.0,
+          819.0
+        ],
+        [
+          500.0,
+          819.0
+        ],
+        [
+          500.0,
+          839.0
+        ],
+        [
+          330.0,
+          839.0
+        ]
+      ]
+    },
+    {
+      "text": "Flavour smile",
+      "confidence": 0.9291834235191345,
+      "bounding_box": [
+        [
+          925.0,
+          825.0
+        ],
+        [
+          1064.0,
+          825.0
+        ],
+        [
+          1064.0,
+          852.0
+        ],
+        [
+          925.0,
+          852.0
+        ]
+      ]
+    },
+    {
+      "text": "Lic.No.10012022000339",
+      "confidence": 0.9375420808792114,
+      "bounding_box": [
+        [
+          330.0,
+          838.0
+        ],
+        [
+          498.0,
+          838.0
+        ],
+        [
+          498.0,
+          858.0
+        ],
+        [
+          330.0,
+          858.0
+        ]
+      ]
+    },
+    {
+      "text": "N3JL No.2&4Kendua Panchayat,",
+      "confidence": 0.9487689137458801,
+      "bounding_box": [
+        [
+          328.0,
+          859.0
+        ],
+        [
+          573.0,
+          861.0
+        ],
+        [
+          573.0,
+          881.0
+        ],
+        [
+          328.0,
+          880.0
+        ]
+      ]
+    },
+    {
+      "text": "Take a deep breath.",
+      "confidence": 0.966090977191925,
+      "bounding_box": [
+        [
+          902.0,
+          867.0
+        ],
+        [
+          1092.0,
+          867.0
+        ],
+        [
+          1092.0,
+          894.0
+        ],
+        [
+          902.0,
+          894.0
+        ]
+      ]
+    },
+    {
+      "text": "Mouja Jaladhulagori via Andul Mouri P.O.Dhulagarh,",
+      "confidence": 0.9222943782806396,
+      "bounding_box": [
+        [
+          330.0,
+          881.0
+        ],
+        [
+          664.0,
+          881.0
+        ],
+        [
+          664.0,
+          902.0
+        ],
+        [
+          330.0,
+          902.0
+        ]
+      ]
+    },
+    {
+      "text": "P.S.SankrailDistt.HowrahPin-711302West Bengal.",
+      "confidence": 0.9497441649436951,
+      "bounding_box": [
+        [
+          330.0,
+          902.0
+        ],
+        [
+          681.0,
+          902.0
+        ],
+        [
+          681.0,
+          922.0
+        ],
+        [
+          330.0,
+          922.0
+        ]
+      ]
+    },
+    {
+      "text": "Then, take a bite.",
+      "confidence": 0.9335206151008606,
+      "bounding_box": [
+        [
+          908.0,
+          898.0
+        ],
+        [
+          1083.0,
+          898.0
+        ],
+        [
+          1083.0,
+          925.0
+        ],
+        [
+          908.0,
+          925.0
+        ]
+      ]
+    },
+    {
+      "text": "Lic.No.10012031000120",
+      "confidence": 0.9776597619056702,
+      "bounding_box": [
+        [
+          328.0,
+          922.0
+        ],
+        [
+          498.0,
+          922.0
+        ],
+        [
+          498.0,
+          942.0
+        ],
+        [
+          328.0,
+          942.0
+        ]
+      ]
+    },
+    {
+      "text": "Marketed By:PEPSICOINDIA HOLDINGS PVT.LTD.,",
+      "confidence": 0.938478946685791,
+      "bounding_box": [
+        [
+          330.0,
+          945.0
+        ],
+        [
+          692.0,
+          945.0
+        ],
+        [
+          692.0,
+          966.0
+        ],
+        [
+          330.0,
+          966.0
+        ]
+      ]
+    },
+    {
+      "text": "Level 3-6Pioneer SquareSector 62,",
+      "confidence": 0.9009029865264893,
+      "bounding_box": [
+        [
+          330.0,
+          967.0
+        ],
+        [
+          569.0,
+          967.0
+        ],
+        [
+          569.0,
+          988.0
+        ],
+        [
+          330.0,
+          988.0
+        ]
+      ]
+    },
+    {
+      "text": "*For details on PepsiCo",
+      "confidence": 0.9459707736968994,
+      "bounding_box": [
+        [
+          930.0,
+          969.0
+        ],
+        [
+          1133.0,
+          970.0
+        ],
+        [
+          1133.0,
+          992.0
+        ],
+        [
+          930.0,
+          991.0
+        ]
+      ]
+    },
+    {
+      "text": "Near Golf Course Extension Road,",
+      "confidence": 0.9629950523376465,
+      "bounding_box": [
+        [
+          328.0,
+          988.0
+        ],
+        [
+          547.0,
+          988.0
+        ],
+        [
+          547.0,
+          1008.0
+        ],
+        [
+          328.0,
+          1008.0
+        ]
+      ]
+    },
+    {
+      "text": "fssai",
+      "confidence": 0.9906033277511597,
+      "bounding_box": [
+        [
+          623.0,
+          982.0
+        ],
+        [
+          699.0,
+          986.0
+        ],
+        [
+          697.0,
+          1022.0
+        ],
+        [
+          621.0,
+          1018.0
+        ]
+      ]
+    },
+    {
+      "text": "partnership with farmers,",
+      "confidence": 0.9683747887611389,
+      "bounding_box": [
+        [
+          934.0,
+          995.0
+        ],
+        [
+          1148.0,
+          995.0
+        ],
+        [
+          1148.0,
+          1016.0
+        ],
+        [
+          934.0,
+          1016.0
+        ]
+      ]
+    },
+    {
+      "text": "Gurugram-122101,",
+      "confidence": 0.9887326955795288,
+      "bounding_box": [
+        [
+          328.0,
+          1006.0
+        ],
+        [
+          452.0,
+          1006.0
+        ],
+        [
+          452.0,
+          1027.0
+        ],
+        [
+          328.0,
+          1027.0
+        ]
+      ]
+    },
+    {
+      "text": "visit www.pepsicoindia.co.in",
+      "confidence": 0.990234375,
+      "bounding_box": [
+        [
+          934.0,
+          1017.0
+        ],
+        [
+          1178.0,
+          1016.0
+        ],
+        [
+          1178.0,
+          1037.0
+        ],
+        [
+          934.0,
+          1039.0
+        ]
+      ]
+    },
+    {
+      "text": "Haryana, India.",
+      "confidence": 0.9566115140914917,
+      "bounding_box": [
+        [
+          330.0,
+          1030.0
+        ],
+        [
+          425.0,
+          1030.0
+        ],
+        [
+          425.0,
+          1047.0
+        ],
+        [
+          330.0,
+          1047.0
+        ]
+      ]
+    },
+    {
+      "text": "Lic.No.10014064000435",
+      "confidence": 0.9775297045707703,
+      "bounding_box": [
+        [
+          538.0,
+          1027.0
+        ],
+        [
+          700.0,
+          1027.0
+        ],
+        [
+          700.0,
+          1047.0
+        ],
+        [
+          538.0,
+          1047.0
+        ]
+      ]
+    },
+    {
+      "text": "MRP Rs.65/-INCL.OFALL TAXES",
+      "confidence": 0.9347870349884033,
+      "bounding_box": [
+        [
+          331.0,
+          1059.0
+        ],
+        [
+          606.0,
+          1059.0
+        ],
+        [
+          606.0,
+          1081.0
+        ],
+        [
+          331.0,
+          1081.0
+        ]
+      ]
+    },
+    {
+      "text": "For feedback or queries,write to",
+      "confidence": 0.9340565204620361,
+      "bounding_box": [
+        [
+          811.0,
+          1078.0
+        ],
+        [
+          1020.0,
+          1078.0
+        ],
+        [
+          1020.0,
+          1094.0
+        ],
+        [
+          811.0,
+          1094.0
+        ]
+      ]
+    },
+    {
+      "text": "THE CONSUMER SERVICES MANAGER",
+      "confidence": 0.9553560018539429,
+      "bounding_box": [
+        [
+          811.0,
+          1098.0
+        ],
+        [
+          1114.0,
+          1098.0
+        ],
+        [
+          1114.0,
+          1120.0
+        ],
+        [
+          811.0,
+          1120.0
+        ]
+      ]
+    },
+    {
+      "text": "N.QTY:",
+      "confidence": 0.97530198097229,
+      "bounding_box": [
+        [
+          342.0,
+          1114.0
+        ],
+        [
+          416.0,
+          1114.0
+        ],
+        [
+          416.0,
+          1142.0
+        ],
+        [
+          342.0,
+          1142.0
+        ]
+      ]
+    },
+    {
+      "text": "PEPSICO INDIA HOLDINGSPVT.LTD.,",
+      "confidence": 0.9439085721969604,
+      "bounding_box": [
+        [
+          811.0,
+          1125.0
+        ],
+        [
+          1161.0,
+          1125.0
+        ],
+        [
+          1161.0,
+          1147.0
+        ],
+        [
+          811.0,
+          1147.0
+        ]
+      ]
+    },
+    {
+      "text": "P.O.BOX27DLF QUTAB ENCLAVE,",
+      "confidence": 0.9249817132949829,
+      "bounding_box": [
+        [
+          812.0,
+          1152.0
+        ],
+        [
+          1077.0,
+          1152.0
+        ],
+        [
+          1077.0,
+          1173.0
+        ],
+        [
+          812.0,
+          1173.0
+        ]
+      ]
+    },
+    {
+      "text": "B.NO:",
+      "confidence": 0.914350688457489,
+      "bounding_box": [
+        [
+          344.0,
+          1164.0
+        ],
+        [
+          411.0,
+          1164.0
+        ],
+        [
+          411.0,
+          1188.0
+        ],
+        [
+          344.0,
+          1188.0
+        ]
+      ]
+    },
+    {
+      "text": "PHASE-1,GURUGRAM-122002,HARYANA",
+      "confidence": 0.9618898630142212,
+      "bounding_box": [
+        [
+          811.0,
+          1178.0
+        ],
+        [
+          1141.0,
+          1178.0
+        ],
+        [
+          1141.0,
+          1200.0
+        ],
+        [
+          811.0,
+          1200.0
+        ]
+      ]
+    },
+    {
+      "text": "MFD:",
+      "confidence": 0.9574362635612488,
+      "bounding_box": [
+        [
+          344.0,
+          1212.0
+        ],
+        [
+          398.0,
+          1212.0
+        ],
+        [
+          398.0,
+          1236.0
+        ],
+        [
+          344.0,
+          1236.0
+        ]
+      ]
+    },
+    {
+      "text": "ORCALLUSAT 1800224020",
+      "confidence": 0.9725779294967651,
+      "bounding_box": [
+        [
+          812.0,
+          1205.0
+        ],
+        [
+          1081.0,
+          1205.0
+        ],
+        [
+          1081.0,
+          1227.0
+        ],
+        [
+          812.0,
+          1227.0
+        ]
+      ]
+    },
+    {
+      "text": "OR EMAIL US AT",
+      "confidence": 0.9122796058654785,
+      "bounding_box": [
+        [
+          810.0,
+          1225.0
+        ],
+        [
+          971.0,
+          1228.0
+        ],
+        [
+          970.0,
+          1255.0
+        ],
+        [
+          809.0,
+          1251.0
+        ]
+      ]
+    },
+    {
+      "text": "CONSUMER.FEEDBACK@PEPSICO.COM",
+      "confidence": 0.9939906001091003,
+      "bounding_box": [
+        [
+          811.0,
+          1256.0
+        ],
+        [
+          1177.0,
+          1256.0
+        ],
+        [
+          1177.0,
+          1278.0
+        ],
+        [
+          811.0,
+          1278.0
+        ]
+      ]
+    },
+    {
+      "text": "BEST BEFORE SIX MONTHS FROM MANUFACTURE",
+      "confidence": 0.9486030340194702,
+      "bounding_box": [
+        [
+          331.0,
+          1267.0
+        ],
+        [
+          695.0,
+          1269.0
+        ],
+        [
+          695.0,
+          1291.0
+        ],
+        [
+          331.0,
+          1289.0
+        ]
+      ]
+    },
+    {
+      "text": "Find us on",
+      "confidence": 0.9444085359573364,
+      "bounding_box": [
+        [
+          914.0,
+          1306.0
+        ],
+        [
+          980.0,
+          1306.0
+        ],
+        [
+          980.0,
+          1322.0
+        ],
+        [
+          914.0,
+          1322.0
+        ]
+      ]
+    },
+    {
+      "text": "facebook.com/laysindia",
+      "confidence": 0.9844143390655518,
+      "bounding_box": [
+        [
+          911.0,
+          1319.0
+        ],
+        [
+          1073.0,
+          1319.0
+        ],
+        [
+          1073.0,
+          1341.0
+        ],
+        [
+          911.0,
+          1341.0
+        ]
+      ]
+    },
+    {
+      "text": "8901491105798",
+      "confidence": 0.992773175239563,
+      "bounding_box": [
+        [
+          333.0,
+          1362.0
+        ],
+        [
+          550.0,
+          1362.0
+        ],
+        [
+          550.0,
+          1384.0
+        ],
+        [
+          333.0,
+          1384.0
+        ]
+      ]
+    }
+  ]
+}

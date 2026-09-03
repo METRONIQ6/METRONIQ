@@ -1,0 +1,25 @@
+{
+  "source_image": "external_data/Object-Detection-and-Text-Recognition-of-Packaged-Foods-main/sample dataset/images/train/28.png",
+  "ocr_text": "Care Officer on telephone nos.+91-20-24250853 to55",
+  "ocr_confidence": 0.9435455203056335,
+  "original_ocr_coordinates": [
+    [
+      350.0,
+      723.0
+    ],
+    [
+      856.0,
+      721.0
+    ],
+    [
+      856.0,
+      747.0
+    ],
+    [
+      350.0,
+      749.0
+    ]
+  ],
+  "candidate_class": "CONSUMER_CARE",
+  "matching_rule": "Matched internal regex signature"
+}

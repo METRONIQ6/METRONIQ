@@ -1,0 +1,25 @@
+{
+  "source_image": "external_data/Object-Detection-and-Text-Recognition-of-Packaged-Foods-main/sample dataset/images/train/13.png",
+  "ocr_text": "Known to cool tempers,",
+  "ocr_confidence": 0.9358951449394226,
+  "original_ocr_coordinates": [
+    [
+      875.0,
+      594.0
+    ],
+    [
+      1116.0,
+      597.0
+    ],
+    [
+      1115.0,
+      624.0
+    ],
+    [
+      875.0,
+      620.0
+    ]
+  ],
+  "candidate_class": "MRP",
+  "matching_rule": "Matched internal regex signature"
+}

@@ -1,0 +1,25 @@
+{
+  "source_image": "external_data/Object-Detection-and-Text-Recognition-of-Packaged-Foods-main/sample dataset/images/train/2.png",
+  "ocr_text": "INSECTSPESTS&STRONG ODOURS.",
+  "ocr_confidence": 0.8634459972381592,
+  "original_ocr_coordinates": [
+    [
+      747.0,
+      1156.0
+    ],
+    [
+      917.0,
+      1156.0
+    ],
+    [
+      917.0,
+      1177.0
+    ],
+    [
+      747.0,
+      1177.0
+    ]
+  ],
+  "candidate_class": "MRP",
+  "matching_rule": "Matched internal regex signature"
+}
