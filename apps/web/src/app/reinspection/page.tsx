@@ -1,10 +1,32 @@
-export default function Page() {
+'use client';
+import React from 'react';
+import { RefreshCw, Play, ShieldAlert } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+
+export default function ReinspectionPage() {
   return (
-    <div className="flex flex-col space-y-8 max-w-7xl mx-auto h-[70vh] items-center justify-center text-center">
+    <div className="flex flex-col space-y-8 animate-in fade-in duration-500">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight text-slate-900 border-b pb-4 mb-4 uppercase tracking-wider">Reinspection Control</h1>
-        <p className="text-slate-500 max-w-lg mx-auto">This structural shell page is successfully instantiated. Complex UI logic will be injected in later stages.</p>
-        <span className="inline-block mt-6 px-4 py-1 rounded-full border border-blue-200 bg-blue-50 text-blue-700 text-xs font-bold tracking-widest uppercase">Stage 3 Demo Module</span>
+        <h1 className="text-3xl font-black flex items-center gap-3"><RefreshCw className="text-indigo-600"/> Reinspection Queue</h1>
+        <p className="text-slate-500 mt-2">Entities requiring follow-up validation based on prior infractions.</p>
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-6">
+        <Card className="border-l-4 border-l-red-500 bg-gradient-to-br from-white to-red-50/20">
+          <CardHeader>
+            <CardTitle className="flex items-center text-red-700"><ShieldAlert className="w-5 h-5 mr-2" /> Critical Follow-ups</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex justify-between items-center p-4 bg-white border border-red-100 rounded-lg shadow-sm">
+              <div>
+                <h4 className="font-bold text-slate-800">AquaCorp India / 1L Water</h4>
+                <p className="text-xs text-slate-500">Previous Violation: Missing MRP (INSP-081)</p>
+              </div>
+              <Button size="sm" className="bg-red-600 hover:bg-red-700">Dispatch <Play className="w-4 h-4 ml-2"/></Button>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   )

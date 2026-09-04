@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { fetchAPI } from '@/lib/api';
 import {
   BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid,
   Tooltip as RechartsTooltip, ResponsiveContainer, AreaChart, Area
@@ -21,15 +22,15 @@ export default function Dashboard() {
   useEffect(() => {
     async function fetchAnalytics() {
       try {
-        const [overviewRes, trendsRes, aiRes] = await Promise.all([
-          fetch('http://localhost:8000/api/v1/analytics/overview'),
-          fetch('http://localhost:8000/api/v1/analytics/trends?days=7'),
-          fetch('http://localhost:8000/api/v1/analytics/ai-observations')
+        const [overviewData, trendsData, aiData] = await Promise.all([
+          fetchAPI('/analytics/overview'),
+          fetchAPI('/analytics/trends?days=7'),
+          fetchAPI('/analytics/ai-observations')
         ]);
 
-        const overview = await overviewRes.json();
-        const trends = await trendsRes.json();
-        const ai = await aiRes.json();
+        const overview = overviewData || { total_inspections: 0, total_ai_scans: 0, pending_rule_evaluations: 0, failed_inspections: 0 };
+        const trends = Array.isArray(trendsData) ? trendsData : [];
+        const ai = aiData || { frequency: [], confidence: [] };
 
         setData({ overview, trends, ai });
       } catch (err) {
