@@ -89,7 +89,7 @@ export default function OfficerDashboard() {
                 <ShieldAlert className="w-12 h-12 text-destructive mb-4" />
                 <h3 className="text-xl font-bold text-foreground">{t('error.failedLoad') || "Unable to load dashboard"}</h3>
                 <p className="text-muted-foreground mt-2 text-center max-w-sm">Please check your network connection and try again.</p>
-                <Button className="mt-6 bg-[#0B1F3A] hover:bg-[#0B1F3A]/90 text-white" onClick={() => window.location.reload()}>Retry Connection</Button>
+                <Button className="mt-6 bg-[#0B1F3A] hover:bg-[#0B1F3A]/90 text-white" onClick={() => window.location.reload()}>{t("common.retry") || "Retry Connection"}</Button>
             </div>
         )
     }

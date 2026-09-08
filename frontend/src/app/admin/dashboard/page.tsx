@@ -80,7 +80,7 @@ export default function AdminDashboard() {
                 <ServerCrash className="w-12 h-12 text-destructive mb-4" />
                 <h3 className="text-xl font-bold text-foreground">System Control Console Unavailable</h3>
                 <p className="text-muted-foreground mt-2 text-center max-w-sm">Unable to reach the root analytics service.</p>
-                <Button className="mt-6 bg-[#0B1F3A] text-white hover:bg-[#0B1F3A]/90" onClick={() => window.location.reload()}>Retry Connection</Button>
+                <Button className="mt-6 bg-[#0B1F3A] text-white hover:bg-[#0B1F3A]/90" onClick={() => window.location.reload()}>{t("common.retry") || "Retry Connection"}</Button>
             </div>
         )
     }

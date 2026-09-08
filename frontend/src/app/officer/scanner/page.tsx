@@ -2,7 +2,7 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { getToken } from '@/lib/auth'
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
+import { Button, buttonVariants } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { ShieldCheck, ShieldAlert, Loader2, Info, UploadCloud, Camera } from 'lucide-react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
@@ -391,7 +391,7 @@ export default function AIScannerUnified() {
 
                                 {f.status === 'FAIL' && (
                                     <Dialog>
-                                        <DialogTrigger render={<Button variant="outline" size="sm" className="text-destructive border-red-200 hover:bg-destructive/10" />}>
+                                        <DialogTrigger className={buttonVariants({ variant: "outline", size: "sm", className: "text-destructive border-red-200 hover:bg-destructive/10" })}>
                                             <Info className="w-4 h-4 mr-2" />
                                             WHY?
                                         </DialogTrigger>

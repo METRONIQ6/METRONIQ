@@ -5,9 +5,16 @@ class Settings(BaseSettings):
     PROJECT_NAME: str = "MetronIQ API"
     API_V1_STR: str = "/api/v1"
     
-    # SECURITY
-    SECRET_KEY: str = "supersecretkey_change_in_production"
+    # SECURITY 
+    # Use environment variables for secrets. Never hardcode in production.
+    # We provide a dummy fallback ONLY for local development to prevent breaking dev workflows.
+    SECRET_KEY: str = os.getenv("JWT_SECRET_KEY", "LOCAL_DEV_UNSAFE_SECRET_KEY")
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 8
+    
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        if os.getenv("ENVIRONMENT") == "production" and self.SECRET_KEY == "LOCAL_DEV_UNSAFE_SECRET_KEY":
+            raise ValueError("FATAL SECURITY ERROR: JWT_SECRET_KEY must be set in production environment variables!")
     
     # DATABASE
     DATABASE_URL: str = os.getenv("DATABASE_URL", "sqlite:///./metroniq-dev.db")

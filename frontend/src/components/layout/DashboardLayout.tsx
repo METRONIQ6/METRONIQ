@@ -1,37 +1,39 @@
 "use client"
 import React, { useState } from 'react'
 import Link from 'next/link'
+import { useTranslation } from '@/i18n'
 import { usePathname, useRouter } from 'next/navigation'
 import { LayoutDashboard, FileSearch, ShieldCheck, ListChecks, FileText, Settings, ShieldAlert, LogOut, Map, BarChart3, Ruler, MessageSquare, X } from 'lucide-react'
 import { getToken, removeToken } from '@/lib/auth'
 import LanguageSelector from '@/components/LanguageSelector'
 import { ModeToggle } from '@/components/mode-toggle'
 
-const getOfficerNav = () => [
-    { name: 'Dashboard', href: '/officer/dashboard', icon: LayoutDashboard },
-    { name: 'AI Scanner', href: '/officer/scanner', icon: ShieldCheck },
-    { name: 'Inspections', href: '/officer/inspection', icon: FileText },
-    { name: 'Notices', href: '/officer/notices', icon: ShieldAlert },
-    { name: 'Reinspections', href: '/officer/reinspections', icon: ListChecks },
-    { name: 'Enforcement', href: '/officer/enforcement', icon: ShieldAlert },
-    { name: 'E-Commerce', href: '/officer/ecommerce', icon: FileSearch },
-    { name: 'Reports', href: '/officer/reports', icon: BarChart3 },
+const getOfficerNav = (t: any) => [
+    { name: t('navigation.dashboard') || 'Dashboard', href: '/officer/dashboard', icon: LayoutDashboard },
+    { name: t('navigation.aiScanner') || 'AI Scanner', href: '/officer/scanner', icon: ShieldCheck },
+    { name: t('navigation.inspections') || 'Inspections', href: '/officer/inspection', icon: FileText },
+    { name: t('navigation.notices') || 'Notices', href: '/officer/notices', icon: ShieldAlert },
+    { name: t('navigation.reinspections') || 'Reinspections', href: '/officer/reinspections', icon: ListChecks },
+    { name: t('navigation.enforcement') || 'Enforcement', href: '/officer/enforcement', icon: ShieldAlert },
+    { name: t('navigation.ecommerce') || 'E-Commerce', href: '/officer/ecommerce', icon: FileSearch },
+    { name: t('navigation.reports') || 'Reports', href: '/officer/reports', icon: BarChart3 },
 ]
 
-const getAdminNav = () => [
-    { name: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
-    { name: 'Geo Analytics', href: '/admin/geo', icon: Map },
-    { name: 'Rule Management', href: '/admin/rules', icon: Ruler },
+const getAdminNav = (t: any) => [
+    { name: t('navigation.dashboard') || 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
+    { name: t('navigation.geoAnalytics') || 'Geo Analytics', href: '/admin/geo', icon: Map },
+    { name: t('navigation.rules') || 'Rule Management', href: '/admin/rules', icon: Ruler },
 ]
 
-const getManufacturerNav = () => [
-    { name: 'Dashboard', href: '/manufacturer/dashboard', icon: LayoutDashboard },
-    { name: 'Label Auditor', href: '/manufacturer/auditor', icon: FileSearch },
+const getManufacturerNav = (t: any) => [
+    { name: t('navigation.dashboard') || 'Dashboard', href: '/manufacturer/dashboard', icon: LayoutDashboard },
+    { name: t('navigation.labelAuditor') || 'Label Auditor', href: '/manufacturer/auditor', icon: FileSearch },
 ]
 
 export default function DashboardLayout({ children, role }: { children: React.ReactNode, role: 'officer' | 'admin' | 'manufacturer' }) {
     const pathname = usePathname()
     const router = useRouter()
+    const { t } = useTranslation()
     const [copilotOpen, setCopilotOpen] = useState(false)
 
     React.useEffect(() => {
@@ -56,9 +58,9 @@ export default function DashboardLayout({ children, role }: { children: React.Re
         }
     }, [router, role])
 
-    let navItems = getOfficerNav()
-    if (role === 'admin') navItems = getAdminNav()
-    if (role === 'manufacturer') navItems = getManufacturerNav()
+    let navItems = getOfficerNav(t)
+    if (role === 'admin') navItems = getAdminNav(t)
+    if (role === 'manufacturer') navItems = getManufacturerNav(t)
 
     return (
         <div className="flex h-screen bg-muted/30 overflow-hidden">

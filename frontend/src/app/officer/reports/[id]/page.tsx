@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import { use } from 'react'
 import { Card } from "@/components/ui/card"
-import { Printer, Download, ServerCrash } from "lucide-react"
+import { Download, ServerCrash } from "lucide-react"
 import { getToken } from '@/lib/auth'
 import { useTranslation } from '@/i18n'
 
@@ -65,16 +65,27 @@ export default function AuditReportPrint({ params }: { params: Promise<{ id: str
                     <p className="text-sm text-gray-500 font-mono">{t("reports.subtitle") || "LEGAL METROLOGY COMPLIANCE RECORD"}</p>
                 </div>
                 <div className="flex gap-2">
+
                     <button
-                        onClick={() => window.print()}
-                        className="no-print flex items-center px-4 py-2 bg-gray-100 text-[#0B1F3A] font-semibold rounded-md text-sm hover:bg-gray-200 transition-colors border border-gray-200 shadow-sm"
-                    >
-                        <Printer className="w-4 h-4 mr-2" />
-                        {t("reports.printView") || "Print Document"}
-                    </button>
-                    <button
-                        onClick={() => {
-                            window.location.href = `http://localhost:8000/api/v1/reports/${id}/pdf?lang=${language}`;
+                        onClick={async () => {
+                            try {
+                                const res = await fetch(`http://localhost:8000/api/v1/reports/${id}/pdf?lang=${language}`, {
+                                    headers: { 'Authorization': `Bearer ${getToken()}` }
+                                });
+                                if (!res.ok) throw new Error("Download failed");
+                                const blob = await res.blob();
+                                const url = window.URL.createObjectURL(blob);
+                                const a = document.createElement('a');
+                                a.href = url;
+                                a.download = `MetronIQ_Report_${id}.pdf`;
+                                document.body.appendChild(a);
+                                a.click();
+                                window.URL.revokeObjectURL(url);
+                                document.body.removeChild(a);
+                            } catch (e) {
+                                console.error("PDF Export error:", e);
+                                alert("Failed to generate PDF. Please ensure you are authenticated.");
+                            }
                         }}
                         className="no-print flex items-center px-4 py-2 bg-[#2563EB] text-white font-semibold rounded-md text-sm hover:bg-[#2563EB]/90 transition-colors shadow-sm"
                     >

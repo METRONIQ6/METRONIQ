@@ -80,25 +80,44 @@ export default function ManufacturerDashboard() {
         fetchAll()
     }, [toast])
 
+    const [submittingIds, setSubmittingIds] = useState<Set<string>>(new Set())
+
     const handleRectify = async (id: string) => {
+        if (submittingIds.has(id)) return
+        setSubmittingIds(prev => new Set(prev).add(id))
         try {
+            const token = getToken()
+            if (!token) {
+                toast({ type: 'error', message: 'Unauthorized. Please login again.' })
+                return
+            }
             const res = await fetch(`http://localhost:8000/api/v1/notices/${id}/rectify`, {
                 method: 'POST',
                 headers: {
-                    'Authorization': `Bearer ${getToken()}`,
+                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ remarks: "Manufacturer fixed the issue" })
+                body: JSON.stringify({ remarks: "Formal rectification submitted via portal" })
             })
+
             if (res.ok) {
                 toast({ type: 'success', message: 'Rectification Submitted Successfully' })
-                // Simple optimistic update for visual feedback
                 setNotices(prev => prev.map(n => n.id === id ? { ...n, status: 'RECTIFICATION_SUBMITTED' } : n))
+            } else if (res.status === 401 || res.status === 403) {
+                toast({ type: 'error', message: 'Unauthorized to perform this action' })
+            } else if (res.status === 400 || res.status === 422) {
+                toast({ type: 'error', message: 'Validation error: Invalid request parameters' })
             } else {
-                toast({ type: 'error', message: 'Failed to submit rectification' })
+                toast({ type: 'error', message: `Server Error: ${res.statusText}` })
             }
         } catch (e) {
             toast({ type: 'error', message: 'Network error occurred while submitting' })
+        } finally {
+            setSubmittingIds(prev => {
+                const next = new Set(prev)
+                next.delete(id)
+                return next
+            })
         }
     }
 
@@ -117,9 +136,9 @@ export default function ManufacturerDashboard() {
         return (
             <div className="flex flex-col items-center justify-center min-h-[60vh] p-12 bg-card border border-border rounded-xl shadow-sm">
                 <ServerCrash className="w-12 h-12 text-destructive mb-4" />
-                <h3 className="text-xl font-bold text-foreground">Portal Unavailable</h3>
-                <p className="text-muted-foreground mt-2 text-center max-w-sm">Unable to fetch compliance records.</p>
-                <Button className="mt-6 bg-[#0B1F3A] text-white hover:bg-[#0B1F3A]/90" onClick={() => window.location.reload()}>Retry Connection</Button>
+                <h3 className="text-xl font-bold text-foreground">{t('common.error') || "Portal Unavailable"}</h3>
+                <p className="text-muted-foreground mt-2 text-center max-w-sm">{t('common.retry') || "Unable to fetch records."}</p>
+                <Button className="mt-6 bg-[#0B1F3A] text-white hover:bg-[#0B1F3A]/90" onClick={() => window.location.reload()}>{t('common.retry') || "Retry Connection"}</Button>
             </div>
         )
     }
@@ -274,8 +293,9 @@ export default function ManufacturerDashboard() {
                                                 </TableCell>
                                                 <TableCell className="text-right py-3 pr-4">
                                                     {n.status === 'ISSUED' ? (
-                                                        <Button size="sm" className="h-7 text-xs bg-[#2563EB] hover:bg-[#2563EB]/90 text-white" onClick={() => handleRectify(n.id)}>
-                                                            <RefreshCw className="w-3 h-3 mr-1.5" /> Rectify
+                                                        <Button size="sm" className="h-7 text-xs bg-[#2563EB] hover:bg-[#2563EB]/90 text-white" disabled={submittingIds.has(n.id)} onClick={() => handleRectify(n.id)}>
+                                                            <RefreshCw className={`w-3 h-3 mr-1.5 ${submittingIds.has(n.id) ? 'animate-spin' : ''}`} />
+                                                            {submittingIds.has(n.id) ? 'Submitting...' : 'Rectify'}
                                                         </Button>
                                                     ) : (
                                                         <span className="text-xs text-muted-foreground font-medium italic">Under Review</span>

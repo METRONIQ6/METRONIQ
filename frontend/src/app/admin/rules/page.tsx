@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
+import { Button, buttonVariants } from "@/components/ui/button"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
@@ -113,10 +113,8 @@ export default function RuleManagement() {
                 </div>
 
                 <Dialog open={open} onOpenChange={setOpen}>
-                    <DialogTrigger>
-                        <Button className="bg-[#2563EB] hover:bg-[#2563EB]/90 text-white font-semibold h-11 px-6 shadow-sm">
-                            <PlusCircle className="mr-2 w-4 h-4" /> Define New Regulation
-                        </Button>
+                    <DialogTrigger className={buttonVariants({ className: "bg-[#2563EB] hover:bg-[#2563EB]/90 text-white font-semibold h-11 px-6 shadow-sm" })}>
+                        <PlusCircle className="mr-2 w-4 h-4" /> Define New Regulation
                     </DialogTrigger>
                     <DialogContent className="sm:max-w-[425px]">
                         <DialogHeader>
@@ -199,6 +197,6 @@ export default function RuleManagement() {
                     </Table>
                 </CardContent>
             </Card>
-        </div>
+        </div >
     )
 }
