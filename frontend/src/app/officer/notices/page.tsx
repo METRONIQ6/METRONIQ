@@ -35,7 +35,7 @@ export default function NoticesPage() {
             }
         } catch (e) {
             setError(true)
-            toast({ type: "error", message: "Network anomaly retrieving compliance notices." })
+            toast({ type: "error", message: t("error.notices_fetch") })
         } finally {
             setLoading(false)
         }
@@ -56,10 +56,10 @@ export default function NoticesPage() {
                 setNotices(prev => prev.map(n => n.id === id ? { ...n, status: action } : n))
                 toast({ type: 'success', message: `Notice status updated to ${action}.` })
             } else {
-                toast({ type: "error", message: "Declined: Unable to update notice state." })
+                toast({ type: "error", message: t("error.notice_decline") })
             }
         } catch (e) {
-            toast({ type: "error", message: "System transmission error." })
+            toast({ type: "error", message: t("error.system_transmission") })
         } finally {
             setActionLoading(false)
             setSelectedNotice(null)
@@ -75,13 +75,13 @@ export default function NoticesPage() {
                 body: JSON.stringify({ original_inspection_id: orig_id, notice_id: notice_id })
             })
             if (res.ok) {
-                toast({ type: 'success', message: 'Reinspection scheduled successfully.' })
+                toast({ type: 'success', message: t("success.reinspection") })
                 await reviewNotice(notice_id, 'REINSPECTION_PENDING')
             } else {
-                toast({ type: "error", message: "Failed to generate reinspection docket." })
+                toast({ type: "error", message: t("error.reinspection_docket") })
             }
         } catch (e) {
-            toast({ type: "error", message: "System error communicating with engine." })
+            toast({ type: "error", message: t("error.system_engine") })
         } finally {
             setActionLoading(false)
         }
@@ -91,8 +91,8 @@ export default function NoticesPage() {
         return (
             <div className="flex flex-col items-center justify-center min-h-[60vh] p-12 bg-card border border-border rounded-xl shadow-sm">
                 <ServerCrash className="w-12 h-12 text-destructive mb-4" />
-                <h3 className="text-xl font-bold text-foreground">Service Unavailable</h3>
-                <p className="text-muted-foreground mt-2 text-center max-w-sm">Notices subsystem is unresponsive.</p>
+                <h3 className="text-xl font-bold text-foreground">{t("error.failedLoad")}</h3>
+                <p className="text-muted-foreground mt-2 text-center max-w-sm">{t("error.unresponsive")}</p>
                 <Button className="mt-6 bg-[#0B1F3A] text-white hover:bg-[#0B1F3A]/90" onClick={fetchNotices}>
                     <RefreshCw className="w-4 h-4 mr-2" /> Retry Connection
                 </Button>
@@ -117,17 +117,17 @@ export default function NoticesPage() {
 
             <Card className="rounded-xl shadow-sm border border-border bg-card overflow-hidden">
                 <CardHeader className="pb-3 border-b border-border/40 bg-card/50 flex flex-row items-center justify-between">
-                    <CardTitle className="text-base font-semibold text-foreground tracking-tight">Active Notices Dashboard</CardTitle>
+                    <CardTitle className="text-base font-semibold text-foreground tracking-tight">{t("notices.dashboardTitle")}</CardTitle>
                 </CardHeader>
                 <CardContent className="p-0">
                     <Table>
                         <TableHeader className="bg-muted/30">
                             <TableRow className="border-border">
-                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">Notice Identifier</TableHead>
-                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">Inspection Origin</TableHead>
-                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">Violation Details</TableHead>
-                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-center">Status</TableHead>
-                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-right pr-4">Oversight Action</TableHead>
+                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">{t('notices.noticeIdentifier')}</TableHead>
+                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">{t('notices.inspectionOrigin')}</TableHead>
+                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">{t('notices.violationDetails')}</TableHead>
+                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-center">{t('common.status')}</TableHead>
+                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-right pr-4">{t('common.oversightAction')}</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -162,7 +162,7 @@ export default function NoticesPage() {
                                                 ${n.status === 'ISSUED' ? 'border-orange-200 text-orange-700 bg-orange-50 dark:border-orange-900/50 dark:text-orange-400 dark:bg-orange-900/10' :
                                                     n.status === 'RECTIFICATION_SUBMITTED' ? 'border-blue-200 text-blue-700 bg-blue-50 dark:border-blue-900/50 dark:text-blue-400 dark:bg-blue-900/10' :
                                                         'border-green-200 text-green-700 bg-green-50 dark:border-green-900/50 dark:text-green-400 dark:bg-green-900/10'}`}>
-                                                {n.status || "UNKNOWN"}
+                                                {t('status.' + (n.status || 'UNKNOWN'))}
                                             </Badge>
                                         </TableCell>
                                         <TableCell className="text-right py-4 pr-4">
@@ -180,9 +180,9 @@ export default function NoticesPage() {
                                                         </Button>
                                                     </>
                                                 ) : n.status === 'RESOLVED' ? (
-                                                    <Button size="sm" variant="ghost" disabled className="h-8 text-xs font-semibold px-4 opacity-50">Closed</Button>
+                                                    <Button size="sm" variant="ghost" disabled className="h-8 text-xs font-semibold px-4 opacity-50">{t("status.CLOSED")}</Button>
                                                 ) : n.status === 'REINSPECTION_PENDING' ? (
-                                                    <Button size="sm" variant="ghost" disabled className="h-8 text-xs font-semibold px-4 opacity-50 text-blue-600">Pending Setup</Button>
+                                                    <Button size="sm" variant="ghost" disabled className="h-8 text-xs font-semibold px-4 opacity-50 text-blue-600">{t("notices.pendingSetup")}</Button>
                                                 ) : null}
                                             </div>
                                         </TableCell>
@@ -208,34 +208,34 @@ export default function NoticesPage() {
                         <div className="space-y-4 pt-4 text-sm mt-2">
 
                             <div className="grid grid-cols-3 gap-2 py-3 border-b border-border/40">
-                                <span className="text-muted-foreground font-semibold uppercase tracking-wider text-xs flex items-center">System ID</span>
+                                <span className="text-muted-foreground font-semibold uppercase tracking-wider text-xs flex items-center">{t("notices.systemId")}</span>
                                 <span className="col-span-2 font-mono text-[#0B1F3A] dark:text-blue-300 font-bold">{selectedNotice.id}</span>
                             </div>
                             <div className="grid grid-cols-3 gap-2 py-3 border-b border-border/40">
-                                <span className="text-muted-foreground font-semibold uppercase tracking-wider text-xs flex items-center">Inspection Ref</span>
+                                <span className="text-muted-foreground font-semibold uppercase tracking-wider text-xs flex items-center">{t("notices.inspectionRef")}</span>
                                 <span className="col-span-2 font-mono">{selectedNotice.inspection_id}</span>
                             </div>
                             <div className="grid grid-cols-3 gap-2 py-3 border-b border-border/40">
-                                <span className="text-muted-foreground font-semibold uppercase tracking-wider text-xs flex items-center">Current Status</span>
+                                <span className="text-muted-foreground font-semibold uppercase tracking-wider text-xs flex items-center">{t("notices.currentStatus")}</span>
                                 <span className="col-span-2 font-semibold">
                                     <Badge variant="outline" className={`font-mono text-xs uppercase px-2 py-0.5 rounded-sm border
                                                 ${selectedNotice.status === 'ISSUED' ? 'border-orange-200 text-orange-700 bg-orange-50' :
                                             selectedNotice.status === 'RECTIFICATION_SUBMITTED' ? 'border-blue-200 text-blue-700 bg-blue-50' :
                                                 'border-green-200 text-green-700 bg-green-50'}`}>
-                                        {selectedNotice.status}
+                                        {t('status.' + (selectedNotice.status || 'UNKNOWN'))}
                                     </Badge>
                                 </span>
                             </div>
                             <div className="grid grid-cols-3 gap-2 py-3 border-b border-border/40">
-                                <span className="text-muted-foreground font-semibold uppercase tracking-wider text-xs flex items-center">Violation Log</span>
+                                <span className="text-muted-foreground font-semibold uppercase tracking-wider text-xs flex items-center">{t("notices.violationLog")}</span>
                                 <span className="col-span-2 text-destructive font-medium leading-relaxed">{selectedNotice.violations || 'N/A'}</span>
                             </div>
                             <div className="grid grid-cols-3 gap-2 py-3 border-b border-border/40">
-                                <span className="text-muted-foreground font-semibold uppercase tracking-wider text-xs flex items-center">Required Fix</span>
+                                <span className="text-muted-foreground font-semibold uppercase tracking-wider text-xs flex items-center">{t("notices.requiredFix")}</span>
                                 <span className="col-span-2 font-medium">{selectedNotice.corrective_action || 'Manufacturer verification needed'}</span>
                             </div>
                             <div className="grid grid-cols-3 gap-2 py-3">
-                                <span className="text-muted-foreground font-semibold uppercase tracking-wider text-xs flex items-center">Compliance By</span>
+                                <span className="text-muted-foreground font-semibold uppercase tracking-wider text-xs flex items-center">{t("notices.complianceBy")}</span>
                                 <span className="col-span-2 font-mono font-bold text-orange-700">
                                     {selectedNotice.due_date ? new Date(selectedNotice.due_date).toLocaleDateString() : 'N/A'}
                                 </span>
@@ -243,7 +243,7 @@ export default function NoticesPage() {
                         </div>
                     )}
                     <DialogFooter className="mt-6 border-t border-border pt-4">
-                        <Button variant="outline" onClick={() => setSelectedNotice(null)}>Dismiss Dossier</Button>
+                        <Button variant="outline" onClick={() => setSelectedNotice(null)}>{t("notices.dismissDossier")}</Button>
                     </DialogFooter>
                 </DialogContent>
             </Dialog>

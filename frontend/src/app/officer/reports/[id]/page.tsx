@@ -61,8 +61,8 @@ export default function AuditReportPrint({ params }: { params: Promise<{ id: str
 
             <div className="flex justify-between items-start mb-10 border-b-2 border-[#0B1F3A] pb-6">
                 <div>
-                    <h1 className="text-3xl font-extrabold uppercase tracking-tight text-[#0B1F3A] mb-1">{t("reports.title") || "Official Audit Docket"}</h1>
-                    <p className="text-sm text-gray-500 font-mono">{t("reports.subtitle") || "LEGAL METROLOGY COMPLIANCE RECORD"}</p>
+                    <h1 className="text-3xl font-extrabold uppercase tracking-tight text-[#0B1F3A] mb-1">{t("reports.title")}</h1>
+                    <p className="text-sm text-gray-500 font-mono">{t("reports.subtitle")}</p>
                 </div>
                 <div className="flex gap-2">
 
@@ -90,7 +90,7 @@ export default function AuditReportPrint({ params }: { params: Promise<{ id: str
                         className="no-print flex items-center px-4 py-2 bg-[#2563EB] text-white font-semibold rounded-md text-sm hover:bg-[#2563EB]/90 transition-colors shadow-sm"
                     >
                         <Download className="w-4 h-4 mr-2" />
-                        {t("reports.downloadPdf") || "Export PDF"}
+                        {t("reports.downloadPdf")}
                     </button>
                 </div>
             </div>

@@ -33,7 +33,7 @@ export default function ReinspectionsPage() {
             }
         } catch (e) {
             setError(true)
-            toast({ type: "error", message: "Network connection lost fetching reinspection queue." })
+            toast({ type: "error", message: t("error.reinspection_queue") })
         } finally {
             setLoading(false)
         }
@@ -53,13 +53,13 @@ export default function ReinspectionsPage() {
             })
             if (res.ok || res.status === 409) {
                 setReinspections(prev => prev.map(r => r.id === id ? { ...r, status: 'ESCALATED' } : r))
-                toast({ type: 'success', message: 'Reinspection escalated to formal enforcement.' })
+                toast({ type: 'success', message: t("success.reinspection_escalated") })
             } else {
                 const err = await res.json()
                 toast({ type: "error", message: "Escalation failed: " + err.detail })
             }
         } catch (e) {
-            toast({ type: "error", message: "Escalation communication failed." })
+            toast({ type: "error", message: t("error.escalation_comm") })
         } finally {
             setActionLoading(null)
         }
@@ -103,7 +103,7 @@ export default function ReinspectionsPage() {
                             <TableRow className="border-border">
                                 <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">Task Identifier</TableHead>
                                 <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">Original Audit Ref</TableHead>
-                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-center">Status</TableHead>
+                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-center">{t('common.status')}</TableHead>
                                 <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">Assignee</TableHead>
                                 <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-right pr-4">Execution Action</TableHead>
                             </TableRow>

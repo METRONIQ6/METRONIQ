@@ -33,7 +33,7 @@ export default function EcommercePage() {
             }
         } catch (e) {
             setError(true)
-            toast({ type: "error", message: "Network connection lost fetching e-commerce monitors." })
+            toast({ type: "error", message: t("error.ecommerce_fetch") })
         } finally {
             setLoading(false)
         }
@@ -45,7 +45,7 @@ export default function EcommercePage() {
 
     const addMonitor = async () => {
         if (!newUrl) {
-            toast({ type: "warning", message: "Please provide a valid URL." })
+            toast({ type: "warning", message: t("warning.valid_url") })
             return
         }
         try {
@@ -57,12 +57,12 @@ export default function EcommercePage() {
             if (res.ok) {
                 setMonitors([await res.json(), ...monitors])
                 setNewUrl("")
-                toast({ type: "success", message: "Digital tracking sequence initiated." })
+                toast({ type: "success", message: t("success.tracking_started") })
             } else {
-                toast({ type: "error", message: "Failed to establish monitor." })
+                toast({ type: "error", message: t("error.monitor_failed") })
             }
         } catch (e) {
-            toast({ type: "error", message: "Network communication failed." })
+            toast({ type: "error", message: t("error.network_comm") })
         }
     }
 
@@ -73,9 +73,9 @@ export default function EcommercePage() {
                 headers: { 'Authorization': `Bearer ${getToken()}` }
             })
             setMonitors(monitors.map(m => m.id === id ? { ...m, last_scan_result: 'SCANNING...' } : m))
-            toast({ type: "success", message: "Manual ad-hoc crawl sequence executed." })
+            toast({ type: "success", message: t("success.manual_crawl") })
         } catch (e) {
-            toast({ type: "error", message: "System error executing manual crawl." })
+            toast({ type: "error", message: t("error.system_crawl") })
         }
     }
 

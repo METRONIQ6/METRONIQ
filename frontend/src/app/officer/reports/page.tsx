@@ -1,5 +1,6 @@
+"use client";
+import { useTranslation } from '@/i18n'
 
-"use client"
 import React from 'react'
 import { useToast } from "@/components/ui/use-toast"
 import { Card } from "@/components/ui/card"
@@ -10,6 +11,7 @@ import Link from 'next/link'
 import { getToken } from '@/lib/auth'
 
 export default function ReportsPage() {
+    const { t } = useTranslation();
     const { toast } = useToast()
     const [cases, setCases] = React.useState<any[]>([])
 
@@ -20,7 +22,7 @@ export default function ReportsPage() {
                     headers: { 'Authorization': `Bearer ${getToken()}` }
                 })
                 if (res.ok) setCases(await res.json())
-            } catch (e) { toast({ type: "error", message: "A network or server error occurred." }) }
+            } catch (e) { toast({ type: "error", message: t("error.network_server") }) }
         }
         fetchCases()
     }, [])
@@ -33,7 +35,7 @@ export default function ReportsPage() {
                     <TableHeader>
                         <TableRow>
                             <TableHead>Case ID</TableHead>
-                            <TableHead>Status</TableHead>
+                            <TableHead>{t('common.status')}</TableHead>
                             <TableHead>Action</TableHead>
                         </TableRow>
                     </TableHeader>

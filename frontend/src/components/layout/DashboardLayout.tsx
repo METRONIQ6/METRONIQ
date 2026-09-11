@@ -9,25 +9,25 @@ import LanguageSelector from '@/components/LanguageSelector'
 import { ModeToggle } from '@/components/mode-toggle'
 
 const getOfficerNav = (t: any) => [
-    { name: t('navigation.dashboard') || 'Dashboard', href: '/officer/dashboard', icon: LayoutDashboard },
-    { name: t('navigation.aiScanner') || 'AI Scanner', href: '/officer/scanner', icon: ShieldCheck },
-    { name: t('navigation.inspections') || 'Inspections', href: '/officer/inspection', icon: FileText },
-    { name: t('navigation.notices') || 'Notices', href: '/officer/notices', icon: ShieldAlert },
-    { name: t('navigation.reinspections') || 'Reinspections', href: '/officer/reinspections', icon: ListChecks },
-    { name: t('navigation.enforcement') || 'Enforcement', href: '/officer/enforcement', icon: ShieldAlert },
-    { name: t('navigation.ecommerce') || 'E-Commerce', href: '/officer/ecommerce', icon: FileSearch },
-    { name: t('navigation.reports') || 'Reports', href: '/officer/reports', icon: BarChart3 },
+    { name: t('navigation.dashboard'), href: '/officer/dashboard', icon: LayoutDashboard },
+    { name: t('navigation.aiScanner'), href: '/officer/scanner', icon: ShieldCheck },
+    { name: t('navigation.inspections'), href: '/officer/inspection', icon: FileText },
+    { name: t('navigation.notices'), href: '/officer/notices', icon: ShieldAlert },
+    { name: t('navigation.reinspections'), href: '/officer/reinspections', icon: ListChecks },
+    { name: t('navigation.enforcement'), href: '/officer/enforcement', icon: ShieldAlert },
+    { name: t('navigation.ecommerce'), href: '/officer/ecommerce', icon: FileSearch },
+    { name: t('navigation.reports'), href: '/officer/reports', icon: BarChart3 },
 ]
 
 const getAdminNav = (t: any) => [
-    { name: t('navigation.dashboard') || 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
-    { name: t('navigation.geoAnalytics') || 'Geo Analytics', href: '/admin/geo', icon: Map },
-    { name: t('navigation.rules') || 'Rule Management', href: '/admin/rules', icon: Ruler },
+    { name: t('navigation.dashboard'), href: '/admin/dashboard', icon: LayoutDashboard },
+    { name: t('navigation.geoAnalytics'), href: '/admin/geo', icon: Map },
+    { name: t('navigation.rules'), href: '/admin/rules', icon: Ruler },
 ]
 
 const getManufacturerNav = (t: any) => [
-    { name: t('navigation.dashboard') || 'Dashboard', href: '/manufacturer/dashboard', icon: LayoutDashboard },
-    { name: t('navigation.labelAuditor') || 'Label Auditor', href: '/manufacturer/auditor', icon: FileSearch },
+    { name: t('navigation.dashboard'), href: '/manufacturer/dashboard', icon: LayoutDashboard },
+    { name: t('navigation.labelAuditor'), href: '/manufacturer/auditor', icon: FileSearch },
 ]
 
 export default function DashboardLayout({ children, role }: { children: React.ReactNode, role: 'officer' | 'admin' | 'manufacturer' }) {

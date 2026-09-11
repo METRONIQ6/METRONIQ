@@ -55,7 +55,7 @@ export default function AdminDashboard() {
             } catch (err) {
                 console.error(err)
                 setError(true)
-                toast({ type: "error", message: "Failed to load system analytics." })
+                toast({ type: "error", message: t("error.failed_analytics") })
             } finally {
                 setLoading(false)
             }
@@ -78,9 +78,9 @@ export default function AdminDashboard() {
         return (
             <div className="flex flex-col items-center justify-center min-h-[60vh] p-12 bg-card border border-border rounded-xl shadow-sm">
                 <ServerCrash className="w-12 h-12 text-destructive mb-4" />
-                <h3 className="text-xl font-bold text-foreground">System Control Console Unavailable</h3>
+                <h3 className="text-xl font-bold text-foreground">{t('adminUI.system_control_conso')}</h3>
                 <p className="text-muted-foreground mt-2 text-center max-w-sm">Unable to reach the root analytics service.</p>
-                <Button className="mt-6 bg-[#0B1F3A] text-white hover:bg-[#0B1F3A]/90" onClick={() => window.location.reload()}>{t("common.retry") || "Retry Connection"}</Button>
+                <Button className="mt-6 bg-[#0B1F3A] text-white hover:bg-[#0B1F3A]/90" onClick={() => window.location.reload()}>{t("common.retry")}</Button>
             </div>
         )
     }
@@ -136,7 +136,7 @@ export default function AdminDashboard() {
                     icon={<ShieldAlert className="w-5 h-5" />} iconColorClass="text-red-600 dark:text-red-400"
                 />
                 <SystemKpiCard
-                    title="Compliance Rate" value={stats.compliance_rate || "0%"} subtitle="National Average"
+                    title={t("dashboard.complianceRate")} value={stats.compliance_rate || "0%"} subtitle="National Average"
                     icon={<CheckCircle className="w-5 h-5" />} iconColorClass="text-green-600 dark:text-green-400"
                 />
                 <SystemKpiCard
@@ -169,11 +169,11 @@ export default function AdminDashboard() {
                 {/* Left Area: Analytics & Trends (Requires historic data from API, using professional empty state for now) */}
                 <Card className="rounded-xl shadow-sm border border-border bg-card h-[400px] flex flex-col">
                     <CardHeader className="pb-3 border-b border-border/40">
-                        <CardTitle className="text-base font-semibold text-foreground tracking-tight">Global Inspection Trends</CardTitle>
+                        <CardTitle className="text-base font-semibold text-foreground tracking-tight">{t('adminUI.global_inspection_tr')}</CardTitle>
                     </CardHeader>
                     <CardContent className="flex-grow flex flex-col items-center justify-center p-8 text-center text-muted-foreground">
                         <BarChart3 className="w-12 h-12 mb-4 opacity-20" />
-                        <h4 className="text-sm font-semibold text-foreground mb-1">Insufficient Historical Data</h4>
+                        <h4 className="text-sm font-semibold text-foreground mb-1">{t('adminUI.insufficient_histori')}</h4>
                         <p className="text-sm max-w-sm">The platform requires at least one full reporting cycle (30 days) to aggregate and render structural trends securely.</p>
                     </CardContent>
                 </Card>
@@ -182,7 +182,7 @@ export default function AdminDashboard() {
                 <div className="space-y-6">
                     <Card className="rounded-xl shadow-sm border border-border bg-card">
                         <CardHeader className="pb-3 border-b border-border/40">
-                            <CardTitle className="text-base font-semibold text-foreground tracking-tight">System Navigation</CardTitle>
+                            <CardTitle className="text-base font-semibold text-foreground tracking-tight">{t('adminUI.system_navigation')}</CardTitle>
                         </CardHeader>
                         <CardContent className="p-0">
                             <div className="divide-y divide-border/40">
@@ -193,7 +193,7 @@ export default function AdminDashboard() {
                                             <Users className="w-5 h-5" />
                                         </div>
                                         <div>
-                                            <p className="text-sm font-semibold text-foreground">User Management</p>
+                                            <p className="text-sm font-semibold text-foreground">{t('adminUI.user_management')}</p>
                                             <p className="text-xs text-muted-foreground">Manage RBAC, roles, and administrator accounts.</p>
                                         </div>
                                     </div>
@@ -217,7 +217,7 @@ export default function AdminDashboard() {
                                             <Map className="w-5 h-5" />
                                         </div>
                                         <div>
-                                            <p className="text-sm font-semibold text-foreground">Geospatial Intelligence</p>
+                                            <p className="text-sm font-semibold text-foreground">{t('adminUI.geospatial_intellige')}</p>
                                             <p className="text-xs text-muted-foreground">View high-risk zone mapping and heat patterns.</p>
                                         </div>
                                     </div>

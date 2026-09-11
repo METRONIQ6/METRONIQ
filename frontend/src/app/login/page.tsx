@@ -1,4 +1,5 @@
-"use client"
+"use client";
+import { useTranslation } from '@/i18n'
 import React, { useState } from 'react'
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -11,6 +12,7 @@ import LanguageSelector from '@/components/LanguageSelector'
 import { ModeToggle } from '@/components/mode-toggle'
 
 export default function Login() {
+    const { t } = useTranslation();
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
@@ -112,8 +114,8 @@ export default function Login() {
                                 <ShieldCheck className="w-10 h-10 text-white" />
                             </div>
                         </div>
-                        <h2 className="text-3xl font-bold tracking-tight text-[#0B1F3A] dark:text-white">Welcome back</h2>
-                        <p className="text-sm font-medium text-muted-foreground mt-2">Sign in to your METRONIQ account</p>
+                        <h2 className="text-3xl font-bold tracking-tight text-[#0B1F3A] dark:text-white">{t('loginUI.welcome_back')}</h2>
+                        <p className="text-sm font-medium text-muted-foreground mt-2">{t('loginUI.sign_in_to_your_metr')}</p>
                     </div>
 
                     <form onSubmit={handleLogin} className="space-y-5">
@@ -125,7 +127,7 @@ export default function Login() {
                         )}
 
                         <div className="space-y-2">
-                            <Label htmlFor="email" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Official Email</Label>
+                            <Label htmlFor="email" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">{t('loginUI.official_email')}</Label>
                             <Input
                                 id="email"
                                 type="email"
@@ -139,7 +141,7 @@ export default function Login() {
 
                         <div className="space-y-2 relative">
                             <div className="flex justify-between items-center">
-                                <Label htmlFor="password" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Password</Label>
+                                <Label htmlFor="password" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">{t('loginUI.password')}</Label>
                                 <a href="#" className="text-xs text-[#2563EB] hover:underline font-semibold tab-index--1">Forgot password?</a>
                             </div>
                             <div className="relative">

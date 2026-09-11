@@ -56,7 +56,7 @@ export default function AIScannerUnified() {
             }
         } catch (err) {
             console.error("Camera access denied or unavailable", err)
-            toast({ type: 'warning', message: 'Camera access denied or unavailable.', description: 'Please use the upload alternative.' })
+            toast({ type: 'warning', message: t("warning.camera_denied"), description: 'Please use the upload alternative.' })
         }
     }
 
@@ -100,7 +100,7 @@ export default function AIScannerUnified() {
 
         try {
             if (!file) {
-                toast({ type: 'warning', message: 'No file selected.' })
+                toast({ type: 'warning', message: t("warning.no_file") })
                 setFlowState('SELECT')
                 return;
             }
@@ -189,9 +189,9 @@ export default function AIScannerUnified() {
             })
             if (res.ok) {
                 setNoticeIssued(true)
-                toast({ type: 'success', message: 'Improvement Notice Issued Successfully' })
+                toast({ type: 'success', message: t("success.notice_issued") })
             } else {
-                toast({ type: 'error', message: 'Failed to issue notice' })
+                toast({ type: 'error', message: t("error.notice_issue_failed") })
             }
         } catch (e) {
             console.error(e)
@@ -250,15 +250,15 @@ export default function AIScannerUnified() {
         return (
             <div className="max-w-3xl mx-auto space-y-6">
                 <div>
-                    <h2 className="text-2xl font-bold tracking-tight">AI Product Compliance Scanner</h2>
+                    <h2 className="text-2xl font-bold tracking-tight">{t('scanner.title')}</h2>
                 </div>
                 <Card className="mt-8 border-border">
                     <CardContent className="flex flex-col items-center justify-center py-8 px-4 w-full">
-                        <h3 className="text-lg font-medium mb-4">IMAGE PREVIEW</h3>
+                        <h3 className="text-lg font-medium mb-4">{t('scanner.preview')}</h3>
                         {preview && <img src={preview} alt="Preview" className="max-h-80 object-contain rounded-md border mb-6" />}
                         <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto justify-center">
-                            <Button variant="outline" className="w-full sm:w-32" onClick={cancelPreview}>Back</Button>
-                            <Button className="bg-primary hover:bg-primary/90 w-full sm:w-32" onClick={processRealData}>Start AI Scan</Button>
+                            <Button variant="outline" className="w-full sm:w-32" onClick={cancelPreview}>{t('common.back')}</Button>
+                            <Button className="bg-primary hover:bg-primary/90 w-full sm:w-32" onClick={processRealData}>{t('scanner.startScan')}</Button>
                         </div>
                     </CardContent>
                 </Card>
@@ -276,7 +276,7 @@ export default function AIScannerUnified() {
                 <div className="w-64 h-2 bg-muted rounded-full overflow-hidden">
                     <div className="h-full bg-primary transition-all duration-300" style={{ width: `${(loadingStep / (steps.length - 1)) * 100}%` }}></div>
                 </div>
-                <p className="text-xs text-muted-foreground/80 mt-4 uppercase">AI Processing Engine Active</p>
+                <p className="text-xs text-muted-foreground/80 mt-4 uppercase">{t('scanner.engineActive')}</p>
             </div>
         )
     }
@@ -297,7 +297,7 @@ export default function AIScannerUnified() {
                             The PaddleOCR hardware dependencies could not be resolved on this system.
                         </p>
                         <div className="pt-6">
-                            <Button className="bg-orange-600 hover:bg-orange-700 text-white w-full max-w-xs mx-auto" onClick={cancelPreview}>Acknowledge</Button>
+                            <Button className="bg-orange-600 hover:bg-orange-700 text-white w-full max-w-xs mx-auto" onClick={cancelPreview}>{t('common.acknowledge')}</Button>
                         </div>
                     </CardContent>
                 </Card>
@@ -323,7 +323,7 @@ export default function AIScannerUnified() {
                             <img src={preview} alt="Invalid Upload" className="mx-auto mt-6 h-48 object-contain rounded-md border border-red-200 opacity-80" />
                         )}
                         <div className="pt-6">
-                            <Button className="bg-red-600 hover:bg-red-700 text-white w-full max-w-xs mx-auto" onClick={cancelPreview}>Scan Another Image</Button>
+                            <Button className="bg-red-600 hover:bg-red-700 text-white w-full max-w-xs mx-auto" onClick={cancelPreview}>{t('scanner.scanAnotherFull')}</Button>
                         </div>
                     </CardContent>
                 </Card>
@@ -335,7 +335,7 @@ export default function AIScannerUnified() {
         <div className="space-y-6 max-w-6xl mx-auto">
             <div className="flex justify-between items-center">
                 <div>
-                    <h2 className="text-2xl font-bold tracking-tight">Compliance Result</h2>
+                    <h2 className="text-2xl font-bold tracking-tight">{t('scanner.complianceResult')}</h2>
                     <p className="text-muted-foreground">{data?.validation_details ? 'Validation Complete' : ''}</p>
                 </div>
                 <div className="flex items-center gap-4">
@@ -343,7 +343,7 @@ export default function AIScannerUnified() {
                         {data?.compliance || 'UNKNOWN'}
                     </Badge>
                     <div className="flex flex-col items-end">
-                        <span className="text-xs text-muted-foreground uppercase font-semibold">Risk Score</span>
+                        <span className="text-xs text-muted-foreground uppercase font-semibold">{t('scanner.riskScore')}</span>
                         <span className={`text-xl font-bold uppercase ${data?.risk_score === 'HIGH' ? 'text-destructive' : 'text-orange-500'}`}>{data?.risk_score || 'N/A'}</span>
                     </div>
                 </div>
@@ -352,7 +352,7 @@ export default function AIScannerUnified() {
             <div className="grid md:grid-cols-2 gap-6 items-start">
                 <Card className="sticky top-6">
                     <CardHeader>
-                        <CardTitle>Analyzed Image</CardTitle>
+                        <CardTitle>{t('scanner.analyzedImage')}</CardTitle>
                     </CardHeader>
                     <CardContent>
                         {preview ? (
@@ -368,7 +368,7 @@ export default function AIScannerUnified() {
                 <div className="space-y-4">
                     <div className="flex items-center justify-between">
                         <h3 className="text-lg font-semibold">Extracted Declarations & Validations</h3>
-                        <Button variant="outline" size="sm" onClick={() => setFlowState('SELECT')}>Scan Another</Button>
+                        <Button variant="outline" size="sm" onClick={() => setFlowState('SELECT')}>{t('scanner.scanAnother')}</Button>
                     </div>
 
                     {(data?.validation_details?.evaluations || []).map((f: any, i: number) => (
@@ -397,15 +397,15 @@ export default function AIScannerUnified() {
                                         </DialogTrigger>
                                         <DialogContent>
                                             <DialogHeader>
-                                                <DialogTitle>Why this was flagged</DialogTitle>
+                                                <DialogTitle>{t('scanner.whyFlagged')}</DialogTitle>
                                             </DialogHeader>
                                             <div className="space-y-4 mt-4">
                                                 <div>
-                                                    <h5 className="font-semibold text-sm text-foreground/80">Issue</h5>
+                                                    <h5 className="font-semibold text-sm text-foreground/80">{t('scanner.issueTitle')}</h5>
                                                     <p className="text-sm text-foreground">{f.message}</p>
                                                 </div>
                                                 <div>
-                                                    <h5 className="font-semibold text-sm text-foreground/80">Evidence Extracted</h5>
+                                                    <h5 className="font-semibold text-sm text-foreground/80">{t('scanner.evidence')}</h5>
                                                     <p className="text-sm text-foreground">{f.evidence}</p>
                                                 </div>
                                                 <div className="bg-muted/30 p-4 rounded-md border text-xs text-muted-foreground italic">
@@ -421,10 +421,10 @@ export default function AIScannerUnified() {
 
                     <div className="flex gap-4">
                         {data?.compliance === 'FAIL' && !noticeIssued && (
-                            <Button onClick={handleIssueNotice} className="w-full mt-4 bg-red-600 hover:bg-red-700">Issue Improvement Notice</Button>
+                            <Button onClick={handleIssueNotice} className="w-full mt-4 bg-red-600 hover:bg-red-700">{t('scanner.issueNotice')}</Button>
                         )}
                         {noticeIssued && (
-                            <Button disabled className="w-full mt-4 bg-gray-400">Notice Issued</Button>
+                            <Button disabled className="w-full mt-4 bg-gray-400">{t('scanner.noticeIssued')}</Button>
                         )}
                     </div>
                 </div>

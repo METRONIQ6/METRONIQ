@@ -24,6 +24,7 @@ export default function OfficerDashboard() {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(false)
     const [userName, setUserName] = useState("Officer")
+    const [userAuthData, setUserAuthData] = useState<any>(null)
 
     useEffect(() => {
         // Safe check for user name from localStorage token payload
@@ -33,9 +34,7 @@ export default function OfficerDashboard() {
                 const payloadBase64 = token.split('.')[1]
                 if (payloadBase64) {
                     const payload = JSON.parse(atob(payloadBase64))
-                    if (payload.sub) {
-                        setUserName(payload.sub.split('@')[0])
-                    }
+                    setUserAuthData(payload)
                 }
             }
         } catch (e) {
@@ -63,7 +62,7 @@ export default function OfficerDashboard() {
             } catch (err) {
                 console.error(err)
                 setError(true)
-                toast({ type: "error", message: t('error.fetchFailed') || "Unable to load dashboard data." })
+                toast({ type: "error", message: t('error.fetchFailed') })
             } finally {
                 setLoading(false)
             }
@@ -87,9 +86,9 @@ export default function OfficerDashboard() {
         return (
             <div className="flex flex-col items-center justify-center min-h-[60vh] p-12 bg-card border border-border rounded-xl shadow-sm">
                 <ShieldAlert className="w-12 h-12 text-destructive mb-4" />
-                <h3 className="text-xl font-bold text-foreground">{t('error.failedLoad') || "Unable to load dashboard"}</h3>
+                <h3 className="text-xl font-bold text-foreground">{t('error.failedLoad')}</h3>
                 <p className="text-muted-foreground mt-2 text-center max-w-sm">Please check your network connection and try again.</p>
-                <Button className="mt-6 bg-[#0B1F3A] hover:bg-[#0B1F3A]/90 text-white" onClick={() => window.location.reload()}>{t("common.retry") || "Retry Connection"}</Button>
+                <Button className="mt-6 bg-[#0B1F3A] hover:bg-[#0B1F3A]/90 text-white" onClick={() => window.location.reload()}>{t("common.retry")}</Button>
             </div>
         )
     }
@@ -129,6 +128,19 @@ export default function OfficerDashboard() {
         </Card>
     )
 
+    const getDisplayUser = () => {
+        if (!userAuthData) return t('roles.officer')
+        const actualName = userAuthData.name || userAuthData.full_name || userAuthData.first_name
+        if (actualName) return actualName
+
+        if (userAuthData.role) {
+            const roleKey = `roles.${userAuthData.role.toLowerCase()}`
+            const translatedRole = t(roleKey)
+            if (translatedRole !== roleKey) return translatedRole
+        }
+        return t('roles.officer')
+    }
+
     return (
         <div className="space-y-6 pt-2 pb-8 max-w-[1600px] w-full mx-auto">
 
@@ -136,7 +148,7 @@ export default function OfficerDashboard() {
             <div className="flex justify-between items-end mb-8">
                 <div>
                     <h1 className="text-3xl font-bold tracking-tight text-[#0B1F3A] dark:text-white flex items-center gap-2">
-                        Good morning, {userName.charAt(0).toUpperCase() + userName.slice(1)} <span className="text-2xl animate-wave">👋</span>
+                        {t('dashboard.greeting') || 'Good morning,'} {getDisplayUser()} <span className="text-2xl animate-wave">👋</span>
                     </h1>
                     <p className="text-muted-foreground mt-1.5 font-medium">Here's what's happening with inspections today.</p>
                 </div>
@@ -197,7 +209,7 @@ export default function OfficerDashboard() {
                                         <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 h-auto">Inspection Date</TableHead>
                                         <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 h-auto text-center">Risk</TableHead>
                                         <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 h-auto text-center">Compliance</TableHead>
-                                        <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 h-auto text-center">Status</TableHead>
+                                        <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 h-auto text-center">{t('common.status')}</TableHead>
                                         <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 h-auto text-right pr-4">Action</TableHead>
                                     </TableRow>
                                 </TableHeader>

@@ -72,7 +72,7 @@ export default function ManufacturerDashboard() {
             } catch (err) {
                 console.error(err)
                 setError(true)
-                toast({ type: "error", message: "Failed to load manufacturer dashboard." })
+                toast({ type: "error", message: t("error.mfg_dashboard_load") })
             } finally {
                 setLoading(false)
             }
@@ -88,7 +88,7 @@ export default function ManufacturerDashboard() {
         try {
             const token = getToken()
             if (!token) {
-                toast({ type: 'error', message: 'Unauthorized. Please login again.' })
+                toast({ type: 'error', message: t("error.unauthorized") })
                 return
             }
             const res = await fetch(`http://localhost:8000/api/v1/notices/${id}/rectify`, {
@@ -101,17 +101,17 @@ export default function ManufacturerDashboard() {
             })
 
             if (res.ok) {
-                toast({ type: 'success', message: 'Rectification Submitted Successfully' })
+                toast({ type: 'success', message: t("success.rectification") })
                 setNotices(prev => prev.map(n => n.id === id ? { ...n, status: 'RECTIFICATION_SUBMITTED' } : n))
             } else if (res.status === 401 || res.status === 403) {
-                toast({ type: 'error', message: 'Unauthorized to perform this action' })
+                toast({ type: 'error', message: t("error.not_authorized") })
             } else if (res.status === 400 || res.status === 422) {
-                toast({ type: 'error', message: 'Validation error: Invalid request parameters' })
+                toast({ type: 'error', message: t("error.invalid_params") })
             } else {
                 toast({ type: 'error', message: `Server Error: ${res.statusText}` })
             }
         } catch (e) {
-            toast({ type: 'error', message: 'Network error occurred while submitting' })
+            toast({ type: 'error', message: t("error.network_submit") })
         } finally {
             setSubmittingIds(prev => {
                 const next = new Set(prev)
@@ -136,9 +136,9 @@ export default function ManufacturerDashboard() {
         return (
             <div className="flex flex-col items-center justify-center min-h-[60vh] p-12 bg-card border border-border rounded-xl shadow-sm">
                 <ServerCrash className="w-12 h-12 text-destructive mb-4" />
-                <h3 className="text-xl font-bold text-foreground">{t('common.error') || "Portal Unavailable"}</h3>
-                <p className="text-muted-foreground mt-2 text-center max-w-sm">{t('common.retry') || "Unable to fetch records."}</p>
-                <Button className="mt-6 bg-[#0B1F3A] text-white hover:bg-[#0B1F3A]/90" onClick={() => window.location.reload()}>{t('common.retry') || "Retry Connection"}</Button>
+                <h3 className="text-xl font-bold text-foreground">{t('common.error')}</h3>
+                <p className="text-muted-foreground mt-2 text-center max-w-sm">{t('common.retry')}</p>
+                <Button className="mt-6 bg-[#0B1F3A] text-white hover:bg-[#0B1F3A]/90" onClick={() => window.location.reload()}>{t('common.retry')}</Button>
             </div>
         )
     }
@@ -262,7 +262,7 @@ export default function ManufacturerDashboard() {
                                     <TableRow className="border-border">
                                         <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">Notice ID</TableHead>
                                         <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">Violation</TableHead>
-                                        <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-center">Status</TableHead>
+                                        <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-center">{t('common.status')}</TableHead>
                                         <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-right pr-4">Action</TableHead>
                                     </TableRow>
                                 </TableHeader>
@@ -288,7 +288,7 @@ export default function ManufacturerDashboard() {
                                                 <TableCell className="text-center py-3">
                                                     <Badge variant="outline" className={`font-mono text-xs uppercase px-2 py-0.5 rounded-sm border
                                                         ${n.status === 'ISSUED' ? 'border-orange-200 text-orange-700 bg-orange-50 dark:border-orange-900/50 dark:text-orange-400 dark:bg-orange-900/10' : 'border-blue-200 text-blue-700 bg-blue-50 dark:border-blue-900/50 dark:text-blue-400 dark:bg-blue-900/10'}`}>
-                                                        {n.status}
+                                                        {t('status.' + (n.status || 'UNKNOWN'))}
                                                     </Badge>
                                                 </TableCell>
                                                 <TableCell className="text-right py-3 pr-4">
@@ -321,7 +321,7 @@ export default function ManufacturerDashboard() {
                                 <TableHeader className="bg-muted/30">
                                     <TableRow className="border-border">
                                         <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">Case ID</TableHead>
-                                        <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-center">Status</TableHead>
+                                        <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-center">{t('common.status')}</TableHead>
                                         <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-right pr-4">Penalty Asset</TableHead>
                                     </TableRow>
                                 </TableHeader>

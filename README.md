@@ -1,7 +1,6 @@
 # MetronIQ
 
 AI-assisted Legal Metrology Compliance, Inspection, and Decision-Support Platform.
-**Target: Smart India Hackathon 2026 — SIH26034**
 
 ## Overview
 MetronIQ evaluates standard product packaging artworks and real-world commodity captures against live, version-controlled governmental Legal Metrology rules. The system integrates real-time Optical Character Recognition (OCR) and YOLO neural classification directly into deterministic regulation evaluators to output unified, fully automated compliance verification logic.

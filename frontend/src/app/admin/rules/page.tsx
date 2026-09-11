@@ -41,7 +41,7 @@ export default function RuleManagement() {
         } catch (e) {
             console.error(e)
             setError(true)
-            toast({ type: 'error', message: 'Unable to connect to Rules Engine API' })
+            toast({ type: 'error', message: t("error.rules_api") })
         } finally {
             setLoading(false)
         }
@@ -53,7 +53,7 @@ export default function RuleManagement() {
 
     const createRule = async () => {
         if (!newId || !newName) {
-            toast({ type: 'error', message: 'Rule ID and Name are required.' })
+            toast({ type: 'error', message: t("error.rule_required") })
             return
         }
 
@@ -71,7 +71,7 @@ export default function RuleManagement() {
                 body: JSON.stringify(payload)
             })
             if (res.ok) {
-                toast({ type: 'success', message: 'Rule configuration created successfully' })
+                toast({ type: 'success', message: t("success.rule_created") })
                 setOpen(false)
                 setNewId('')
                 setNewName('')
@@ -82,7 +82,7 @@ export default function RuleManagement() {
             }
         } catch (e) {
             console.error(e)
-            toast({ type: 'error', message: 'Network error occurred while saving' })
+            toast({ type: 'error', message: t("error.network_save") })
         } finally {
             setCreateLoading(false)
         }

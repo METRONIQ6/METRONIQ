@@ -61,7 +61,7 @@ export default function EnforcementPage() {
             }
         } catch (e) {
             setError(true)
-            toast({ type: "error", message: "Network error loading enforcement cases." })
+            toast({ type: "error", message: t("error.enforcement_load") })
         } finally {
             setLoading(false)
         }
@@ -107,7 +107,7 @@ export default function EnforcementPage() {
                 toast({ type: "error", message: "Failed to update case: " + (err.detail || 'Server error') })
             }
         } catch (e) {
-            toast({ type: "error", message: "Network error updating enforcement case." })
+            toast({ type: "error", message: t("error.enforcement_update") })
         } finally {
             setActionLoading(false)
             setPenaltyModal(null)
@@ -118,7 +118,7 @@ export default function EnforcementPage() {
         if (!penaltyModal) return
         const amount = parseFloat(penaltyInput)
         if (isNaN(amount) || amount <= 0) {
-            toast({ type: "error", message: "Please enter a valid penalty amount greater than 0." })
+            toast({ type: "error", message: t("warning.penalty_amount") })
             return
         }
         submitStatusUpdate(penaltyModal.caseId, penaltyModal.nextStatus, amount)
@@ -181,7 +181,7 @@ export default function EnforcementPage() {
                         <Button variant="ghost" onClick={() => setPenaltyModal(null)} disabled={actionLoading}>Cancel</Button>
                         <Button className="bg-[#2563EB] hover:bg-[#2563EB]/90 text-white font-semibold" onClick={handlePenaltySubmit} disabled={actionLoading}>
                             {actionLoading ? <RefreshCw className="w-4 h-4 mr-2 animate-spin" /> : null}
-                            {t("enforcement.issuePenalty") || "Confirm Issue"}
+                            {t("enforcement.issuePenalty")}
                         </Button>
                     </DialogFooter>
                 </DialogContent>
@@ -197,7 +197,7 @@ export default function EnforcementPage() {
                             <TableRow className="border-border">
                                 <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">Case ID</TableHead>
                                 <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">Reference (Reinspection)</TableHead>
-                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-center">Status</TableHead>
+                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-center">{t('common.status')}</TableHead>
                                 <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-right">Penalty Assessed</TableHead>
                                 <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-right pr-4">Action</TableHead>
                             </TableRow>

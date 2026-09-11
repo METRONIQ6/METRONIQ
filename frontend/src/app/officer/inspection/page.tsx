@@ -1,4 +1,5 @@
-"use client"
+"use client";
+import { useTranslation } from '@/i18n'
 import React, { useEffect, useState } from 'react'
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -10,6 +11,7 @@ import Link from 'next/link'
 import { useToast } from "@/components/ui/use-toast"
 
 export default function InspectionsPage() {
+    const { t } = useTranslation();
     const { toast } = useToast()
     const [inspections, setInspections] = useState<any[]>([])
     const [loading, setLoading] = useState(true)
@@ -29,7 +31,7 @@ export default function InspectionsPage() {
             }
         } catch (e) {
             setError(true)
-            toast({ type: "error", message: "Network connection lost fetching inspection directory." })
+            toast({ type: "error", message: t("error.inspection_fetch") })
         } finally {
             setLoading(false)
         }
@@ -83,10 +85,10 @@ export default function InspectionsPage() {
                         <TableHeader className="bg-muted/30">
                             <TableRow className="border-border">
                                 <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">Audit Identifier</TableHead>
-                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">Status</TableHead>
+                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">{t('common.status')}</TableHead>
                                 <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">Compliance Result</TableHead>
                                 <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-center">Risk Level</TableHead>
-                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-right pr-4">Oversight Action</TableHead>
+                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-right pr-4">{t('common.oversightAction')}</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
