@@ -94,8 +94,7 @@ export default function NoticesPage() {
                 <h3 className="text-xl font-bold text-foreground">{t("error.failedLoad")}</h3>
                 <p className="text-muted-foreground mt-2 text-center max-w-sm">{t("error.unresponsive")}</p>
                 <Button className="mt-6 bg-[#0B1F3A] text-white hover:bg-[#0B1F3A]/90" onClick={fetchNotices}>
-                    <RefreshCw className="w-4 h-4 mr-2" /> Retry Connection
-                </Button>
+                    <RefreshCw className="w-4 h-4 mr-2" />{t('error.retryConnection')}</Button>
             </div>
         )
     }
@@ -106,13 +105,11 @@ export default function NoticesPage() {
             <div className="flex justify-between items-end mb-8">
                 <div>
                     <h1 className="text-3xl font-bold tracking-tight text-[#0B1F3A] dark:text-white flex items-center gap-3">
-                        <FileText className="w-8 h-8 text-[#2563EB]" /> Improvement Notices
-                    </h1>
+                        <FileText className="w-8 h-8 text-[#2563EB]" />{t('notices.title')}</h1>
                     <p className="text-muted-foreground mt-1.5 font-medium">Monitor manufacturer rectification workflows and schedule reinspections.</p>
                 </div>
                 <Button variant="outline" className="border-border shadow-sm h-11 px-6 font-semibold" onClick={fetchNotices}>
-                    <RefreshCw className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''}`} /> Refresh Feed
-                </Button>
+                    <RefreshCw className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''}`} />{t('common.refreshFeed')}</Button>
             </div>
 
             <Card className="rounded-xl shadow-sm border border-border bg-card overflow-hidden">
@@ -168,16 +165,12 @@ export default function NoticesPage() {
                                         <TableCell className="text-right py-4 pr-4">
                                             <div className="flex gap-2 justify-end">
                                                 <Button size="sm" variant="outline" className="h-8 border-border hover:bg-muted font-semibold text-xs" onClick={() => setSelectedNotice(n)}>
-                                                    <Eye className="w-3.5 h-3.5 mr-1.5" /> View
-                                                </Button>
+                                                    <Eye className="w-3.5 h-3.5 mr-1.5" />{t('common.view')}</Button>
                                                 {n.status === 'RECTIFICATION_SUBMITTED' ? (
                                                     <>
-                                                        <Button size="sm" className="h-8 bg-[#2563EB] hover:bg-[#2563EB]/90 text-white font-semibold text-xs" onClick={() => reviewNotice(n.id, 'RESOLVED')} disabled={actionLoading}>
-                                                            Approve
-                                                        </Button>
+                                                        <Button size="sm" className="h-8 bg-[#2563EB] hover:bg-[#2563EB]/90 text-white font-semibold text-xs" onClick={() => reviewNotice(n.id, 'RESOLVED')} disabled={actionLoading}>{t('common.approve')}</Button>
                                                         <Button size="sm" className="h-8 bg-[#0B1F3A] hover:bg-[#0B1F3A]/90 text-white font-semibold text-xs" onClick={() => scheduleReinspection(n.inspection_id, n.id)} disabled={actionLoading}>
-                                                            <CalendarClock className="w-3 h-3 mr-1.5" /> Schedule Recheck
-                                                        </Button>
+                                                            <CalendarClock className="w-3 h-3 mr-1.5" />{t('notices.scheduleRecheck')}</Button>
                                                     </>
                                                 ) : n.status === 'RESOLVED' ? (
                                                     <Button size="sm" variant="ghost" disabled className="h-8 text-xs font-semibold px-4 opacity-50">{t("status.CLOSED")}</Button>
@@ -198,8 +191,7 @@ export default function NoticesPage() {
                 <DialogContent className="sm:max-w-[550px]">
                     <DialogHeader>
                         <DialogTitle className="text-xl font-bold text-[#0B1F3A] dark:text-white flex items-center gap-2">
-                            <FileText className="w-5 h-5 text-[#2563EB]" /> Official Notice Dossier
-                        </DialogTitle>
+                            <FileText className="w-5 h-5 text-[#2563EB]" />{t('notices.officialNoticeDossier')}</DialogTitle>
                         <DialogDescription>
                             Comprehensive metadata and compliance logs regarding this specific notice block.
                         </DialogDescription>

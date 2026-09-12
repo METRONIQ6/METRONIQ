@@ -29,14 +29,14 @@ export default function ReportsPage() {
 
     return (
         <div className="space-y-6">
-            <h2 className="text-2xl font-bold tracking-tight">Audit Reports Hub</h2>
+            <h2 className="text-2xl font-bold tracking-tight">{t('reports.auditReportsHub')}</h2>
             <Card>
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead>Case ID</TableHead>
+                            <TableHead>{t('enforcement.caseId')}</TableHead>
                             <TableHead>{t('common.status')}</TableHead>
-                            <TableHead>Action</TableHead>
+                            <TableHead>{t('common.action')}</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -55,7 +55,7 @@ export default function ReportsPage() {
                                 </TableCell>
                                 <TableCell>
                                     <Link href={`/officer/reports/${c.id}`} target="_blank">
-                                        <Button size="sm" variant="secondary">View Full Report</Button>
+                                        <Button size="sm" variant="secondary">{t('reports.viewFullReport')}</Button>
                                     </Link>
                                 </TableCell>
                             </TableRow>

@@ -1,13 +1,16 @@
 "use client"
+import { useTranslation } from '@/i18n'
 import React from 'react'
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Map, MapPinOff } from 'lucide-react'
 
 export default function GeoHeatmap() {
+    const { t } = useTranslation();
+
     return (
         <div className="space-y-6 max-w-6xl mx-auto">
             <div>
-                <h2 className="text-2xl font-bold tracking-tight">Geo Analytics</h2>
+                <h2 className="text-2xl font-bold tracking-tight">{t('navigation.geoAnalytics')}</h2>
                 <p className="text-muted-foreground pb-2">Geographic distribution of compliance activities.</p>
             </div>
 

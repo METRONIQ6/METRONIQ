@@ -165,8 +165,7 @@ export default function ManufacturerDashboard() {
             <div className="flex justify-between items-end mb-8">
                 <div>
                     <h1 className="text-3xl font-bold tracking-tight text-[#0B1F3A] dark:text-white flex items-center gap-3">
-                        <Building2 className="w-8 h-8 text-[#2563EB]" /> Product Compliance Portal
-                    </h1>
+                        <Building2 className="w-8 h-8 text-[#2563EB]" />{t('manufacturer.productCompliancePortal')}</h1>
                     <p className="text-muted-foreground mt-1.5 font-medium">Manage your product label lifecycle and regulatory audits.</p>
                 </div>
             </div>
@@ -200,12 +199,12 @@ export default function ManufacturerDashboard() {
                     <Card className="rounded-xl shadow-sm border border-border bg-[#0B1F3A] text-white">
                         <CardContent className="flex flex-col items-center justify-center p-8 text-center">
                             <UploadCloud className="w-12 h-12 text-[#2563EB] mb-4" />
-                            <h3 className="text-lg font-bold mb-2">Pre-Market Label Auditor</h3>
+                            <h3 className="text-lg font-bold mb-2">{t('manufacturer.preMarketLabelAuditor')}</h3>
                             <p className="text-white/70 text-sm mb-6 max-w-[250px]">
                                 Upload packaging artwork before printing to verify Legal Metrology compliance automatically.
                             </p>
                             <Link href="/manufacturer/auditor" className="w-full">
-                                <Button className="w-full bg-[#2563EB] hover:bg-[#2563EB]/90 text-white font-semibold">New Audit</Button>
+                                <Button className="w-full bg-[#2563EB] hover:bg-[#2563EB]/90 text-white font-semibold">{t('dashboard.newAudit')}</Button>
                             </Link>
                         </CardContent>
                     </Card>
@@ -213,13 +212,13 @@ export default function ManufacturerDashboard() {
                     {/* Quick Notifications / Rectifications pending */}
                     <Card className="rounded-xl shadow-sm border border-border bg-card">
                         <CardHeader className="pb-3 border-b border-border/40">
-                            <CardTitle className="text-base font-semibold text-foreground tracking-tight">Compliance Status</CardTitle>
+                            <CardTitle className="text-base font-semibold text-foreground tracking-tight">{t('common.complianceStatus')}</CardTitle>
                         </CardHeader>
                         <CardContent className="p-4">
                             {(notices.filter(n => n.status === 'ISSUED').length === 0 && cases.length === 0) ? (
                                 <div className="flex flex-col items-center justify-center py-6 text-center">
                                     <CheckCircle className="w-10 h-10 text-green-500 mb-3 opacity-80" />
-                                    <p className="text-sm font-semibold text-foreground">All Clear</p>
+                                    <p className="text-sm font-semibold text-foreground">{t('status.allClear')}</p>
                                     <p className="text-xs text-muted-foreground mt-1">Your registered products meet current regulatory requirements.</p>
                                 </div>
                             ) : (
@@ -228,7 +227,7 @@ export default function ManufacturerDashboard() {
                                         <div className="flex items-center gap-3 p-3 rounded-md bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-900/50">
                                             <AlertTriangle className="w-5 h-5 text-blue-600 dark:text-blue-400 shrink-0" />
                                             <div>
-                                                <p className="text-sm font-semibold text-blue-900 dark:text-blue-300">Action Required</p>
+                                                <p className="text-sm font-semibold text-blue-900 dark:text-blue-300">{t('officerUI.actionRequired')}</p>
                                                 <p className="text-xs text-blue-700 dark:text-blue-400/80">You have pending improvement notices to address.</p>
                                             </div>
                                         </div>
@@ -237,7 +236,7 @@ export default function ManufacturerDashboard() {
                                         <div className="flex items-center gap-3 p-3 rounded-md bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-red-900/50">
                                             <Scale className="w-5 h-5 text-red-600 dark:text-red-400 shrink-0" />
                                             <div>
-                                                <p className="text-sm font-semibold text-red-900 dark:text-red-300">Escalation Active</p>
+                                                <p className="text-sm font-semibold text-red-900 dark:text-red-300">{t('enforcement.escalationActive')}</p>
                                                 <p className="text-xs text-red-700 dark:text-red-400/80">Legal enforcement cases are active against your entity.</p>
                                             </div>
                                         </div>
@@ -254,16 +253,16 @@ export default function ManufacturerDashboard() {
                     {/* Notices Table */}
                     <Card className="rounded-xl shadow-sm border border-border bg-card overflow-hidden">
                         <CardHeader className="pb-3 border-b border-border/40 bg-card">
-                            <CardTitle className="text-base font-semibold text-foreground tracking-tight">Improvement Notices</CardTitle>
+                            <CardTitle className="text-base font-semibold text-foreground tracking-tight">{t('notices.title')}</CardTitle>
                         </CardHeader>
                         <CardContent className="p-0">
                             <Table>
                                 <TableHeader className="bg-muted/30">
                                     <TableRow className="border-border">
-                                        <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">Notice ID</TableHead>
-                                        <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">Violation</TableHead>
+                                        <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">{t('notices.noticeId')}</TableHead>
+                                        <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">{t('status.violation')}</TableHead>
                                         <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-center">{t('common.status')}</TableHead>
-                                        <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-right pr-4">Action</TableHead>
+                                        <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-right pr-4">{t('common.action')}</TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
@@ -298,7 +297,7 @@ export default function ManufacturerDashboard() {
                                                             {submittingIds.has(n.id) ? 'Submitting...' : 'Rectify'}
                                                         </Button>
                                                     ) : (
-                                                        <span className="text-xs text-muted-foreground font-medium italic">Under Review</span>
+                                                        <span className="text-xs text-muted-foreground font-medium italic">{t('status.underReview')}</span>
                                                     )}
                                                 </TableCell>
                                             </TableRow>
@@ -313,16 +312,15 @@ export default function ManufacturerDashboard() {
                     <Card className="rounded-xl shadow-sm border border-border bg-card overflow-hidden">
                         <CardHeader className="pb-3 border-b border-border/40 bg-card">
                             <CardTitle className="text-base font-semibold text-destructive tracking-tight flex items-center gap-2">
-                                <Scale className="w-4 h-4" /> Legal Escalations
-                            </CardTitle>
+                                <Scale className="w-4 h-4" />{t('enforcement.legalEscalations')}</CardTitle>
                         </CardHeader>
                         <CardContent className="p-0">
                             <Table>
                                 <TableHeader className="bg-muted/30">
                                     <TableRow className="border-border">
-                                        <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">Case ID</TableHead>
+                                        <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">{t('enforcement.caseId')}</TableHead>
                                         <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-center">{t('common.status')}</TableHead>
-                                        <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-right pr-4">Penalty Asset</TableHead>
+                                        <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-right pr-4">{t('enforcement.penaltyAsset')}</TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>

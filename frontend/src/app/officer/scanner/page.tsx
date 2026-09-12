@@ -288,8 +288,7 @@ export default function AIScannerUnified() {
                 <Card className="border-orange-200 bg-orange-50">
                     <CardHeader>
                         <CardTitle className="text-xl text-orange-700 flex justify-center items-center gap-2">
-                            <ShieldAlert className="w-6 h-6" /> NOT VERIFIED — ENVIRONMENT LIMITATION
-                        </CardTitle>
+                            <ShieldAlert className="w-6 h-6" />{t('status.environmentLimitation')}</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
                         <p className="text-orange-700 font-medium whitespace-pre-wrap">{data?.validation_details?.message || 'OCR unavailable in current environment.'}</p>
@@ -311,8 +310,7 @@ export default function AIScannerUnified() {
                 <Card className="border-red-200 bg-destructive/10">
                     <CardHeader>
                         <CardTitle className="text-xl text-destructive-foreground flex justify-center items-center gap-2">
-                            <ShieldAlert className="w-6 h-6" /> INVALID INSPECTION IMAGE
-                        </CardTitle>
+                            <ShieldAlert className="w-6 h-6" />{t('status.invalidImage')}</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
                         <p className="text-destructive-foreground font-medium">No valid product/package was detected.</p>
@@ -358,16 +356,14 @@ export default function AIScannerUnified() {
                         {preview ? (
                             <img src={preview} className="w-full h-auto max-h-[500px] object-contain border rounded-md" alt="Scanned" />
                         ) : (
-                            <div className="w-full h-64 bg-muted flex items-center justify-center border rounded-md">
-                                No Image Data
-                            </div>
+                            <div className="w-full h-64 bg-muted flex items-center justify-center border rounded-md">{t('warning.noImage')}</div>
                         )}
                     </CardContent>
                 </Card>
 
                 <div className="space-y-4">
                     <div className="flex items-center justify-between">
-                        <h3 className="text-lg font-semibold">Extracted Declarations & Validations</h3>
+                        <h3 className="text-lg font-semibold">{t('scanner.extractedDeclarations')}</h3>
                         <Button variant="outline" size="sm" onClick={() => setFlowState('SELECT')}>{t('scanner.scanAnother')}</Button>
                     </div>
 

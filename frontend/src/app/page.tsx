@@ -2,6 +2,10 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+
+import { useTranslation } from '@/i18n';
+import LanguageSelector from '@/components/LanguageSelector';
+
 import { Button } from "@/components/ui/button";
 import {
     ShieldCheck, ChevronRight, ScanLine, Scale, Globe, Activity, FileText,
@@ -9,6 +13,7 @@ import {
 } from 'lucide-react';
 
 export default function LandingPage() {
+    const { t } = useTranslation();
     const router = useRouter();
     const [mounted, setMounted] = useState(false);
 
@@ -29,16 +34,17 @@ export default function LandingPage() {
                         <div className="bg-primary p-1.5 rounded-md text-primary-foreground shadow-sm">
                             <ShieldCheck className="w-6 h-6" />
                         </div>
-                        <span className="font-bold text-xl tracking-tight text-foreground">METRONIQ</span>
+                        <span className="font-bold text-xl tracking-tight text-foreground">{t('common.metroniq')}</span>
                     </div>
                     <div className="flex items-center gap-6">
                         <div className="hidden md:flex gap-6 text-sm font-medium text-muted-foreground mr-6">
-                            <a href="#workflows" className="hover:text-primary transition-colors">Workflows</a>
-                            <a href="#capabilities" className="hover:text-primary transition-colors">Core Modules</a>
-                            <a href="#architecture" className="hover:text-primary transition-colors">Security Security</a>
+                            <a href="#workflows" className="hover:text-primary transition-colors">{t('navbar.workflows')}</a>
+                            <a href="#capabilities" className="hover:text-primary transition-colors">{t('navbar.capabilities')}</a>
+                            <a href="#architecture" className="hover:text-primary transition-colors">{t('navbar.architecture')}</a>
                         </div>
+                        <LanguageSelector />
                         <Button onClick={() => router.push('/login')} className="rounded-full bg-[#0056b3] hover:bg-[#004494] text-white px-6 font-semibold shadow-sm hover:shadow-md transition-all">
-                            Department Login
+                            {t('landing.departmentLogin')}
                         </Button>
                     </div>
                 </div>
@@ -53,19 +59,19 @@ export default function LandingPage() {
                     <div className="relative z-10 max-w-5xl space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-1000 fill-mode-both">
 
                         <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight leading-tight">
-                            Legal Metrology Compliance. <br className="hidden md:block" />
+                            {t('landing.title1')} <br className="hidden md:block" />
                             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0056b3] to-[#00a65a]">
-                                Automated by AI.
+                                {t('landing.title2')}
                             </span>
                         </h1>
 
                         <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed font-medium">
-                            The official centralized intelligence platform for state enforcement directorates. From instant field AI scanning and e-commerce oversight to dynamic rule mapping, reinspections, and financial penalties—one unified platform governing consumer protection.
+                            {t('landing.subtitle')}
                         </p>
 
                         <div className="pt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
                             <Button size="lg" onClick={() => router.push('/login')} className="w-full sm:w-auto text-lg h-14 px-8 rounded-full shadow-lg bg-[#0056b3] hover:bg-[#004494] text-white hover:shadow-xl hover:shadow-blue-900/20 transition-all group">
-                                Access Govt Portal
+                                {t('landing.accessGovtPortal')}
                                 <ChevronRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
                             </Button>
                         </div>
@@ -78,11 +84,11 @@ export default function LandingPage() {
                         <div className="flex flex-col items-center text-center max-w-3xl mx-auto mb-20">
                             <div className="flex items-center gap-2 mb-4">
                                 <span className="h-px w-8 bg-[#0056b3]"></span>
-                                <span className="text-sm font-bold uppercase tracking-widest text-[#0056b3]">Standard Operating Procedure</span>
+                                <span className="text-sm font-bold uppercase tracking-widest text-[#0056b3]">{t('landing.sop')}</span>
                                 <span className="h-px w-8 bg-[#0056b3]"></span>
                             </div>
-                            <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-6 text-slate-900 dark:text-white">The Complete Enforcement Lifecycle</h2>
-                            <p className="text-slate-600 dark:text-slate-400 text-lg md:text-xl font-medium leading-relaxed">MetronIQ eliminates siloed physical paperwork. A completely closed-loop environment where every action is intelligently tracked across the regulatory continuum.</p>
+                            <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-6 text-slate-900 dark:text-white">{t('landing.sopTitle')}</h2>
+                            <p className="text-slate-600 dark:text-slate-400 text-lg md:text-xl font-medium leading-relaxed">{t('landing.sopDesc')}</p>
                         </div>
 
                         <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-8 relative">
@@ -91,20 +97,20 @@ export default function LandingPage() {
 
                             {[
                                 {
-                                    step: "01", icon: <ScanLine className="w-6 h-6" />, title: "AI Package Scanner",
-                                    desc: "Officers upload packaging imagery; AI extracts OCR tokens and instantly validates them against active Legal Metrology (LMPC) Rules."
+                                    step: "01", icon: <ScanLine className="w-6 h-6" />, title: t('landing.aiScanner'),
+                                    desc: t('landing.aiScannerDesc')
                                 },
                                 {
-                                    step: "02", icon: <FileText className="w-6 h-6" />, title: "Improvement Notices",
-                                    desc: "Automated digital notice generation demanding rectification from Manufacturers. All corporate responses tracked officially."
+                                    step: "02", icon: <FileText className="w-6 h-6" />, title: t('landing.improvementNotices'),
+                                    desc: t('landing.improvementNoticesDesc')
                                 },
                                 {
-                                    step: "03", icon: <GitCommit className="w-6 h-6" />, title: "Reinspections",
-                                    desc: "After notices expire, dynamic scheduling triggers follow-up compliance checks. Unresolved issues escalate automatically."
+                                    step: "03", icon: <GitCommit className="w-6 h-6" />, title: t('landing.reinspections'),
+                                    desc: t('landing.reinspectionsDesc')
                                 },
                                 {
-                                    step: "04", icon: <Gavel className="w-6 h-6" />, title: "Penalty Enforcement",
-                                    desc: "Escalated violations shift to legal dockets, allowing transparent issuance of financial penalties & compound mandates to offenders."
+                                    step: "04", icon: <Gavel className="w-6 h-6" />, title: t('landing.penaltyEnforcement'),
+                                    desc: t('landing.penaltyEnforcementDesc')
                                 }
                             ].map((s, i) => (
                                 <div key={i} className="relative z-10 bg-white dark:bg-card p-8 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group">
@@ -126,47 +132,47 @@ export default function LandingPage() {
                 <section id="capabilities" className="py-24 px-6 relative bg-white dark:bg-[#0a0a0a]">
                     <div className="max-w-7xl mx-auto">
                         <div className="border-l-4 border-[#0056b3] pl-6 mb-16">
-                            <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-[#111827] dark:text-gray-100 uppercase mb-3">Enterprise Modules & Capabilities</h2>
-                            <p className="text-muted-foreground text-lg max-w-3xl font-medium">A vast operational framework designed for government scale—bridging administrators, field officers, and enterprise manufacturers seamlessly across India under a unified regulatory umbrella.</p>
+                            <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-[#111827] dark:text-gray-100 uppercase mb-3">{t('landing.enterpriseModules')}</h2>
+                            <p className="text-muted-foreground text-lg max-w-3xl font-medium">{t('landing.enterpriseModulesDesc')}</p>
                         </div>
 
                         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                             {[
                                 {
                                     icon: <Globe className="w-6 h-6" />,
-                                    title: "AI Inference & OCR",
-                                    subtitle: "Field Object Detection",
-                                    desc: "Custom AI models extract text and specifications from physical packaged commodities in real-time to highlight unregistered configurations."
+                                    title: t('landing.aiInference'),
+                                    subtitle: t('landing.aiInferenceSub'),
+                                    desc: t('landing.aiInferenceDesc')
                                 },
                                 {
                                     icon: <Scale className="w-6 h-6" />,
-                                    title: "Dynamic Rules Engine",
-                                    subtitle: "Statutory Law Mapping",
-                                    desc: "Administer and rigidly version Legal Metrology specifications. Update legal limits natively within the portal to dynamically calibrate AI field inspections."
+                                    title: t('landing.dynamicRules'),
+                                    subtitle: t('landing.dynamicRulesSub'),
+                                    desc: t('landing.dynamicRulesDesc')
                                 },
                                 {
                                     icon: <FileCheck className="w-6 h-6" />,
-                                    title: "Manufacturer Rectification",
-                                    subtitle: "Corporate Compliance",
-                                    desc: "Secured Manufacturer portals allowing verified businesses to view flagged product notices, submit appeals, and provide proof-of-compliance independently."
+                                    title: t('landing.mfgRectification'),
+                                    subtitle: t('landing.mfgRectificationSub'),
+                                    desc: t('landing.mfgRectificationDesc')
                                 },
                                 {
                                     icon: <Activity className="w-6 h-6" />,
-                                    title: "Geospatial Analytics",
-                                    subtitle: "Risk-Based Heatmaps",
-                                    desc: "Map interfaces rendering real-time heatmaps of systemic violations across regional territories, assisting state officers in prioritizing physical deployment."
+                                    title: t('landing.geoAnalytics'),
+                                    subtitle: t('landing.geoAnalyticsSub'),
+                                    desc: t('landing.geoAnalyticsDesc')
                                 },
                                 {
                                     icon: <Languages className="w-6 h-6" />,
-                                    title: "Multilingual Intelligence",
-                                    subtitle: "Vernacular Support",
-                                    desc: "Context-aware operational localization. Switch effortlessly between English, Tamil, and Hindi without reloading, ensuring absolute usability across field agents."
+                                    title: t('landing.multilingual'),
+                                    subtitle: t('landing.multilingualSub'),
+                                    desc: t('landing.multilingualDesc')
                                 },
                                 {
                                     icon: <ScrollText className="w-6 h-6" />,
-                                    title: "Automated PDF Ledger",
-                                    subtitle: "Official Audit Trail",
-                                    desc: "One-click audit ledger extraction. Generate verified, government-standard banded timeline reports, securely authorized and exportable via JWT credentials."
+                                    title: t('landing.pdfLedger'),
+                                    subtitle: t('landing.pdfLedgerSub'),
+                                    desc: t('landing.pdfLedgerDesc')
                                 }
                             ].map((ft, i) => (
                                 <div key={i} className="relative group bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden hover:shadow-xl hover:border-[#0056b3]/50 transition-all duration-300">
@@ -189,16 +195,16 @@ export default function LandingPage() {
                 <section id="architecture" className="py-24 px-6 relative overflow-hidden bg-[#0056b3]/5 border-t border-[#0056b3]/10">
                     <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
                         <div className="space-y-6 flex-1 pr-6">
-                            <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Legal Metrology & Food Safety Operations</h2>
+                            <h2 className="text-3xl md:text-4xl font-bold tracking-tight">{t('landing.legalOps')}</h2>
                             <p className="text-lg text-muted-foreground leading-relaxed">
-                                Engineered exclusively for government enforcement directorates, ensuring statutory compliance, packaged commodity governance, and rigorous consumer protection across the supply chain.
+                                {t('landing.legalOpsDesc')}
                             </p>
                             <div className="grid sm:grid-cols-2 gap-y-4 pt-4">
                                 {[
-                                    { icon: <Users />, text: "Role-Based Access Control" },
-                                    { icon: <Shield />, text: "Immutable Audit Trails" },
-                                    { icon: <Briefcase />, text: "Session State Management" },
-                                    { icon: <AlertTriangle />, text: "Deterministic Validation" },
+                                    { icon: <Users />, text: t('landing.rbac') },
+                                    { icon: <Shield />, text: t('landing.immutableAudit') },
+                                    { icon: <Briefcase />, text: t('landing.sessionState') },
+                                    { icon: <AlertTriangle />, text: t('landing.deterministicVal') },
                                 ].map((item, index) => (
                                     <div key={index} className="flex items-center text-foreground font-medium text-sm">
                                         <div className="bg-[#0056b3]/10 p-1.5 rounded-md mr-3 text-[#0056b3]">
@@ -209,8 +215,9 @@ export default function LandingPage() {
                                 ))}
                             </div>
                             <div className="pt-6">
-                                <Button onClick={() => router.push('/login')} className="rounded-full shadow-md bg-[#0056b3] hover:bg-[#004494] text-white h-12 px-8">
-                                    Authenticate Module
+                                <LanguageSelector />
+                        <Button onClick={() => router.push('/login')} className="rounded-full shadow-md bg-[#0056b3] hover:bg-[#004494] text-white h-12 px-8">
+                                    {t('landing.authenticateModule')}
                                 </Button>
                             </div>
                         </div>
@@ -220,9 +227,9 @@ export default function LandingPage() {
                                 <div className="border-b border-border pb-4 mb-4 flex items-center justify-between">
                                     <div className="flex items-center gap-2">
                                         <ShieldCheck className="text-green-600 w-5 h-5" />
-                                        <div className="font-semibold text-sm">Official Regulatory Audit Stream</div>
+                                        <div className="font-semibold text-sm">{t('landing.auditStream')}</div>
                                     </div>
-                                    <span className="text-xs font-semibold text-[#00a65a]">Secure Govt Node</span>
+                                    <span className="text-xs font-semibold text-[#00a65a]">{t('landing.secureGovtNode')}</span>
                                 </div>
                                 <div className="space-y-4 flex flex-1 flex-col justify-center">
                                     {[1, 2, 3].map(i => (
@@ -244,15 +251,10 @@ export default function LandingPage() {
             {/* Footer */}
             <footer className="bg-background border-t border-border mt-auto">
                 <div className="max-w-7xl mx-auto px-6 py-12 flex flex-col items-center gap-4">
-                    <div className="flex items-center gap-2 text-foreground font-bold text-lg">
-                        <ShieldCheck className="w-6 h-6 text-[#0056b3]" />
-                        METRONIQ
-                    </div>
-                    <div className="flex gap-4 text-sm text-muted-foreground mb-4">
-                        <span className="flex items-center border border-border px-3 py-1 rounded-full text-xs font-medium">Ministry of Consumer Affairs</span>
-                    </div>
+                    <div className="flex items-center gap-2 text-foreground font-bold text-lg mb-4">
+                        <ShieldCheck className="w-6 h-6 text-[#0056b3]" />{t('common.metroniq')}</div>
                     <p className="text-sm text-muted-foreground text-center">
-                        © {new Date().getFullYear()} METRONIQ. All operations securely logged.
+                        © {new Date().getFullYear()} METRONIQ. {t('landing.footer2')}
                     </p>
                 </div>
             </footer>

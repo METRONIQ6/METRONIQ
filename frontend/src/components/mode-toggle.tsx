@@ -1,10 +1,13 @@
 "use client"
+import { useTranslation } from '@/i18n'
 
 import * as React from "react"
 import { Moon, Sun, Monitor } from "lucide-react"
 import { useTheme } from "next-themes"
 
 export function ModeToggle() {
+    const { t } = useTranslation();
+
     const { setTheme, theme } = useTheme()
     const [mounted, setMounted] = React.useState(false)
 
@@ -26,7 +29,7 @@ export function ModeToggle() {
                 title="Light Mode"
             >
                 <Sun className="h-4 w-4" />
-                <span className="sr-only">Light</span>
+                <span className="sr-only">{t('common.lightTheme')}</span>
             </button>
             <button
                 onClick={() => setTheme("system")}
@@ -34,7 +37,7 @@ export function ModeToggle() {
                 title="System"
             >
                 <Monitor className="h-4 w-4" />
-                <span className="sr-only">System</span>
+                <span className="sr-only">{t('common.systemTheme')}</span>
             </button>
             <button
                 onClick={() => setTheme("dark")}
@@ -42,7 +45,7 @@ export function ModeToggle() {
                 title="Dark Mode"
             >
                 <Moon className="h-4 w-4" />
-                <span className="sr-only">Dark</span>
+                <span className="sr-only">{t('common.darkTheme')}</span>
             </button>
         </div>
     )

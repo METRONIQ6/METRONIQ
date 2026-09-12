@@ -92,11 +92,10 @@ export default function RuleManagement() {
         return (
             <div className="flex flex-col items-center justify-center min-h-[60vh] p-12 bg-card border border-border rounded-xl shadow-sm">
                 <ServerCrash className="w-12 h-12 text-destructive mb-4" />
-                <h3 className="text-xl font-bold text-foreground">Rules Engine API Offline</h3>
+                <h3 className="text-xl font-bold text-foreground">{t('error.rulesEngineApiOffline')}</h3>
                 <p className="text-muted-foreground mt-2 text-center max-w-sm">Unable to fetch statutory compliance configurations.</p>
                 <Button className="mt-6 bg-[#0B1F3A] text-white hover:bg-[#0B1F3A]/90" onClick={loadRules}>
-                    <RefreshCw className="w-4 h-4 mr-2" /> Retry Connection
-                </Button>
+                    <RefreshCw className="w-4 h-4 mr-2" />{t('error.retryConnection')}</Button>
             </div>
         )
     }
@@ -107,27 +106,25 @@ export default function RuleManagement() {
             <div className="flex justify-between items-end mb-8">
                 <div>
                     <h1 className="text-3xl font-bold tracking-tight text-[#0B1F3A] dark:text-white flex items-center gap-3">
-                        <Scale className="w-8 h-8 text-[#2563EB]" /> Metrology Rules Engine
-                    </h1>
+                        <Scale className="w-8 h-8 text-[#2563EB]" />{t('adminUI.metrologyRulesEngine')}</h1>
                     <p className="text-muted-foreground mt-1.5 font-medium">Manage and version compliance regulations that power the AI scanner.</p>
                 </div>
 
                 <Dialog open={open} onOpenChange={setOpen}>
                     <DialogTrigger className={buttonVariants({ className: "bg-[#2563EB] hover:bg-[#2563EB]/90 text-white font-semibold h-11 px-6 shadow-sm" })}>
-                        <PlusCircle className="mr-2 w-4 h-4" /> Define New Regulation
-                    </DialogTrigger>
+                        <PlusCircle className="mr-2 w-4 h-4" />{t('adminUI.defineNewRegulation')}</DialogTrigger>
                     <DialogContent className="sm:max-w-[425px]">
                         <DialogHeader>
-                            <DialogTitle className="text-xl font-bold text-[#0B1F3A] dark:text-white">Define Regulation</DialogTitle>
+                            <DialogTitle className="text-xl font-bold text-[#0B1F3A] dark:text-white">{t('adminUI.defineRegulation')}</DialogTitle>
                         </DialogHeader>
                         <div className="space-y-5 pt-4">
                             <div className="space-y-2">
                                 <Label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">{t("admin.ruleId")}</Label>
-                                <Input placeholder="e.g. LM-PKG-NETQTY-01" value={newId} onChange={e => setNewId(e.target.value)} className="h-11" />
+                                <Input placeholder={t('adminUI.egRuleIdentifier')} value={newId} onChange={e => setNewId(e.target.value)} className="h-11" />
                             </div>
                             <div className="space-y-2">
                                 <Label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">{t("admin.ruleName")}</Label>
-                                <Input placeholder="e.g. Mandatory Net Quantity" value={newName} onChange={e => setNewName(e.target.value)} className="h-11" />
+                                <Input placeholder={t('adminUI.egMandatoryNetQuantity')} value={newName} onChange={e => setNewName(e.target.value)} className="h-11" />
                             </div>
                             <Button className="w-full bg-[#2563EB] hover:bg-[#2563EB]/90 h-11 text-sm font-semibold mt-4" onClick={createRule} disabled={createLoading}>
                                 {createLoading ? 'Executing...' : 'Commit Regulation'}
@@ -140,17 +137,17 @@ export default function RuleManagement() {
             {/* Rules Table */}
             <Card className="rounded-xl shadow-sm border border-border bg-card overflow-hidden">
                 <CardHeader className="pb-3 border-b border-border/40 bg-card/50">
-                    <CardTitle className="text-base font-semibold text-foreground tracking-tight">Active Statutes</CardTitle>
+                    <CardTitle className="text-base font-semibold text-foreground tracking-tight">{t('adminUI.activeStatutes')}</CardTitle>
                 </CardHeader>
                 <CardContent className="p-0">
                     <Table>
                         <TableHeader className="bg-muted/30">
                             <TableRow className="border-border">
-                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">Rule Identifier</TableHead>
-                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">Legal Requirement</TableHead>
-                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">Category Domain</TableHead>
-                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-center">Version</TableHead>
-                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-center">System Status</TableHead>
+                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">{t('adminUI.ruleIdentifier')}</TableHead>
+                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">{t('adminUI.legalRequirement')}</TableHead>
+                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">{t('adminUI.categoryDomain')}</TableHead>
+                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-center">{t('adminUI.version')}</TableHead>
+                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-center">{t('adminUI.systemStatus')}</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>

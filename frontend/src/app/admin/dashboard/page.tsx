@@ -106,21 +106,17 @@ export default function AdminDashboard() {
             {/* Console Header */}
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-4">
                 <div>
-                    <h1 className="text-3xl font-bold tracking-tight text-[#0B1F3A] dark:text-white flex items-center gap-2">
-                        System Control Console
-                    </h1>
+                    <h1 className="text-3xl font-bold tracking-tight text-[#0B1F3A] dark:text-white flex items-center gap-2">{t('adminUI.systemControlConsole')}</h1>
                     <p className="text-muted-foreground mt-1.5 font-medium">National compliance and infrastructure overview.</p>
                 </div>
                 <div className="flex gap-3">
                     <Link href="/admin/geo">
                         <Button variant="outline" className="flex gap-2 rounded-md border-border bg-card">
-                            <Map className="w-4 h-4" /> Geo-Heatmap
-                        </Button>
+                            <Map className="w-4 h-4" />{t('adminUI.geoHeatmap')}</Button>
                     </Link>
                     <Link href="/admin/users">
                         <Button className="flex gap-2 rounded-md bg-[#0B1F3A] text-white hover:bg-[#0B1F3A]/90">
-                            <Settings className="w-4 h-4" /> Control Panel
-                        </Button>
+                            <Settings className="w-4 h-4" />{t('adminUI.controlPanel')}</Button>
                     </Link>
                 </div>
             </div>
@@ -205,7 +201,7 @@ export default function AdminDashboard() {
                                             <LayoutDashboard className="w-5 h-5" />
                                         </div>
                                         <div>
-                                            <p className="text-sm font-semibold text-foreground">E-Commerce Monitor Configuration</p>
+                                            <p className="text-sm font-semibold text-foreground">{t('adminUI.ecommerceMonitorConfiguration')}</p>
                                             <p className="text-xs text-muted-foreground">Configure web crawler boundaries and scrape parameters.</p>
                                         </div>
                                     </div>

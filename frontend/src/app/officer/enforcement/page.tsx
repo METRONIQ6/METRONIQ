@@ -128,11 +128,10 @@ export default function EnforcementPage() {
         return (
             <div className="flex flex-col items-center justify-center min-h-[60vh] p-12 bg-card border border-border rounded-xl shadow-sm">
                 <ServerCrash className="w-12 h-12 text-destructive mb-4" />
-                <h3 className="text-xl font-bold text-foreground">Escalation API Offline</h3>
+                <h3 className="text-xl font-bold text-foreground">{t('error.escalationApiOffline')}</h3>
                 <p className="text-muted-foreground mt-2 text-center max-w-sm">Unable to connect to dynamic enforcement service.</p>
                 <Button className="mt-6 bg-[#0B1F3A] text-white hover:bg-[#0B1F3A]/90" onClick={fetchCases}>
-                    <RefreshCw className="w-4 h-4 mr-2" /> Retry Engine Connection
-                </Button>
+                    <RefreshCw className="w-4 h-4 mr-2" />{t('error.retryEngineConnection')}</Button>
             </div>
         )
     }
@@ -143,13 +142,11 @@ export default function EnforcementPage() {
             <div className="flex justify-between items-end mb-8">
                 <div>
                     <h1 className="text-3xl font-bold tracking-tight text-[#0B1F3A] dark:text-white flex items-center gap-3">
-                        <Scale className="w-8 h-8 text-[#2563EB]" /> Enforcement Docket
-                    </h1>
+                        <Scale className="w-8 h-8 text-[#2563EB]" />{t('enforcement.enforcementDocket')}</h1>
                     <p className="text-muted-foreground mt-1.5 font-medium">Manage legal escalations, penalty assessments, and resolution statuses.</p>
                 </div>
                 <Button variant="outline" className="border-border shadow-sm h-11 px-6 font-semibold" onClick={fetchCases}>
-                    <RefreshCw className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''}`} /> Sync Database
-                </Button>
+                    <RefreshCw className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''}`} />{t('enforcement.syncDatabase')}</Button>
             </div>
 
             {/* Penalty Amount Dialog */}
@@ -157,10 +154,8 @@ export default function EnforcementPage() {
                 <DialogContent className="sm:max-w-[425px]">
                     <DialogHeader>
                         <DialogTitle className="text-xl font-bold text-[#0B1F3A] dark:text-white flex items-center gap-2">
-                            <AlertTriangle className="w-5 h-5 text-orange-600" /> Issue Penalty Assessment
-                        </DialogTitle>
-                        <DialogDescription className="pt-2">
-                            Enter the penalty amount (₹) to be assessed for this enforcement case. This will permanently move the case to <strong className="text-foreground">PENALTY_PENDING</strong>.
+                            <AlertTriangle className="w-5 h-5 text-orange-600" />{t('enforcement.issuePenaltyAssessment')}</DialogTitle>
+                        <DialogDescription className="pt-2">{t('enforcement.enterPenaltyAmount')}<strong className="text-foreground">PENALTY_PENDING</strong>.
                         </DialogDescription>
                     </DialogHeader>
                     <div className="space-y-4 pt-4">
@@ -173,12 +168,12 @@ export default function EnforcementPage() {
                                 value={penaltyInput}
                                 onChange={e => setPenaltyInput(e.target.value)}
                                 className="h-11 font-mono text-lg"
-                                placeholder="e.g. 25000"
+                                placeholder={t('enforcement.egPenaltyAmount')}
                             />
                         </div>
                     </div>
                     <DialogFooter className="mt-6">
-                        <Button variant="ghost" onClick={() => setPenaltyModal(null)} disabled={actionLoading}>Cancel</Button>
+                        <Button variant="ghost" onClick={() => setPenaltyModal(null)} disabled={actionLoading}>{t('common.cancel')}</Button>
                         <Button className="bg-[#2563EB] hover:bg-[#2563EB]/90 text-white font-semibold" onClick={handlePenaltySubmit} disabled={actionLoading}>
                             {actionLoading ? <RefreshCw className="w-4 h-4 mr-2 animate-spin" /> : null}
                             {t("enforcement.issuePenalty")}
@@ -189,17 +184,17 @@ export default function EnforcementPage() {
 
             <Card className="rounded-xl shadow-sm border border-border bg-card overflow-hidden">
                 <CardHeader className="pb-3 border-b border-border/40 bg-card/50 flex flex-row items-center justify-between">
-                    <CardTitle className="text-base font-semibold text-foreground tracking-tight">Active Case Directory</CardTitle>
+                    <CardTitle className="text-base font-semibold text-foreground tracking-tight">{t('enforcement.activeCaseDirectory')}</CardTitle>
                 </CardHeader>
                 <CardContent className="p-0">
                     <Table>
                         <TableHeader className="bg-muted/30">
                             <TableRow className="border-border">
-                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">Case ID</TableHead>
+                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">{t('enforcement.caseId')}</TableHead>
                                 <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">Reference (Reinspection)</TableHead>
                                 <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-center">{t('common.status')}</TableHead>
-                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-right">Penalty Assessed</TableHead>
-                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-right pr-4">Action</TableHead>
+                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-right">{t('enforcement.penaltyAssessed')}</TableHead>
+                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-right pr-4">{t('common.action')}</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -241,8 +236,7 @@ export default function EnforcementPage() {
                                                 <div className="flex gap-2 justify-end">
                                                     <Link href={`/officer/reports/${c.id}`} target="_blank">
                                                         <Button size="sm" variant="outline" className="h-8 border-border hover:bg-muted font-semibold text-xs">
-                                                            <FileText className="w-3.5 h-3.5 mr-1.5" /> Audit History
-                                                        </Button>
+                                                            <FileText className="w-3.5 h-3.5 mr-1.5" />{t('enforcement.auditHistory')}</Button>
                                                     </Link>
                                                     {nextStatus ? (
                                                         <Button
@@ -255,8 +249,7 @@ export default function EnforcementPage() {
                                                         </Button>
                                                     ) : (
                                                         <Button size="sm" variant="ghost" disabled className="h-8 text-xs font-semibold px-4 opacity-50">
-                                                            <CheckCircle className="w-3.5 h-3.5 mr-1.5 text-green-600" /> Concluded
-                                                        </Button>
+                                                            <CheckCircle className="w-3.5 h-3.5 mr-1.5 text-green-600" />{t('enforcement.concluded')}</Button>
                                                     )}
                                                 </div>
                                             </TableCell>

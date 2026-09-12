@@ -69,11 +69,10 @@ export default function ReinspectionsPage() {
         return (
             <div className="flex flex-col items-center justify-center min-h-[60vh] p-12 bg-card border border-border rounded-xl shadow-sm">
                 <ServerCrash className="w-12 h-12 text-destructive mb-4" />
-                <h3 className="text-xl font-bold text-foreground">API Connection Disrupted</h3>
+                <h3 className="text-xl font-bold text-foreground">{t('error.apiConnectionDisrupted')}</h3>
                 <p className="text-muted-foreground mt-2 text-center max-w-sm">Reinspection subsystem is temporarily unreachable.</p>
                 <Button className="mt-6 bg-[#0B1F3A] text-white hover:bg-[#0B1F3A]/90" onClick={fetchReinspections}>
-                    <RefreshCw className="w-4 h-4 mr-2" /> Retry Connection
-                </Button>
+                    <RefreshCw className="w-4 h-4 mr-2" />{t('error.retryConnection')}</Button>
             </div>
         )
     }
@@ -84,28 +83,26 @@ export default function ReinspectionsPage() {
             <div className="flex justify-between items-end mb-8">
                 <div>
                     <h1 className="text-3xl font-bold tracking-tight text-[#0B1F3A] dark:text-white flex items-center gap-3">
-                        <ListChecks className="w-8 h-8 text-[#2563EB]" /> Reinspection Queue
-                    </h1>
+                        <ListChecks className="w-8 h-8 text-[#2563EB]" />{t('navigation.reinspections')}</h1>
                     <p className="text-muted-foreground mt-1.5 font-medium">Verify rectifications and escalate persistent non-compliance.</p>
                 </div>
                 <Button variant="outline" className="border-border shadow-sm h-11 px-6 font-semibold" onClick={fetchReinspections}>
-                    <RefreshCw className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''}`} /> Refresh Feed
-                </Button>
+                    <RefreshCw className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''}`} />{t('common.refreshFeed')}</Button>
             </div>
 
             <Card className="rounded-xl shadow-sm border border-border bg-card overflow-hidden">
                 <CardHeader className="pb-3 border-b border-border/40 bg-card/50 flex flex-row items-center justify-between">
-                    <CardTitle className="text-base font-semibold text-foreground tracking-tight">Active Verifications</CardTitle>
+                    <CardTitle className="text-base font-semibold text-foreground tracking-tight">{t('reinspections.activeVerifications')}</CardTitle>
                 </CardHeader>
                 <CardContent className="p-0">
                     <Table>
                         <TableHeader className="bg-muted/30">
                             <TableRow className="border-border">
-                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">Task Identifier</TableHead>
-                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">Original Audit Ref</TableHead>
+                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">{t('reinspections.taskIdentifier')}</TableHead>
+                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">{t('reinspections.originalAuditRef')}</TableHead>
                                 <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-center">{t('common.status')}</TableHead>
-                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">Assignee</TableHead>
-                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-right pr-4">Execution Action</TableHead>
+                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">{t('reinspections.assignee')}</TableHead>
+                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-right pr-4">{t('reinspections.executionAction')}</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -140,27 +137,23 @@ export default function ReinspectionsPage() {
                                                 {r.status || "UNKNOWN"}
                                             </Badge>
                                         </TableCell>
-                                        <TableCell className="text-sm py-4 text-foreground font-medium">
-                                            Self Assigned
-                                        </TableCell>
+                                        <TableCell className="text-sm py-4 text-foreground font-medium">{t('reinspections.selfAssigned')}</TableCell>
                                         <TableCell className="text-right py-4 pr-4">
                                             <div className="flex gap-2 justify-end">
                                                 {r.status === 'SCHEDULED' ? (
                                                     <Link href={`/officer/scanner?reinspection=${r.id}`}>
                                                         <Button size="sm" className="h-8 bg-[#2563EB] hover:bg-[#2563EB]/90 text-white font-semibold text-xs shadow-sm">
-                                                            <Search className="w-3.5 h-3.5 mr-1.5" /> Scan Protocol
-                                                        </Button>
+                                                            <Search className="w-3.5 h-3.5 mr-1.5" />{t('reinspections.scanProtocol')}</Button>
                                                     </Link>
                                                 ) : r.status === 'COMPLETED' ? (
                                                     <>
-                                                        <Button size="sm" variant="outline" className="h-8 border-border hover:bg-muted font-semibold text-xs">View Result</Button>
+                                                        <Button size="sm" variant="outline" className="h-8 border-border hover:bg-muted font-semibold text-xs">{t('common.view')}</Button>
                                                         <Button size="sm" className="h-8 bg-[#0B1F3A] hover:bg-[#0B1F3A]/90 text-white font-semibold text-xs shadow-sm"
                                                             disabled={actionLoading === r.id} onClick={() => escalateReinspection(r.id)}>
-                                                            <ArrowUpRight className="w-3.5 h-3.5 mr-1.5" /> Escalate
-                                                        </Button>
+                                                            <ArrowUpRight className="w-3.5 h-3.5 mr-1.5" />{t('reinspections.escalate')}</Button>
                                                     </>
                                                 ) : (
-                                                    <Button size="sm" variant="ghost" disabled className="h-8 text-xs font-semibold px-4 opacity-50">Archived</Button>
+                                                    <Button size="sm" variant="ghost" disabled className="h-8 text-xs font-semibold px-4 opacity-50">{t('reinspections.archived')}</Button>
                                                 )}
                                             </div>
                                         </TableCell>

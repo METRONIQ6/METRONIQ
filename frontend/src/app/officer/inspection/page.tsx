@@ -45,11 +45,10 @@ export default function InspectionsPage() {
         return (
             <div className="flex flex-col items-center justify-center min-h-[60vh] p-12 bg-card border border-border rounded-xl shadow-sm">
                 <ServerCrash className="w-12 h-12 text-destructive mb-4" />
-                <h3 className="text-xl font-bold text-foreground">API Connection Disrupted</h3>
+                <h3 className="text-xl font-bold text-foreground">{t('error.apiConnectionDisrupted')}</h3>
                 <p className="text-muted-foreground mt-2 text-center max-w-sm">Inspection subsystem is temporarily unreachable.</p>
                 <Button className="mt-6 bg-[#0B1F3A] text-white hover:bg-[#0B1F3A]/90" onClick={fetchInspections}>
-                    <RefreshCw className="w-4 h-4 mr-2" /> Retry Connection
-                </Button>
+                    <RefreshCw className="w-4 h-4 mr-2" />{t('error.retryConnection')}</Button>
             </div>
         )
     }
@@ -60,15 +59,13 @@ export default function InspectionsPage() {
             <div className="flex justify-between items-end mb-8">
                 <div>
                     <h1 className="text-3xl font-bold tracking-tight text-[#0B1F3A] dark:text-white flex items-center gap-3">
-                        <Archive className="w-8 h-8 text-[#2563EB]" /> Inspection Directory
-                    </h1>
+                        <Archive className="w-8 h-8 text-[#2563EB]" />{t('inspection.inspectionDirectory')}</h1>
                     <p className="text-muted-foreground mt-1.5 font-medium">Historical audit log for all formal compliance interventions.</p>
                 </div>
                 <div className="flex items-center gap-3">
                     <Link href="/officer/scanner">
                         <Button className="h-11 px-6 font-semibold bg-[#0B1F3A] hover:bg-[#0B1F3A]/90 text-white shadow-sm">
-                            <Search className="w-4 h-4 mr-2" /> New Scan
-                        </Button>
+                            <Search className="w-4 h-4 mr-2" />{t('inspection.newScan')}</Button>
                     </Link>
                     <Button variant="outline" className="border-border shadow-sm h-11 px-4" onClick={fetchInspections}>
                         <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
@@ -78,16 +75,16 @@ export default function InspectionsPage() {
 
             <Card className="rounded-xl shadow-sm border border-border bg-card overflow-hidden">
                 <CardHeader className="pb-3 border-b border-border/40 bg-card/50 flex flex-row items-center justify-between">
-                    <CardTitle className="text-base font-semibold text-foreground tracking-tight">System Records</CardTitle>
+                    <CardTitle className="text-base font-semibold text-foreground tracking-tight">{t('inspection.systemRecords')}</CardTitle>
                 </CardHeader>
                 <CardContent className="p-0">
                     <Table>
                         <TableHeader className="bg-muted/30">
                             <TableRow className="border-border">
-                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">Audit Identifier</TableHead>
+                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">{t('inspection.auditIdentifier')}</TableHead>
                                 <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">{t('common.status')}</TableHead>
-                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">Compliance Result</TableHead>
-                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-center">Risk Level</TableHead>
+                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">{t('scanner.complianceResult')}</TableHead>
+                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-center">{t('inspection.riskLevel')}</TableHead>
                                 <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-right pr-4">{t('common.oversightAction')}</TableHead>
                             </TableRow>
                         </TableHeader>
@@ -121,9 +118,9 @@ export default function InspectionsPage() {
                                         </TableCell>
                                         <TableCell className="py-4">
                                             {ins.result === 'PASS' ? (
-                                                <Badge className="bg-green-100 text-green-800 hover:bg-green-100 border-none font-semibold">COMPLIANT</Badge>
+                                                <Badge className="bg-green-100 text-green-800 hover:bg-green-100 border-none font-semibold">{t('inspection.compliant')}</Badge>
                                             ) : ins.result === 'FAIL' ? (
-                                                <Badge className="bg-red-100 text-red-800 hover:bg-red-100 border-none font-semibold">NON-COMPLIANT</Badge>
+                                                <Badge className="bg-red-100 text-red-800 hover:bg-red-100 border-none font-semibold">{t('scanner.nonCompliant')}</Badge>
                                             ) : (
                                                 <Badge variant="secondary" className="border-none font-semibold">{ins.result}</Badge>
                                             )}
@@ -137,7 +134,7 @@ export default function InspectionsPage() {
                                         <TableCell className="text-right py-4 pr-4">
                                             <Link href={`/officer/reports/${ins.id}`} target="_blank">
                                                 <Button size="sm" variant="outline" className="h-8 border-border hover:bg-muted font-semibold text-xs">
-                                                    <FileText className="w-3.5 h-3.5 mr-1.5" /> Full Audit <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
+                                                    <FileText className="w-3.5 h-3.5 mr-1.5" />{t('inspection.fullAudit')}<ArrowRight className="w-3.5 h-3.5 ml-1.5" />
                                                 </Button>
                                             </Link>
                                         </TableCell>

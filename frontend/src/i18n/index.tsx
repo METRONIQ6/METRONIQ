@@ -34,7 +34,7 @@ export const I18nProvider = ({ children }: { children: ReactNode }) => {
         localStorage.setItem('i18n_lang', lang)
     }
 
-    const t = (key: string): string => {
+            const t = (key: string): string => {
         const keys = key.split('.')
         let value = dictionaries[language]
         for (const k of keys) {
@@ -42,16 +42,7 @@ export const I18nProvider = ({ children }: { children: ReactNode }) => {
             value = value[k]
         }
         if (value === undefined || typeof value !== 'string') {
-            // Fallback to English
-            let fallbackValue = dictionaries['en']
-            for (const k of keys) {
-                if (fallbackValue === undefined) break;
-                fallbackValue = fallbackValue[k]
-            }
-            if (fallbackValue !== undefined && typeof fallbackValue === 'string') {
-                return fallbackValue
-            }
-            return key; // return the path exactly if missing in EN too
+            return `[MISSING: ${key}]`
         }
         return value;
     }

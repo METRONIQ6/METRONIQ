@@ -83,11 +83,10 @@ export default function EcommercePage() {
         return (
             <div className="flex flex-col items-center justify-center min-h-[60vh] p-12 bg-card border border-border rounded-xl shadow-sm">
                 <ServerCrash className="w-12 h-12 text-destructive mb-4" />
-                <h3 className="text-xl font-bold text-foreground">API Connection Disrupted</h3>
+                <h3 className="text-xl font-bold text-foreground">{t('error.apiConnectionDisrupted')}</h3>
                 <p className="text-muted-foreground mt-2 text-center max-w-sm">E-commerce subsystem is temporarily unreachable.</p>
                 <Button className="mt-6 bg-[#0B1F3A] text-white hover:bg-[#0B1F3A]/90" onClick={fetchMonitors}>
-                    <RefreshCw className="w-4 h-4 mr-2" /> Retry Connection
-                </Button>
+                    <RefreshCw className="w-4 h-4 mr-2" />{t('error.retryConnection')}</Button>
             </div>
         )
     }
@@ -98,13 +97,11 @@ export default function EcommercePage() {
             <div className="flex justify-between items-end mb-8">
                 <div>
                     <h1 className="text-3xl font-bold tracking-tight text-[#0B1F3A] dark:text-white flex items-center gap-3">
-                        <Globe className="w-8 h-8 text-[#2563EB]" /> Digital Market Surveillance
-                    </h1>
+                        <Globe className="w-8 h-8 text-[#2563EB]" />{t('ecommerce.digitalMarketSurveillance')}</h1>
                     <p className="text-muted-foreground mt-1.5 font-medium">Automated crawler metrics and compliance evaluation rules across digital channels.</p>
                 </div>
                 <Button variant="outline" className="border-border shadow-sm h-11 px-6 font-semibold" onClick={fetchMonitors}>
-                    <RefreshCw className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''}`} /> Refresh Feed
-                </Button>
+                    <RefreshCw className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''}`} />{t('common.refreshFeed')}</Button>
             </div>
 
             <Card className="rounded-xl shadow-sm border border-border bg-card overflow-hidden mb-6">
@@ -112,30 +109,29 @@ export default function EcommercePage() {
                     <div className="flex-1 relative">
                         <Globe className="absolute left-3 top-3.5 h-4 w-4 text-muted-foreground" />
                         <Input
-                            placeholder="Register digital marketplace domain for monitoring (e.g. https://flipkart.com/product/123)"
+                            placeholder={t('ecommerce.registerDomain')}
                             value={newUrl}
                             onChange={(e) => setNewUrl(e.target.value)}
                             className="flex-1 border-border pl-10 h-11"
                         />
                     </div>
                     <Button onClick={addMonitor} className="bg-[#0B1F3A] hover:bg-[#0B1F3A]/90 text-white h-11 px-8">
-                        <Plus className="w-4 h-4 mr-2" /> Activate Tracker
-                    </Button>
+                        <Plus className="w-4 h-4 mr-2" />{t('ecommerce.activateTracker')}</Button>
                 </CardContent>
             </Card>
 
             <Card className="rounded-xl shadow-sm border border-border bg-card overflow-hidden">
                 <CardHeader className="pb-3 border-b border-border/40 bg-card/50 flex flex-row items-center justify-between">
-                    <CardTitle className="text-base font-semibold text-foreground tracking-tight">Active Crawler Sentinels</CardTitle>
+                    <CardTitle className="text-base font-semibold text-foreground tracking-tight">{t('ecommerce.activeCrawlerSentinels')}</CardTitle>
                 </CardHeader>
                 <CardContent className="p-0">
                     <Table>
                         <TableHeader className="bg-muted/30">
                             <TableRow className="border-border">
-                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">Network Target URL</TableHead>
-                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">Interval Cycle</TableHead>
-                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-center">Telemetry Status</TableHead>
-                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-right pr-4">Task Override</TableHead>
+                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">{t('ecommerce.networkTargetUrl')}</TableHead>
+                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">{t('ecommerce.intervalCycle')}</TableHead>
+                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-center">{t('ecommerce.telemetryStatus')}</TableHead>
+                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-right pr-4">{t('ecommerce.taskOverride')}</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -177,8 +173,7 @@ export default function EcommercePage() {
                                         </TableCell>
                                         <TableCell className="text-right py-4 pr-4">
                                             <Button size="sm" variant="outline" className="h-8 border-border hover:bg-muted font-semibold text-xs" onClick={() => triggerScan(m.id)}>
-                                                <RefreshCw className={`w-3.5 h-3.5 mr-1.5 ${m.last_scan_result === 'SCANNING...' ? 'animate-spin' : ''}`} /> Force Crawl
-                                            </Button>
+                                                <RefreshCw className={`w-3.5 h-3.5 mr-1.5 ${m.last_scan_result === 'SCANNING...' ? 'animate-spin' : ''}`} />{t('ecommerce.forceCrawl')}</Button>
                                         </TableCell>
                                     </TableRow>
                                 ))

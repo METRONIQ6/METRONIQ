@@ -76,7 +76,7 @@ export default function Login() {
                 <div className="z-10 mt-8">
                     <div className="flex items-center gap-3 mb-2">
                         <ShieldCheck className="w-10 h-10 text-[#2563EB]" />
-                        <span className="text-3xl font-extrabold tracking-tight">METRONIQ</span>
+                        <span className="text-3xl font-extrabold tracking-tight">{t('common.metroniq')}</span>
                     </div>
                 </div>
 
@@ -131,7 +131,7 @@ export default function Login() {
                             <Input
                                 id="email"
                                 type="email"
-                                placeholder="name@domain.gov"
+                                placeholder={t('loginUI.nameDomainGov')}
                                 value={email}
                                 onChange={e => setEmail(e.target.value)}
                                 required
@@ -172,10 +172,10 @@ export default function Login() {
                     {/* Developer Note (Hidden from main styling flow, purely functional for evaluation) */}
                     <div className="pt-6 mt-8 border-t border-border/50">
                         <div className="text-xs text-muted-foreground text-center space-y-3">
-                            <p className="font-semibold uppercase tracking-wider text-[10px]">Development Fast-Login</p>
+                            <p className="font-semibold uppercase tracking-wider text-[10px]">{t('loginUI.developmentFastLogin')}</p>
                             <div className="flex flex-col gap-2 opacity-70">
-                                <span className="bg-muted px-3 py-1.5 rounded font-mono">admin@metroniq.local</span>
-                                <span className="bg-muted px-3 py-1.5 rounded font-mono">officer@metroniq.local</span>
+                                <span className="bg-muted px-3 py-1.5 rounded font-mono">{t('loginUI.adminEmail')}</span>
+                                <span className="bg-muted px-3 py-1.5 rounded font-mono">{t('loginUI.officerEmail')}</span>
                             </div>
                         </div>
                     </div>

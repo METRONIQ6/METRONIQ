@@ -117,7 +117,7 @@ export default function OfficerDashboard() {
             <CardHeader className="pb-2 border-b border-border/40">
                 <div className="flex justify-between items-center">
                     <CardTitle className="text-sm font-semibold text-foreground">{title}</CardTitle>
-                    <span className="text-xs text-muted-foreground border border-border/50 rounded px-2 py-1">This Week</span>
+                    <span className="text-xs text-muted-foreground border border-border/50 rounded px-2 py-1">{t('officerUI.thisWeek')}</span>
                 </div>
             </CardHeader>
             <CardContent className="flex-grow flex flex-col items-center justify-center p-8 text-center text-muted-foreground">
@@ -148,7 +148,7 @@ export default function OfficerDashboard() {
             <div className="flex justify-between items-end mb-8">
                 <div>
                     <h1 className="text-3xl font-bold tracking-tight text-[#0B1F3A] dark:text-white flex items-center gap-2">
-                        {t('dashboard.greeting') || 'Good morning,'} {getDisplayUser()} <span className="text-2xl animate-wave">👋</span>
+                        {t('dashboard.greeting')} {getDisplayUser()} <span className="text-2xl animate-wave">👋</span>
                     </h1>
                     <p className="text-muted-foreground mt-1.5 font-medium">Here's what's happening with inspections today.</p>
                 </div>
@@ -195,22 +195,22 @@ export default function OfficerDashboard() {
                 <div className="lg:col-span-2 space-y-6">
                     <Card className="rounded-xl shadow-sm border border-border overflow-hidden bg-card h-full flex flex-col">
                         <CardHeader className="pb-3 border-b border-border/40 flex flex-row items-center justify-between bg-card">
-                            <CardTitle className="text-base font-semibold text-foreground tracking-tight">Inspection Overview</CardTitle>
+                            <CardTitle className="text-base font-semibold text-foreground tracking-tight">{t('officerUI.inspectionOverview')}</CardTitle>
                             <Link href="/officer/inspections">
-                                <Button variant="secondary" size="sm" className="h-8 rounded-md bg-[#0B1F3A] text-white hover:bg-[#0B1F3A]/90">View All</Button>
+                                <Button variant="secondary" size="sm" className="h-8 rounded-md bg-[#0B1F3A] text-white hover:bg-[#0B1F3A]/90">{t('officerUI.viewAll')}</Button>
                             </Link>
                         </CardHeader>
-                        <CardContent className="p-0 flex-grow">
+                        <CardContent className="p-0 flex-grow overflow-x-auto">
                             <Table>
                                 <TableHeader className="bg-muted/30">
                                     <TableRow className="border-border">
-                                        <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 h-auto">Case ID</TableHead>
-                                        <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 h-auto">Product / Entity</TableHead>
-                                        <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 h-auto">Inspection Date</TableHead>
-                                        <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 h-auto text-center">Risk</TableHead>
-                                        <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 h-auto text-center">Compliance</TableHead>
-                                        <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 h-auto text-center">{t('common.status')}</TableHead>
-                                        <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 h-auto text-right pr-4">Action</TableHead>
+                                        <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 min-w-[100px]">{t('enforcement.caseId')}</TableHead>
+                                        <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 min-w-[150px]">{t('officerUI.productEntity')}</TableHead>
+                                        <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 min-w-[130px]">{t('common.date')}</TableHead>
+                                        <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-center min-w-[100px]">{t('officerUI.risk')}</TableHead>
+                                        <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-center min-w-[120px]">{t('officerUI.compliance')}</TableHead>
+                                        <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-center min-w-[100px]">{t('common.status')}</TableHead>
+                                        <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-right pr-4 min-w-[80px]">{t('common.action')}</TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
@@ -272,10 +272,10 @@ export default function OfficerDashboard() {
                 {/* Right Area: Action Required */}
                 <div className="space-y-6">
                     <Card className="rounded-xl shadow-sm border border-border bg-card">
-                        <CardHeader className="pb-3 border-b border-border/40 flex flex-row items-center justify-between">
-                            <CardTitle className="text-base font-semibold text-foreground tracking-tight">Action Required</CardTitle>
+                        <CardHeader className="pb-3 border-b border-border/40 flex flex-row items-center justify-between mt-6 lg:mt-0">
+                            <CardTitle className="text-base font-semibold text-foreground tracking-tight">{t('officerUI.actionRequired')}</CardTitle>
                             <Link href="/">
-                                <Button variant="secondary" size="sm" className="h-8 rounded-md bg-[#0B1F3A] text-white hover:bg-[#0B1F3A]/90">View All</Button>
+                                <Button variant="secondary" size="sm" className="h-8 rounded-md bg-[#0B1F3A] text-white hover:bg-[#0B1F3A]/90">{t('officerUI.viewAll')}</Button>
                             </Link>
                         </CardHeader>
                         <CardContent className="p-0">
@@ -287,7 +287,7 @@ export default function OfficerDashboard() {
                                             <ClipboardList className="w-4 h-4" />
                                         </div>
                                         <div>
-                                            <p className="text-sm font-semibold text-foreground">Inspections Awaiting Review</p>
+                                            <p className="text-sm font-semibold text-foreground">{t('officerUI.inspectionsAwaitingReview')}</p>
                                             <p className="text-xs text-muted-foreground">{summary.failedInspections || 0} inspections need review</p>
                                         </div>
                                     </div>
@@ -300,7 +300,7 @@ export default function OfficerDashboard() {
                                             <FileText className="w-4 h-4" />
                                         </div>
                                         <div>
-                                            <p className="text-sm font-semibold text-foreground">Notices Awaiting Action</p>
+                                            <p className="text-sm font-semibold text-foreground">{t('dashboard.noticesAwaiting')}</p>
                                             <p className="text-xs text-muted-foreground">{summary.openNotices || 0} notices require action</p>
                                         </div>
                                     </div>
@@ -313,7 +313,7 @@ export default function OfficerDashboard() {
                                             <RefreshCw className="w-4 h-4" />
                                         </div>
                                         <div>
-                                            <p className="text-sm font-semibold text-foreground">Rectifications Pending</p>
+                                            <p className="text-sm font-semibold text-foreground">{t('dashboard.rectificationsPending')}</p>
                                             <p className="text-xs text-muted-foreground">{summary.pendingRectifications || 0} rectifications pending round</p>
                                         </div>
                                     </div>
@@ -326,12 +326,12 @@ export default function OfficerDashboard() {
 
                     <Card className="rounded-xl shadow-sm border border-border bg-card">
                         <CardHeader className="pb-3 border-b border-border/40 flex flex-row items-center justify-between">
-                            <CardTitle className="text-base font-semibold text-foreground tracking-tight">Recent Activity</CardTitle>
+                            <CardTitle className="text-base font-semibold text-foreground tracking-tight">{t('dashboard.recentActivity')}</CardTitle>
                         </CardHeader>
                         <CardContent className="p-4 pt-5">
                             <div className="space-y-5">
                                 {activities.length === 0 ? (
-                                    <div className="text-center text-sm text-muted-foreground py-4">No recent activity found.</div>
+                                    <div className="text-center text-sm text-muted-foreground py-4">{t('dashboard.noRecentActivity')}</div>
                                 ) : (
                                     activities.slice(0, 4).map((act) => (
                                         <div key={act.id} className="flex gap-4 relative">
@@ -358,15 +358,15 @@ export default function OfficerDashboard() {
             </div>
 
             {/* Bottom Row Charts */}
-            <div className="grid lg:grid-cols-2 gap-6 pt-2 h-[280px]">
+            <div className="grid lg:grid-cols-2 gap-6 pt-2 min-h-[280px]">
                 <EmptyChartState title="Risk Distribution" />
                 <EmptyChartState title="Compliance Trend" />
             </div>
 
             {/* Quick Actions Panel */}
-            <div className="pt-6">
-                <h2 className="text-lg font-bold text-foreground mb-4">Quick Actions</h2>
-                <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+            <div className="pt-6 mt-4">
+                <h2 className="text-lg font-bold text-foreground mb-4">{t('officerUI.quickActions')}</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
 
                     <Link href="/officer/scanner" className="block">
                         <Card className="rounded-xl border border-border bg-card hover:bg-muted/50 transition-colors cursor-pointer h-full">
@@ -375,8 +375,8 @@ export default function OfficerDashboard() {
                                     <ScanLine className="w-5 h-5" />
                                 </div>
                                 <div>
-                                    <div className="font-semibold text-sm text-foreground">Start Verification</div>
-                                    <div className="text-xs text-muted-foreground mt-0.5">Scan new product</div>
+                                    <div className="font-semibold text-sm text-foreground">{t('officerUI.startVerification')}</div>
+                                    <div className="text-xs text-muted-foreground mt-0.5">{t('officerUI.scanNewProduct')}</div>
                                 </div>
                             </CardContent>
                         </Card>
@@ -389,8 +389,8 @@ export default function OfficerDashboard() {
                                     <CalendarCheck className="w-5 h-5" />
                                 </div>
                                 <div>
-                                    <div className="font-semibold text-sm text-foreground">Reinspections</div>
-                                    <div className="text-xs text-muted-foreground mt-0.5">See scheduled</div>
+                                    <div className="font-semibold text-sm text-foreground">{t('navigation.reinspections')}</div>
+                                    <div className="text-xs text-muted-foreground mt-0.5">{t('officerUI.seeScheduled')}</div>
                                 </div>
                             </CardContent>
                         </Card>
@@ -403,8 +403,8 @@ export default function OfficerDashboard() {
                                     <FileText className="w-5 h-5" />
                                 </div>
                                 <div>
-                                    <div className="font-semibold text-sm text-foreground">View Notices</div>
-                                    <div className="text-xs text-muted-foreground mt-0.5">Manage issued notices</div>
+                                    <div className="font-semibold text-sm text-foreground">{t('notices.title')}</div>
+                                    <div className="text-xs text-muted-foreground mt-0.5">{t('officerUI.manageIssuedNotices')}</div>
                                 </div>
                             </CardContent>
                         </Card>
@@ -417,8 +417,8 @@ export default function OfficerDashboard() {
                                     <Scale className="w-5 h-5" />
                                 </div>
                                 <div>
-                                    <div className="font-semibold text-sm text-foreground">Enforcement</div>
-                                    <div className="text-xs text-muted-foreground mt-0.5">Review cases</div>
+                                    <div className="font-semibold text-sm text-foreground">{t('navigation.enforcement')}</div>
+                                    <div className="text-xs text-muted-foreground mt-0.5">{t('officerUI.reviewCases')}</div>
                                 </div>
                             </CardContent>
                         </Card>
@@ -431,8 +431,8 @@ export default function OfficerDashboard() {
                                     <BarChart3 className="w-5 h-5" />
                                 </div>
                                 <div>
-                                    <div className="font-semibold text-sm text-foreground">Audit Reports</div>
-                                    <div className="text-xs text-muted-foreground mt-0.5">View log trails</div>
+                                    <div className="font-semibold text-sm text-foreground">{t('navigation.reports')}</div>
+                                    <div className="text-xs text-muted-foreground mt-0.5">{t('officerUI.viewLogTrails')}</div>
                                 </div>
                             </CardContent>
                         </Card>

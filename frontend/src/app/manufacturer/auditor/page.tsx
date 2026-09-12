@@ -94,8 +94,7 @@ export default function LabelAuditor() {
             <div className="flex justify-between items-end mb-8">
                 <div>
                     <h1 className="text-3xl font-bold tracking-tight text-[#0B1F3A] dark:text-white flex items-center gap-3">
-                        <FileSearch className="w-8 h-8 text-[#2563EB]" /> Pre-Market Compliance Auditor
-                    </h1>
+                        <FileSearch className="w-8 h-8 text-[#2563EB]" />{t('manufacturer.preMarketAuditor')}</h1>
                     <p className="text-muted-foreground mt-1.5 font-medium">Verify packaging artwork against semantic legal rules prior to mass production.</p>
                 </div>
             </div>
@@ -114,26 +113,23 @@ export default function LabelAuditor() {
                                 <div className="p-5 rounded-2xl bg-muted/40 mb-6 group-hover:scale-105 transition-transform">
                                     <UploadCloud className="w-16 h-16 text-[#2563EB]" />
                                 </div>
-                                <h3 className="text-2xl font-bold text-[#0B1F3A] mb-2 z-10">Upload Label Matrix</h3>
+                                <h3 className="text-2xl font-bold text-[#0B1F3A] mb-2 z-10">{t('scanner.uploadLabelMatrix')}</h3>
                                 <p className="text-muted-foreground mb-8 font-medium max-w-sm z-10">Drop digital artwork assets (supported: PNG, JPG) to initiate autonomous compliance verification.</p>
                                 <label className="z-10 cursor-pointer">
                                     <input type="file" className="hidden" accept="image/*,.pdf" onChange={handleFileChange} />
-                                    <div className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 shadow h-12 px-10 bg-[#0B1F3A] hover:bg-[#0B1F3A]/90 text-white cursor-pointer hover:-translate-y-0.5 ease-out duration-200">
-                                        Select Target Media
-                                    </div>
+                                    <div className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 shadow h-12 px-10 bg-[#0B1F3A] hover:bg-[#0B1F3A]/90 text-white cursor-pointer hover:-translate-y-0.5 ease-out duration-200">{t('scanner.selectTargetMedia')}</div>
                                 </label>
                             </>
                         ) : (
                             <div className="flex flex-col items-center w-full z-10 max-w-3xl">
-                                <h3 className="text-lg font-bold uppercase tracking-widest text-[#0B1F3A] mb-4">Target Visualization</h3>
+                                <h3 className="text-lg font-bold uppercase tracking-widest text-[#0B1F3A] mb-4">{t('scanner.targetVisualization')}</h3>
                                 <div className="p-2 border-2 border-dashed border-[#2563EB]/30 rounded-xl bg-card shadow-sm mb-8 w-full max-h-[400px] flex items-center justify-center overflow-hidden relative">
                                     <img src={preview} alt="Target Layer" className="max-h-[380px] object-contain rounded-md" />
                                 </div>
                                 <div className="flex gap-4">
-                                    <Button variant="outline" className="h-11 px-6 font-semibold" onClick={resetAuditor}>Discard Target</Button>
+                                    <Button variant="outline" className="h-11 px-6 font-semibold" onClick={resetAuditor}>{t('scanner.discardTarget')}</Button>
                                     <Button className="h-11 px-8 font-semibold bg-[#2563EB] hover:bg-[#2563EB]/90 text-white shadow-sm" onClick={runComplianceAudit}>
-                                        <PlayCircle className="w-4 h-4 mr-2" /> Execute Protocol
-                                    </Button>
+                                        <PlayCircle className="w-4 h-4 mr-2" />{t('scanner.executeProtocol')}</Button>
                                 </div>
                             </div>
                         )}
@@ -146,7 +142,7 @@ export default function LabelAuditor() {
                     <CardContent className="flex flex-col items-center justify-center py-28 relative overflow-hidden">
                         <div className="absolute inset-0 bg-[#2563EB]/5 animate-pulse"></div>
                         <RefreshCw className="w-16 h-16 text-[#2563EB] animate-spin mb-8 relative z-10" />
-                        <h3 className="text-2xl font-bold text-[#0B1F3A] mb-3 relative z-10 text-center tracking-tight">Active Neural Processing</h3>
+                        <h3 className="text-2xl font-bold text-[#0B1F3A] mb-3 relative z-10 text-center tracking-tight">{t('scanner.activeNeuralProcessing')}</h3>
                         <p className="text-muted-foreground font-medium relative z-10 text-sm max-w-md text-center">{progressStatus}</p>
                     </CardContent>
                 </Card>
@@ -158,7 +154,7 @@ export default function LabelAuditor() {
                         <Card className="rounded-xl border border-border shadow-sm bg-card overflow-hidden relative">
                             <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-bl-full pointer-events-none"></div>
                             <CardHeader className="pb-2">
-                                <CardTitle className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Compliance Status</CardTitle>
+                                <CardTitle className="text-xs font-bold text-muted-foreground uppercase tracking-widest">{t('common.complianceStatus')}</CardTitle>
                             </CardHeader>
                             <CardContent>
                                 <div className="flex items-center gap-3">
@@ -172,7 +168,7 @@ export default function LabelAuditor() {
 
                         <Card className="rounded-xl border border-border shadow-sm bg-card relative overflow-hidden md:col-span-2">
                             <CardHeader className="pb-2">
-                                <CardTitle className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Audit Risk Vector</CardTitle>
+                                <CardTitle className="text-xs font-bold text-muted-foreground uppercase tracking-widest">{t('scanner.auditRiskVector')}</CardTitle>
                             </CardHeader>
                             <CardContent>
                                 <div className="space-y-3">
@@ -180,7 +176,7 @@ export default function LabelAuditor() {
                                         <span className={`text-4xl font-extrabold tracking-tight ${scanData.risk_level > 60 ? 'text-red-500' : scanData.risk_level > 30 ? 'text-orange-500' : 'text-green-500'}`}>
                                             {scanData.risk_level}%
                                         </span>
-                                        <span className="text-sm font-semibold text-muted-foreground">Confidence Delta</span>
+                                        <span className="text-sm font-semibold text-muted-foreground">{t('scanner.confidenceDelta')}</span>
                                     </div>
                                     <div className="h-2 bg-muted rounded-full overflow-hidden w-full">
                                         <div className={`h-full transition-all duration-500 ${scanData.risk_level > 60 ? 'bg-red-500' : scanData.risk_level > 30 ? 'bg-orange-500' : 'bg-green-500'}`} style={{ width: `${scanData.risk_level}%` }}></div>
@@ -193,8 +189,7 @@ export default function LabelAuditor() {
                     <Card className="rounded-xl shadow-sm border border-border bg-card">
                         <CardHeader className="border-b border-border/50 pb-4 bg-muted/20">
                             <CardTitle className="text-base font-bold text-[#0B1F3A] flex items-center gap-2">
-                                <Layers className="w-5 h-5 text-[#2563EB]" /> Deterministic Rule Evaluation
-                            </CardTitle>
+                                <Layers className="w-5 h-5 text-[#2563EB]" />{t('scanner.deterministicRuleEvaluation')}</CardTitle>
                         </CardHeader>
                         <CardContent className="p-0">
                             <div className="divide-y divide-border/50 border-t border-border/50">
@@ -220,8 +215,7 @@ export default function LabelAuditor() {
 
                     <div className="flex gap-4 justify-end pt-4">
                         <Button variant="outline" className="h-11 px-8 font-semibold shadow-sm" onClick={resetAuditor}>
-                            <RefreshCw className="w-4 h-4 mr-2" /> Reset Auditor
-                        </Button>
+                            <RefreshCw className="w-4 h-4 mr-2" />{t('scanner.resetAuditor')}</Button>
                     </div>
                 </div>
             )}
