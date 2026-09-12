@@ -1,0 +1,80 @@
+{
+    "frontend/src\\app\\admin\\dashboard\\page.tsx": [
+        "E-Commerce Monitor Configuration"
+    ],
+    "frontend/src\\app\\admin\\geo\\page.tsx": [
+        "Geo Analytics"
+    ],
+    "frontend/src\\app\\admin\\rules\\page.tsx": [
+        "e.g. Mandatory Net Quantity",
+        "e.g. LM-PKG-NETQTY-01"
+    ],
+    "frontend/src\\app\\login\\page.tsx": [
+        "name@domain.gov",
+        "officer@metroniq.local",
+        "admin@metroniq.local",
+        "Development Fast-Login"
+    ],
+    "frontend/src\\app\\manufacturer\\auditor\\page.tsx": [
+        "Pre-Market Compliance Auditor",
+        "Compliance Status"
+    ],
+    "frontend/src\\app\\manufacturer\\dashboard\\page.tsx": [
+        "Notice ID",
+        "Legal Escalations",
+        "Product Compliance Portal",
+        "Pre-Market Label Auditor",
+        "Violation",
+        "Under Review",
+        "All Clear",
+        "Case ID",
+        "Compliance Status",
+        "Improvement Notices",
+        "New Audit",
+        "Escalation Active",
+        "Penalty Asset"
+    ],
+    "frontend/src\\app\\officer\\dashboard\\page.tsx": [
+        "Rectifications Pending"
+    ],
+    "frontend/src\\app\\officer\\ecommerce\\page.tsx": [
+        "Register digital marketplace domain for monitoring (e.g. https://flipkart.com/product/123)"
+    ],
+    "frontend/src\\app\\officer\\enforcement\\page.tsx": [
+        "Retry Engine Connection",
+        "Enter the penalty amount (\u20b9) to be assessed for this enforcement case. This will permanently move the case to",
+        "Case ID",
+        "Cancel",
+        "e.g. 25000"
+    ],
+    "frontend/src\\app\\officer\\inspection\\page.tsx": [
+        "Compliance Result",
+        "NON-COMPLIANT"
+    ],
+    "frontend/src\\app\\officer\\notices\\page.tsx": [
+        "Improvement Notices",
+        "View"
+    ],
+    "frontend/src\\app\\officer\\reports\\page.tsx": [
+        "Case ID"
+    ],
+    "frontend/src\\app\\officer\\scanner\\page.tsx": [
+        "INVALID INSPECTION IMAGE",
+        "NOT VERIFIED \u2014 ENVIRONMENT LIMITATION",
+        "No Image Data",
+        "Extracted Declarations & Validations",
+        "prev"
+    ],
+    "frontend/src\\components\\mode-toggle.tsx": [
+        "Dark",
+        "System",
+        "Light"
+    ],
+    "frontend/src\\components\\layout\\DashboardLayout.tsx": [
+        "MetronIQ Copilot",
+        "Explain rule LM-PKG-001"
+    ],
+    "frontend/src\\components\\ui\\dialog.tsx": [
+        "Close"
+    ]
+}
