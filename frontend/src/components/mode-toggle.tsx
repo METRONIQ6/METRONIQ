@@ -2,7 +2,7 @@
 import { useTranslation } from '@/i18n'
 
 import * as React from "react"
-import { Moon, Sun, Monitor } from "lucide-react"
+import { Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
 
 export function ModeToggle() {
@@ -31,14 +31,7 @@ export function ModeToggle() {
                 <Sun className="h-4 w-4" />
                 <span className="sr-only">{t('common.lightTheme')}</span>
             </button>
-            <button
-                onClick={() => setTheme("system")}
-                className={`rounded-full p-1.5 transition-colors ${theme === 'system' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground'}`}
-                title="System"
-            >
-                <Monitor className="h-4 w-4" />
-                <span className="sr-only">{t('common.systemTheme')}</span>
-            </button>
+
             <button
                 onClick={() => setTheme("dark")}
                 className={`rounded-full p-1.5 transition-colors ${theme === 'dark' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground'}`}

@@ -24,7 +24,11 @@ class Settings(BaseSettings):
     MINIO_ACCESS_KEY: str = "minioadmin"
     MINIO_SECRET_KEY: str = "minioadmin"
     
+    # AI PROVIDER
+    GEMINI_API_KEY: str | None = None
+    
     class Config:
         env_file = ".env"
+        extra = "ignore"
 
 settings = Settings()

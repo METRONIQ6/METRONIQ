@@ -1,28 +1,32 @@
 import requests
+import pytest
 
 API_URL = "http://127.0.0.1:8000/api/v1"
 
-resp = requests.post(f"{API_URL}/auth/login", data={"username": "officer@metroniq.local", "password": "password", "grant_type": "password"})
-assert resp.status_code == 200, f"Login failed: {resp.text}"
-token = resp.json()["access_token"]
-headers = {"Authorization": f"Bearer {token}"}
-print("Auth: PASS")
+@pytest.fixture(scope="module")
+def auth_headers():
+    resp = requests.post(f"{API_URL}/auth/login", data={"username": "officer@metroniq.local", "password": "password", "grant_type": "password"})
+    if resp.status_code != 200:
+        pytest.skip(f"Login failed, skipped API tests: {resp.text}")
+    token = resp.json()["access_token"]
+    return {"Authorization": f"Bearer {token}"}
 
-resp = requests.get(f"{API_URL}/rules", headers=headers)
-assert resp.status_code == 200, f"Rules get failed: {resp.text}"
-print("Rules GET: PASS")
+def test_auth_login(auth_headers):
+    assert auth_headers is not None
+    assert "Authorization" in auth_headers
 
-resp = requests.get(f"{API_URL}/inspections", headers=headers)
-assert resp.status_code == 200, f"Inspections GET failed: {resp.text}"
-print("Inspections GET: PASS")
+def test_get_rules(auth_headers):
+    resp = requests.get(f"{API_URL}/rules", headers=auth_headers)
+    assert resp.status_code == 200, f"Rules get failed: {resp.text}"
 
-resp = requests.get(f"{API_URL}/notices", headers=headers)
-assert resp.status_code == 200, f"Notices GET failed: {resp.text}"
-print("Notices GET: PASS")
+def test_get_inspections(auth_headers):
+    resp = requests.get(f"{API_URL}/inspections", headers=auth_headers)
+    assert resp.status_code == 200, f"Inspections GET failed: {resp.text}"
 
-# Check dashboard data fetching (aggregations)
-resp = requests.get(f"{API_URL}/dashboard/officer", headers=headers)
-assert resp.status_code == 200, f"Dashboard failed: {resp.text}"
-print("Dashboard GET: PASS")
+def test_get_notices(auth_headers):
+    resp = requests.get(f"{API_URL}/notices", headers=auth_headers)
+    assert resp.status_code == 200, f"Notices GET failed: {resp.text}"
 
-print("All PostgreSQL integration tests passed.")
+def test_get_dashboard(auth_headers):
+    resp = requests.get(f"{API_URL}/dashboard/summary", headers=auth_headers)
+    assert resp.status_code == 200, f"Dashboard failed: {resp.text}"

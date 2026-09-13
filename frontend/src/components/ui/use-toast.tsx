@@ -1,13 +1,13 @@
 "use client"
 import React, { createContext, useContext, useState, useCallback, ReactNode } from 'react'
 
-export type ToastType = 'success' | 'error' | 'warning' | 'info'
+export type ToastType = 'success' | 'error' | 'warning' | 'info' | 'platform'
 
 export interface ToastMessage {
     id: string;
     type: ToastType;
     message: string;
-    description?: string;
+    description?: React.ReactNode;
 }
 
 interface ToastContextType {
@@ -39,13 +39,14 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => {
                     <div
                         key={t.id}
                         className={`pointer-events-auto flex flex-col p-4 w-[350px] shadow-lg rounded-md border text-sm transition-all animate-in slide-in-from-right-full ${t.type === 'success' ? 'bg-success/10 border-green-200 text-green-900' :
-                                t.type === 'error' ? 'bg-destructive/10 border-red-200 text-red-900' :
-                                    t.type === 'warning' ? 'bg-amber-50 border-amber-200 text-amber-900' :
+                            t.type === 'error' ? 'bg-destructive/10 border-red-200 text-red-900' :
+                                t.type === 'warning' ? 'bg-amber-50 border-amber-200 text-amber-900' :
+                                    t.type === 'platform' ? 'bg-[#0B1F3A] border-[#0B1F3A] text-white shadow-xl shadow-[#0B1F3A]/20 ring-1 ring-[#2563EB]/50' :
                                         'bg-primary/10 border-blue-200 text-blue-900'
                             }`}>
                         <div className="flex justify-between items-start gap-2">
                             <span className="font-semibold">{t.message}</span>
-                            <button onClick={() => removeToast(t.id)} className="text-muted-foreground hover:text-foreground opacity-50 hover:opacity-100">×</button>
+                            <button onClick={() => removeToast(t.id)} className={`${t.type === 'platform' ? 'text-white/70 hover:text-white' : 'text-muted-foreground hover:text-foreground'} opacity-50 hover:opacity-100`}>×</button>
                         </div>
                         {t.description && <div className="mt-1 opacity-90">{t.description}</div>}
                     </div>

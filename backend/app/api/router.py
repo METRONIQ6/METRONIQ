@@ -13,3 +13,6 @@ api_router.include_router(reinspections.router, prefix="/reinspections", tags=["
 api_router.include_router(enforcement.router, prefix="/enforcement", tags=["enforcement"])
 api_router.include_router(reports.router, prefix="/reports", tags=["reports"])
 api_router.include_router(ecommerce.router, prefix="/ecommerce", tags=["ecommerce"])
+from .routes import copilot, users
+api_router.include_router(copilot.router, prefix="/copilot", tags=["copilot"])
+api_router.include_router(users.router, prefix="/users", tags=["users"])

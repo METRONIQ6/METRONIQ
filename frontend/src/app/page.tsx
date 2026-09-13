@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 
 import { useTranslation } from '@/i18n';
 import LanguageSelector from '@/components/LanguageSelector';
+import { ModeToggle } from '@/components/mode-toggle';
 
 import { Button } from "@/components/ui/button";
 import {
@@ -42,6 +43,7 @@ export default function LandingPage() {
                             <a href="#capabilities" className="hover:text-primary transition-colors">{t('navbar.capabilities')}</a>
                             <a href="#architecture" className="hover:text-primary transition-colors">{t('navbar.architecture')}</a>
                         </div>
+                        <ModeToggle />
                         <LanguageSelector />
                         <Button onClick={() => router.push('/login')} className="rounded-full bg-[#0056b3] hover:bg-[#004494] text-white px-6 font-semibold shadow-sm hover:shadow-md transition-all">
                             {t('landing.departmentLogin')}
@@ -129,7 +131,7 @@ export default function LandingPage() {
                 </section>
 
                 {/* Core Modules Grid */}
-                <section id="capabilities" className="py-24 px-6 relative bg-white dark:bg-[#0a0a0a]">
+                <section id="capabilities" className="py-24 px-6 relative bg-white dark:bg-background">
                     <div className="max-w-7xl mx-auto">
                         <div className="border-l-4 border-[#0056b3] pl-6 mb-16">
                             <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-[#111827] dark:text-gray-100 uppercase mb-3">{t('landing.enterpriseModules')}</h2>
@@ -216,7 +218,7 @@ export default function LandingPage() {
                             </div>
                             <div className="pt-6">
                                 <LanguageSelector />
-                        <Button onClick={() => router.push('/login')} className="rounded-full shadow-md bg-[#0056b3] hover:bg-[#004494] text-white h-12 px-8">
+                                <Button onClick={() => router.push('/login')} className="rounded-full shadow-md bg-[#0056b3] hover:bg-[#004494] text-white h-12 px-8">
                                     {t('landing.authenticateModule')}
                                 </Button>
                             </div>
@@ -254,7 +256,7 @@ export default function LandingPage() {
                     <div className="flex items-center gap-2 text-foreground font-bold text-lg mb-4">
                         <ShieldCheck className="w-6 h-6 text-[#0056b3]" />{t('common.metroniq')}</div>
                     <p className="text-sm text-muted-foreground text-center">
-                        © {new Date().getFullYear()} METRONIQ. {t('landing.footer2')}
+                        © 2026 METRONIQ. All operations securely logged.
                     </p>
                 </div>
             </footer>

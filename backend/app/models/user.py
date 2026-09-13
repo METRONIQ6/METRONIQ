@@ -10,5 +10,6 @@ class User(Base):
     email = Column(String, unique=True, index=True, nullable=False)
     hashed_password = Column(String, nullable=False)
     role = Column(String, default="OFFICER") # OFFICER, ADMIN, MANUFACTURER
+    status = Column(String, default="APPROVED") # APPROVED, PENDING_APPROVAL, REJECTED
     is_active = Column(Boolean, default=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())

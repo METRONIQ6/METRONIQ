@@ -160,7 +160,7 @@ export default function AdminDashboard() {
             </div>
 
             {/* Layout Splitting */}
-            <div className="grid lg:grid-cols-2 gap-6 pt-2">
+            <div className="grid lg:grid-cols-1 gap-6 pt-2">
 
                 {/* Left Area: Analytics & Trends (Requires historic data from API, using professional empty state for now) */}
                 <Card className="rounded-xl shadow-sm border border-border bg-card h-[400px] flex flex-col">
@@ -174,55 +174,7 @@ export default function AdminDashboard() {
                     </CardContent>
                 </Card>
 
-                {/* Right Area: Admin Navigation Index */}
-                <div className="space-y-6">
-                    <Card className="rounded-xl shadow-sm border border-border bg-card">
-                        <CardHeader className="pb-3 border-b border-border/40">
-                            <CardTitle className="text-base font-semibold text-foreground tracking-tight">{t('adminUI.system_navigation')}</CardTitle>
-                        </CardHeader>
-                        <CardContent className="p-0">
-                            <div className="divide-y divide-border/40">
 
-                                <Link href="/admin/users" className="block hover:bg-muted/20 transition-colors p-4">
-                                    <div className="flex items-center gap-4">
-                                        <div className="p-2.5 rounded-md bg-[#0B1F3A]/5 dark:bg-[#0B1F3A]/30 text-[#0B1F3A] dark:text-white">
-                                            <Users className="w-5 h-5" />
-                                        </div>
-                                        <div>
-                                            <p className="text-sm font-semibold text-foreground">{t('adminUI.user_management')}</p>
-                                            <p className="text-xs text-muted-foreground">Manage RBAC, roles, and administrator accounts.</p>
-                                        </div>
-                                    </div>
-                                </Link>
-
-                                <Link href="/admin/ecommerce" className="block hover:bg-muted/20 transition-colors p-4">
-                                    <div className="flex items-center gap-4">
-                                        <div className="p-2.5 rounded-md bg-[#2563EB]/10 text-[#2563EB]">
-                                            <LayoutDashboard className="w-5 h-5" />
-                                        </div>
-                                        <div>
-                                            <p className="text-sm font-semibold text-foreground">{t('adminUI.ecommerceMonitorConfiguration')}</p>
-                                            <p className="text-xs text-muted-foreground">Configure web crawler boundaries and scrape parameters.</p>
-                                        </div>
-                                    </div>
-                                </Link>
-
-                                <Link href="/admin/geo" className="block hover:bg-muted/20 transition-colors p-4">
-                                    <div className="flex items-center gap-4">
-                                        <div className="p-2.5 rounded-md bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400">
-                                            <Map className="w-5 h-5" />
-                                        </div>
-                                        <div>
-                                            <p className="text-sm font-semibold text-foreground">{t('adminUI.geospatial_intellige')}</p>
-                                            <p className="text-xs text-muted-foreground">View high-risk zone mapping and heat patterns.</p>
-                                        </div>
-                                    </div>
-                                </Link>
-
-                            </div>
-                        </CardContent>
-                    </Card>
-                </div>
 
             </div>
 
