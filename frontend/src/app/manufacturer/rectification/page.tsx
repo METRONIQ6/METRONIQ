@@ -15,7 +15,7 @@ export default function RectificationCenter() {
     const [tasks, setTasks] = useState<any[]>([])
 
     useEffect(() => {
-        fetch('http://localhost:8000/api/v1/manufacturer/rectifications', { headers: { 'Authorization': `Bearer ${getToken()}` } }).then(async r => {
+        fetch('/api/v1/manufacturer/rectifications', { headers: { 'Authorization': `Bearer ${getToken()}` } }).then(async r => {
             if (!r.ok) {
                 const errPayload = await r.json().catch(() => ({}));
                 setErrorKey(mapManufacturerError(r.status, errPayload.detail || errPayload.message));
@@ -30,7 +30,7 @@ export default function RectificationCenter() {
     const submitTask = async (id: string, file: File | null) => {
         const fd = new FormData();
         if (file) fd.append('file', file)
-        await fetch(`http://localhost:8000/api/v1/manufacturer/rectifications/${id}/submit`, { method: 'POST', body: fd, headers: { 'Authorization': `Bearer ${getToken()}` } })
+        await fetch(`/api/v1/manufacturer/rectifications/${id}/submit`, { method: 'POST', body: fd, headers: { 'Authorization': `Bearer ${getToken()}` } })
         window.location.reload()
     }
 

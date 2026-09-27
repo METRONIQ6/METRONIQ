@@ -120,7 +120,7 @@ export default function ComplianceAudit() {
             }
 
             // 2. Create the Product in backend to keep track of it
-            const pRes = await fetch('http://localhost:8000/api/v1/manufacturer/products', {
+            const pRes = await fetch('/api/v1/manufacturer/products', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -135,7 +135,7 @@ export default function ComplianceAudit() {
             const productData = await pRes.json()
 
             // 3. Submit it for government approval
-            const sRes = await fetch('http://localhost:8000/api/v1/manufacturer/submissions', {
+            const sRes = await fetch('/api/v1/manufacturer/submissions', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -168,7 +168,7 @@ export default function ComplianceAudit() {
         try {
             const token = getToken()
             // 1. Upload
-            const upRes = await fetch('http://localhost:8000/api/v1/scanner/upload', {
+            const upRes = await fetch('/api/v1/scanner/upload', {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${token}` },
                 body: fd
@@ -178,7 +178,7 @@ export default function ComplianceAudit() {
 
             // 2. Process
             setStatusKey("processing")
-            await fetch(`http://localhost:8000/api/v1/scanner/process?scan_id=${id}`, {
+            await fetch(`/api/v1/scanner/process?scan_id=${id}`, {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${token}` }
             })
@@ -187,7 +187,7 @@ export default function ComplianceAudit() {
             let completed = false
             while (!completed) {
                 await new Promise(r => setTimeout(r, 800))
-                const stRes = await fetch(`http://localhost:8000/api/v1/scanner/${id}/status`, { headers: { 'Authorization': `Bearer ${token}` } })
+                const stRes = await fetch(`/api/v1/scanner/${id}/status`, { headers: { 'Authorization': `Bearer ${token}` } })
                 const stData = await stRes.json()
                 if (stData.status === 'COMPLETED') completed = true
                 else if (stData.status === 'FAILED') throw new Error(stData.error || "Processing failed")
@@ -195,8 +195,8 @@ export default function ComplianceAudit() {
 
             // 4. Result & Evidence
             setStatusKey("fetching")
-            const resData = await (await fetch(`http://localhost:8000/api/v1/scanner/${id}/result`, { headers: { 'Authorization': `Bearer ${token}` } })).json()
-            const evData = await (await fetch(`http://localhost:8000/api/v1/scanner/${id}/evidence`, { headers: { 'Authorization': `Bearer ${token}` } })).json()
+            const resData = await (await fetch(`/api/v1/scanner/${id}/result`, { headers: { 'Authorization': `Bearer ${token}` } })).json()
+            const evData = await (await fetch(`/api/v1/scanner/${id}/evidence`, { headers: { 'Authorization': `Bearer ${token}` } })).json()
 
             setResult(resData)
             setEvidence(evData)

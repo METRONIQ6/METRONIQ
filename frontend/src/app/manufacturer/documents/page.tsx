@@ -12,7 +12,7 @@ export default function DocumentCenter() {
     const [errorKey, setErrorKey] = useState<string | null>(null)
     const [docs, setDocs] = useState<any[]>([])
     useEffect(() => {
-        fetch('http://localhost:8000/api/v1/manufacturer/documents', { headers: { 'Authorization': `Bearer ${getToken()}` }}).then(async r => {
+        fetch('/api/v1/manufacturer/documents', { headers: { 'Authorization': `Bearer ${getToken()}` }}).then(async r => {
                 if (!r.ok) {
                     const errPayload = await r.json().catch(()=>({}));
                     setErrorKey(mapManufacturerError(r.status, errPayload.detail || errPayload.message));

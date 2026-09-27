@@ -23,7 +23,7 @@ export default function ReinspectionsPage() {
         setLoading(true)
         setError(false)
         try {
-            const res = await fetch('http://localhost:8000/api/v1/reinspections', {
+            const res = await fetch('/api/v1/reinspections', {
                 headers: { 'Authorization': `Bearer ${getToken()}` }
             })
             if (res.ok) {
@@ -46,7 +46,7 @@ export default function ReinspectionsPage() {
     const escalateReinspection = async (id: string) => {
         setActionLoading(id)
         try {
-            const res = await fetch(`http://localhost:8000/api/v1/enforcement/escalate`, {
+            const res = await fetch(`/api/v1/enforcement/escalate`, {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${getToken()}`, 'Content-Type': 'application/json' },
                 body: JSON.stringify({ reinspection_id: id })

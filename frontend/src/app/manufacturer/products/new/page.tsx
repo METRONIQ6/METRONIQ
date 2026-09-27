@@ -17,7 +17,7 @@ export default function NewProduct() {
 
     const submit = async () => {
         try {
-            const res = await fetch('http://localhost:8000/api/v1/manufacturer/products', {
+            const res = await fetch('/api/v1/manufacturer/products', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${getToken()}` },
                 body: JSON.stringify(form)

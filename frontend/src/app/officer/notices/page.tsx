@@ -54,7 +54,7 @@ export default function NoticesPage() {
         setLoading(true)
         setError(false)
         try {
-            const res = await fetch('http://localhost:8000/api/v1/notices', {
+            const res = await fetch('/api/v1/notices', {
                 headers: { 'Authorization': `Bearer ${getToken()}` }
             })
             if (res.ok) {
@@ -77,7 +77,7 @@ export default function NoticesPage() {
     const reviewNotice = async (id: string, action: string) => {
         setActionLoading(true)
         try {
-            const res = await fetch(`http://localhost:8000/api/v1/notices/${id}/review?status=${action}`, {
+            const res = await fetch(`/api/v1/notices/${id}/review?status=${action}`, {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${getToken()}` }
             })
@@ -98,7 +98,7 @@ export default function NoticesPage() {
     const scheduleReinspection = async (orig_id: string, notice_id: string) => {
         setActionLoading(true)
         try {
-            const res = await fetch(`http://localhost:8000/api/v1/reinspections/`, {
+            const res = await fetch(`/api/v1/reinspections/`, {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${getToken()}`, 'Content-Type': 'application/json' },
                 body: JSON.stringify({ original_inspection_id: orig_id, notice_id: notice_id })

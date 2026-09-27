@@ -16,7 +16,7 @@ export default function AuditReportPrint({ params }: { params: Promise<{ id: str
         if (!id) return
         const fetchReport = async () => {
             try {
-                const res = await fetch(`http://localhost:8000/api/v1/reports/${id}`, {
+                const res = await fetch(`/api/v1/reports/${id}`, {
                     headers: { 'Authorization': `Bearer ${getToken()}` }
                 })
                 if (res.ok) {
@@ -69,7 +69,7 @@ export default function AuditReportPrint({ params }: { params: Promise<{ id: str
                     <button
                         onClick={async () => {
                             try {
-                                const res = await fetch(`http://localhost:8000/api/v1/reports/${id}/pdf?lang=${language}`, {
+                                const res = await fetch(`/api/v1/reports/${id}/pdf?lang=${language}`, {
                                     headers: { 'Authorization': `Bearer ${getToken()}` }
                                 });
                                 if (!res.ok) throw new Error("Download failed");

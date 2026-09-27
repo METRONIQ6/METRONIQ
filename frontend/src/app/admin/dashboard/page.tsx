@@ -47,8 +47,8 @@ export default function AdminDashboard() {
             setError(false)
             try {
                 const head = { 'Authorization': `Bearer ${getToken()}` }
-                const res = await fetch('http://localhost:8000/api/v1/analytics/overview', { headers: head })
-                const userRes = await fetch('http://localhost:8000/api/v1/users/counts', { headers: head })
+                const res = await fetch('/api/v1/analytics/overview', { headers: head })
+                const userRes = await fetch('/api/v1/users/counts', { headers: head })
 
                 if (res.ok) {
                     setStats(await res.json())

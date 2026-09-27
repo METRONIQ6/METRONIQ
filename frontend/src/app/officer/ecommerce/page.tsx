@@ -27,7 +27,7 @@ export default function EcommercePage() {
         setLoading(true)
         setError(false)
         try {
-            const res = await fetch('http://localhost:8000/api/v1/ecommerce', {
+            const res = await fetch('/api/v1/ecommerce', {
                 headers: { 'Authorization': `Bearer ${getToken()}` }
             })
             if (res.ok) {
@@ -60,7 +60,7 @@ export default function EcommercePage() {
 
             for (const id of activePolls) {
                 try {
-                    const res = await fetch(`http://localhost:8000/api/v1/ecommerce/${id}/status`, {
+                    const res = await fetch(`/api/v1/ecommerce/${id}/status`, {
                         headers: { 'Authorization': `Bearer ${getToken()}` }
                     })
                     if (res.ok) {
@@ -105,7 +105,7 @@ export default function EcommercePage() {
             return
         }
         try {
-            const res = await fetch(`http://localhost:8000/api/v1/ecommerce/`, {
+            const res = await fetch(`/api/v1/ecommerce/`, {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${getToken()}`, 'Content-Type': 'application/json' },
                 body: JSON.stringify({ target_url: newUrl, monitoring_frequency: "DAILY" })
@@ -127,7 +127,7 @@ export default function EcommercePage() {
 
     const triggerScan = async (id: string) => {
         try {
-            await fetch(`http://localhost:8000/api/v1/ecommerce/${id}/scan`, {
+            await fetch(`/api/v1/ecommerce/${id}/scan`, {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${getToken()}` }
             })
@@ -144,7 +144,7 @@ export default function EcommercePage() {
         if (!isExp && !scanResults[id]) {
             // Lazy load result
             try {
-                const res = await fetch(`http://localhost:8000/api/v1/ecommerce/${id}/status`, {
+                const res = await fetch(`/api/v1/ecommerce/${id}/status`, {
                     headers: { 'Authorization': `Bearer ${getToken()}` }
                 })
                 if (res.ok) {

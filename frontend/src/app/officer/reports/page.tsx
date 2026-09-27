@@ -18,7 +18,7 @@ export default function ReportsPage() {
     React.useEffect(() => {
         const fetchCases = async () => {
             try {
-                const res = await fetch('http://localhost:8000/api/v1/enforcement', {
+                const res = await fetch('/api/v1/enforcement', {
                     headers: { 'Authorization': `Bearer ${getToken()}` }
                 })
                 if (res.ok) setCases(await res.json())

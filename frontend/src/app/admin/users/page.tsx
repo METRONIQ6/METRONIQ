@@ -26,7 +26,7 @@ export default function UserManagementPage() {
     const fetchCounts = async () => {
         setCountsError(false)
         try {
-            const res = await fetch('http://localhost:8000/api/v1/users/counts', {
+            const res = await fetch('/api/v1/users/counts', {
                 headers: { 'Authorization': `Bearer ${getToken()}` }
             })
             if (res.ok) {
@@ -45,7 +45,7 @@ export default function UserManagementPage() {
         setError(false)
         try {
             let roleFilter = activeTab === "manufacturers" ? "MANUFACTURER" : "OFFICER"
-            const res = await fetch(`http://localhost:8000/api/v1/users/?role=${roleFilter}`, {
+            const res = await fetch(`/api/v1/users/?role=${roleFilter}`, {
                 headers: { 'Authorization': `Bearer ${getToken()}` }
             })
             if (res.ok) {
@@ -83,7 +83,7 @@ export default function UserManagementPage() {
         setConfirmAction(null);
 
         try {
-            const res = await fetch(`http://localhost:8000/api/v1/users/${userId}/${action}`, {
+            const res = await fetch(`/api/v1/users/${userId}/${action}`, {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${getToken()}` }
             })

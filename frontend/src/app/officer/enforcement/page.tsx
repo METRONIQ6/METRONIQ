@@ -51,7 +51,7 @@ export default function EnforcementPage() {
         setLoading(true)
         setError(false)
         try {
-            const res = await fetch('http://localhost:8000/api/v1/enforcement', {
+            const res = await fetch('/api/v1/enforcement', {
                 headers: { 'Authorization': `Bearer ${getToken()}` }
             })
             if (res.ok) {
@@ -90,7 +90,7 @@ export default function EnforcementPage() {
             const body: any = { status: nextStatus }
             if (penaltyAmount !== null) body.penalty_amount = penaltyAmount
 
-            const res = await fetch(`http://localhost:8000/api/v1/enforcement/${caseId}/status`, {
+            const res = await fetch(`/api/v1/enforcement/${caseId}/status`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${getToken()}`,

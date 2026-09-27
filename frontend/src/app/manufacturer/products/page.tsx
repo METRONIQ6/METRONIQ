@@ -15,7 +15,7 @@ export default function ProductsPage() {
     const [errorKey, setErrorKey] = useState<string | null>(null)
 
     useEffect(() => {
-        fetch('http://localhost:8000/api/v1/manufacturer/products', { headers: { 'Authorization': `Bearer ${getToken()}` } }).then(async r => {
+        fetch('/api/v1/manufacturer/products', { headers: { 'Authorization': `Bearer ${getToken()}` } }).then(async r => {
                 if (!r.ok) {
                     const errPayload = await r.json().catch(()=>({}));
                     setErrorKey(mapManufacturerError(r.status, errPayload.detail || errPayload.message));

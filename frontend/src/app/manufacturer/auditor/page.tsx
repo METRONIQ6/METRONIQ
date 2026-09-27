@@ -49,7 +49,7 @@ export default function LabelAuditor() {
             const formData = new FormData()
             formData.append('file', file)
 
-            const uploadResp = await fetch('http://localhost:8000/api/v1/scanner/upload', {
+            const uploadResp = await fetch('/api/v1/scanner/upload', {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${getToken()}` },
                 body: formData
@@ -66,7 +66,7 @@ export default function LabelAuditor() {
             const sid = uploadResult.id
 
             setProgressStatus('Sequence initiated: Target inference engine...')
-            await fetch(`http://localhost:8000/api/v1/scanner/process?scan_id=${sid}`, {
+            await fetch(`/api/v1/scanner/process?scan_id=${sid}`, {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${getToken()}` }
             })
@@ -75,7 +75,7 @@ export default function LabelAuditor() {
             let status = "PROCESSING"
             while (status === "PROCESSING" || status === "UPLOADED") {
                 await new Promise(r => setTimeout(r, 800))
-                const statusResp = await fetch(`http://localhost:8000/api/v1/scanner/${sid}/status`, {
+                const statusResp = await fetch(`/api/v1/scanner/${sid}/status`, {
                     headers: { 'Authorization': `Bearer ${getToken()}` }
                 })
                 const statusData = await statusResp.json()
@@ -84,7 +84,7 @@ export default function LabelAuditor() {
             }
 
             setProgressStatus('Finalizing validation matrix...')
-            const resultResp = await fetch(`http://localhost:8000/api/v1/scanner/${sid}/result`, {
+            const resultResp = await fetch(`/api/v1/scanner/${sid}/result`, {
                 headers: { 'Authorization': `Bearer ${getToken()}` }
             })
             if (!resultResp.ok) throw new Error("Failed to retrieve metrics")

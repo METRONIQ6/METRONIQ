@@ -13,7 +13,7 @@ export default function Dashboard() {
     const { t } = useTranslation()
 
     useEffect(() => {
-        fetch('http://localhost:8000/api/v1/manufacturer/dashboard-stats', { headers: { 'Authorization': `Bearer ${getToken()}` } })
+        fetch('/api/v1/manufacturer/dashboard-stats', { headers: { 'Authorization': `Bearer ${getToken()}` } })
             .then(async r => {
                 if (!r.ok) {
                     setErrorKey(mapManufacturerError(r.status))

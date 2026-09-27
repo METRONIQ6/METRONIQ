@@ -33,7 +33,7 @@ export default function RuleManagement() {
         setLoading(true)
         setError(false)
         try {
-            const res = await fetch('http://localhost:8000/api/v1/rules', {
+            const res = await fetch('/api/v1/rules', {
                 headers: { 'Authorization': `Bearer ${getToken()}` }
             })
             if (res.ok) {
@@ -52,7 +52,7 @@ export default function RuleManagement() {
 
     const deleteRule = async (ruleId: string) => {
         try {
-            const res = await fetch(`http://localhost:8000/api/v1/rules/${ruleId}`, {
+            const res = await fetch(`/api/v1/rules/${ruleId}`, {
                 method: 'DELETE',
                 headers: { 'Authorization': `Bearer ${getToken()}` }
             })
@@ -89,7 +89,7 @@ export default function RuleManagement() {
             initial_logic: parsedLogic
         }
         try {
-            const res = await fetch('http://localhost:8000/api/v1/rules', {
+            const res = await fetch('/api/v1/rules', {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${getToken()}`, 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)

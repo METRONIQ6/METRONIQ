@@ -72,7 +72,7 @@ export default function DashboardLayout({ children, role }: { children: React.Re
 
         try {
             const token = getToken()
-            const res = await fetch('http://localhost:8000/api/v1/copilot/chat', {
+            const res = await fetch('/api/v1/copilot/chat', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
                 body: JSON.stringify({ message: text, history: messages })
@@ -130,7 +130,7 @@ export default function DashboardLayout({ children, role }: { children: React.Re
                 const token = getToken();
                 if (!token) return;
 
-                const res = await fetch('http://localhost:8000/api/v1/users/counts', {
+                const res = await fetch('/api/v1/users/counts', {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
 

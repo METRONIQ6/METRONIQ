@@ -19,7 +19,7 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
     const router = useRouter()
 
     useEffect(() => {
-        fetch(`http://localhost:8000/api/v1/manufacturer/products/${id}`, { headers: { 'Authorization': `Bearer ${getToken()}` } })
+        fetch(`/api/v1/manufacturer/products/${id}`, { headers: { 'Authorization': `Bearer ${getToken()}` } })
             .then(async r => {
                 if (!r.ok) {
                     setErrorKey(mapManufacturerError(r.status))
@@ -34,7 +34,7 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
 
     const submitGov = async () => {
         try {
-            const res = await fetch('http://localhost:8000/api/v1/manufacturer/submissions', {
+            const res = await fetch('/api/v1/manufacturer/submissions', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${getToken()}` },
                 body: JSON.stringify({ product_id: id })

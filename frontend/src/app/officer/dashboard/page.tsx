@@ -48,9 +48,9 @@ export default function OfficerDashboard() {
                 const head = { 'Authorization': `Bearer ${getToken()}` }
 
                 const [sumRes, actRes, inspRes] = await Promise.all([
-                    fetch('http://localhost:8000/api/v1/dashboard/summary', { headers: head }),
-                    fetch('http://localhost:8000/api/v1/dashboard/activity', { headers: head }),
-                    fetch('http://localhost:8000/api/v1/inspections?limit=5', { headers: head })
+                    fetch('/api/v1/dashboard/summary', { headers: head }),
+                    fetch('/api/v1/dashboard/activity', { headers: head }),
+                    fetch('/api/v1/inspections?limit=5', { headers: head })
                 ])
 
                 if (sumRes.ok) setSummary(await sumRes.json())

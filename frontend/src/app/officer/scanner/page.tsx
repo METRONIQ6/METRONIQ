@@ -113,7 +113,7 @@ export default function AIScannerUnified() {
 
             setLoadingStep(1) // Preprocessing
 
-            const uploadResp = await fetch('http://localhost:8000/api/v1/scanner/upload', {
+            const uploadResp = await fetch('/api/v1/scanner/upload', {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${getToken()}` },
                 body: formData
@@ -132,7 +132,7 @@ export default function AIScannerUnified() {
 
             setLoadingStep(2) // OCR
 
-            await fetch(`http://localhost:8000/api/v1/scanner/process?scan_id=${sid}`, {
+            await fetch(`/api/v1/scanner/process?scan_id=${sid}`, {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${getToken()}` }
             });
@@ -144,7 +144,7 @@ export default function AIScannerUnified() {
                 // Advance visual steps occasionally
                 setLoadingStep(prev => prev < 4 ? prev + 1 : prev)
 
-                const statusResp = await fetch(`http://localhost:8000/api/v1/scanner/${sid}/status`, {
+                const statusResp = await fetch(`/api/v1/scanner/${sid}/status`, {
                     headers: { 'Authorization': `Bearer ${getToken()}` }
                 });
                 const statusData = await statusResp.json();
@@ -156,7 +156,7 @@ export default function AIScannerUnified() {
 
             setLoadingStep(5)
 
-            const resultResp = await fetch(`http://localhost:8000/api/v1/scanner/${sid}/result`, {
+            const resultResp = await fetch(`/api/v1/scanner/${sid}/result`, {
                 headers: { 'Authorization': `Bearer ${getToken()}` }
             });
             const resultData = await resultResp.json();
@@ -164,7 +164,7 @@ export default function AIScannerUnified() {
             const urlParams = new window.URLSearchParams(window.location.search);
             const reinId = urlParams.get('reinspection') || sessionStorage.getItem('currentReinspectionId');
             if (reinId && resultData.compliance !== undefined) {
-                await fetch(`http://localhost:8000/api/v1/reinspections/${reinId}/link_scan?scan_id=${sid}`, {
+                await fetch(`/api/v1/reinspections/${reinId}/link_scan?scan_id=${sid}`, {
                     method: 'POST',
                     headers: { 'Authorization': `Bearer ${getToken()}` }
                 });
@@ -185,7 +185,7 @@ export default function AIScannerUnified() {
         const violations = (data.validation_details?.evaluations || []).filter((e: any) => e.status === 'FAIL').map((e: any) => e.field).join(", ");
 
         try {
-            const res = await fetch('http://localhost:8000/api/v1/notices/', {
+            const res = await fetch('/api/v1/notices/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

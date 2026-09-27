@@ -49,7 +49,7 @@ export default function Login() {
                 return
             }
             try {
-                const res = await fetch('http://localhost:8000/api/v1/auth/register', {
+                const res = await fetch('/api/v1/auth/register', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email, password, role: isOfficer ? 'OFFICER' : 'MANUFACTURER' })
@@ -85,7 +85,7 @@ export default function Login() {
             params.append('username', email)
             params.append('password', password)
 
-            const res = await fetch('http://localhost:8000/api/v1/auth/login', {
+            const res = await fetch('/api/v1/auth/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'

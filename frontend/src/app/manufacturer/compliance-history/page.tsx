@@ -11,7 +11,7 @@ export default function HistoryCenter() {
     const [errorKey, setErrorKey] = useState<string | null>(null)
     const [hist, setHist] = useState<any[]>([])
     useEffect(() => {
-        fetch('http://localhost:8000/api/v1/manufacturer/compliance-history', { headers: { 'Authorization': `Bearer ${getToken()}` }}).then(async r => {
+        fetch('/api/v1/manufacturer/compliance-history', { headers: { 'Authorization': `Bearer ${getToken()}` }}).then(async r => {
                 if (!r.ok) {
                     const errPayload = await r.json().catch(()=>({}));
                     setErrorKey(mapManufacturerError(r.status, errPayload.detail || errPayload.message));
