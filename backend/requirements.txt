@@ -2,7 +2,7 @@ fastapi
 uvicorn
 sqlalchemy
 alembic
-psycopg[binary]
+psycopg2-binary
 pydantic
 pydantic-settings
 passlib
@@ -12,3 +12,4 @@ python-multipart
 google-genai
 google-generativeai
 requests
+python-dotenv
