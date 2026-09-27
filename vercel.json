@@ -1,10 +1,16 @@
 {
-  "builds": [
-    { "src": "backend/app/main.py", "use": "@vercel/python" },
-    { "src": "frontend/package.json", "use": "@vercel/next" }
-  ],
+  "framework": "nextjs",
+  "outputDirectory": "frontend/.next",
+  "installCommand": "cd frontend && npm install",
+  "buildCommand": "cd frontend && npm run build",
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "/backend/app/main.py" },
-    { "source": "/(.*)", "destination": "/frontend/$1" }
+    {
+      "source": "/api/v1/(.*)",
+      "destination": "/api/index.py"
+    },
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/index.py"
+    }
   ]
 }
