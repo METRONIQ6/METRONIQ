@@ -11,8 +11,9 @@ class Settings(BaseSettings):
     SECRET_KEY: str = os.getenv("JWT_SECRET_KEY", "LOCAL_DEV_UNSAFE_SECRET_KEY")
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 8
     
+    from pydantic import Field
     # DATABASE
-    DATABASE_URL: str = os.getenv("DATABASE_URL")
+    DATABASE_URL: str = Field(alias="DATABASE_URL", default_factory=lambda: os.getenv("DATABASE_URL") or os.getenv("POSTGRES_URL") or os.getenv("NEON_POSTGRES_URL", ""))
     
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
