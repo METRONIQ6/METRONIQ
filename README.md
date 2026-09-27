@@ -67,6 +67,9 @@ The system enforces Government-level authorization with strict data segregation:
 - **Background Jobs**: FastAPI BackgroundTasks
 
 **Deployment**
+- **Frontend**: Vercel (Next.js service)
+- **Backend**: Vercel Python service (Fluid Compute)
+- **Config**: `vercel.json` with Vercel Services architecture
 
 ---
 
@@ -118,6 +121,32 @@ Open **[http://localhost:3000](http://localhost:3000)** in your browser.
 
 ---
 
+## 🌐 Vercel Deployment
+
+This repository is configured for Vercel Services deployment via `vercel.json`.
+
+**Services:**
+- `frontend/` → Next.js service
+- `backend/` → FastAPI Python service (`app.main:app`)
+
+**API Routing:**
+- `/api/(.*)` → backend service
+- `/(.*)` → frontend service
+
+**Required Environment Variables in Vercel Dashboard:**
+
+| Variable | Scope |
+|---|---|
+| `DATABASE_URL` | Backend only |
+| `GEMINI_API_KEY` | Backend only |
+| `JWT_SECRET_KEY` | Backend only |
+| `ENVIRONMENT` | Backend only |
+| `CORS_ORIGINS` | Backend only |
+
+> ⚠️ Never prefix backend secrets with `NEXT_PUBLIC_`.
+
+---
+
 ## 📁 Project Structure
 
 ```
@@ -137,6 +166,7 @@ MetronIQ/
 │   │   ├── models/        # SQLAlchemy ORM models
 │   │   └── core/          # Config, DB, auth
 │   └── requirements.txt
+├── vercel.json            # Vercel Services deployment config
 └── README.md
 ```
 
