@@ -54,7 +54,7 @@ def escalate_reinspection(payload: EscalateRequest, db: Session = Depends(get_db
     db.refresh(case)
     return case
 
-@router.get("/")
+@router.get("")
 def get_cases(db: Session = Depends(get_db), current_user = Depends(get_current_user)):
     return db.query(EnforcementCase).all()
 

@@ -15,7 +15,7 @@ class ReinspectionCreate(BaseModel):
     original_inspection_id: str
     notice_id: str
 
-@router.post("/")
+@router.post("")
 def create_reinspection(payload: ReinspectionCreate, db: Session = Depends(get_db), current_user = Depends(get_current_officer)):
     # Schedule a new reinspection based on an existing inspection
     parent = db.query(Inspection).filter(Inspection.id == payload.original_inspection_id).first()
@@ -33,7 +33,7 @@ def create_reinspection(payload: ReinspectionCreate, db: Session = Depends(get_d
     db.refresh(rein)
     return rein
 
-@router.get("/")
+@router.get("")
 def get_reinspections(db: Session = Depends(get_db), current_user = Depends(get_current_user)):
     return db.query(Reinspection).all()
 

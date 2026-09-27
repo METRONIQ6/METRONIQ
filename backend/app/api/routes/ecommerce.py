@@ -19,7 +19,7 @@ class MonitorCreate(BaseModel):
     monitoring_frequency: str = "DAILY"
 
 @router.post("")
-@router.post("/")
+@router.post("")
 def create_monitor(payload: MonitorCreate, db: Session = Depends(get_db), current_user = Depends(get_current_officer)):
     monitor = ECommerceMonitor(
         target_url=payload.target_url,
@@ -32,7 +32,7 @@ def create_monitor(payload: MonitorCreate, db: Session = Depends(get_db), curren
     return monitor
 
 @router.get("")
-@router.get("/")
+@router.get("")
 def get_monitors(db: Session = Depends(get_db), current_user = Depends(get_current_user)):
     return db.query(ECommerceMonitor).all()
 

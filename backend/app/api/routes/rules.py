@@ -8,11 +8,11 @@ import uuid
 
 router = APIRouter()
 
-@router.get("/", response_model=List[RuleResponse])
+@router.get("", response_model=List[RuleResponse])
 def get_rules(db: Session = Depends(get_db), user = Depends(get_current_user)):
     return db.query(Rule).all()
 
-@router.post("/", response_model=RuleResponse)
+@router.post("", response_model=RuleResponse)
 def create_rule(rule_in: RuleCreate, db: Session = Depends(get_db), admin = Depends(get_current_admin)):
     if db.query(Rule).filter(Rule.id == rule_in.id).first():
         raise HTTPException(status_code=400, detail="Rule ID already exists")

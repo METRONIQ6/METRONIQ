@@ -32,7 +32,7 @@ def get_user_counts(db: Session = Depends(get_db), admin: User = Depends(require
         "officers_rejected": rejected_officers
     }
 
-@router.get("/", response_model=List[UserOut])
+@router.get("", response_model=List[UserOut])
 def list_users(
     role: Optional[str] = Query(None, description="Filter by role"),
     status: Optional[str] = Query(None, description="Filter by status"),

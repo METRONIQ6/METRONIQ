@@ -18,7 +18,7 @@ class NoticeCreate(BaseModel):
 class RectificationSubmit(BaseModel):
     remarks: str
 
-@router.post("/")
+@router.post("")
 def create_notice(notice: NoticeCreate, db: Session = Depends(get_db), current_user = Depends(get_current_officer)):
     new_notice = ImprovementNotice(
         inspection_id=notice.inspection_id,
@@ -32,7 +32,7 @@ def create_notice(notice: NoticeCreate, db: Session = Depends(get_db), current_u
     db.refresh(new_notice)
     return new_notice
 
-@router.get("/")
+@router.get("")
 def get_notices(db: Session = Depends(get_db), current_user = Depends(get_current_user)):
     # Strict RBAC scoping
     if current_user.role == "MANUFACTURER":
