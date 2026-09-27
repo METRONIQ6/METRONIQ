@@ -21,7 +21,7 @@ export default function InspectionsPage() {
         setLoading(true)
         setError(false)
         try {
-            const res = await fetch('/api/v1/inspections/', {
+            const res = await fetch('/api/v1/inspections', {
                 headers: { 'Authorization': `Bearer ${getToken()}` }
             })
             if (res.ok) {

@@ -45,7 +45,7 @@ export default function UserManagementPage() {
         setError(false)
         try {
             let roleFilter = activeTab === "manufacturers" ? "MANUFACTURER" : "OFFICER"
-            const res = await fetch(`/api/v1/users/?role=${roleFilter}`, {
+            const res = await fetch(`/api/v1/users?role=${roleFilter}`, {
                 headers: { 'Authorization': `Bearer ${getToken()}` }
             })
             if (res.ok) {

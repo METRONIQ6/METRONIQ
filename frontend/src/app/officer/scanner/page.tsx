@@ -185,7 +185,7 @@ export default function AIScannerUnified() {
         const violations = (data.validation_details?.evaluations || []).filter((e: any) => e.status === 'FAIL').map((e: any) => e.field).join(", ");
 
         try {
-            const res = await fetch('/api/v1/notices/', {
+            const res = await fetch('/api/v1/notices', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
