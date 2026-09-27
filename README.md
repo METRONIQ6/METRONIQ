@@ -1,4 +1,4 @@
-# ?? MetronIQ
+# ⚖️ MetronIQ
 
 **AI-Assisted Legal Metrology Compliance, Inspection, and Decision-Support Platform.**
 
@@ -8,107 +8,168 @@ By integrating state-of-the-art Optical Character Recognition (OCR), Headless E-
 
 ---
 
-## ?? Key Platform Capabilities
+## 🚀 Key Platform Capabilities
 
 1. **AI Product Compliance Scanner**
    - Upload or natively capture product imagery.
    - Extracts localized entity declarations (MRP, Best Before, Manufacturer Address) instantly using an optimized singleton OCR pass and GenAI extraction pipelines.
-   - Cross-checks all tokens against strict, dynamic Meta-Rules engineered by Administrators, rendering deterministic PASS / FAIL / NOT VERIFIED evaluations.
-   - Preserves legal compliance rules directly separating visual MRP from Offer Prices.
+   - Cross-checks all tokens against strict, dynamic Meta-Rules engineered by Administrators, rendering deterministic **PASS / FAIL / NOT VERIFIED** evaluations.
+   - Legally separates visual MRP from Offer Prices — in strict compliance with Legal Metrology Rules.
 
 2. **Full-Stack Regulatory Enforcement Lifecycle**
    - **Improvement Notices**: Automatically generate formal improvement notices targeting deficient Manufacturers.
-   - **Rectification Workflow**: Allows assigned manufacturers to safely submit corrections for direct government review.
-   - **Reinspection Queues**: Intelligent scheduling algorithms ensure flagged products receive localized follow-ups.
-   - **Enforcement & Legal Dockets**: Issues trackable compounding penalties & legal interventions for rigid offenders.
+   - **Rectification Workflow**: Allows assigned manufacturers to submit corrections for direct government review.
+   - **Reinspection Queues**: Intelligent scheduling ensures flagged products receive localized follow-ups.
+   - **Enforcement & Legal Dockets**: Issues trackable compounding penalties & legal interventions for repeat offenders.
 
 3. **E-Commerce Auto Monitor**
    - High-performance deterministic E-Commerce URL crawler utilizing Fast HTTP.
-   - Intelligently cascades from JSON-LD / @graph extraction to Playwright DOM rendering upon HTTP failures mapping technical states (SSRF, crawler blocks) independent from legal evaluations.
+   - Cascades from JSON-LD / `@graph` extraction → Playwright DOM rendering as fallback.
+   - Cleanly separates **technical crawl states** (SSRF blocked, timeout) from **legal compliance failures**.
 
 4. **MetronIQ Copilot (AI)**
-   - Context-aware virtual assistant explicitly trained to reason through internal Legal Metrology documentation.
-   - Aids investigating officers by deciphering convoluted requirements directly alongside the active dashboard.
+   - Context-aware virtual assistant powered by Google Gemini.
+   - Helps investigating officers interpret complex Legal Metrology requirements alongside the active dashboard.
 
 5. **Vernacular / Multilingual Support**
-   - Fully localized UI/UX interface rendering seamlessly in **English, Tamil, and Hindi**.
-   - Dynamically leverages language-aware typography (including strictly localized Noto Sans Tamil fonts).
+   - Fully localized in **English, Tamil (தமிழ்), and Hindi (हिन्दी)**.
+   - Language-aware typography with dedicated **Noto Sans Tamil** font rendering.
 
 ---
 
-## ?? Security & Role-Based Access Control (RBAC)
+## 🔒 Security & Role-Based Access Control (RBAC)
 
-The system deploys absolute data segregation strictly enforcing Government-level authorization perimeters:
+The system enforces Government-level authorization with strict data segregation:
 
-* **?? System Administrators**: Own full dashboard capabilities encompassing geo-analytics, rule set management, and absolute approval/rejection gates over actively registering field teams.
-* **?? Government Officers**: Restricted to verified governmental officials. Granted complete access to active legal verification, AI scanners, and compliance issuance portals.
-* **?? Manufacturers**: Limited strictly to their private operational silo. Enables isolated pre-market compliance audits, rule verification, rule history tracking, and active submission management without interacting or overlapping with concurrent competitor data.
-
----
-
-## ??? Architecture & Stack
-
-**Frontend (Client)**
-* **Framework**: React / Next.js
-* **Styling**: TailwindCSS, Shadcn/UI
-* **State & Fetching**: Parallelized REST API loaders spanning dynamic NextJS pages.
-* **Visuals**: Recharts (Analytics), Leaflet (Geo-Analytics)
-
-**Backend (API & MLOps)**
-* **Framework**: FastAPI (Python)
-* **Persistence**: PostgreSQL (Strict enforcement)
-* **AI Tooling**: Google Gemini APIs
-* **Processing**: Background queues, robust connection pooling, and OCR caching strategies integrated natively for scalability.
+| Role | Access |
+|---|---|
+| 👑 **Administrator** | Full control: user management, rule management, analytics, geo dashboard, approval/rejection of officers |
+| 👮 **Government Officer** | Legal verification, AI scanner, inspection management, notices, enforcement, reports, E-Commerce monitor |
+| 📦 **Manufacturer** | Private silo: product registry, pre-market compliance audit, submission management, rectification center |
 
 ---
 
-## ?? Setup & Installation
+## 🏗️ Architecture & Stack
+
+**Frontend**
+- **Framework**: Next.js (React)
+- **Styling**: TailwindCSS + Shadcn/UI
+- **Data Fetching**: Parallelized REST API calls via `Promise.all`
+- **Visuals**: Recharts (Analytics), Leaflet (Geo)
+- **i18n**: Custom multilingual system (EN / TA / HI)
+
+**Backend**
+- **Framework**: FastAPI (Python)
+- **Database**: PostgreSQL *(mandatory — SQLite strictly prohibited)*
+- **AI**: Google Gemini API (Copilot + extraction)
+- **OCR**: Singleton-based OCR pipeline with MD5 caching
+- **Crawler**: Fast HTTP + Playwright fallback pipeline
+- **Background Jobs**: FastAPI BackgroundTasks
+
+**Deployment**
+- **Frontend**: Vercel (Next.js service)
+- **Backend**: Vercel Python service (Fluid Compute)
+- **Config**: `vercel.json` with Vercel Services architecture
+
+---
+
+## 💻 Local Development Setup
 
 ### Prerequisites
-- Node.js `(v18+)`
-- Python `(v3.10+)`
-- PostgreSQL Runtime Server
-- Valid `GEMINI_API_KEY`
+- Node.js `v18+`
+- Python `v3.10+`
+- PostgreSQL (running locally or via managed service)
+- A valid `GEMINI_API_KEY`
 
-### 1. Database Initialization
-Ensure a local or remote PostgreSQL instance is running configured with:
-- Database Name: `metroniq`
-- Port: `5432`
+### 1. Database Setup
+Ensure PostgreSQL is running with:
+```
+Database: metroniq
+Port:     5432
+```
 
-### 2. Backend Initialization
+### 2. Backend
 ```bash
 cd backend
 
-# Create and activate a virtual environment
+# Create virtual environment
 python -m venv venv
-venv\Scripts\activate   # (Windows)
-source venv/bin/activate  # (Mac/Linux)
+venv\Scripts\activate        # Windows
+# source venv/bin/activate   # Mac/Linux
 
-# Install Dependencies
+# Install dependencies
 pip install -r requirements.txt
 
-# Configure Environment Variables
-# Duplicate `.env.example` to `.env` and insert your GEMINI_API_KEY and DATABASE_URL
+# Configure secrets
+# Copy .env.example → .env and fill in DATABASE_URL, GEMINI_API_KEY, JWT_SECRET_KEY
 ```
-Launch the Development Server:
+
+Start the backend:
 ```bash
 python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
 ```
 
-### 3. Frontend Initialization
+### 3. Frontend
 ```bash
 cd frontend
 
-# Install Node dependencies
 npm install
-
-# Launch Development Client
 npm run dev
-# OR for production build:
-# npm run build && npm start
 ```
-Navigate to **`http://localhost:3000`** in your browser.
+
+Open **[http://localhost:3000](http://localhost:3000)** in your browser.
 
 ---
 
-*Developed explicitly for the **Smart India Hackathon (SIH)** � Digital Market Surveillance & Enforcement Track.*
+## 🌐 Vercel Deployment
+
+This repository is configured for Vercel Services deployment via `vercel.json`.
+
+**Services:**
+- `frontend/` → Next.js service
+- `backend/` → FastAPI Python service (`app.main:app`)
+
+**API Routing:**
+- `/api/(.*)` → backend service
+- `/(.*)` → frontend service
+
+**Required Environment Variables in Vercel Dashboard:**
+
+| Variable | Scope |
+|---|---|
+| `DATABASE_URL` | Backend only |
+| `GEMINI_API_KEY` | Backend only |
+| `JWT_SECRET_KEY` | Backend only |
+| `ENVIRONMENT` | Backend only |
+| `CORS_ORIGINS` | Backend only |
+
+> ⚠️ Never prefix backend secrets with `NEXT_PUBLIC_`.
+
+---
+
+## 📁 Project Structure
+
+```
+MetronIQ/
+├── frontend/              # Next.js application
+│   ├── src/app/
+│   │   ├── admin/         # Administrator portal
+│   │   ├── officer/       # Government Officer portal
+│   │   ├── manufacturer/  # Manufacturer portal
+│   │   └── login/         # Authentication
+│   └── src/i18n/          # EN / TA / HI translations
+├── backend/               # FastAPI application
+│   ├── app/
+│   │   ├── api/routes/    # All API endpoints
+│   │   ├── ai/            # OCR, extraction, scanner pipeline
+│   │   ├── services/      # Crawler, PDF, rules validation
+│   │   ├── models/        # SQLAlchemy ORM models
+│   │   └── core/          # Config, DB, auth
+│   └── requirements.txt
+├── vercel.json            # Vercel Services deployment config
+└── README.md
+```
+
+---
+
+*Developed for the **Smart India Hackathon (SIH) 2026** — Digital Market Surveillance & Enforcement Track.*
