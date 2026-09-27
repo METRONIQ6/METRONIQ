@@ -1,4 +1,7 @@
-import numpy as np
+try:
+    import numpy as np
+except ImportError:
+    np = None
 import logging
 from app.ai.preprocessing.image_processor import ImageProcessor
 from app.ai.detection.yolo_detector import YoloDetector

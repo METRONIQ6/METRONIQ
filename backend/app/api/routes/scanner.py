@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 import uuid
 import shutil
 import os
-import cv2
+try:`n    import cv2`nexcept ImportError:`n    cv2 = None
 import json
 import logging
 from typing import Dict, Any
