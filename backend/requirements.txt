@@ -13,3 +13,8 @@ google-genai
 google-generativeai
 requests
 python-dotenv
+
+apscheduler
+fpdf2
+httpx
+numpy
