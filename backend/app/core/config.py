@@ -1,3 +1,4 @@
+from typing import Optional
 import os
 from pydantic_settings import BaseSettings
 
@@ -28,7 +29,7 @@ class Settings(BaseSettings):
     MINIO_SECRET_KEY: str = "minioadmin"
     
     # AI PROVIDER
-    GEMINI_API_KEY: str | None = None
+    GEMINI_API_KEY: Optional[str] = None
     
     class Config:
         env_file = ".env"
