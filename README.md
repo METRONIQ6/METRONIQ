@@ -1,4 +1,4 @@
-﻿# ΓÜû∩╕Å MetronIQ
+# ⚖️ MetronIQ
 
 **AI-Assisted Legal Metrology Compliance, Inspection, and Decision-Support Platform.**
 
@@ -8,13 +8,13 @@ By integrating state-of-the-art Optical Character Recognition (OCR), Headless E-
 
 ---
 
-## ≡ƒÜÇ Key Platform Capabilities
+## 🚀 Key Platform Capabilities
 
 1. **AI Product Compliance Scanner**
    - Upload or natively capture product imagery.
    - Extracts localized entity declarations (MRP, Best Before, Manufacturer Address) instantly using an optimized singleton OCR pass and GenAI extraction pipelines.
    - Cross-checks all tokens against strict, dynamic Meta-Rules engineered by Administrators, rendering deterministic **PASS / FAIL / NOT VERIFIED** evaluations.
-   - Legally separates visual MRP from Offer Prices ΓÇö in strict compliance with Legal Metrology Rules.
+   - Legally separates visual MRP from Offer Prices — in strict compliance with Legal Metrology Rules.
 
 2. **Full-Stack Regulatory Enforcement Lifecycle**
    - **Improvement Notices**: Automatically generate formal improvement notices targeting deficient Manufacturers.
@@ -24,7 +24,7 @@ By integrating state-of-the-art Optical Character Recognition (OCR), Headless E-
 
 3. **E-Commerce Auto Monitor**
    - High-performance deterministic E-Commerce URL crawler utilizing Fast HTTP.
-   - Cascades from JSON-LD / `@graph` extraction ΓåÆ Playwright DOM rendering as fallback.
+   - Cascades from JSON-LD / `@graph` extraction → Playwright DOM rendering as fallback.
    - Cleanly separates **technical crawl states** (SSRF blocked, timeout) from **legal compliance failures**.
 
 4. **MetronIQ Copilot (AI)**
@@ -32,24 +32,24 @@ By integrating state-of-the-art Optical Character Recognition (OCR), Headless E-
    - Helps investigating officers interpret complex Legal Metrology requirements alongside the active dashboard.
 
 5. **Vernacular / Multilingual Support**
-   - Fully localized in **English, Tamil (α«ñα««α«┐α«┤α»ì), and Hindi (αñ╣αñ┐αñ¿αÑìαñªαÑÇ)**.
+   - Fully localized in **English, Tamil (தமிழ்), and Hindi (हिन्दी)**.
    - Language-aware typography with dedicated **Noto Sans Tamil** font rendering.
 
 ---
 
-## ≡ƒöÆ Security & Role-Based Access Control (RBAC)
+## 🔒 Security & Role-Based Access Control (RBAC)
 
 The system enforces Government-level authorization with strict data segregation:
 
 | Role | Access |
 |---|---|
-| ≡ƒææ **Administrator** | Full control: user management, rule management, analytics, geo dashboard, approval/rejection of officers |
-| ≡ƒæ« **Government Officer** | Legal verification, AI scanner, inspection management, notices, enforcement, reports, E-Commerce monitor |
-| ≡ƒôª **Manufacturer** | Private silo: product registry, pre-market compliance audit, submission management, rectification center |
+| 👑 **Administrator** | Full control: user management, rule management, analytics, geo dashboard, approval/rejection of officers |
+| 👮 **Government Officer** | Legal verification, AI scanner, inspection management, notices, enforcement, reports, E-Commerce monitor |
+| 📦 **Manufacturer** | Private silo: product registry, pre-market compliance audit, submission management, rectification center |
 
 ---
 
-## ≡ƒÅù∩╕Å Architecture & Stack
+## 🏗️ Architecture & Stack
 
 **Frontend**
 - **Framework**: Next.js (React)
@@ -60,18 +60,17 @@ The system enforces Government-level authorization with strict data segregation:
 
 **Backend**
 - **Framework**: FastAPI (Python)
-- **Database**: PostgreSQL *(mandatory ΓÇö SQLite strictly prohibited)*
+- **Database**: PostgreSQL *(mandatory — SQLite strictly prohibited)*
 - **AI**: Google Gemini API (Copilot + extraction)
 - **OCR**: Singleton-based OCR pipeline with MD5 caching
 - **Crawler**: Fast HTTP + Playwright fallback pipeline
 - **Background Jobs**: FastAPI BackgroundTasks
 
 **Deployment**
-- **Config**: `vercel.json` with Vercel Services architecture
 
 ---
 
-## ≡ƒÆ╗ Local Development Setup
+## 💻 Local Development Setup
 
 ### Prerequisites
 - Node.js `v18+`
@@ -99,7 +98,7 @@ venv\Scripts\activate        # Windows
 pip install -r requirements.txt
 
 # Configure secrets
-# Copy .env.example ΓåÆ .env and fill in DATABASE_URL, GEMINI_API_KEY, JWT_SECRET_KEY
+# Copy .env.example → .env and fill in DATABASE_URL, GEMINI_API_KEY, JWT_SECRET_KEY
 ```
 
 Start the backend:
@@ -119,29 +118,28 @@ Open **[http://localhost:3000](http://localhost:3000)** in your browser.
 
 ---
 
-## ≡ƒôü Project Structure
+## 📁 Project Structure
 
 ```
 MetronIQ/
-Γö£ΓöÇΓöÇ frontend/              # Next.js application
-Γöé   Γö£ΓöÇΓöÇ src/app/
-Γöé   Γöé   Γö£ΓöÇΓöÇ admin/         # Administrator portal
-Γöé   Γöé   Γö£ΓöÇΓöÇ officer/       # Government Officer portal
-Γöé   Γöé   Γö£ΓöÇΓöÇ manufacturer/  # Manufacturer portal
-Γöé   Γöé   ΓööΓöÇΓöÇ login/         # Authentication
-Γöé   ΓööΓöÇΓöÇ src/i18n/          # EN / TA / HI translations
-Γö£ΓöÇΓöÇ backend/               # FastAPI application
-Γöé   Γö£ΓöÇΓöÇ app/
-Γöé   Γöé   Γö£ΓöÇΓöÇ api/routes/    # All API endpoints
-Γöé   Γöé   Γö£ΓöÇΓöÇ ai/            # OCR, extraction, scanner pipeline
-Γöé   Γöé   Γö£ΓöÇΓöÇ services/      # Crawler, PDF, rules validation
-Γöé   Γöé   Γö£ΓöÇΓöÇ models/        # SQLAlchemy ORM models
-Γöé   Γöé   ΓööΓöÇΓöÇ core/          # Config, DB, auth
-Γöé   ΓööΓöÇΓöÇ requirements.txt
-Γö£ΓöÇΓöÇ vercel.json            # Vercel Services deployment config
-ΓööΓöÇΓöÇ README.md
+├── frontend/              # Next.js application
+│   ├── src/app/
+│   │   ├── admin/         # Administrator portal
+│   │   ├── officer/       # Government Officer portal
+│   │   ├── manufacturer/  # Manufacturer portal
+│   │   └── login/         # Authentication
+│   └── src/i18n/          # EN / TA / HI translations
+├── backend/               # FastAPI application
+│   ├── app/
+│   │   ├── api/routes/    # All API endpoints
+│   │   ├── ai/            # OCR, extraction, scanner pipeline
+│   │   ├── services/      # Crawler, PDF, rules validation
+│   │   ├── models/        # SQLAlchemy ORM models
+│   │   └── core/          # Config, DB, auth
+│   └── requirements.txt
+└── README.md
 ```
 
 ---
 
-*Developed for the **Smart India Hackathon (SIH) 2026** ΓÇö Digital Market Surveillance & Enforcement Track.*
+*Developed for the **Smart India Hackathon (SIH) 2026** — Digital Market Surveillance & Enforcement Track.*
