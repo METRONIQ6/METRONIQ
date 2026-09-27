@@ -34,7 +34,7 @@ export default function AuditReportPrint({ params }: { params: Promise<{ id: str
     }, [id])
 
     if (errorMsg) return (
-        <div className="flex flex-col items-center justify-center min-h-screen p-12 bg-gray-50/50">
+        <div className="flex flex-col items-center justify-center min-h-screen p-12 bg-muted/30/50">
             <ServerCrash className="w-12 h-12 text-destructive mb-4" />
             <h3 className="text-xl font-bold text-[#0B1F3A]">{t('error.accessDenied')}</h3>
             <p className="text-muted-foreground mt-2 text-center max-w-sm">{errorMsg}</p>
@@ -49,7 +49,7 @@ export default function AuditReportPrint({ params }: { params: Promise<{ id: str
     )
 
     return (
-        <div className="min-h-screen bg-white text-black p-8 md:p-12 print:p-0 font-sans max-w-[900px] mx-auto border-x border-border/50 shadow-sm print:border-none print:shadow-none">
+        <div className="min-h-screen bg-card text-black p-8 md:p-12 print:p-0 font-sans max-w-[900px] mx-auto border-x border-border/50 shadow-sm print:border-none print:shadow-none">
             <style dangerouslySetInnerHTML={{
                 __html: `
                 @media print {
@@ -62,7 +62,7 @@ export default function AuditReportPrint({ params }: { params: Promise<{ id: str
             <div className="flex justify-between items-start mb-10 border-b-2 border-[#0B1F3A] pb-6">
                 <div>
                     <h1 className="text-3xl font-extrabold uppercase tracking-tight text-[#0B1F3A] mb-1">{t("reports.title")}</h1>
-                    <p className="text-sm text-gray-500 font-mono">{t("reports.subtitle")}</p>
+                    <p className="text-sm text-muted-foreground font-mono">{t("reports.subtitle")}</p>
                 </div>
                 <div className="flex gap-2">
 
@@ -96,45 +96,45 @@ export default function AuditReportPrint({ params }: { params: Promise<{ id: str
             </div>
 
             <div className="grid grid-cols-2 gap-6 mb-12">
-                <Card className="p-5 bg-gray-50 border-gray-200 shadow-none rounded-sm">
-                    <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3 border-b border-gray-200 pb-2">{t('reports.referenceIdentifiers')}</h3>
+                <Card className="p-5 bg-muted/30 border-border shadow-none rounded-sm">
+                    <h3 className="text-[10px] font-bold text-muted-foreground/80 uppercase tracking-widest mb-3 border-b border-border pb-2">{t('reports.referenceIdentifiers')}</h3>
                     <div className="space-y-2">
-                        <p className="text-sm flex justify-between"><span className="text-gray-500 font-medium">Docket ID:</span> <span className="font-mono font-bold text-[#0B1F3A] block ml-auto">{report.case_id?.substring(0, 8).toUpperCase()}</span></p>
-                        <p className="text-sm flex justify-between"><span className="text-gray-500 font-medium">Original Inspection:</span> <span className="font-mono block ml-auto">{report.inspection?.id?.substring(0, 8).toUpperCase() || 'N/A'}</span></p>
-                        <p className="text-sm flex justify-between"><span className="text-gray-500 font-medium">Notice Reference:</span> <span className="font-mono block ml-auto">{report.notice?.id?.substring(0, 8).toUpperCase() || 'N/A'}</span></p>
+                        <p className="text-sm flex justify-between"><span className="text-muted-foreground font-medium">Docket ID:</span> <span className="font-mono font-bold text-[#0B1F3A] block ml-auto">{report.case_id?.substring(0, 8).toUpperCase()}</span></p>
+                        <p className="text-sm flex justify-between"><span className="text-muted-foreground font-medium">Original Inspection:</span> <span className="font-mono block ml-auto">{report.inspection?.id?.substring(0, 8).toUpperCase() || 'N/A'}</span></p>
+                        <p className="text-sm flex justify-between"><span className="text-muted-foreground font-medium">Notice Reference:</span> <span className="font-mono block ml-auto">{report.notice?.id?.substring(0, 8).toUpperCase() || 'N/A'}</span></p>
                     </div>
                 </Card>
-                <Card className="p-5 bg-gray-50 border-gray-200 shadow-none rounded-sm">
-                    <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3 border-b border-gray-200 pb-2">{t('reports.finalCaseDecision')}</h3>
+                <Card className="p-5 bg-muted/30 border-border shadow-none rounded-sm">
+                    <h3 className="text-[10px] font-bold text-muted-foreground/80 uppercase tracking-widest mb-3 border-b border-border pb-2">{t('reports.finalCaseDecision')}</h3>
                     <div className="space-y-2">
-                        <p className="text-sm flex justify-between"><span className="text-gray-500 font-medium">Case Status:</span> <span className="font-bold uppercase text-[#0B1F3A] block ml-auto">{report.case_status}</span></p>
-                        <p className="text-sm flex justify-between"><span className="text-gray-500 font-medium">Final Reinspection:</span> <span className="font-mono uppercase block ml-auto">{report.reinspection?.result || 'NA'}</span></p>
-                        <p className="text-sm flex justify-between"><span className="text-gray-500 font-medium">Penalty Assessed:</span> <span className="font-mono font-bold block ml-auto">{report.penalty_amount ? `₹${report.penalty_amount.toLocaleString()}` : 'None'}</span></p>
+                        <p className="text-sm flex justify-between"><span className="text-muted-foreground font-medium">Case Status:</span> <span className="font-bold uppercase text-[#0B1F3A] block ml-auto">{report.case_status}</span></p>
+                        <p className="text-sm flex justify-between"><span className="text-muted-foreground font-medium">Final Reinspection:</span> <span className="font-mono uppercase block ml-auto">{report.reinspection?.result || 'NA'}</span></p>
+                        <p className="text-sm flex justify-between"><span className="text-muted-foreground font-medium">Penalty Assessed:</span> <span className="font-mono font-bold block ml-auto">{report.penalty_amount ? `₹${report.penalty_amount.toLocaleString()}` : 'None'}</span></p>
                     </div>
                 </Card>
             </div>
 
             <div>
-                <h3 className="text-sm font-bold border-b-2 border-gray-200 pb-2 mb-6 uppercase text-[#0B1F3A] tracking-wider">{t('reports.chronologicalEventTimeline')}</h3>
-                <div className="relative border-l-2 border-gray-200 ml-3 pl-8 space-y-8">
+                <h3 className="text-sm font-bold border-b-2 border-border pb-2 mb-6 uppercase text-[#0B1F3A] tracking-wider">{t('reports.chronologicalEventTimeline')}</h3>
+                <div className="relative border-l-2 border-border ml-3 pl-8 space-y-8">
                     {report.timeline?.map((event: any, index: number) => (
                         <div key={index} className="relative group">
-                            <div className="absolute -left-[39px] bg-white border-4 border-[#2563EB] rounded-full w-4 h-4 mt-1"></div>
+                            <div className="absolute -left-[39px] bg-card border-4 border-[#2563EB] rounded-full w-4 h-4 mt-1"></div>
                             <div className="text-sm font-bold text-[#0B1F3A] uppercase tracking-wide">{event.event.replace(/_/g, ' ')}</div>
-                            <div className="text-xs text-gray-600 mt-1 font-medium bg-gray-50 inline-block px-2 py-0.5 rounded border border-gray-100">Result: {event.status || event.result}</div>
-                            <div className="text-xs text-gray-400 font-mono mt-1.5 flex items-center">
+                            <div className="text-xs text-muted-foreground mt-1 font-medium bg-muted/30 inline-block px-2 py-0.5 rounded border border-gray-100">Result: {event.status || event.result}</div>
+                            <div className="text-xs text-muted-foreground/80 font-mono mt-1.5 flex items-center">
                                 {event.timestamp ? new Date(event.timestamp).toLocaleString() : 'Timestamp unavailable'}
                             </div>
                         </div>
                     ))}
                     {(!report.timeline || report.timeline.length === 0) && (
-                        <div className="text-sm text-gray-400 italic block">No formal events logged.</div>
+                        <div className="text-sm text-muted-foreground/80 italic block">No formal events logged.</div>
                     )}
                 </div>
             </div>
 
-            <div className="mt-20 pt-8 border-t border-gray-200">
-                <div className="flex justify-between items-center text-[10px] text-gray-400 font-mono uppercase tracking-widest">
+            <div className="mt-20 pt-8 border-t border-border">
+                <div className="flex justify-between items-center text-[10px] text-muted-foreground/80 font-mono uppercase tracking-widest">
                     <span>{t('reports.generatedByMetroniq')}</span>
                     <span>{t('reports.classifiedRecord')}</span>
                     <span>{t('reports.endOfDossier')}</span>

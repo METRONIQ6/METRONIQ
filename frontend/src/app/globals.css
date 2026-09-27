@@ -177,3 +177,13 @@
     @apply bg-border rounded-full hover:bg-muted-foreground/50 transition-colors;
   }
 }
+@layer utilities {
+  html[lang='ta'] {
+    --font-sans: var(--font-noto-tamil), 'Arial Unicode MS', sans-serif !important;
+  }
+
+  html[lang='ta'] body {
+    line-height: 1.6;
+  }
+}
+

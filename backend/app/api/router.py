@@ -16,3 +16,5 @@ api_router.include_router(ecommerce.router, prefix="/ecommerce", tags=["ecommerc
 from .routes import copilot, users
 api_router.include_router(copilot.router, prefix="/copilot", tags=["copilot"])
 api_router.include_router(users.router, prefix="/users", tags=["users"])
+from .routes import manufacturer
+api_router.include_router(manufacturer.router, prefix='/manufacturer', tags=['manufacturer'])

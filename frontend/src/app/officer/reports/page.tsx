@@ -31,7 +31,8 @@ export default function ReportsPage() {
         <div className="space-y-6">
             <h2 className="text-2xl font-bold tracking-tight">{t('reports.auditReportsHub')}</h2>
             <Card>
-                <Table>
+                <div className="overflow-x-auto">
+<Table>
                     <TableHeader>
                         <TableRow>
                             <TableHead>{t('enforcement.caseId')}</TableHead>
@@ -62,6 +63,7 @@ export default function ReportsPage() {
                         ))}
                     </TableBody>
                 </Table>
+</div>
             </Card>
         </div>
     )

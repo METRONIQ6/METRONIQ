@@ -78,7 +78,8 @@ export default function InspectionsPage() {
                     <CardTitle className="text-base font-semibold text-foreground tracking-tight">{t('inspection.systemRecords')}</CardTitle>
                 </CardHeader>
                 <CardContent className="p-0">
-                    <Table>
+                    <div className="overflow-x-auto">
+<Table>
                         <TableHeader className="bg-muted/30">
                             <TableRow className="border-border">
                                 <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">{t('inspection.auditIdentifier')}</TableHead>
@@ -99,7 +100,7 @@ export default function InspectionsPage() {
                             ) : inspections.length === 0 ? (
                                 <TableRow>
                                     <TableCell colSpan={5} className="text-center py-12 text-muted-foreground">
-                                        <Archive className="w-8 h-8 mb-3 mx-auto opacity-20 text-gray-400" />
+                                        <Archive className="w-8 h-8 mb-3 mx-auto opacity-20 text-muted-foreground/80" />
                                         <p className="text-sm font-medium">No formal inspections have been executed on this node.</p>
                                     </TableCell>
                                 </TableRow>
@@ -111,7 +112,7 @@ export default function InspectionsPage() {
                                         </TableCell>
                                         <TableCell className="py-4">
                                             <Badge variant="outline" className={`font-mono text-xs uppercase px-2 py-0.5 rounded-sm border
-                                                ${ins.status === 'COMPLETED' ? 'border-green-200 text-green-700 bg-green-50' :
+                                                ${ins.status === 'COMPLETED' ? 'border-green-200 text-success-foreground bg-success/10' :
                                                     'border-muted text-muted-foreground'}`}>
                                                 {ins.status || 'PENDING'}
                                             </Badge>
@@ -127,7 +128,7 @@ export default function InspectionsPage() {
                                         </TableCell>
                                         <TableCell className="text-center py-4">
                                             <span className={`font-bold font-mono text-sm
-                                                ${ins.risk_level > 70 ? 'text-red-600' : ins.risk_level > 30 ? 'text-orange-500' : 'text-green-600'}`}>
+                                                ${ins.risk_level > 70 ? 'text-destructive' : ins.risk_level > 30 ? 'text-orange-500' : 'text-success'}`}>
                                                 {ins.risk_level}%
                                             </span>
                                         </TableCell>
@@ -143,6 +144,7 @@ export default function InspectionsPage() {
                             )}
                         </TableBody>
                     </Table>
+</div>
                 </CardContent>
             </Card>
         </div>

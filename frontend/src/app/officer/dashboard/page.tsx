@@ -50,14 +50,14 @@ export default function OfficerDashboard() {
                 const [sumRes, actRes, inspRes] = await Promise.all([
                     fetch('http://localhost:8000/api/v1/dashboard/summary', { headers: head }),
                     fetch('http://localhost:8000/api/v1/dashboard/activity', { headers: head }),
-                    fetch('http://localhost:8000/api/v1/inspections', { headers: head })
+                    fetch('http://localhost:8000/api/v1/inspections?limit=5', { headers: head })
                 ])
 
                 if (sumRes.ok) setSummary(await sumRes.json())
                 if (actRes.ok) setActivities(await actRes.json())
                 if (inspRes.ok) {
                     const data = await inspRes.json()
-                    setRecentInspections(data.reverse().slice(0, 5))
+                    setRecentInspections(data)
                 }
             } catch (err) {
                 console.error(err)
@@ -158,7 +158,7 @@ export default function OfficerDashboard() {
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
                 <KpiCard
                     icon={<ClipboardList className="w-5 h-5" />} title="Total Inspections" value={summary.totalInspections}
-                    status={`↑ ${summary.inspectionsToday} today`} statusColor="text-green-600 dark:text-green-400"
+                    status={`↑ ${summary.inspectionsToday} today`} statusColor="text-success dark:text-green-400"
                     bgColor="bg-[#0B1F3A]" iconColor="text-white"
                 />
                 <KpiCard
@@ -178,7 +178,7 @@ export default function OfficerDashboard() {
                 />
                 <KpiCard
                     icon={<CalendarCheck className="w-5 h-5" />} title="Reinspections Due" value={summary.reinspectionsDue}
-                    status="Due this week" statusColor="text-blue-600 dark:text-blue-400"
+                    status="Due this week" statusColor="text-primary dark:text-blue-400"
                     bgColor="bg-[#0B1F3A]" iconColor="text-white"
                 />
                 <KpiCard
@@ -236,17 +236,17 @@ export default function OfficerDashboard() {
                                                 </TableCell>
                                                 <TableCell className="text-center py-3">
                                                     <span className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider
-                                                        ${insp.risk_level === 'HIGH' ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' : ''}
+                                                        ${insp.risk_level === 'HIGH' ? 'bg-red-100 text-destructive-foreground dark:bg-red-900/30 dark:text-red-400' : ''}
                                                         ${insp.risk_level === 'MEDIUM' ? 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400' : ''}
-                                                        ${insp.risk_level === 'LOW' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : ''}
+                                                        ${insp.risk_level === 'LOW' ? 'bg-green-100 text-success-foreground dark:bg-green-900/30 dark:text-green-400' : ''}
                                                         ${!insp.risk_level && 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-400'}`}>
                                                         {insp.risk_level || 'UNKNOWN'}
                                                     </span>
                                                 </TableCell>
                                                 <TableCell className="text-center py-3">
                                                     <Badge variant="outline" className={`font-mono text-xs uppercase px-2 py-0.5 rounded-sm border
-                                                        ${insp.result === 'PASS' ? 'border-green-200 text-green-700 bg-green-50 dark:border-green-900/50 dark:text-green-400 dark:bg-green-900/10' : ''}
-                                                        ${insp.result === 'FAIL' ? 'border-red-200 text-red-700 bg-red-50 dark:border-red-900/50 dark:text-red-400 dark:bg-red-900/10' : ''}`}>
+                                                        ${insp.result === 'PASS' ? 'border-green-200 text-success-foreground bg-success/10 dark:border-green-900/50 dark:text-green-400 dark:bg-green-900/10' : ''}
+                                                        ${insp.result === 'FAIL' ? 'border-red-200 text-destructive-foreground bg-destructive/10 dark:border-red-900/50 dark:text-red-400 dark:bg-red-900/10' : ''}`}>
                                                         {insp.result || 'PENDING'}
                                                     </Badge>
                                                 </TableCell>
@@ -296,7 +296,7 @@ export default function OfficerDashboard() {
 
                                 <div className="p-4 flex items-center justify-between hover:bg-muted/20 transition-colors">
                                     <div className="flex items-center gap-3">
-                                        <div className="p-2 rounded-md bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400">
+                                        <div className="p-2 rounded-md bg-primary/20 dark:bg-blue-900/30 text-primary dark:text-blue-400">
                                             <FileText className="w-4 h-4" />
                                         </div>
                                         <div>
@@ -304,7 +304,7 @@ export default function OfficerDashboard() {
                                             <p className="text-xs text-muted-foreground">{summary.openNotices || 0} notices require action</p>
                                         </div>
                                     </div>
-                                    <span className="text-sm font-bold text-blue-600 dark:text-blue-400">{summary.openNotices || 0}</span>
+                                    <span className="text-sm font-bold text-primary dark:text-blue-400">{summary.openNotices || 0}</span>
                                 </div>
 
                                 <div className="p-4 flex items-center justify-between hover:bg-muted/20 transition-colors">

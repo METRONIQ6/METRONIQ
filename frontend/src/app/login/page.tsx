@@ -157,7 +157,7 @@ export default function Login() {
             </div>
 
             {/* Right Side - Clean White Login Panel */}
-            <div className="w-full lg:w-1/2 flex flex-col justify-center items-center p-8 relative bg-white dark:bg-card">
+            <div className="w-full lg:w-1/2 flex flex-col justify-center items-center p-8 relative bg-card dark:bg-card">
 
                 {/* Top Controls */}
                 <div className="absolute top-6 right-6 flex items-center gap-4">
@@ -186,20 +186,20 @@ export default function Login() {
 
                     {view !== 'forgotPassword' && (
                         <div className="flex bg-muted/60 p-1 rounded-lg">
-                            <button type="button" onClick={() => setView('signUp')} className={`flex-1 py-2 text-sm font-bold rounded-md transition-all ${view === 'signUp' ? 'bg-white dark:bg-card shadow-sm text-primary' : 'text-muted-foreground hover:text-foreground'}`}>{t('loginUI.signUp')}</button>
-                            <button type="button" onClick={() => setView('signIn')} className={`flex-1 py-2 text-sm font-bold rounded-md transition-all ${view === 'signIn' ? 'bg-white dark:bg-card shadow-sm text-primary' : 'text-muted-foreground hover:text-foreground'}`}>{t('loginUI.signIn')}</button>
+                            <button type="button" onClick={() => setView('signUp')} className={`flex-1 py-2 text-sm font-bold rounded-md transition-all ${view === 'signUp' ? 'bg-card dark:bg-card shadow-sm text-primary' : 'text-muted-foreground hover:text-foreground'}`}>{t('loginUI.signUp')}</button>
+                            <button type="button" onClick={() => setView('signIn')} className={`flex-1 py-2 text-sm font-bold rounded-md transition-all ${view === 'signIn' ? 'bg-card dark:bg-card shadow-sm text-primary' : 'text-muted-foreground hover:text-foreground'}`}>{t('loginUI.signIn')}</button>
                         </div>
                     )}
 
                     <form onSubmit={handleSubmit} className="space-y-4">
                         {error && (
-                            <div className="flex items-center gap-3 p-4 text-sm font-medium text-red-700 bg-red-50 border-l-4 border-red-500 rounded-r-md dark:bg-red-900/20 dark:text-red-400">
+                            <div className="flex items-center gap-3 p-4 text-sm font-medium text-destructive-foreground bg-destructive/10 border-l-4 border-red-500 rounded-r-md dark:bg-red-900/20 dark:text-red-400">
                                 <AlertCircle className="w-5 h-5 shrink-0" />
                                 <span>{error}</span>
                             </div>
                         )}
                         {successMsg && (
-                            <div className="flex items-center gap-3 p-4 text-sm font-medium text-green-700 bg-green-50 border-l-4 border-green-500 rounded-r-md dark:bg-green-900/20 dark:text-green-400">
+                            <div className="flex items-center gap-3 p-4 text-sm font-medium text-success-foreground bg-success/10 border-l-4 border-green-500 rounded-r-md dark:bg-green-900/20 dark:text-green-400">
                                 <ShieldCheck className="w-5 h-5 shrink-0" />
                                 <span>{successMsg}</span>
                             </div>
@@ -319,18 +319,7 @@ export default function Login() {
                         )}
                     </form>
 
-                    {/* Developer Note */}
-                    {view === 'signIn' && (
-                        <div className="pt-6 mt-8 border-t border-border/50">
-                            <div className="text-xs text-muted-foreground text-center space-y-3">
-                                <p className="font-semibold uppercase tracking-wider text-[10px]">{t('loginUI.developmentFastLogin')}</p>
-                                <div className="flex flex-col gap-2 opacity-70">
-                                    <span className="bg-muted px-3 py-1.5 rounded font-mono">{t('loginUI.adminEmail')}</span>
-                                    <span className="bg-muted px-3 py-1.5 rounded font-mono">{t('loginUI.officerEmail')}</span>
-                                </div>
-                            </div>
-                        </div>
-                    )}
+
                 </div>
             </div>
         </div>

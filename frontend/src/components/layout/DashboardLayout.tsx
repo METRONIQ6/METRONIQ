@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import Link from 'next/link'
 import { useTranslation } from '@/i18n'
 import { usePathname, useRouter } from 'next/navigation'
-import { LayoutDashboard, FileSearch, ShieldCheck, ListChecks, FileText, Settings, ShieldAlert, LogOut, Map, BarChart3, Ruler, MessageSquare, X, Menu, Send, Loader2, UserCog } from 'lucide-react'
+import { LayoutDashboard, FileSearch, ShieldCheck, ListChecks, FileText, Settings, ShieldAlert, LogOut, Map, BarChart3, Ruler, MessageSquare, X, Menu, Send, Loader2, UserCog, PackageCheck, UploadCloud, AlertTriangle, Clock } from 'lucide-react'
 import { getToken, removeToken } from '@/lib/auth'
 import LanguageSelector from '@/components/LanguageSelector'
 import { ModeToggle } from '@/components/mode-toggle'
@@ -30,7 +30,13 @@ const getAdminNav = (t: any) => [
 
 const getManufacturerNav = (t: any) => [
     { name: t('navigation.dashboard'), href: '/manufacturer/dashboard', icon: LayoutDashboard },
-    { name: t('navigation.labelAuditor'), href: '/manufacturer/auditor', icon: FileSearch },
+    { name: t('navigation.myProducts') || 'My Products', href: '/manufacturer/products', icon: PackageCheck },
+    { name: t('navigation.complianceAudit') || 'Compliance Audit', href: '/manufacturer/compliance-audit', icon: FileSearch },
+    { name: t('navigation.govSubmissions') || 'Government Submissions', href: '/manufacturer/submissions', icon: UploadCloud },
+    { name: t('navigation.rectification') || 'Rectification', href: '/manufacturer/rectification', icon: AlertTriangle },
+    { name: t('navigation.notices') || 'Notices', href: '/manufacturer/notices', icon: FileText },
+    { name: t('navigation.documents') || 'Documents', href: '/manufacturer/documents', icon: FileText },
+    { name: t('navigation.history') || 'Compliance History', href: '/manufacturer/compliance-history', icon: Clock },
 ]
 
 export default function DashboardLayout({ children, role }: { children: React.ReactNode, role: 'officer' | 'admin' | 'manufacturer' }) {
@@ -254,7 +260,9 @@ export default function DashboardLayout({ children, role }: { children: React.Re
                         <button onClick={() => setMobileMenuOpen(true)} className="md:hidden mr-4 text-muted-foreground hover:text-foreground">
                             <Menu className="w-6 h-6" />
                         </button>
-                        <h1 className="text-lg sm:text-xl font-semibold text-foreground capitalize truncate">{pathname.split('/').pop()?.replace('-', ' ') || 'Dashboard'}</h1>
+                        <h1 className="text-lg sm:text-xl font-semibold text-foreground capitalize truncate">
+                            {navItems.find((n: { href: string, name: string }) => n.href === pathname)?.name || pathname.split('/').pop()?.replace('-', ' ') || 'Dashboard'}
+                        </h1>
                     </div>
                     <div className="flex items-center gap-2 sm:gap-4">
                         <button
@@ -283,12 +291,19 @@ export default function DashboardLayout({ children, role }: { children: React.Re
                 {copilotOpen && (
                     <div className="absolute right-0 top-16 bottom-0 w-full sm:w-80 bg-card border-l border-border shadow-xl flex flex-col z-20">
                         <div className="h-14 border-b flex items-center justify-between px-4 bg-muted/30">
-                            <span className="font-semibold text-foreground flex items-center"><ShieldCheck className="w-4 h-4 mr-2 text-primary" />{t('navigation.aiCopilot')}</span>
-                            <button onClick={() => setCopilotOpen(false)} className="text-muted-foreground hover:text-foreground"><X className="w-5 h-5" /></button>
+                            <span className="font-semibold text-foreground flex items-center"><ShieldCheck className="w-4 h-4 mr-2 text-primary" />{t('navigation.aiCopilot') || 'AI Copilot'}</span>
+                            <div className="flex gap-2">
+                                {messages.length > 0 && (
+                                    <button onClick={() => setMessages([])} className="text-muted-foreground hover:text-destructive text-xs flex items-center mt-0.5" title="Clear Chat">
+                                        <X className="w-4 h-4 mr-1" /> Clear
+                                    </button>
+                                )}
+                                <button onClick={() => setCopilotOpen(false)} className="text-muted-foreground hover:text-foreground"><X className="w-5 h-5" /></button>
+                            </div>
                         </div>
                         <div className="flex-1 p-4 overflow-y-auto bg-muted/30/50 space-y-4 text-sm flex flex-col">
                             <div className="bg-card border rounded-lg p-3 shadow-sm text-foreground">
-                                {t('layout.copilotGreeting')}
+                                {t('layout.copilotGreeting') || 'Hello, how can I assist you with Legal Metrology?'}
                             </div>
 
                             {messages.map((m, idx) => (
@@ -315,7 +330,7 @@ export default function DashboardLayout({ children, role }: { children: React.Re
                             ))}
 
                             {copilotError && (
-                                <div className="p-3 rounded-lg border border-red-500 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 self-center text-center text-xs">
+                                <div className="p-3 rounded-lg border border-red-500 bg-destructive/10 dark:bg-red-900/20 text-destructive dark:text-red-400 self-center text-center text-xs">
                                     {copilotError}
                                 </div>
                             )}
@@ -323,7 +338,7 @@ export default function DashboardLayout({ children, role }: { children: React.Re
                             {copilotLoading && (
                                 <div className="self-start p-3 bg-card border rounded-lg text-muted-foreground flex items-center gap-2">
                                     <Loader2 className="w-4 h-4 animate-spin" />
-                                    Processing...
+                                    {t('common.loading') || 'Loading...'}
                                 </div>
                             )}
 

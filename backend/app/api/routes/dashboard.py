@@ -14,29 +14,40 @@ router = APIRouter()
 
 @router.get("/summary")
 def get_dashboard_summary(db: Session = Depends(get_db), user = Depends(get_current_user)):
-    total_inspections = db.query(Inspection).count()
-    failed_inspections = db.query(Inspection).filter(Inspection.result == 'FAIL').count()
-    passed_inspections = db.query(Inspection).filter(Inspection.result == 'PASS').count()
-    high_risk_cases = db.query(Inspection).filter(Inspection.risk_level == 'HIGH').count()
-    open_notices = db.query(ImprovementNotice).filter(ImprovementNotice.status.in_(['ISSUED', 'RECTIFICATION_SUBMITTED'])).count()
-    pending_rectifications = db.query(ImprovementNotice).filter(ImprovementNotice.status == 'RECTIFICATION_SUBMITTED').count()
-    reinspections_due = db.query(Reinspection).filter(Reinspection.status == 'SCHEDULED').count()
-    active_enforcement = db.query(EnforcementCase).filter(EnforcementCase.status.in_(['OPEN', 'UNDER_REVIEW', 'PENALTY_PENDING'])).count()
-    penalties_pending = db.query(EnforcementCase).filter(EnforcementCase.status == 'PENALTY_PENDING').count()
+    from sqlalchemy import case
     today = date.today()
-    inspections_today = db.query(Inspection).filter(func.date(Inspection.created_at) == today).count()
+    
+    insp_stats = db.query(
+        func.count(Inspection.id).label('total'),
+        func.sum(case((Inspection.result == 'FAIL', 1), else_=0)).label('failed'),
+        func.sum(case((Inspection.result == 'PASS', 1), else_=0)).label('passed'),
+        func.sum(case((Inspection.risk_level == 'HIGH', 1), else_=0)).label('high_risk'),
+        func.sum(case((func.date(Inspection.created_at) == today, 1), else_=0)).label('today')
+    ).first()
+
+    notice_stats = db.query(
+        func.sum(case((ImprovementNotice.status.in_(['ISSUED', 'RECTIFICATION_SUBMITTED']), 1), else_=0)).label('open'),
+        func.sum(case((ImprovementNotice.status == 'RECTIFICATION_SUBMITTED', 1), else_=0)).label('pending')
+    ).first()
+
+    reinspections_due = db.query(Reinspection).filter(Reinspection.status == 'SCHEDULED').count()
+    
+    enf_stats = db.query(
+        func.sum(case((EnforcementCase.status.in_(['OPEN', 'UNDER_REVIEW', 'PENALTY_PENDING']), 1), else_=0)).label('active'),
+        func.sum(case((EnforcementCase.status == 'PENALTY_PENDING', 1), else_=0)).label('pending_pen')
+    ).first()
 
     return {
-        "totalInspections": total_inspections,
-        "inspectionsToday": inspections_today,
-        "failedInspections": failed_inspections,
-        "passedInspections": passed_inspections,
-        "highRiskCases": high_risk_cases,
-        "openNotices": open_notices,
-        "pendingRectifications": pending_rectifications,
-        "reinspectionsDue": reinspections_due,
-        "activeEnforcement": active_enforcement,
-        "penaltiesPending": penalties_pending
+        "totalInspections": insp_stats.total or 0,
+        "inspectionsToday": insp_stats.today or 0,
+        "failedInspections": insp_stats.failed or 0,
+        "passedInspections": insp_stats.passed or 0,
+        "highRiskCases": insp_stats.high_risk or 0,
+        "openNotices": notice_stats.open or 0,
+        "pendingRectifications": notice_stats.pending or 0,
+        "reinspectionsDue": reinspections_due or 0,
+        "activeEnforcement": enf_stats.active or 0,
+        "penaltiesPending": enf_stats.pending_pen or 0
     }
 
 @router.get("/activity")

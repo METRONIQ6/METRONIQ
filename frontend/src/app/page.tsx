@@ -56,7 +56,7 @@ export default function LandingPage() {
             <main className="flex-1 flex flex-col font-sans">
                 <section className="relative px-6 py-24 md:py-32 flex flex-col items-center justify-center text-center overflow-hidden">
                     {/* Govt Background decorations */}
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-500/10 rounded-full blur-[100px] pointer-events-none" />
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/100/10 rounded-full blur-[100px] pointer-events-none" />
 
                     <div className="relative z-10 max-w-5xl space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-1000 fill-mode-both">
 
@@ -115,7 +115,7 @@ export default function LandingPage() {
                                     desc: t('landing.penaltyEnforcementDesc')
                                 }
                             ].map((s, i) => (
-                                <div key={i} className="relative z-10 bg-white dark:bg-card p-8 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group">
+                                <div key={i} className="relative z-10 bg-card dark:bg-card p-8 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group">
                                     <div className="flex items-center justify-between w-full mb-6 relative">
                                         <div className="w-16 h-16 rounded-full bg-slate-50 dark:bg-slate-900 border-4 border-white dark:border-card shadow-md flex items-center justify-center text-[#0056b3] dark:text-blue-400 group-hover:scale-110 group-hover:bg-[#0056b3] group-hover:text-white transition-all">
                                             {s.icon}
@@ -131,7 +131,7 @@ export default function LandingPage() {
                 </section>
 
                 {/* Core Modules Grid */}
-                <section id="capabilities" className="py-24 px-6 relative bg-white dark:bg-background">
+                <section id="capabilities" className="py-24 px-6 relative bg-card dark:bg-background">
                     <div className="max-w-7xl mx-auto">
                         <div className="border-l-4 border-[#0056b3] pl-6 mb-16">
                             <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-[#111827] dark:text-gray-100 uppercase mb-3">{t('landing.enterpriseModules')}</h2>
@@ -180,7 +180,7 @@ export default function LandingPage() {
                                 <div key={i} className="relative group bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden hover:shadow-xl hover:border-[#0056b3]/50 transition-all duration-300">
                                     <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#0056b3] to-[#00a65a] opacity-0 group-hover:opacity-100 transition-opacity"></div>
                                     <div className="p-8">
-                                        <div className="w-12 h-12 rounded-lg bg-blue-100 dark:bg-blue-900/30 text-[#0056b3] dark:text-blue-400 flex items-center justify-center mb-6 shadow-sm">
+                                        <div className="w-12 h-12 rounded-lg bg-primary/20 dark:bg-blue-900/30 text-[#0056b3] dark:text-blue-400 flex items-center justify-center mb-6 shadow-sm">
                                             {ft.icon}
                                         </div>
                                         <h4 className="text-xs font-bold text-[#00a65a] uppercase tracking-wider mb-2">{ft.subtitle}</h4>
@@ -228,7 +228,7 @@ export default function LandingPage() {
                                 <div className="absolute top-0 right-0 w-32 h-32 bg-[#0056b3]/10 blur-3xl rounded-full"></div>
                                 <div className="border-b border-border pb-4 mb-4 flex items-center justify-between">
                                     <div className="flex items-center gap-2">
-                                        <ShieldCheck className="text-green-600 w-5 h-5" />
+                                        <ShieldCheck className="text-success w-5 h-5" />
                                         <div className="font-semibold text-sm">{t('landing.auditStream')}</div>
                                     </div>
                                     <span className="text-xs font-semibold text-[#00a65a]">{t('landing.secureGovtNode')}</span>

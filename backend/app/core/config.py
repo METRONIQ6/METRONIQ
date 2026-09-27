@@ -11,13 +11,15 @@ class Settings(BaseSettings):
     SECRET_KEY: str = os.getenv("JWT_SECRET_KEY", "LOCAL_DEV_UNSAFE_SECRET_KEY")
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 8
     
+    # DATABASE
+    DATABASE_URL: str = os.getenv("DATABASE_URL")
+    
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         if os.getenv("ENVIRONMENT") == "production" and self.SECRET_KEY == "LOCAL_DEV_UNSAFE_SECRET_KEY":
             raise ValueError("FATAL SECURITY ERROR: JWT_SECRET_KEY must be set in production environment variables!")
-    
-    # DATABASE
-    DATABASE_URL: str = os.getenv("DATABASE_URL", "sqlite:///./metroniq-dev.db")
+        if not self.DATABASE_URL or self.DATABASE_URL.startswith("sqlite"):
+            raise ValueError("FATAL ERROR: MetronIQ must use PostgreSQL. SQLite fallback is strictly prohibited.")
     
     # STORAGE
     MINIO_ENDPOINT: str = "localhost:9000"

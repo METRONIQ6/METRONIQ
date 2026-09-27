@@ -1,26 +1,33 @@
-import requests
+def test_endpoints_ready(client, db_session):
+    # Setup test user for endpoints
+    from app.models.user import User
+    from app.core.security import get_password_hash
+    import uuid
+    
+    officer_id = uuid.uuid4()
+    user = User(
+        id=officer_id,
+        email="officer_ready@metroniq.local",
+        hashed_password=get_password_hash("password"),
+        role="OFFICER",
+        status="APPROVED"
+    )
+    db_session.add(user)
+    db_session.commit()
 
-API_URL = "http://127.0.0.1:8000/api/v1"
+    resp = client.post("/api/v1/auth/login", data={"username": "officer_ready@metroniq.local", "password": "password"})
+    assert resp.status_code == 200, f"Login failed: {resp.text}"
+    token = resp.json()["access_token"]
+    headers = {"Authorization": f"Bearer {token}"}
 
-# 1. Login
-resp = requests.post(f"{API_URL}/auth/login", data={"username": "officer@metroniq.local", "password": "password", "grant_type": "password"})
-assert resp.status_code == 200, f"Login failed: {resp.text}"
-token = resp.json()["access_token"]
-headers = {"Authorization": f"Bearer {token}"}
-print("Auth: PASS")
+    resp = client.get("/api/v1/rules", headers=headers)
+    assert resp.status_code == 200, f"Rules get failed: {resp.text}"
+    assert isinstance(resp.json(), list), "Should return a list of rules"
 
-resp = requests.get(f"{API_URL}/rules", headers=headers)
-assert resp.status_code == 200, f"Rules get failed: {resp.text}"
-assert len(resp.json()) == 13, "Rule count mismatch"
-print("Rules GET: PASS")
+    resp = client.get("/api/v1/inspections", headers=headers)
+    assert resp.status_code == 200, f"Inspections GET failed: {resp.text}"
+    assert isinstance(resp.json(), list), "Should return a list of inspections"
 
-resp = requests.get(f"{API_URL}/inspections", headers=headers)
-assert resp.status_code == 200, f"Inspections GET failed: {resp.text}"
-assert len(resp.json()) == 307, "Inspections count mismatch"
-print("Inspections GET: PASS")
-
-resp = requests.get(f"{API_URL}/notices", headers=headers)
-assert resp.status_code == 200, f"Notices GET failed: {resp.text}"
-print("Notices GET: PASS")
-
-print("All PostgreSQL integration tests passed.")
+    resp = client.get("/api/v1/notices", headers=headers)
+    assert resp.status_code == 200, f"Notices GET failed: {resp.text}"
+    assert isinstance(resp.json(), list), "Should return a list of notices"

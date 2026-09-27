@@ -7,9 +7,11 @@ import { UploadCloud, CheckCircle, ShieldAlert, FileSearch, RefreshCw, Box, Laye
 import { getToken } from '@/lib/auth'
 import { useToast } from "@/components/ui/use-toast"
 import { useTranslation } from '@/i18n'
+import { mapManufacturerError } from '@/lib/errorUtils'
 
 export default function LabelAuditor() {
     const { t } = useTranslation()
+    const [errorKey, setErrorKey] = useState<string | null>(null)
     const { toast } = useToast()
 
     const [file, setFile] = useState<File | null>(null)
@@ -52,7 +54,14 @@ export default function LabelAuditor() {
                 headers: { 'Authorization': `Bearer ${getToken()}` },
                 body: formData
             })
-            if (!uploadResp.ok) throw new Error("Upload rejection: Server transmission failed")
+            if (!uploadResp.ok) {
+                let errDetail = "Server transmission failed"
+                try {
+                    const errStr = await uploadResp.json()
+                    if (errStr.detail) errDetail = errStr.detail
+                } catch (e) { }
+                throw new Error(`Upload rejection: ${errDetail}`)
+            }
             const uploadResult = await uploadResp.json()
             const sid = uploadResult.id
 
@@ -65,7 +74,7 @@ export default function LabelAuditor() {
             setProgressStatus('Executing primary rule processing matrix...')
             let status = "PROCESSING"
             while (status === "PROCESSING" || status === "UPLOADED") {
-                await new Promise(r => setTimeout(r, 2000))
+                await new Promise(r => setTimeout(r, 800))
                 const statusResp = await fetch(`http://localhost:8000/api/v1/scanner/${sid}/status`, {
                     headers: { 'Authorization': `Bearer ${getToken()}` }
                 })
@@ -88,6 +97,9 @@ export default function LabelAuditor() {
             setFlowState('IDLE')
         }
     }
+
+    if (errorKey) return <div className="p-4 text-red-500">{t('common.error') || 'Error'}: {t(`manufacturer.errors.${errorKey}`)}</div>
+
 
     return (
         <div className="space-y-6 pt-2 pb-8 max-w-[1400px] w-full mx-auto">
@@ -116,7 +128,7 @@ export default function LabelAuditor() {
                                 <h3 className="text-2xl font-bold text-[#0B1F3A] mb-2 z-10">{t('scanner.uploadLabelMatrix')}</h3>
                                 <p className="text-muted-foreground mb-8 font-medium max-w-sm z-10">Drop digital artwork assets (supported: PNG, JPG) to initiate autonomous compliance verification.</p>
                                 <label className="z-10 cursor-pointer">
-                                    <input type="file" className="hidden" accept="image/*,.pdf" onChange={handleFileChange} />
+                                    <input type="file" className="hidden" accept="image/*" onChange={handleFileChange} />
                                     <div className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 shadow h-12 px-10 bg-[#0B1F3A] hover:bg-[#0B1F3A]/90 text-white cursor-pointer hover:-translate-y-0.5 ease-out duration-200">{t('scanner.selectTargetMedia')}</div>
                                 </label>
                             </>
@@ -158,9 +170,15 @@ export default function LabelAuditor() {
                             </CardHeader>
                             <CardContent>
                                 <div className="flex items-center gap-3">
-                                    {scanData.risk_level < 40 ? <CheckCircle className="w-8 h-8 text-green-600" /> : <ShieldAlert className="w-8 h-8 text-red-600" />}
-                                    <div className="text-3xl font-extrabold tracking-tight text-[#0B1F3A] dark:text-white">
-                                        {scanData.risk_level < 40 ? 'VERIFIED' : 'FAILED'}
+                                    {scanData.compliance === 'PASS' ? <CheckCircle className="w-8 h-8 text-success" /> :
+                                        (scanData.compliance === 'FAIL' ? <ShieldAlert className="w-8 h-8 text-destructive" /> :
+                                            <ShieldAlert className="w-8 h-8 text-orange-500" />)}
+                                    <div className={`text-3xl font-extrabold tracking-tight ${scanData.compliance === 'PASS' ? 'text-success-foreground' : (scanData.compliance === 'FAIL' ? 'text-destructive-foreground' : 'text-orange-600')} dark:text-white`}>
+                                        {scanData.compliance === 'PASS' ? (t('scanner.state_verified_compliant') || 'VERIFIED COMPLIANT') :
+                                            (scanData.compliance === 'FAIL' ? (t('scanner.state_verified_non_compliant') || 'VERIFIED NON-COMPLIANT') :
+                                                (scanData.compliance === 'INVALID_IMAGE' ? (t('scanner.state_invalid_input') || 'INVALID INPUT') :
+                                                    (scanData.compliance === 'ENVIRONMENT_ERROR' ? (t('scanner.state_audit_error') || 'AUDIT ERROR') :
+                                                        (t('scanner.state_not_verified') || 'NOT VERIFIED'))))}
                                     </div>
                                 </div>
                             </CardContent>
@@ -173,13 +191,13 @@ export default function LabelAuditor() {
                             <CardContent>
                                 <div className="space-y-3">
                                     <div className="flex justify-between items-baseline">
-                                        <span className={`text-4xl font-extrabold tracking-tight ${scanData.risk_level > 60 ? 'text-red-500' : scanData.risk_level > 30 ? 'text-orange-500' : 'text-green-500'}`}>
-                                            {scanData.risk_level}%
+                                        <span className={`text-4xl font-extrabold tracking-tight ${(scanData.validation_details?.numerical_risk ?? 0) > 60 ? 'text-red-500' : (scanData.validation_details?.numerical_risk ?? 0) > 30 ? 'text-orange-500' : 'text-green-500'}`}>
+                                            {typeof scanData.validation_details?.numerical_risk === 'number' ? `${scanData.validation_details.numerical_risk}%` : (t('scanner.state_risk_not_available') || 'RISK NOT AVAILABLE')}
                                         </span>
                                         <span className="text-sm font-semibold text-muted-foreground">{t('scanner.confidenceDelta')}</span>
                                     </div>
                                     <div className="h-2 bg-muted rounded-full overflow-hidden w-full">
-                                        <div className={`h-full transition-all duration-500 ${scanData.risk_level > 60 ? 'bg-red-500' : scanData.risk_level > 30 ? 'bg-orange-500' : 'bg-green-500'}`} style={{ width: `${scanData.risk_level}%` }}></div>
+                                        <div className={`h-full transition-all duration-500 ${(scanData.validation_details?.numerical_risk ?? 0) > 60 ? 'bg-destructive/100' : (scanData.validation_details?.numerical_risk ?? 0) > 30 ? 'bg-orange-500' : 'bg-transparent'}`} style={{ width: typeof scanData.validation_details?.numerical_risk === 'number' ? `${scanData.validation_details.numerical_risk}%` : '0%' }}></div>
                                     </div>
                                 </div>
                             </CardContent>
@@ -193,21 +211,22 @@ export default function LabelAuditor() {
                         </CardHeader>
                         <CardContent className="p-0">
                             <div className="divide-y divide-border/50 border-t border-border/50">
-                                {Object.entries(scanData.validation_output?.details || {}).map(([rule, data]: [string, any], idx) => (
-                                    <div key={idx} className={`p-5 flex flex-col md:flex-row md:justify-between md:items-center gap-3 ${data.pass ? 'hover:bg-muted/30' : 'bg-red-50/50 hover:bg-red-50'}`}>
-                                        <div>
-                                            <div className="flex items-center gap-2 mb-1">
-                                                <span className="font-bold text-[#0B1F3A] capitalize">{rule.replace(/_/g, ' ')}</span>
+                                {(scanData.validation_details?.evaluations && scanData.validation_details.evaluations.length > 0) ? (
+                                    scanData.validation_details.evaluations.map((data: any, idx: number) => (
+                                        <div key={idx} className={`p-5 flex flex-col md:flex-row md:justify-between md:items-center gap-3 ${(data.status === 'PASS' || data.status === 'NOT_APPLICABLE') ? 'hover:bg-muted/30' : 'bg-destructive/10/50 hover:bg-destructive/10'}`}>
+                                            <div>
+                                                <div className="flex items-center gap-2 mb-1">
+                                                    <span className="font-bold text-[#0B1F3A] capitalize">{data.field.replace(/_/g, ' ')}</span>
+                                                </div>
+                                                <p className="text-sm text-muted-foreground font-medium">{data.message}</p>
                                             </div>
-                                            <p className="text-sm text-muted-foreground font-medium">{data.reason || (data.pass ? 'Compliance threshold met.' : 'Mandatory regulatory declaration missing.')}</p>
+                                            <Badge variant="outline" className={`shrink-0 font-mono text-xs uppercase px-3 py-1 rounded-sm border ${(data.status === 'PASS' || data.status === 'NOT_APPLICABLE') ? 'border-green-300 text-success-foreground bg-success/10/80 shadow-sm' : 'border-red-300 text-destructive-foreground bg-red-100/80 shadow-sm'}`}>
+                                                {data.status === 'PASS' ? 'CONFORMANT' : (data.status === 'NOT_APPLICABLE' ? 'N/A' : 'VIOLATION')}
+                                            </Badge>
                                         </div>
-                                        <Badge variant="outline" className={`shrink-0 font-mono text-xs uppercase px-3 py-1 rounded-sm border ${data.pass ? 'border-green-300 text-green-700 bg-green-50/80 shadow-sm' : 'border-red-300 text-red-700 bg-red-100/80 shadow-sm'}`}>
-                                            {data.pass ? 'CONFORMANT' : 'VIOLATION'}
-                                        </Badge>
-                                    </div>
-                                ))}
-                                {!scanData.validation_output?.details && (
-                                    <div className="p-8 text-center text-muted-foreground font-medium">Telemetry data unavailable or corrupted.</div>
+                                    ))
+                                ) : (
+                                    <div className="p-8 text-center text-muted-foreground font-medium">{t('scanner.state_audit_unverified') || 'Audit could not be verified because required telemetry is unavailable.'}</div>
                                 )}
                             </div>
                         </CardContent>

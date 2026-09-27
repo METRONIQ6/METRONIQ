@@ -5,10 +5,11 @@ import shutil
 import os
 import cv2
 import json
+import logging
 from typing import Dict, Any
 
 from app.core.database import get_db
-from app.api.deps import get_current_officer
+from app.api.deps import get_current_user
 from app.models.inspection import Inspection
 from app.ai.pipeline.scanner_pipeline import ScannerPipeline
 
@@ -21,7 +22,7 @@ UPLOAD_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 @router.post("/upload")
-async def upload_image(file: UploadFile = File(...), officer = Depends(get_current_officer)):
+async def upload_image(file: UploadFile = File(...), user = Depends(get_current_user)):
     if file.content_type and not file.content_type.startswith("image/"):
         raise HTTPException(status_code=400, detail="Must be an image file.")
         
@@ -41,6 +42,42 @@ async def upload_image(file: UploadFile = File(...), officer = Depends(get_curre
     
     return {"id": scan_id, "status": "UPLOADED"}
 
+import hashlib
+from collections import OrderedDict
+
+class LRUCache:
+    def __init__(self, capacity: int):
+        self.cache = OrderedDict()
+        self.capacity = capacity
+        
+    def __contains__(self, key):
+        return key in self.cache
+        
+    def get(self, key):
+        if key not in self.cache:
+            return None
+        self.cache.move_to_end(key)
+        return self.cache[key]
+        
+    def set(self, key, value):
+        if key in self.cache:
+            self.cache.move_to_end(key)
+        self.cache[key] = value
+        if len(self.cache) > self.capacity:
+            self.cache.popitem(last=False)
+
+hash_cache = LRUCache(50)
+
+def calculate_file_hash(file_path: str) -> str:
+    hasher = hashlib.md5()
+    try:
+        with open(file_path, 'rb') as f:
+            buf = f.read()
+            hasher.update(buf)
+    except:
+        pass
+    return hasher.hexdigest()
+
 def execute_cv_pipeline(scan_id: str, db: Session):
     job = job_store.get(scan_id)
     if not job:
@@ -48,8 +85,17 @@ def execute_cv_pipeline(scan_id: str, db: Session):
         
     job["status"] = "PROCESSING"
     try:
-        image = cv2.imread(job["file_path"])
-        evidence_payload = pipeline.run(image, filename=os.path.basename(job["file_path"]))
+        f_hash = calculate_file_hash(job["file_path"])
+        if f_hash in hash_cache:
+            import copy
+            evidence_payload = copy.deepcopy(hash_cache.get(f_hash))
+            evidence_payload["metadata"]["filename"] = os.path.basename(job["file_path"])
+            logging.getLogger("MetronIQ-API-Scanner").info(f"Cache hit for image hash {f_hash}")
+        else:
+            image = cv2.imread(job["file_path"])
+            evidence_payload = pipeline.run(image, filename=os.path.basename(job["file_path"]))
+            if evidence_payload.get("metadata", {}).get("ocr_status") != "FAILED":
+                hash_cache.set(f_hash, evidence_payload)
         
         # VALID IMAGE GATE & OCR ENVIRONMENT GATE
         meta = evidence_payload.get("metadata", {})
@@ -105,11 +151,10 @@ def execute_cv_pipeline(scan_id: str, db: Session):
     except Exception as e:
         job["status"] = "FAILED"
         job["error"] = str(e)
-        import logging
         logging.getLogger("MetronIQ-API-Scanner").error(f"Scan crash: {str(e)}")
 
 @router.post("/process")
-async def process_image(scan_id: str, background_tasks: BackgroundTasks, db: Session = Depends(get_db), officer = Depends(get_current_officer)):
+async def process_image(scan_id: str, background_tasks: BackgroundTasks, db: Session = Depends(get_db), user = Depends(get_current_user)):
     if scan_id not in job_store:
         raise HTTPException(status_code=404, detail="Scan ID not found")
         
@@ -122,7 +167,7 @@ async def process_image(scan_id: str, background_tasks: BackgroundTasks, db: Ses
     return {"id": scan_id, "status": "PROCESSING"}
 
 @router.get("/{id}/status")
-async def get_status(id: str, db: Session = Depends(get_db), officer = Depends(get_current_officer)):
+async def get_status(id: str, db: Session = Depends(get_db), user = Depends(get_current_user)):
     db_inspection = db.query(Inspection).filter(Inspection.id == id).first()
     if db_inspection:
         return {"id": id, "status": db_inspection.status}
@@ -135,7 +180,7 @@ async def get_status(id: str, db: Session = Depends(get_db), officer = Depends(g
     return payload
 
 @router.get("/{id}/result")
-async def get_result(id: str, db: Session = Depends(get_db), officer = Depends(get_current_officer)):
+async def get_result(id: str, db: Session = Depends(get_db), user = Depends(get_current_user)):
     db_inspection = db.query(Inspection).filter(Inspection.id == id).first()
     if db_inspection and db_inspection.status == "COMPLETED":
         evidence = json.loads(db_inspection.evidence_payload) if db_inspection.evidence_payload else {}
@@ -155,7 +200,7 @@ async def get_result(id: str, db: Session = Depends(get_db), officer = Depends(g
     return job_store[id]["result"]
 
 @router.get("/{id}/evidence")
-async def get_evidence(id: str, db: Session = Depends(get_db), officer = Depends(get_current_officer)):
+async def get_evidence(id: str, db: Session = Depends(get_db), user = Depends(get_current_user)):
     db_inspection = db.query(Inspection).filter(Inspection.id == id).first()
     if db_inspection and db_inspection.status == "COMPLETED":
         return json.loads(db_inspection.evidence_payload) if db_inspection.evidence_payload else None

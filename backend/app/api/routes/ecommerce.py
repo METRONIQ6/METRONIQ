@@ -18,6 +18,7 @@ class MonitorCreate(BaseModel):
     target_url: str
     monitoring_frequency: str = "DAILY"
 
+@router.post("")
 @router.post("/")
 def create_monitor(payload: MonitorCreate, db: Session = Depends(get_db), current_user = Depends(get_current_officer)):
     monitor = ECommerceMonitor(
@@ -30,6 +31,7 @@ def create_monitor(payload: MonitorCreate, db: Session = Depends(get_db), curren
     db.refresh(monitor)
     return monitor
 
+@router.get("")
 @router.get("/")
 def get_monitors(db: Session = Depends(get_db), current_user = Depends(get_current_user)):
     return db.query(ECommerceMonitor).all()
@@ -44,42 +46,80 @@ async def run_ecommerce_scan(monitor_id: uuid.UUID):
             return
         
         data = await scrape_and_screenshot(monitor.target_url)
-        
-        # Insert into Scanner job store
         scan_id = f"INSP-WEB-{str(uuid.uuid4())[:8].upper()}"
-        job_store[scan_id] = {
-            "id": scan_id,
-            "status": "UPLOADED",
-            "file_path": data["screenshot_path"],
-            "result": None,
-            "evidence": None
-        }
         
-        # Execute the CV pipeline normally in a separate thread so we don't block the async loop
-        await asyncio.to_thread(execute_cv_pipeline, scan_id, db)
-        
-        # Link result to monitor
-        job = job_store.get(scan_id)
-        if job and job["status"] == "COMPLETED":
-            monitor.last_scan_result = job["result"].get("compliance") if job.get("result") else "FAIL"
-            
-            # The pipeline created the physical database Inspection record dynamically inside execute_cv_pipeline.
-            # We can find it and update it with the original source URL.
+        if not data.get("screenshot_path"):
+            from app.services.rules_validation_service import RulesValidationService
             from app.models.inspection import Inspection
-            insp = db.query(Inspection).filter(Inspection.id == scan_id).first()
-            if insp:
-                payload = {}
-                if insp.evidence_payload:
-                    payload = json.loads(insp.evidence_payload)
-                payload["source_url"] = data["source_url"]
-                payload["ecommerce_monitor_id"] = str(monitor_id)
-                payload["ecommerce_title"] = data.get("title")
-                payload["ecommerce_dom_price"] = data.get("dom_price")
-                payload["ecommerce_dom_seller"] = data.get("dom_seller")
-                insp.evidence_payload = json.dumps(payload)
+            
+            p_data = data.get("product_data") or {}
+            offers = p_data.get("offers", {})
+            if isinstance(offers, list) and len(offers) > 0: offers = offers[0]
+            price = offers.get("price") or str(data.get("dom_price") or "")
+            
+            declarations = {}
+            if price: declarations["mrp"] = str(price)
+            if p_data.get("brand"):
+                b = p_data.get("brand")
+                declarations["generic_name"] = str(b.get("name") if isinstance(b, dict) else b)
+            if p_data.get("manufacturer"):
+                declarations["manufacturer_name"] = str(p_data.get("manufacturer"))
                 
+            validator = RulesValidationService(db)
+            validation_output = validator.validate(declarations)
+            compliance_check = validation_output["compliance"]
+            
+            payload = {
+                "source_url": data["source_url"],
+                "ecommerce_monitor_id": str(monitor_id),
+                "ecommerce_title": data.get("title"),
+                "ecommerce_dom_price": data.get("dom_price"),
+                "ecommerce_dom_seller": data.get("dom_seller"),
+                "metadata": {"automation": data.get("automation")},
+                "validation": validation_output,
+                "legal_declarations": declarations
+            }
+            db_inspection = Inspection(
+                id=scan_id,
+                status="COMPLETED",
+                result=compliance_check,
+                evidence_payload=json.dumps(payload),
+                risk_level=validation_output.get("risk_score", "LOW")
+            )
+            db.add(db_inspection)
+            monitor.last_scan_result = compliance_check
+            
         else:
-            monitor.last_scan_result = "FAIL_PROCESSING"
+            job_store[scan_id] = {
+                "id": scan_id,
+                "status": "UPLOADED",
+                "file_path": data["screenshot_path"],
+                "result": None,
+                "evidence": None
+            }
+            
+            await asyncio.to_thread(execute_cv_pipeline, scan_id, db)
+            
+            job = job_store.get(scan_id)
+            if job and job["status"] == "COMPLETED":
+                monitor.last_scan_result = job["result"].get("compliance") if job.get("result") else "FAIL"
+                
+                from app.models.inspection import Inspection
+                insp = db.query(Inspection).filter(Inspection.id == scan_id).first()
+                if insp:
+                    payload = {}
+                    if insp.evidence_payload:
+                        payload = json.loads(insp.evidence_payload)
+                    payload["source_url"] = data["source_url"]
+                    payload["ecommerce_monitor_id"] = str(monitor_id)
+                    payload["ecommerce_title"] = data.get("title")
+                    payload["ecommerce_dom_price"] = data.get("dom_price")
+                    payload["ecommerce_dom_seller"] = data.get("dom_seller")
+                    payload.setdefault("metadata", {})
+                    payload["metadata"]["automation"] = data.get("automation")
+                    insp.evidence_payload = json.dumps(payload)
+            else:
+                monitor.last_scan_result = "FAIL_PROCESSING"
             
     except SSRFError as se:
         traceback_str = "SECURITY_BLOCKED"
@@ -112,3 +152,53 @@ async def trigger_scan(monitor_id: str, background_tasks: BackgroundTasks, db: S
         
     background_tasks.add_task(run_ecommerce_scan, m_id)
     return {"status": "SCAN_TRIGGERED", "monitor_id": str(m_id)}
+
+@router.get('/{monitor_id}/status')
+async def get_scan_status(monitor_id: str, db: Session = Depends(get_db)):
+    try: m_id = uuid.UUID(monitor_id)
+    except: raise HTTPException(status_code=400, detail='Invalid ID')
+    monitor = db.query(ECommerceMonitor).filter(ECommerceMonitor.id == m_id).first()
+    if not monitor:
+        raise HTTPException(status_code=404, detail='Monitor not found')
+        
+    res = {
+        'job_id': monitor_id,
+        'status': monitor.last_scan_result,
+        'inspection_id': None,
+        'result': None,
+        'error': None
+    }
+    
+    terminals_success = ['PASS', 'FAIL', 'COMPLIANT', 'NON_COMPLIANT']
+    terminals_error = ['CRAWL_ERROR', 'CRAWL_TIMEOUT', 'SECURITY_BLOCKED', 'NOT_PRODUCT_PAGE', 'INVALID_URL', 'FAIL_PROCESSING']
+    
+    if monitor.last_scan_result in terminals_success:
+        res['status'] = 'SUCCESS'
+        from app.models.inspection import Inspection
+        insp = db.query(Inspection).filter(
+            Inspection.evidence_payload.like(f'%"{monitor_id}"%')
+        ).order_by(Inspection.created_at.desc()).first()
+        
+        if insp:
+            res['inspection_id'] = insp.id
+            if insp.evidence_payload:
+                payload = json.loads(insp.evidence_payload)
+                res['result'] = {
+                    'product': payload.get('ecommerce_title') or payload.get('legal_declarations', {}).get('generic_name', 'NOT FOUND'),
+                    'source': payload.get('source_url', 'UNKNOWN'),
+                    'extraction': payload.get('metadata', {}).get('automation', 'UNKNOWN'),
+                    'price': payload.get('ecommerce_dom_price') or 'NOT FOUND',
+                    'mrp': payload.get('legal_declarations', {}).get('mrp') or 'NOT VERIFIED',
+                    'compliance': insp.result,
+                    'rules': payload.get('validation', {}).get('evaluations', []),
+                    'evidence': payload.get('legal_declarations', {})
+                }
+    elif monitor.last_scan_result in terminals_error:
+        res['status'] = monitor.last_scan_result
+        res['error'] = monitor.last_scan_result
+    elif monitor.last_scan_result == 'ACTIVE':
+        res['status'] = 'IDLE'
+    else:
+        res['status'] = 'PROCESSING'
+        
+    return res

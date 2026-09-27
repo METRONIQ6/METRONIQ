@@ -16,7 +16,18 @@ class Product(Base):
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     name = Column(String, index=True, nullable=False)
     category = Column(String)
-    manufacturer_id = Column(UUID(as_uuid=True), ForeignKey("manufacturers.id"))
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    manufacturer_id = Column(UUID(as_uuid=True), ForeignKey("manufacturers.id"), nullable=True) # Old
     
-    manufacturer = relationship("Manufacturer")
+    sku = Column(String)
+    owner_id = Column(UUID(as_uuid=True), ForeignKey("users.id"))
+    status = Column(String, default="DRAFT") # DRAFT, UNDER_REVIEW, CHANGES_REQUIRED, APPROVED, REJECTED
+    net_quantity = Column(String)
+    mrp = Column(String)
+    generic_name = Column(String)
+    manufacturer_name = Column(String)
+    country_of_origin = Column(String)
+
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+    
+    owner = relationship("User", foreign_keys=[owner_id])

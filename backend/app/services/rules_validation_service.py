@@ -55,6 +55,21 @@ class RulesValidationService:
             # 2. Check if we have an authoritative rule definition for this field
             rule_logic = configured_field_rules.get(field)
             
+            # Applicability Inference
+            is_imported = str(declarations.get("_META_IS_IMPORTED", {}).get("value", "False")) == "True"
+            
+            if field == "IMPORTER" and not is_imported:
+                evaluation["status"] = "NOT_APPLICABLE"
+                evaluation["message"] = f"Importer details not applicable for domestic products."
+                field_evaluations.append(evaluation)
+                continue
+                
+            if field == "PACKER" and is_imported:
+                evaluation["status"] = "NOT_APPLICABLE"
+                evaluation["message"] = f"Packer details often not strictly separated for imported products."
+                field_evaluations.append(evaluation)
+                continue
+            
             if not rule_logic:
                 missing_rule_definitions.append(field)
                 evaluation["status"] = "PENDING_RULE_DEF"
@@ -67,24 +82,28 @@ class RulesValidationService:
                 if not declared_data:
                     if is_required:
                         evaluation["status"] = "FAIL"
-                        evaluation["message"] = f"Mandatory field {field} is missing."
+                        evaluation["evidence"] = "No matching declaration detected after OCR verification."
+                        evaluation["message"] = f"Required field {field} could not be verified."
                         overall_compliance = "FAIL"
                         total_risk_score += 50
                     else:
                         evaluation["status"] = "NOT_APPLICABLE"
+                        evaluation["evidence"] = "Field not present"
                         evaluation["message"] = f"Field {field} is not required and not present."
                 else:    
                     # Depending on OCR confidence, we might have an uncertain declaration
                     conf = declared_data.get("confidence", 0.0)
-                    if conf < 0.5:
-                        evaluation["status"] = "OCR_UNCERTAIN"
-                        evaluation["message"] = f"{field} detected but AI confidence is very low ({conf}). Manual review required."
+                    if conf < 0.35:  # Tolerance lowered slightly to accommodate rough Indian packaging prints
+                        evaluation["status"] = "NOT_VERIFIED"
+                        evaluation["evidence"] = f"OCR confidence ({conf:.2f}) insufficient to determine compliance."
+                        evaluation["message"] = f"Manual review required for {field}."
                         if overall_compliance != "FAIL":
                             overall_compliance = "REVIEW_REQUIRED"
                         total_risk_score += 15
                     else:
                         evaluation["status"] = "PASS"
-                        evaluation["message"] = f"{field} successfully verified."
+                        evaluation["evidence"] = declared_data.get("value")
+                        evaluation["message"] = f"{field} successfully verified (Confidence: {conf*100:.0f}%)."
 
             field_evaluations.append(evaluation)
             

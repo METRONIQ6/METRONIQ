@@ -50,15 +50,18 @@ export default function AIScannerUnified() {
             const mediaStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
             setStream(mediaStream)
             setFlowState('CAMERA')
-            if (videoRef.current) {
-                videoRef.current.srcObject = mediaStream
-                videoRef.current.play()
-            }
         } catch (err) {
             console.error("Camera access denied or unavailable", err)
             toast({ type: 'warning', message: t("warning.camera_denied"), description: 'Please use the upload alternative.' })
         }
     }
+
+    useEffect(() => {
+        if (flowState === 'CAMERA' && videoRef.current && stream) {
+            videoRef.current.srcObject = stream
+            videoRef.current.play().catch(e => console.error("Video play error:", e))
+        }
+    }, [flowState, stream])
 
     const stopCamera = () => {
         if (stream) {
@@ -115,7 +118,14 @@ export default function AIScannerUnified() {
                 headers: { 'Authorization': `Bearer ${getToken()}` },
                 body: formData
             });
-            if (!uploadResp.ok) throw new Error("Failed to upload image")
+            if (!uploadResp.ok) {
+                let errDetail = "Failed to upload image"
+                try {
+                    const errStr = await uploadResp.json()
+                    if (errStr.detail) errDetail = errStr.detail
+                } catch (e) { }
+                throw new Error(errDetail)
+            }
             const uploadResult = await uploadResp.json();
             const sid = uploadResult.id;
             setScanId(sid);
@@ -129,7 +139,7 @@ export default function AIScannerUnified() {
 
             let status = "PROCESSING";
             while (status === "PROCESSING" || status === "UPLOADED") {
-                await new Promise(r => setTimeout(r, 2000));
+                await new Promise(r => setTimeout(r, 800));
 
                 // Advance visual steps occasionally
                 setLoadingStep(prev => prev < 4 ? prev + 1 : prev)
@@ -367,56 +377,76 @@ export default function AIScannerUnified() {
                         <Button variant="outline" size="sm" onClick={() => setFlowState('SELECT')}>{t('scanner.scanAnother')}</Button>
                     </div>
 
-                    {(data?.validation_details?.evaluations || []).map((f: any, i: number) => (
-                        <Card key={i} className={`border-l-4 ${f.status === 'PASS' || f.status === 'NOT_REQUIRED' || f.status === 'PENDING_RULE_DEF' ? 'border-l-green-500' : 'border-l-red-500'} mb-4`}>
-                            <CardContent className="p-4 flex gap-4 items-start justify-between">
-                                <div>
-                                    <div className="flex items-center gap-2 mb-1">
-                                        <h4 className="font-semibold text-foreground">{f.field}</h4>
-                                        <Badge variant="outline" className={`text-xs ${f.status === 'PASS' || f.status === 'NOT_REQUIRED' || f.status === 'PENDING_RULE_DEF' ? 'text-success-foreground bg-success/10' : 'text-destructive-foreground bg-destructive/10'}`}>
-                                            {f.status}
-                                        </Badge>
-                                    </div>
-                                    <div className="text-sm font-medium text-foreground/80 bg-muted px-3 py-1 rounded inline-block">
-                                        Evidence: {f.evidence}
-                                    </div>
-                                    <div className="text-xs text-muted-foreground mt-2">
-                                        Message: {f.message}
-                                    </div>
-                                </div>
+                    {(data?.validation_details?.evaluations || []).map((f: any, i: number) => {
+                        let borderClass = 'border-l-border';
+                        let badgeClass = 'text-muted-foreground bg-muted/20';
+                        if (f.status === 'PASS') {
+                            borderClass = 'border-l-green-500';
+                            badgeClass = 'text-green-700 bg-green-500/10 border-green-200';
+                        } else if (f.status === 'FAIL') {
+                            borderClass = 'border-l-red-500';
+                            badgeClass = 'text-red-700 bg-red-500/10 border-red-200';
+                        } else if (f.status === 'NOT_VERIFIED' || f.status === 'OCR_UNCERTAIN') {
+                            borderClass = 'border-l-amber-500';
+                            badgeClass = 'text-amber-700 bg-amber-500/10 border-amber-200';
+                        } else if (f.status === 'NOT_APPLICABLE' || f.status === 'PENDING_RULE_DEF') {
+                            borderClass = 'border-l-slate-400';
+                            badgeClass = 'text-slate-600 bg-slate-500/10 border-slate-200';
+                        }
 
-                                {f.status === 'FAIL' && (
-                                    <Dialog>
-                                        <DialogTrigger className={buttonVariants({ variant: "outline", size: "sm", className: "text-destructive border-red-200 hover:bg-destructive/10" })}>
-                                            <Info className="w-4 h-4 mr-2" />
-                                            WHY?
-                                        </DialogTrigger>
-                                        <DialogContent>
-                                            <DialogHeader>
-                                                <DialogTitle>{t('scanner.whyFlagged')}</DialogTitle>
-                                            </DialogHeader>
-                                            <div className="space-y-4 mt-4">
-                                                <div>
-                                                    <h5 className="font-semibold text-sm text-foreground/80">{t('scanner.issueTitle')}</h5>
-                                                    <p className="text-sm text-foreground">{f.message}</p>
-                                                </div>
-                                                <div>
-                                                    <h5 className="font-semibold text-sm text-foreground/80">{t('scanner.evidence')}</h5>
-                                                    <p className="text-sm text-foreground">{f.evidence}</p>
-                                                </div>
-                                                <div className="bg-muted/30 p-4 rounded-md border text-xs text-muted-foreground italic">
-                                                    <p>AI-generated assistance. Verify legal decisions with the applicable rules.</p>
-                                                </div>
+                        return (
+                            <Card key={i} className={`border-l-4 ${borderClass} mb-4`}>
+                                <CardContent className="p-4 flex gap-4 items-start justify-between">
+                                    <div>
+                                        <div className="flex items-center gap-2 mb-1">
+                                            <h4 className="font-semibold text-foreground">{f.field}</h4>
+                                            <Badge variant="outline" className={`text-xs ${badgeClass}`}>
+                                                {f.status}
+                                            </Badge>
+                                        </div>
+                                        {f.evidence && f.evidence !== "MISSING_FROM_PACKAGE" && f.evidence !== "Field not present" && (
+                                            <div className="text-sm font-medium text-foreground/80 bg-muted px-3 py-1 rounded inline-block break-all mt-1">
+                                                Evidence: {f.evidence}
                                             </div>
-                                        </DialogContent>
-                                    </Dialog>
-                                )}
-                            </CardContent>
-                        </Card>
-                    ))}
+                                        )}
+                                        <div className="text-xs text-muted-foreground mt-2">
+                                            {f.message}
+                                        </div>
+                                    </div>
+
+                                    {f.status === 'FAIL' && (
+                                        <Dialog>
+                                            <DialogTrigger className={buttonVariants({ variant: "outline", size: "sm", className: "text-destructive border-red-200 hover:bg-destructive/10" })}>
+                                                <Info className="w-4 h-4 mr-2" />
+                                                WHY?
+                                            </DialogTrigger>
+                                            <DialogContent>
+                                                <DialogHeader>
+                                                    <DialogTitle>{t('scanner.whyFlagged')}</DialogTitle>
+                                                </DialogHeader>
+                                                <div className="space-y-4 mt-4">
+                                                    <div>
+                                                        <h5 className="font-semibold text-sm text-foreground/80">{t('scanner.issueTitle')}</h5>
+                                                        <p className="text-sm text-foreground">{f.message}</p>
+                                                    </div>
+                                                    <div>
+                                                        <h5 className="font-semibold text-sm text-foreground/80">{t('scanner.evidence')}</h5>
+                                                        <p className="text-sm text-foreground">{f.evidence}</p>
+                                                    </div>
+                                                    <div className="bg-muted/30 p-4 rounded-md border text-xs text-muted-foreground italic">
+                                                        <p>AI-generated assistance. Verify legal decisions with the applicable rules.</p>
+                                                    </div>
+                                                </div>
+                                            </DialogContent>
+                                        </Dialog>
+                                    )}
+                                </CardContent>
+                            </Card>
+                        )
+                    })}
 
                     <div className="flex gap-4">
-                        {data?.compliance === 'FAIL' && !noticeIssued && (
+                        {(data?.compliance === 'FAIL' || data?.compliance === 'REVIEW_REQUIRED') && !noticeIssued && (
                             <Button onClick={handleIssueNotice} className="w-full mt-4 bg-red-600 hover:bg-red-700">{t('scanner.issueNotice')}</Button>
                         )}
                         {noticeIssued && (

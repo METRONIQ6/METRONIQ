@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { useTranslation } from "@/i18n"
 import { useToast } from "@/components/ui/use-toast"
 import { getToken } from '@/lib/auth'
@@ -20,6 +21,7 @@ export default function UserManagementPage() {
     const [error, setError] = useState(false)
     const [countsError, setCountsError] = useState(false)
     const [activeTab, setActiveTab] = useState("manufacturers")
+    const [confirmAction, setConfirmAction] = useState<{ userId: string, action: 'approve' | 'reject' | 'suspend', actionType: 'approve' | 'reject' | 'suspend' | 'reactivate', text: string } | null>(null)
 
     const fetchCounts = async () => {
         setCountsError(false)
@@ -67,12 +69,18 @@ export default function UserManagementPage() {
         fetchUsers()
     }, [activeTab])
 
-    const handleAction = async (userId: string, action: 'approve' | 'reject' | 'suspend', actionType: 'approve' | 'reject' | 'suspend' | 'reactivate' = action) => {
+    const handleAction = (userId: string, action: 'approve' | 'reject' | 'suspend', actionType: 'approve' | 'reject' | 'suspend' | 'reactivate' = action) => {
         let confirmText = action === 'approve' ? t('adminUI.approveConfirm') : t('adminUI.rejectConfirm');
         if (actionType === 'suspend') confirmText = t('adminUI.suspendConfirm') || 'Are you sure you want to suspend this user?';
         if (actionType === 'reactivate') confirmText = t('adminUI.reactivateConfirm') || 'Are you sure you want to reactivate this user?';
 
-        if (!window.confirm(confirmText)) return
+        setConfirmAction({ userId, action, actionType, text: confirmText });
+    }
+
+    const executeAction = async () => {
+        if (!confirmAction) return;
+        const { userId, action, actionType } = confirmAction;
+        setConfirmAction(null);
 
         try {
             const res = await fetch(`http://localhost:8000/api/v1/users/${userId}/${action}`, {
@@ -141,8 +149,8 @@ export default function UserManagementPage() {
                         <Card className="rounded-xl shadow-sm border border-border bg-card">
                             <CardContent className="p-4 flex flex-col justify-between h-full gap-3">
                                 <div className="flex items-center justify-between">
-                                    <p className="text-xs font-semibold text-green-600 uppercase tracking-wider">{t('adminUI.approved')}</p>
-                                    <UserCheck className="w-5 h-5 text-green-600" />
+                                    <p className="text-xs font-semibold text-success uppercase tracking-wider">{t('adminUI.approved')}</p>
+                                    <UserCheck className="w-5 h-5 text-success" />
                                 </div>
                                 <div className="text-2xl font-bold">{counts?.officers_approved ?? '-'}</div>
                             </CardContent>
@@ -150,8 +158,8 @@ export default function UserManagementPage() {
                         <Card className="rounded-xl shadow-sm border border-border bg-card">
                             <CardContent className="p-4 flex flex-col justify-between h-full gap-3">
                                 <div className="flex items-center justify-between">
-                                    <p className="text-xs font-semibold text-red-600 uppercase tracking-wider">{t('adminUI.rejected')}</p>
-                                    <UserX className="w-5 h-5 text-red-600" />
+                                    <p className="text-xs font-semibold text-destructive uppercase tracking-wider">{t('adminUI.rejected')}</p>
+                                    <UserX className="w-5 h-5 text-destructive" />
                                 </div>
                                 <div className="text-2xl font-bold">{counts?.officers_rejected ?? '-'}</div>
                             </CardContent>
@@ -204,15 +212,15 @@ export default function UserManagementPage() {
                                                 <TableCell className="text-right space-x-2 whitespace-nowrap">
                                                     {user.status === 'PENDING_APPROVAL' && (
                                                         <>
-                                                            <Button size="sm" variant="outline" className="bg-green-50 text-green-700 border-green-200 hover:bg-green-100 hover:text-green-800" onClick={() => handleAction(user.id, 'approve')}>{t('adminUI.approve')}</Button>
-                                                            <Button size="sm" variant="outline" className="bg-red-50 text-red-700 border-red-200 hover:bg-red-100 hover:text-red-800" onClick={() => handleAction(user.id, 'reject')}>{t('adminUI.reject')}</Button>
+                                                            <Button size="sm" variant="outline" className="bg-success/10 text-success-foreground border-green-200 hover:bg-green-100 hover:text-green-800" onClick={() => handleAction(user.id, 'approve')}>{t('adminUI.approve')}</Button>
+                                                            <Button size="sm" variant="outline" className="bg-destructive/10 text-destructive-foreground border-red-200 hover:bg-red-100 hover:text-red-800" onClick={() => handleAction(user.id, 'reject')}>{t('adminUI.reject')}</Button>
                                                         </>
                                                     )}
                                                     {user.status === 'APPROVED' && (
                                                         <Button size="sm" variant="outline" className="bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-100 hover:text-amber-800" onClick={() => handleAction(user.id, 'suspend', 'suspend')}>{t('adminUI.suspend') || 'Suspend'}</Button>
                                                     )}
                                                     {(user.status === 'REJECTED' || user.status === 'SUSPENDED') && (
-                                                        <Button size="sm" variant="outline" className="bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100 hover:text-blue-800" onClick={() => handleAction(user.id, 'approve', 'reactivate')}>{t('adminUI.reactivate') || 'Reactivate'}</Button>
+                                                        <Button size="sm" variant="outline" className="bg-primary/10 text-primary border-blue-200 hover:bg-primary/20 hover:text-blue-800" onClick={() => handleAction(user.id, 'approve', 'reactivate')}>{t('adminUI.reactivate') || 'Reactivate'}</Button>
                                                     )}
                                                 </TableCell>
                                             </TableRow>
@@ -224,6 +232,29 @@ export default function UserManagementPage() {
                     </Tabs>
                 </CardContent>
             </Card>
+
+            <Dialog open={!!confirmAction} onOpenChange={(open) => !open && setConfirmAction(null)}>
+                <DialogContent className="sm:max-w-[425px]">
+                    <DialogHeader>
+                        <DialogTitle className="text-xl font-bold text-[#0B1F3A] dark:text-white">
+                            {t('adminUI.confirmActionTitle') || 'Confirm Action'}
+                        </DialogTitle>
+                    </DialogHeader>
+                    <div className="py-2">
+                        <p className="text-sm text-foreground">
+                            {confirmAction?.text}
+                        </p>
+                    </div>
+                    <div className="flex justify-end space-x-3 mt-4">
+                        <Button variant="outline" onClick={() => setConfirmAction(null)}>
+                            {t('adminUI.cancel') || 'Cancel'}
+                        </Button>
+                        <Button onClick={executeAction} variant={confirmAction?.action === 'reject' || confirmAction?.actionType === 'suspend' ? 'destructive' : 'default'} className={confirmAction?.action === 'approve' && confirmAction?.actionType !== 'reactivate' ? 'bg-success hover:bg-success/90 text-white' : ''}>
+                            {t('adminUI.confirm') || 'Confirm'}
+                        </Button>
+                    </div>
+                </DialogContent>
+            </Dialog>
         </div>
     )
 }

@@ -33,23 +33,23 @@ class ScannerPipeline:
         
         try:
             from app.ai.ocr.paddle_ocr import OCRHardwareError
-            if len(objects) == 0:
-                logger.warning("YOLO detection empty: Falling back to holistic OCR parsing.")
-                all_texts = self.ocr.extract_text(processed)
-            else:
+            # RUN OCR ONCE ON FULL IMAGE FOR PERFORMANCE - DO NOT LOOP PER BOX
+            all_texts = self.ocr.extract_text(processed)
+            
+            # Map YOLO zones to OCR blocks to retain spatial intent
+            for text_item in all_texts:
+                tx1, ty1, tx2, ty2 = text_item['bounding_box']
+                t_cx, t_cy = (tx1 + tx2) / 2, (ty1 + ty2) / 2
+                
+                assigned_region = "GLOBAL_FALLBACK"
                 for obj in objects:
-                    x1, y1, x2, y2 = obj['bounding_box']
-                    regional_class = obj['class_name']
-                    x1, y1 = max(0, x1), max(0, y1)
-                    x2, y2 = min(w, x2), min(h, y2)
-                    if x2 > x1 and y2 > y1:
-                        cropped_region = processed[y1:y2, x1:x2]
-                        region_texts = self.ocr.extract_text(cropped_region)
-                        for text_item in region_texts:
-                            rx1, ry1, rx2, ry2 = text_item['bounding_box']
-                            text_item['bounding_box'] = [rx1 + x1, ry1 + y1, rx2 + x1, ry2 + y1]
-                            text_item['yolo_region'] = regional_class 
-                            all_texts.append(text_item)
+                    ox1, oy1, ox2, oy2 = obj['bounding_box']
+                    # Check if text center is inside YOLO box
+                    if ox1 <= t_cx <= ox2 and oy1 <= t_cy <= oy2:
+                        assigned_region = obj['class_name']
+                        break
+                text_item['yolo_region'] = assigned_region
+                
         except OCRHardwareError as e:
             logger.error(f"ScannerPipeline caught OCR failure: {str(e)}. Proceeding with YOLO bounds only.")
             ocr_failed = True

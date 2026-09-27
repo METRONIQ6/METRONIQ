@@ -7,7 +7,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { PlusCircle, Scale, ServerCrash, RefreshCw } from 'lucide-react'
+import { PlusCircle, Scale, ServerCrash, RefreshCw, Trash2 } from 'lucide-react'
 import { getToken } from '@/lib/auth'
 import { useTranslation } from "@/i18n"
 import { useToast } from "@/components/ui/use-toast"
@@ -24,7 +24,10 @@ export default function RuleManagement() {
     const [newId, setNewId] = useState('')
     const [newName, setNewName] = useState('')
     const [newCategory, setNewCategory] = useState('FOOD_PACKAGING')
+    const [ruleField, setRuleField] = useState('MRP')
+    const [ruleRequired, setRuleRequired] = useState(true)
     const [createLoading, setCreateLoading] = useState(false)
+    const [ruleToDelete, setRuleToDelete] = useState<string | null>(null)
 
     const loadRules = async () => {
         setLoading(true)
@@ -41,9 +44,28 @@ export default function RuleManagement() {
         } catch (e) {
             console.error(e)
             setError(true)
-            toast({ type: 'error', message: t("error.rules_api") })
+            toast({ type: 'error', message: t("error.rules_api") || "Failed to fetch rules" })
         } finally {
             setLoading(false)
+        }
+    }
+
+    const deleteRule = async (ruleId: string) => {
+        try {
+            const res = await fetch(`http://localhost:8000/api/v1/rules/${ruleId}`, {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${getToken()}` }
+            })
+            if (res.ok) {
+                toast({ type: 'success', message: t('success.rule_deleted') || 'Rule successfully deleted.' })
+                loadRules()
+            } else {
+                toast({ type: 'error', message: t('error.rule_delete_failed') || 'Failed to delete rule.' })
+            }
+        } catch (e) {
+            toast({ type: 'error', message: t("error.network_save") || 'Network error deleting rule.' })
+        } finally {
+            setRuleToDelete(null)
         }
     }
 
@@ -52,17 +74,19 @@ export default function RuleManagement() {
     }, [])
 
     const createRule = async () => {
-        if (!newId || !newName) {
-            toast({ type: 'error', message: t("error.rule_required") })
+        if (!newId || !newName || !newCategory || !ruleField) {
+            toast({ type: 'error', message: t("error.rule_required") || "Please complete all required regulation fields." })
             return
         }
+
+        const parsedLogic = { field: ruleField, required: ruleRequired }
 
         setCreateLoading(true)
         const payload = {
             id: newId,
             name: newName,
             category: newCategory,
-            logic_payload: { required: true }
+            initial_logic: parsedLogic
         }
         try {
             const res = await fetch('http://localhost:8000/api/v1/rules', {
@@ -71,18 +95,31 @@ export default function RuleManagement() {
                 body: JSON.stringify(payload)
             })
             if (res.ok) {
-                toast({ type: 'success', message: t("success.rule_created") })
+                toast({ type: 'success', message: t("success.rule_created") || "Rule created successfully." })
                 setOpen(false)
                 setNewId('')
                 setNewName('')
+                setNewCategory('FOOD_PACKAGING')
+                setRuleField('MRP')
+                setRuleRequired(true)
                 loadRules()
+            } else if (res.status === 422) {
+                const errData = await res.json()
+                if (errData.detail && Array.isArray(errData.detail) && errData.detail.length > 0) {
+                    const firstErr = errData.detail[0]
+                    const field = firstErr.loc[firstErr.loc.length - 1]
+                    const translatedField = t(`admin.${field}`) || field
+                    toast({ type: 'error', message: `${translatedField}: ${t('error.fieldRequired') || 'This field is required.'}` })
+                } else {
+                    toast({ type: 'error', message: t("error.invalidPayload") || "Please complete all required regulation fields." })
+                }
             } else {
                 const text = await res.text()
                 toast({ type: 'error', message: `Creation failed: ${text}` })
             }
         } catch (e) {
             console.error(e)
-            toast({ type: 'error', message: t("error.network_save") })
+            toast({ type: 'error', message: t("error.network_save") || "Network error." })
         } finally {
             setCreateLoading(false)
         }
@@ -119,15 +156,57 @@ export default function RuleManagement() {
                         </DialogHeader>
                         <div className="space-y-5 pt-4">
                             <div className="space-y-2">
-                                <Label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">{t("admin.ruleId")}</Label>
-                                <Input placeholder={t('adminUI.egRuleIdentifier')} value={newId} onChange={e => setNewId(e.target.value)} className="h-11" />
+                                <Label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                                    {t("admin.ruleId") || "Rule ID"} <span className="text-destructive">*</span>
+                                </Label>
+                                <Input placeholder={t('adminUI.egRuleIdentifier') || "e.g. RULE-01"} value={newId} onChange={e => setNewId(e.target.value)} className="h-11" required />
                             </div>
                             <div className="space-y-2">
-                                <Label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">{t("admin.ruleName")}</Label>
-                                <Input placeholder={t('adminUI.egMandatoryNetQuantity')} value={newName} onChange={e => setNewName(e.target.value)} className="h-11" />
+                                <Label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                                    {t("admin.ruleName") || "Requirement Name"} <span className="text-destructive">*</span>
+                                </Label>
+                                <Input placeholder={t('adminUI.egMandatoryNetQuantity') || "e.g. Mandatory Net Quantity"} value={newName} onChange={e => setNewName(e.target.value)} className="h-11" required />
+                            </div>
+                            <div className="space-y-2">
+                                <Label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                                    {t("admin.categoryDomain") || "Category Domain"} <span className="text-destructive">*</span>
+                                </Label>
+                                <select
+                                    className="flex h-11 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                                    value={newCategory}
+                                    onChange={e => setNewCategory(e.target.value)}
+                                    required
+                                >
+                                    <option value="FOOD_PACKAGING">Food Packaging</option>
+                                    <option value="PACKAGING">Packaging</option>
+                                    <option value="DISPLAY">Display / General</option>
+                                </select>
+                            </div>
+                            <div className="space-y-4 rounded-md border p-4 bg-muted/20">
+                                <Label className="text-sm font-bold uppercase tracking-wider text-muted-foreground mb-1 block">
+                                    {t("admin.initialLogic") || "Rule Specifications"}
+                                </Label>
+                                <div className="space-y-2">
+                                    <Label className="text-xs font-bold text-foreground">
+                                        {t("admin.ruleField") || "Target Field Name"} <span className="text-destructive">*</span>
+                                    </Label>
+                                    <Input placeholder={t('adminUI.egField') || "e.g. MRP, NET_QUANTITY, MANUFACTURER"} value={ruleField} onChange={e => setRuleField(e.target.value)} className="h-11 bg-background" required />
+                                </div>
+                                <div className="flex items-center space-x-3 pt-2">
+                                    <input
+                                        type="checkbox"
+                                        id="ruleRequired"
+                                        checked={ruleRequired}
+                                        onChange={e => setRuleRequired(e.target.checked)}
+                                        className="w-5 h-5 rounded border-input text-primary focus:ring-primary bg-background"
+                                    />
+                                    <Label htmlFor="ruleRequired" className="text-sm font-semibold select-none cursor-pointer">
+                                        {t("admin.isMandatory") || "Is this field mandatory for compliance?"}
+                                    </Label>
+                                </div>
                             </div>
                             <Button className="w-full bg-[#2563EB] hover:bg-[#2563EB]/90 h-11 text-sm font-semibold mt-4" onClick={createRule} disabled={createLoading}>
-                                {createLoading ? 'Executing...' : 'Commit Regulation'}
+                                {createLoading ? (t('adminUI.executing') || 'Executing...') : (t('adminUI.commitRegulation') || 'Commit Regulation')}
                             </Button>
                         </div>
                     </DialogContent>
@@ -148,18 +227,19 @@ export default function RuleManagement() {
                                 <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">{t('adminUI.categoryDomain')}</TableHead>
                                 <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-center">{t('adminUI.version')}</TableHead>
                                 <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-center">{t('adminUI.systemStatus')}</TableHead>
+                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-right">{t('adminUI.actions') || 'Actions'}</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
                             {loading ? (
                                 <TableRow>
-                                    <TableCell colSpan={5} className="text-center py-10">
+                                    <TableCell colSpan={6} className="text-center py-10">
                                         <RefreshCw className="w-6 h-6 animate-spin mx-auto text-muted-foreground" />
                                     </TableCell>
                                 </TableRow>
                             ) : rules.length === 0 ? (
                                 <TableRow>
-                                    <TableCell colSpan={5} className="text-center py-12 text-muted-foreground">
+                                    <TableCell colSpan={6} className="text-center py-12 text-muted-foreground">
                                         <Scale className="w-8 h-8 mb-3 mx-auto opacity-20" />
                                         <p className="text-sm font-medium">No active regulations populated.</p>
                                     </TableCell>
@@ -187,6 +267,11 @@ export default function RuleManagement() {
                                                 {r.status || 'ACTIVE'}
                                             </Badge>
                                         </TableCell>
+                                        <TableCell className="text-right py-4">
+                                            <Button variant="ghost" size="sm" onClick={() => setRuleToDelete(r.id)} className="text-destructive hover:text-white hover:bg-destructive" title={t('adminUI.deleteRule') || 'Delete Rule'}>
+                                                <Trash2 className="w-4 h-4" />
+                                            </Button>
+                                        </TableCell>
                                     </TableRow>
                                 ))
                             )}
@@ -194,6 +279,28 @@ export default function RuleManagement() {
                     </Table>
                 </CardContent>
             </Card>
-        </div >
+            <Dialog open={!!ruleToDelete} onOpenChange={(open) => !open && setRuleToDelete(null)}>
+                <DialogContent className="sm:max-w-[425px]">
+                    <DialogHeader>
+                        <DialogTitle className="text-xl font-bold text-[#0B1F3A] dark:text-white">
+                            {t('adminUI.confirmDeleteRuleTitle') || 'Delete Regulation'}
+                        </DialogTitle>
+                    </DialogHeader>
+                    <div className="py-2">
+                        <p className="text-sm text-muted-foreground">
+                            {t('adminUI.confirmDeleteRule') || 'Are you sure you want to delete this rule?'} {t('adminUI.cannotUndo') || 'This action cannot be undone.'}
+                        </p>
+                    </div>
+                    <div className="flex justify-end space-x-3 mt-4">
+                        <Button variant="outline" onClick={() => setRuleToDelete(null)}>
+                            {t('adminUI.cancel') || 'Cancel'}
+                        </Button>
+                        <Button variant="destructive" onClick={() => { if (ruleToDelete) { deleteRule(ruleToDelete); } }}>
+                            {t('adminUI.delete') || 'Delete'}
+                        </Button>
+                    </div>
+                </DialogContent>
+            </Dialog>
+        </div>
     )
 }

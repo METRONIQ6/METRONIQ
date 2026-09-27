@@ -24,6 +24,8 @@ export default function AdminDashboard() {
     const [error, setError] = useState(false)
     const [userName, setUserName] = useState("Administrator")
 
+    const [userCounts, setUserCounts] = useState<any>(null)
+
     useEffect(() => {
         try {
             const token = getToken()
@@ -46,11 +48,16 @@ export default function AdminDashboard() {
             try {
                 const head = { 'Authorization': `Bearer ${getToken()}` }
                 const res = await fetch('http://localhost:8000/api/v1/analytics/overview', { headers: head })
+                const userRes = await fetch('http://localhost:8000/api/v1/users/counts', { headers: head })
 
                 if (res.ok) {
                     setStats(await res.json())
                 } else {
                     throw new Error("API response not ok")
+                }
+
+                if (userRes.ok) {
+                    setUserCounts(await userRes.json())
                 }
             } catch (err) {
                 console.error(err)
@@ -61,13 +68,13 @@ export default function AdminDashboard() {
             }
         }
         fetchData()
-    }, [toast])
+    }, [toast, t])
 
     if (loading) {
         return (
             <div className="space-y-6 animate-pulse p-4">
                 <div className="h-10 w-64 bg-muted rounded-md mb-2"></div>
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
                     {[1, 2, 3, 4, 5, 6, 7, 8].map(i => <div key={i} className="h-28 bg-card border border-border rounded-xl"></div>)}
                 </div>
             </div>
@@ -78,9 +85,9 @@ export default function AdminDashboard() {
         return (
             <div className="flex flex-col items-center justify-center min-h-[60vh] p-12 bg-card border border-border rounded-xl shadow-sm">
                 <ServerCrash className="w-12 h-12 text-destructive mb-4" />
-                <h3 className="text-xl font-bold text-foreground">{t('adminUI.system_control_conso')}</h3>
+                <h3 className="text-xl font-bold text-foreground">{t('adminUI.system_control_conso') || 'System Control Console'}</h3>
                 <p className="text-muted-foreground mt-2 text-center max-w-sm">Unable to reach the root analytics service.</p>
-                <Button className="mt-6 bg-[#0B1F3A] text-white hover:bg-[#0B1F3A]/90" onClick={() => window.location.reload()}>{t("common.retry")}</Button>
+                <Button className="mt-6 bg-[#0B1F3A] text-white hover:bg-[#0B1F3A]/90" onClick={() => window.location.reload()}>{t("common.retry") || 'Retry'}</Button>
             </div>
         )
     }
@@ -106,56 +113,55 @@ export default function AdminDashboard() {
             {/* Console Header */}
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-4">
                 <div>
-                    <h1 className="text-3xl font-bold tracking-tight text-[#0B1F3A] dark:text-white flex items-center gap-2">{t('adminUI.systemControlConsole')}</h1>
+                    <h1 className="text-3xl font-bold tracking-tight text-[#0B1F3A] dark:text-white flex items-center gap-2">{t('adminUI.systemControlConsole') || 'Control Console'}</h1>
                     <p className="text-muted-foreground mt-1.5 font-medium">National compliance and infrastructure overview.</p>
                 </div>
                 <div className="flex gap-3">
                     <Link href="/admin/geo">
                         <Button variant="outline" className="flex gap-2 rounded-md border-border bg-card">
-                            <Map className="w-4 h-4" />{t('adminUI.geoHeatmap')}</Button>
+                            <Map className="w-4 h-4" />{t('adminUI.geoHeatmap') || 'Geo Heatmap'}</Button>
                     </Link>
                     <Link href="/admin/users">
                         <Button className="flex gap-2 rounded-md bg-[#0B1F3A] text-white hover:bg-[#0B1F3A]/90">
-                            <Settings className="w-4 h-4" />{t('adminUI.controlPanel')}</Button>
+                            <Settings className="w-4 h-4" />{t('adminUI.controlPanel') || 'Control Panel'}</Button>
                     </Link>
                 </div>
             </div>
 
             {/* KPI Section */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
                 <SystemKpiCard
-                    title="Total Inspections" value={stats.total_inspections || 0} subtitle="Global registry"
-                    icon={<FileText className="w-5 h-5" />} iconColorClass="text-[#0B1F3A] dark:text-white"
+                    title={t("adminUI.totalUsers") || "Total Users"} value={(userCounts?.manufacturers || 0) + (userCounts?.officers_total || 0)} subtitle="System Wide"
+                    icon={<Users className="w-5 h-5" />} iconColorClass="text-[#0B1F3A] dark:text-white"
                 />
                 <SystemKpiCard
-                    title="Total Violations" value={stats.total_violations || 0} subtitle="Recorded infractions"
-                    icon={<ShieldAlert className="w-5 h-5" />} iconColorClass="text-red-600 dark:text-red-400"
-                />
-                <SystemKpiCard
-                    title={t("dashboard.complianceRate")} value={stats.compliance_rate || "0%"} subtitle="National Average"
-                    icon={<CheckCircle className="w-5 h-5" />} iconColorClass="text-green-600 dark:text-green-400"
-                />
-                <SystemKpiCard
-                    title="High Risk Cases" value={stats.high_risk_cases || 0} subtitle="Requires Escalation"
-                    icon={<Activity className="w-5 h-5" />} iconColorClass="text-orange-600 dark:text-orange-400"
-                />
-
-                {/* Simulated infrastructural stats for enterprise admin appeal (using structural placeholders until API provides) */}
-                <SystemKpiCard
-                    title="Active Officers" value="24" subtitle="System Operators"
-                    icon={<UserCheck className="w-5 h-5" />} iconColorClass="text-[#2563EB]"
-                />
-                <SystemKpiCard
-                    title="Registered Orgs" value="156" subtitle="Monitored Entities"
+                    title={t("adminUI.totalManufacturers") || "Manufacturers"} value={userCounts?.manufacturers || 0} subtitle="Registered Entities"
                     icon={<Building2 className="w-5 h-5" />} iconColorClass="text-[#2563EB]"
                 />
                 <SystemKpiCard
-                    title="Active Rules" value="84" subtitle="Policy Matrix"
-                    icon={<ListChecks className="w-5 h-5" />} iconColorClass="text-muted-foreground"
+                    title={t("adminUI.totalOfficers") || "Government Officers"} value={userCounts?.officers_total || 0} subtitle="System Operators"
+                    icon={<UserCheck className="w-5 h-5" />} iconColorClass="text-[#2563EB]"
                 />
                 <SystemKpiCard
-                    title="Enforcement" value="11" subtitle="Active Actions"
-                    icon={<Scale className="w-5 h-5" />} iconColorClass="text-orange-600 dark:text-orange-400"
+                    title={t("adminUI.pendingApprovals") || "Pending Approvals"} value={userCounts?.officers_pending || 0} subtitle="Awaiting Review"
+                    icon={<UserCheck className="w-5 h-5" />} iconColorClass="text-orange-600 dark:text-orange-400"
+                />
+
+                <SystemKpiCard
+                    title={t("dashboard.totalInspections") || "Total Inspections"} value={stats.total_inspections || 0} subtitle="Global registry"
+                    icon={<FileText className="w-5 h-5" />} iconColorClass="text-[#0B1F3A] dark:text-white"
+                />
+                <SystemKpiCard
+                    title={t("dashboard.complianceRate") || "Compliance Rate"} value={stats.compliance_rate || "0%"} subtitle="National Average"
+                    icon={<CheckCircle className="w-5 h-5" />} iconColorClass="text-success dark:text-green-400"
+                />
+                <SystemKpiCard
+                    title={t("dashboard.openNotices") || "Open Notices"} value={stats.total_violations || 0} subtitle="Needs Rectification"
+                    icon={<ShieldAlert className="w-5 h-5" />} iconColorClass="text-orange-600 dark:text-orange-400"
+                />
+                <SystemKpiCard
+                    title={t("dashboard.activeEnforcement") || "Active Enforcement Cases"} value={stats.high_risk_cases || 0} subtitle="Escalated Actions"
+                    icon={<Scale className="w-5 h-5" />} iconColorClass="text-destructive dark:text-red-400"
                 />
             </div>
 

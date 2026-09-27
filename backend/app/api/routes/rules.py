@@ -41,3 +41,14 @@ def approve_rule_version(version_id: str, db: Session = Depends(get_db), admin =
     ver.status = "APPROVED"
     db.commit()
     return {"message": "Rule Approved"}
+@router.delete("/{rule_id}")
+def delete_rule(rule_id: str, db: Session = Depends(get_db), admin = Depends(get_current_admin)):
+    rule = db.query(Rule).filter(Rule.id == rule_id).first()
+    if not rule:
+        raise HTTPException(404, "Not found")
+    # Let cascading deletes handle versions or delete versions manually:
+    db.query(RuleVersion).filter(RuleVersion.rule_id == rule_id).delete()
+    db.delete(rule)
+    db.commit()
+    return {"message": "Rule Deleted"}
+

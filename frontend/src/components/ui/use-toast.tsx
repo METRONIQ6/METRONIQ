@@ -38,15 +38,15 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => {
                 {toasts.map((t) => (
                     <div
                         key={t.id}
-                        className={`pointer-events-auto flex flex-col p-4 w-[350px] shadow-lg rounded-md border text-sm transition-all animate-in slide-in-from-right-full ${t.type === 'success' ? 'bg-success/10 border-green-200 text-green-900' :
-                            t.type === 'error' ? 'bg-destructive/10 border-red-200 text-red-900' :
-                                t.type === 'warning' ? 'bg-amber-50 border-amber-200 text-amber-900' :
+                        className={`pointer-events-auto flex flex-col p-4 w-[350px] shadow-lg rounded-md border text-sm transition-all animate-in slide-in-from-right-full ${t.type === 'success' ? 'bg-green-700 border-green-800 text-white dark:bg-green-900 dark:border-green-800' :
+                            t.type === 'error' ? 'bg-red-700 border-red-800 text-white dark:bg-red-900 dark:border-red-800' :
+                                t.type === 'warning' ? 'bg-amber-600 border-amber-700 text-white dark:bg-amber-900 dark:border-amber-800' :
                                     t.type === 'platform' ? 'bg-[#0B1F3A] border-[#0B1F3A] text-white shadow-xl shadow-[#0B1F3A]/20 ring-1 ring-[#2563EB]/50' :
-                                        'bg-primary/10 border-blue-200 text-blue-900'
+                                        'bg-blue-700 border-blue-800 text-white dark:bg-blue-900 dark:border-blue-800'
                             }`}>
                         <div className="flex justify-between items-start gap-2">
                             <span className="font-semibold">{t.message}</span>
-                            <button onClick={() => removeToast(t.id)} className={`${t.type === 'platform' ? 'text-white/70 hover:text-white' : 'text-muted-foreground hover:text-foreground'} opacity-50 hover:opacity-100`}>×</button>
+                            <button onClick={() => removeToast(t.id)} className="text-white/70 hover:text-white opacity-80 hover:opacity-100 transition-opacity">×</button>
                         </div>
                         {t.description && <div className="mt-1 opacity-90">{t.description}</div>}
                     </div>
