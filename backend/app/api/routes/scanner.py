@@ -15,7 +15,7 @@ from app.ai.pipeline.scanner_pipeline import ScannerPipeline
 
 
 router = APIRouter()
-pipeline = ScannerPipeline()
+pipeline = None
 
 job_store: Dict[str, Any] = {}
 UPLOAD_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "temp_uploads")
@@ -93,6 +93,9 @@ def execute_cv_pipeline(scan_id: str, db: Session):
             logging.getLogger("MetronIQ-API-Scanner").info(f"Cache hit for image hash {f_hash}")
         else:
             image = cv2.imread(job["file_path"])
+            global pipeline
+            if pipeline is None:
+                pipeline = ScannerPipeline()
             evidence_payload = pipeline.run(image, filename=os.path.basename(job["file_path"]))
             if evidence_payload.get("metadata", {}).get("ocr_status") != "FAILED":
                 hash_cache.set(f_hash, evidence_payload)
