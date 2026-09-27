@@ -108,8 +108,11 @@ export default function AIScannerUnified() {
                 return;
             }
 
+            const compressImage = (f: File): Promise<File> => new Promise((res, rej) => { const reader = new FileReader(); reader.onload = (e) => { const img = new Image(); img.onload = () => { const canvas = document.createElement('canvas'); const MAX = 1200; let w = img.width; let h = img.height; if (w > h && w > MAX) { h *= MAX / w; w = MAX; } else if (h >= w && h > MAX) { w *= MAX / h; h = MAX; } canvas.width = w; canvas.height = h; const ctx = canvas.getContext('2d'); ctx?.drawImage(img, 0, 0, w, h); canvas.toBlob(blob => blob ? res(new File([blob], f.name, { type: 'image/jpeg' })) : rej(new Error('fail')), 'image/jpeg', 0.85); }; img.onerror = rej; img.src = e.target?.result as string; }; reader.onerror = rej; reader.readAsDataURL(f); });
+
+            const compressedFile = await compressImage(file);
             const formData = new FormData();
-            formData.append('file', file);
+            formData.append('file', compressedFile);
 
             setLoadingStep(1) // Preprocessing
 
