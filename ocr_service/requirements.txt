@@ -1,9 +1,8 @@
-paddlepaddle==2.6.2
-paddleocr==2.8.1
+paddlepaddle
+paddleocr
 numpy<2.0.0
 opencv-python-headless
 fastapi
 uvicorn
 python-multipart
-psutil
 httpx
