@@ -70,34 +70,64 @@ app.add_middleware(
 )
 
 def run_ocr(image: np.ndarray) -> List[Dict[str, Any]]:
-    result = ocr_engine.ocr(image)
-    data = []
-    if not result or result[0] is None:
-        return data
+    try:
+        from paddleocr.tools.infer.utility import get_rotate_crop_image
+        from paddleocr.tools.infer.predict_system import sorted_boxes
 
-    if isinstance(result[0], dict):
-        r_dict = result[0]
-        rec_texts = r_dict.get('rec_texts', [])
-        rec_scores = r_dict.get('rec_scores', [])
-        dt_polys = r_dict.get('dt_polys', [])
-        for text, score, box in zip(rec_texts, rec_scores, dt_polys):
+        dt_boxes, _ = ocr_engine.text_detector(image)
+        if dt_boxes is None or len(dt_boxes) == 0:
+            return []
+
+        dt_boxes = sorted_boxes(dt_boxes)
+        img_crop_list = [get_rotate_crop_image(image, box) for box in dt_boxes]
+
+        rec_res = []
+        chunk_size = 10
+        for i in range(0, len(img_crop_list), chunk_size):
+            chunk = img_crop_list[i:i + chunk_size]
+            res, _ = ocr_engine.text_recognizer(chunk)
+            rec_res.extend(res)
+
+        data = []
+        for box, (text, score) in zip(dt_boxes, rec_res):
+            if score >= ocr_engine.drop_score:
+                x_coords, y_coords = [p[0] for p in box], [p[1] for p in box]
+                data.append({
+                    "text": text,
+                    "confidence": round(float(score), 4),
+                    "bounding_box": [int(min(x_coords)), int(min(y_coords)), int(max(x_coords)), int(max(y_coords))]
+                })
+        return data
+    except Exception as e:
+        logger.warning(f"Optimized chunked OCR failed ({e}), falling back to default ocr_engine.ocr...")
+        result = ocr_engine.ocr(image)
+        data = []
+        if not result or result[0] is None:
+            return data
+
+        if isinstance(result[0], dict):
+            r_dict = result[0]
+            rec_texts = r_dict.get('rec_texts', [])
+            rec_scores = r_dict.get('rec_scores', [])
+            dt_polys = r_dict.get('dt_polys', [])
+            for text, score, box in zip(rec_texts, rec_scores, dt_polys):
+                x_coords, y_coords = [p[0] for p in box], [p[1] for p in box]
+                data.append({
+                    "text": text,
+                    "confidence": round(float(score), 4),
+                    "bounding_box": [int(min(x_coords)), int(min(y_coords)), int(max(x_coords)), int(max(y_coords))]
+                })
+            return data
+
+        for line in result[0]:
+            box = line[0]
             x_coords, y_coords = [p[0] for p in box], [p[1] for p in box]
             data.append({
-                "text": text,
-                "confidence": round(float(score), 4),
+                "text": line[1][0],
+                "confidence": round(float(line[1][1]), 4),
                 "bounding_box": [int(min(x_coords)), int(min(y_coords)), int(max(x_coords)), int(max(y_coords))]
             })
         return data
-
-    for line in result[0]:
-        box = line[0]
-        x_coords, y_coords = [p[0] for p in box], [p[1] for p in box]
-        data.append({
-            "text": line[1][0],
-            "confidence": round(float(line[1][1]), 4),
-            "bounding_box": [int(min(x_coords)), int(min(y_coords)), int(max(x_coords)), int(max(y_coords))]
-        })
-    return data
 
 @app.get("/")
 def root():
