@@ -83,41 +83,54 @@ class PaddleOCRWrapper:
         if cv2 is None:
             raise OCRHardwareError("OCR_FAILED: cv2 is required for image encoding.")
 
-        # Encode image to JPEG bytes
         success, encoded_img = cv2.imencode(".jpg", image)
         if not success:
             raise OCRHardwareError("OCR_FAILED: Failed to encode image for OCR transmission.")
         img_bytes = encoded_img.tobytes()
 
         url = f"{self.ocr_service_url}/ocr/extract"
-        max_retries = 2
-        timeout = httpx.Timeout(connect=10.0, read=30.0, write=10.0, pool=5.0)
+        
+        # Max retries extended to account for Codespace hibernation wake-up which can take 15-30 seconds
+        max_retries = 3
+        timeout = httpx.Timeout(connect=15.0, read=45.0, write=15.0, pool=5.0)
 
         for attempt in range(max_retries + 1):
             try:
-                with httpx.Client(timeout=timeout) as client:
+                with httpx.Client(timeout=timeout, verify=False) as client:
                     response = client.post(
                         url,
                         files={"file": ("package.jpg", img_bytes, "image/jpeg")}
                     )
+                    
                 if response.status_code == 200:
-                    data = response.json()
-                    return data.get("results", [])
+                    try:
+                        data = response.json()
+                        return data.get("results", [])
+                    except Exception:
+                        # If GitHub intercepts with HTML "Waking up", it's not valid JSON
+                        logger.warning(f"Remote OCR attempt {attempt + 1}: Received non-JSON response (likely Codespace waking up)")
+                        if attempt == max_retries:
+                            raise OCRHardwareError("OCR_SERVICE_UNAVAILABLE: Invalid JSON response (Codespace waking)")
+                        time.sleep(5.0)
+                        continue
                 else:
-                    logger.warning(f"Remote OCR service returned HTTP {response.status_code}: {response.text}")
+                    logger.warning(f"Remote OCR service returned HTTP {response.status_code}: {response.text[:200]}")
                     if attempt == max_retries:
                         raise OCRHardwareError(f"OCR_SERVICE_UNAVAILABLE: HTTP {response.status_code}")
+                    time.sleep(3.0)
+                    
             except (httpx.RequestError, httpx.TimeoutException) as exc:
                 logger.warning(f"Remote OCR attempt {attempt + 1}/{max_retries + 1} failed: {exc}")
                 if attempt == max_retries:
                     raise OCRHardwareError(f"OCR_SERVICE_UNAVAILABLE: Connection failed: {exc}")
-                time.sleep(1.0)
+                time.sleep(4.0)
+            except OCRHardwareError:
+                raise
             except Exception as e:
                 logger.error(f"Unexpected error calling OCR service: {e}")
                 raise OCRHardwareError(f"OCR_SERVICE_UNAVAILABLE: {e}")
 
         return []
-
     def _extract_text_local(self, image: np.ndarray) -> List[Dict[str, Any]]:
         try:
             result = self.ocr.ocr(image)
@@ -156,3 +169,4 @@ class PaddleOCRWrapper:
             error_str = str(e)
             logger.error(f"OCR Framework Error [STRICT EVALUATION]: {error_str}")
             raise OCRHardwareError(f"OCR_FAILED: {error_str}")
+

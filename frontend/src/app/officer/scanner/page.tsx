@@ -304,9 +304,9 @@ export default function AIScannerUnified() {
                             <ShieldAlert className="w-6 h-6" />{t('status.environmentLimitation')}</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
-                        <p className="text-orange-700 font-medium whitespace-pre-wrap">{data?.validation_details?.message || 'OCR unavailable in current environment.'}</p>
+                        <p className="text-orange-700 font-medium whitespace-pre-wrap">{data?.validation_details?.message || t('status.ocrUnavailable')}</p>
                         <p className="text-sm text-orange-600">
-                            The PaddleOCR hardware dependencies could not be resolved on this system.
+                            {t('status.ocrHardwareWarning')}
                         </p>
                         <div className="pt-6">
                             <Button className="bg-orange-600 hover:bg-orange-700 text-white w-full max-w-xs mx-auto" onClick={cancelPreview}>{t('common.acknowledge')}</Button>
@@ -461,3 +461,4 @@ export default function AIScannerUnified() {
         </div>
     )
 }
+

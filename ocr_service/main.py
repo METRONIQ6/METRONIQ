@@ -9,7 +9,6 @@ from typing import List, Dict, Any
 import numpy as np
 import cv2
 from fastapi import FastAPI, File, UploadFile, HTTPException
-from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 logging.basicConfig(level=logging.INFO)
@@ -61,13 +60,6 @@ app = FastAPI(
     description="Dedicated microservice running unchanged PaddleOCR PP-OCRv4 for MetronIQ Legal Metrology Scanner."
 )
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
 
 def run_ocr(image: np.ndarray) -> List[Dict[str, Any]]:
     try:
@@ -170,3 +162,4 @@ if __name__ == "__main__":
     import uvicorn
     port = int(os.getenv("PORT", "7860"))
     uvicorn.run("main:app", host="0.0.0.0", port=port)
+

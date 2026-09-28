@@ -42,7 +42,29 @@ async def log_requests(request: Request, call_next):
 
 @app.get("/health")
 def health_check():
-    return {"status": "ok"}
+    import httpx
+    ocr_service_url = os.getenv("OCR_SERVICE_URL", "").strip().rstrip("/")
+    ocr_status = "unconfigured"
+    
+    if ocr_service_url:
+        try:
+            with httpx.Client(timeout=2.0) as client:
+                res = client.get(f"{ocr_service_url}/health")
+                if res.status_code == 200:
+                    ocr_status = "healthy"
+                else:
+                    ocr_status = f"unhealthy ({res.status_code})"
+        except Exception as e:
+            ocr_status = f"unreachable"
+            
+    return {
+        "status": "healthy",
+        "ocr_service": ocr_status
+    }
+
+@app.get("/api/health")
+def api_health_check():
+    return health_check()
 
 @app.get("/api/health")
 def api_health_check():
@@ -102,5 +124,6 @@ if not os.getenv("VERCEL"):
             scheduler.start()
     except ImportError:
         pass
+
 
 
