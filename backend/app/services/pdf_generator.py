@@ -92,7 +92,7 @@ def generate_audit_pdf(audit_data: dict, output_path: str, lang: str = "en"):
     if len(cid) > 20: cid = cid[:17] + "..."
     pdf.cell(60, 6, txt=cid, ln=0)
     
-    raw_status = audit_data.get("case_status", "UNKNOWN")
+    raw_status = audit_data.get("case_status") or "UNKNOWN"
     translated_status = translate_status(raw_status, lang)
     
     # Status coloring depending on value
@@ -175,3 +175,4 @@ def generate_audit_pdf(audit_data: dict, output_path: str, lang: str = "en"):
         
     pdf.output(output_path)
     return output_path
+
