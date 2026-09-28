@@ -3,12 +3,13 @@ import shutil
 import uuid
 import logging
 import json
-from typing import Dict, Any
-from fastapi import APIRouter, UploadFile, File, BackgroundTasks, HTTPException, Depends
+from typing import Dict, Any, Optional
+from fastapi import APIRouter, UploadFile, File, BackgroundTasks, HTTPException, Depends, Query
 from sqlalchemy.orm import Session
 import cv2
 
 from app.api.deps import get_db, get_current_user
+from app.core.database import SessionLocal
 from app.models.inspection import Inspection
 from app.models.user import User
 from app.services.rules_validation_service import RulesValidationService
@@ -22,7 +23,16 @@ os.makedirs(TEMP_UPLOAD_DIR, exist_ok=True)
 
 job_store: Dict[str, Dict[str, Any]] = {}
 
-def execute_cv_pipeline(scan_id: str, db: Session):
+def execute_cv_pipeline(scan_id: str):
+    """Runs the full CV pipeline in a background thread with its own DB session."""
+    if not SessionLocal:
+        logger.error("Database session factory not configured — cannot run pipeline.")
+        if scan_id in job_store:
+            job_store[scan_id]["status"] = "FAILED"
+            job_store[scan_id]["error"] = "Database not configured"
+        return
+
+    db = SessionLocal()
     try:
         job = job_store.get(scan_id)
         if not job:
@@ -63,7 +73,7 @@ def execute_cv_pipeline(scan_id: str, db: Session):
             validator = RulesValidationService(db)
             validation_output = validator.validate(evidence_payload.get("legal_declarations", {}))
             evidence_payload["validation"] = validation_output
-            compliance_check = validation_output.get("overall_compliance", "NON_COMPLIANT")
+            compliance_check = validation_output.get("compliance", "NON_COMPLIANT")
 
         inspection = db.query(Inspection).filter(Inspection.id == scan_id).first()
         if inspection:
@@ -91,11 +101,16 @@ def execute_cv_pipeline(scan_id: str, db: Session):
             job_store[scan_id]["status"] = "FAILED"
             job_store[scan_id]["error"] = str(e)
             
-        inspection = db.query(Inspection).filter(Inspection.id == scan_id).first()
-        if inspection:
-            inspection.status = "FAILED"
-            inspection.evidence_payload = json.dumps({"error": str(e)})
-            db.commit()
+        try:
+            inspection = db.query(Inspection).filter(Inspection.id == scan_id).first()
+            if inspection:
+                inspection.status = "FAILED"
+                inspection.evidence_payload = json.dumps({"error": str(e)})
+                db.commit()
+        except Exception as db_err:
+            logger.error(f"Failed to persist error state: {db_err}")
+    finally:
+        db.close()
 
 
 @router.post("/upload")
@@ -126,8 +141,21 @@ async def upload_image(file: UploadFile = File(...), user: User = Depends(get_cu
     
     return {"id": scan_id, "status": "UPLOADED"}
 
+@router.post("/process")
+async def process_image_query(
+    background_tasks: BackgroundTasks,
+    scan_id: str = Query(..., description="The scan ID to process"),
+    user = Depends(get_current_user)
+):
+    """Process endpoint accepting scan_id as query parameter (frontend's format)."""
+    return await _do_process(scan_id, background_tasks)
+
 @router.post("/{scan_id}/process")
-async def process_image(scan_id: str, background_tasks: BackgroundTasks, db: Session = Depends(get_db)):
+async def process_image_path(scan_id: str, background_tasks: BackgroundTasks, user = Depends(get_current_user)):
+    """Process endpoint accepting scan_id as path parameter (backwards compat)."""
+    return await _do_process(scan_id, background_tasks)
+
+async def _do_process(scan_id: str, background_tasks: BackgroundTasks):
     if scan_id not in job_store:
         raise HTTPException(status_code=404, detail="Scan ID not found")
         
@@ -135,17 +163,20 @@ async def process_image(scan_id: str, background_tasks: BackgroundTasks, db: Ses
     if current_status != "UPLOADED":
         return {"id": scan_id, "status": current_status, "message": "Already processing."}
         
-    background_tasks.add_task(execute_cv_pipeline, scan_id, db)
+    background_tasks.add_task(execute_cv_pipeline, scan_id)
     return {"id": scan_id, "status": "PROCESSING"}
 
 @router.get("/{id}/status")
 async def get_status(id: str, db: Session = Depends(get_db), user = Depends(get_current_user)):
+    # Prefer in-memory status (updated immediately by background task)
+    if id in job_store:
+        return {"id": id, "status": job_store[id]["status"]}
+    
+    # Fallback to DB for completed/historical inspections
     db_inspection = db.query(Inspection).filter(Inspection.id == id).first()
     if db_inspection:
         return {"id": id, "status": db_inspection.status}
     
-    if id in job_store:
-        return {"id": id, "status": job_store[id]["status"]}
     raise HTTPException(status_code=404, detail="Inspection not found")
 
 @router.get("/{id}/result")
@@ -153,19 +184,33 @@ async def get_result(id: str, db: Session = Depends(get_db), user = Depends(get_
     db_inspection = db.query(Inspection).filter(Inspection.id == id).first()
     if db_inspection and db_inspection.status == "COMPLETED":
         payload = json.loads(db_inspection.evidence_payload) if db_inspection.evidence_payload else {}
+        validation = payload.get("validation", {})
         return {
             "id": db_inspection.id,
             "status": db_inspection.status,
-            "result": payload.get("validation", {}),
             "compliance": db_inspection.result,
             "risk_score": db_inspection.risk_level,
+            "declarations": payload.get("legal_declarations", {}),
+            "yolo_detections": payload.get("yolo_objects", []),
+            "metadata": payload.get("metadata", {}),
+            "validation_details": validation,
             "evidence": payload
         }
         
     if id in job_store:
         job = job_store[id]
         if job["status"] == "COMPLETED":
-            return {"id": id, "status": job["status"], "result": job["result"]}
+            result = job["result"] or {}
+            return {
+                "id": id,
+                "status": job["status"],
+                "compliance": result.get("compliance"),
+                "risk_score": result.get("risk_score"),
+                "declarations": result.get("declarations", {}),
+                "yolo_detections": result.get("yolo_detections", []),
+                "metadata": result.get("metadata", {}),
+                "validation_details": result.get("validation_details", {}),
+            }
         if job["status"] == "FAILED":
             return {"id": id, "status": "FAILED", "error": job["error"]}
         return {"id": id, "status": job["status"]}
