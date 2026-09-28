@@ -85,3 +85,5 @@ neon_db.txt
 env*.json
 
 .env*
+!.env.example
+!backend/.env.example
