@@ -122,6 +122,9 @@ export default function AIScannerUnified() {
                 body: formData
             });
             if (!uploadResp.ok) {
+                if (uploadResp.status === 502 || uploadResp.status === 504 || uploadResp.status === 530) {
+                    throw new Error("Backend Unavailable. Please ensure the backend is running and the tunnel is active.")
+                }
                 let errDetail = "Failed to upload image"
                 try {
                     const errStr = await uploadResp.json()
@@ -140,6 +143,9 @@ export default function AIScannerUnified() {
                 headers: { 'Authorization': `Bearer ${getToken()}` }
             });
             if (!processResp.ok) {
+                if (processResp.status === 502 || processResp.status === 504 || processResp.status === 530) {
+                    throw new Error("Backend Unavailable. Please ensure the backend is running and the tunnel is active.")
+                }
                 let errDetail = "Failed to start processing";
                 try {
                     const errStr = await processResp.json()
@@ -166,6 +172,14 @@ export default function AIScannerUnified() {
                 const statusResp = await fetch(`/api/v1/scanner/${sid}/status`, {
                     headers: { 'Authorization': `Bearer ${getToken()}` }
                 });
+
+                if (!statusResp.ok) {
+                    if (statusResp.status === 502 || statusResp.status === 504 || statusResp.status === 530) {
+                        throw new Error("Backend Unavailable. Please ensure the backend is running and the tunnel is active.")
+                    }
+                    throw new Error("Failed to check status.")
+                }
+
                 const statusData = await statusResp.json();
                 status = statusData.status;
                 if (status === "FAILED") {
@@ -178,6 +192,12 @@ export default function AIScannerUnified() {
             const resultResp = await fetch(`/api/v1/scanner/${sid}/result`, {
                 headers: { 'Authorization': `Bearer ${getToken()}` }
             });
+            if (!resultResp.ok) {
+                if (resultResp.status === 502 || resultResp.status === 504 || resultResp.status === 530) {
+                    throw new Error("Backend Unavailable. Please ensure the backend is running and the tunnel is active.")
+                }
+                throw new Error("Failed to fetch result.")
+            }
             const resultData = await resultResp.json();
 
             const urlParams = new window.URLSearchParams(window.location.search);
