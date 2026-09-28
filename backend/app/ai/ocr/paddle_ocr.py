@@ -20,11 +20,6 @@ try:
 except ImportError:
     httpx = None
 
-try:
-    from paddleocr import PaddleOCR
-except ImportError:
-    PaddleOCR = None
-
 logger = logging.getLogger("MetronIQ-OCR")
 
 class OCRHardwareError(Exception):
@@ -34,32 +29,14 @@ class OCRHardwareError(Exception):
 class PaddleOCRWrapper:
     def __init__(self, lang: str = 'en'):
         self.ocr_service_url = os.getenv("OCR_SERVICE_URL", "").strip().rstrip("/")
+        
+        # Explicitly disable local fallback to prevent memory leaks/crashes (Exit 137) on Railway.
         self.ocr = None
 
         if self.ocr_service_url:
-            logger.info(f"Using external OCR Microservice at {self.ocr_service_url} with local fallback")
-
-        try:
-            # High-efficiency mobile OCR models bounded for cloud environments
-            self.ocr = PaddleOCR(
-                text_detection_model_name='PP-OCRv4_mobile_det',
-                text_recognition_model_name='PP-OCRv4_mobile_rec',
-                use_doc_orientation_classify=False,
-                use_doc_unwarping=False,
-                use_textline_orientation=False,
-                enable_mkldnn=False
-            )
-        except Exception as e:
-            try:
-                self.ocr = PaddleOCR(
-                    use_doc_orientation_classify=False,
-                    use_doc_unwarping=False,
-                    use_textline_orientation=False,
-                    lang=lang,
-                    enable_mkldnn=False
-                )
-            except Exception:
-                self.ocr = PaddleOCR(use_angle_cls=False, lang=lang)
+            logger.info(f"Using external OCR Microservice at {self.ocr_service_url}. Local fallback is DISABLED.")
+        else:
+            logger.warning("OCR_SERVICE_URL is not set. External OCR is unavailable and local fallback is DISABLED.")
 
     def extract_text(self, image: np.ndarray) -> List[Dict[str, Any]]:
         # Route to external microservice if configured
@@ -67,15 +44,10 @@ class PaddleOCRWrapper:
             try:
                 return self._extract_text_remote(image)
             except OCRHardwareError as e:
-                logger.warning(f"Remote OCR failed: {e}. Falling back to local OCR engine.")
-                if self.ocr:
-                    return self._extract_text_local(image)
+                logger.error(f"Remote OCR failed: {e}. Local fallback is DISABLED to prevent Railway OOM.")
                 raise
 
-        if not self.ocr:
-            raise OCRHardwareError("OCR_FAILED: No local PaddleOCR engine or OCR_SERVICE_URL available.")
-
-        return self._extract_text_local(image)
+        raise OCRHardwareError("OCR_SERVICE_UNAVAILABLE: No external OCR_SERVICE_URL configured and local OCR fallback is disabled.")
 
     def _extract_text_remote(self, image: np.ndarray) -> List[Dict[str, Any]]:
         if httpx is None:
@@ -132,42 +104,3 @@ class PaddleOCRWrapper:
                 raise OCRHardwareError(f"OCR_SERVICE_UNAVAILABLE: {e}")
 
         return []
-    def _extract_text_local(self, image: np.ndarray) -> List[Dict[str, Any]]:
-        try:
-            result = self.ocr.ocr(image)
-            data = []
-            if not result or result[0] is None:
-                return data
-
-            # PaddleOCR v3.7.0+ returns a dictionary inside the first array element
-            if isinstance(result[0], dict):
-                r_dict = result[0]
-                rec_texts = r_dict.get('rec_texts', [])
-                rec_scores = r_dict.get('rec_scores', [])
-                dt_polys = r_dict.get('dt_polys', [])
-
-                for text, score, box in zip(rec_texts, rec_scores, dt_polys):
-                    x_coords, y_coords = [p[0] for p in box], [p[1] for p in box]
-                    data.append({
-                        "text": text,
-                        "confidence": round(float(score), 4),
-                        "bounding_box": [int(min(x_coords)), int(min(y_coords)), int(max(x_coords)), int(max(y_coords))]
-                    })
-                return data
-
-            # Legacy PaddleOCR format handling
-            for line in result[0]:
-                box = line[0]
-                x_coords, y_coords = [p[0] for p in box], [p[1] for p in box]
-                data.append({
-                    "text": line[1][0],
-                    "confidence": round(float(line[1][1]), 4),
-                    "bounding_box": [int(min(x_coords)), int(min(y_coords)), int(max(x_coords)), int(max(y_coords))]
-                })
-            return data
-
-        except Exception as e:
-            error_str = str(e)
-            logger.error(f"OCR Framework Error [STRICT EVALUATION]: {error_str}")
-            raise OCRHardwareError(f"OCR_FAILED: {error_str}")
-
