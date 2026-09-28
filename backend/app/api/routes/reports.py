@@ -41,7 +41,6 @@ def get_case_audit_trail(id: str, db: Session = Depends(get_db), current_user = 
         except Exception:
             raise HTTPException(status_code=400, detail="Invalid ID format")
             
-        # Try to find what this ID is
         case = db.query(EnforcementCase).filter(EnforcementCase.id == parsed_id).first()
         if case:
             rein = db.query(Reinspection).filter(Reinspection.id == case.reinspection_id).first()
@@ -64,31 +63,20 @@ def get_case_audit_trail(id: str, db: Session = Depends(get_db), current_user = 
     if not orig_insp:
         raise HTTPException(status_code=404, detail="Underlying inspection not found for report")
 
-    # ----- AUTHORIZATION CHECK -----
-    if current_user.role == "MANUFACTURER":
-        if orig_insp.product_id:
-            product = db.query(Product).filter(Product.id == orig_insp.product_id).first()
-            if not product or product.owner_id != current_user.id:
-                raise HTTPException(status_code=403, detail="Access Denied")
-        else:
-            raise HTTPException(status_code=403, detail="Access Denied")
-    elif current_user.role == "OFFICER":
-        # Check if they are the officer who did the inspection
-        # if orig_insp.officer_id != current_user.id:
-        #    raise HTTPException(status_code=403, detail="Access Denied")
-        pass # Some systems allow officers to see all reports. We will restrict to own or let it be? The prompt says "according to officer permissions". Let's assume officer can see all for now, or just their own. Wait! The prompt says "Unauthorized cross-user access must remain blocked." So if current_user.role == "OFFICER", restrict to orig_insp.officer_id == current_user.id. Wait, what if another officer does the reinspection? Let's check orig_insp.officer_id or new_insp.officer_id!
-        authorized = False
-        if orig_insp.officer_id == current_user.id:
+    authorized = False
+    if current_user.role == "ADMIN":
+        authorized = True
+    elif orig_insp.officer_id == current_user.id:
+        authorized = True
+    elif new_insp and new_insp.officer_id == current_user.id:
+        authorized = True
+    elif orig_insp.product_id:
+        product = db.query(Product).filter(Product.id == orig_insp.product_id).first()
+        if product and product.owner_id == current_user.id:
             authorized = True
-        if new_insp and new_insp.officer_id == current_user.id:
-            authorized = True
-        if not authorized:
-            raise HTTPException(status_code=403, detail="Access Denied")
-    elif current_user.role == "ADMIN":
-        pass
-    else:
+
+    if not authorized:
         raise HTTPException(status_code=403, detail="Access Denied")
-    # ---------------------------------
     
     timeline = []
     
