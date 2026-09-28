@@ -66,9 +66,6 @@ def health_check():
 def api_health_check():
     return health_check()
 
-@app.get("/api/health")
-def api_health_check():
-    return {"status": "ok"}
 
 @app.get("/", include_in_schema=False)
 def root():
@@ -124,6 +121,7 @@ if not os.getenv("VERCEL"):
             scheduler.start()
     except ImportError:
         pass
+
 
 
 
