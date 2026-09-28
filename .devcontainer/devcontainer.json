@@ -1,6 +1,11 @@
 ﻿{
   "name": "MetronIQ OCR Service",
   "image": "mcr.microsoft.com/devcontainers/python:3.11",
+  "features": {
+    "ghcr.io/devcontainers/features/sshd:1": {
+        "version": "latest"
+    }
+  },
   "forwardPorts": [7860],
   "portsAttributes": {
     "7860": {
@@ -11,6 +16,11 @@
   },
   "postCreateCommand": "sudo apt-get update && sudo apt-get install -y libgomp1 && pip install --no-cache-dir -r ocr_service/requirements.txt",
   "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python"
+      ]
+    },
     "codespaces": {
       "openFiles": [
         "ocr_service/main.py"
