@@ -171,27 +171,36 @@ async def upload_image(file: UploadFile = File(...), user: User = Depends(get_cu
 async def process_image_query(
     background_tasks: BackgroundTasks,
     scan_id: str = Query(..., description="The scan ID to process"),
-    user = Depends(get_current_user)
+    user = Depends(get_current_user),
+    db: Session = Depends(get_db)
 ):
     """Process endpoint accepting scan_id as query parameter (frontend's format)."""
-    return await _do_process(scan_id, background_tasks)
+    return await _do_process(scan_id, background_tasks, db)
 
 @router.post("/{scan_id}/process")
-async def process_image_path(scan_id: str, background_tasks: BackgroundTasks, user = Depends(get_current_user)):
+async def process_image_path(scan_id: str, background_tasks: BackgroundTasks, user = Depends(get_current_user), db: Session = Depends(get_db)):
     """Process endpoint accepting scan_id as path parameter (backwards compat)."""
-    return await _do_process(scan_id, background_tasks)
+    return await _do_process(scan_id, background_tasks, db)
 
-async def _do_process(scan_id: str, background_tasks: BackgroundTasks):
+async def _do_process(scan_id: str, background_tasks: BackgroundTasks, db: Session):
     if scan_id not in job_store:
-        raise HTTPException(status_code=404, detail="Scan ID not found")
+        db_inspection = db.query(Inspection).filter(Inspection.id == scan_id).first()
+        if not db_inspection:
+            raise HTTPException(status_code=404, detail="Scan ID not found")
+        
+        payload = json.loads(db_inspection.evidence_payload) if db_inspection.evidence_payload else {}
+        job_store[scan_id] = {
+            "file_path": payload.get("image_path", ""),
+            "status": db_inspection.status,
+            "result": None,
+            "error": None
+        }
         
     current_status = job_store[scan_id]["status"]
     if current_status != "UPLOADED":
         return {"id": scan_id, "status": current_status, "message": "Already processing."}
         
-    # CRITICAL FIX: Vercel Serverless freezes execution contexts immediately after the HTTP response.
-    # BackgroundTasks will never complete, causing the frontend UI to freeze at "Generating Evidence...".
-    # By running the pipeline synchronously in a thread, we keep the Lambda active until completion.
+    # Keep the execution contextualized for serverless architectures:
     if os.environ.get("VERCEL", "1"):
         import asyncio
         await asyncio.to_thread(execute_cv_pipeline, scan_id)
