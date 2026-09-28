@@ -297,7 +297,7 @@ export default function Login() {
                                     <Input
                                         id="password"
                                         type={showPassword ? "text" : "password"}
-                                        placeholder="••••••••"
+                                        placeholder="********"
                                         value={password}
                                         onChange={e => setPassword(e.target.value)}
                                         required
@@ -321,7 +321,7 @@ export default function Login() {
                                 <Input
                                     id="confirmPassword"
                                     type={showPassword ? "text" : "password"}
-                                    placeholder="••••••••"
+                                    placeholder="********"
                                     value={confirmPassword}
                                     onChange={e => setConfirmPassword(e.target.value)}
                                     required={(view === 'signUp' || view === 'resetPassword')}
