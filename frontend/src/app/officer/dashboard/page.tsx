@@ -236,17 +236,17 @@ export default function OfficerDashboard() {
                                                 </TableCell>
                                                 <TableCell className="text-center py-3">
                                                     <span className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider
-                                                        ${insp.risk_level === 'HIGH' ? 'bg-red-100 text-destructive-foreground dark:bg-red-900/30 dark:text-red-400' : ''}
+                                                        ${insp.risk_level === 'HIGH' ? 'bg-red-100 text-destructive dark:text-red-400 font-bold dark:bg-red-900/30 dark:text-red-400' : ''}
                                                         ${insp.risk_level === 'MEDIUM' ? 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400' : ''}
-                                                        ${insp.risk_level === 'LOW' ? 'bg-green-100 text-success-foreground dark:bg-green-900/30 dark:text-green-400' : ''}
+                                                        ${insp.risk_level === 'LOW' ? 'bg-green-100 text-green-700 dark:text-green-400 font-bold dark:bg-green-900/30 dark:text-green-400' : ''}
                                                         ${!insp.risk_level && 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-400'}`}>
                                                         {insp.risk_level || 'UNKNOWN'}
                                                     </span>
                                                 </TableCell>
                                                 <TableCell className="text-center py-3">
                                                     <Badge variant="outline" className={`font-mono text-xs uppercase px-2 py-0.5 rounded-sm border
-                                                        ${insp.result === 'PASS' ? 'border-green-200 text-success-foreground bg-success/10 dark:border-green-900/50 dark:text-green-400 dark:bg-green-900/10' : ''}
-                                                        ${insp.result === 'FAIL' ? 'border-red-200 text-destructive-foreground bg-destructive/10 dark:border-red-900/50 dark:text-red-400 dark:bg-red-900/10' : ''}`}>
+                                                        ${insp.result === 'PASS' ? 'border-green-200 text-green-700 dark:text-green-400 font-bold bg-success/10 dark:border-green-900/50 dark:text-green-400 dark:bg-green-900/10' : ''}
+                                                        ${insp.result === 'FAIL' ? 'border-red-200 text-destructive dark:text-red-400 font-bold bg-destructive/10 dark:border-red-900/50 dark:text-red-400 dark:bg-red-900/10' : ''}`}>
                                                         {insp.result || 'PENDING'}
                                                     </Badge>
                                                 </TableCell>

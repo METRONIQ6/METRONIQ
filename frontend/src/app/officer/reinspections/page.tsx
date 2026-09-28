@@ -133,8 +133,8 @@ export default function ReinspectionsPage() {
                                         <TableCell className="text-center py-4">
                                             <Badge variant="outline" className={`font-mono text-xs uppercase px-2 py-0.5 rounded-sm border
                                                 ${r.status === 'SCHEDULED' ? 'border-orange-200 text-orange-700 bg-orange-50 dark:border-orange-900/50 dark:text-orange-400 dark:bg-orange-900/10' :
-                                                    r.status === 'ESCALATED' ? 'border-red-200 text-destructive-foreground bg-destructive/10 dark:border-red-900/50 dark:text-red-400 dark:bg-red-900/10' :
-                                                        'border-green-200 text-success-foreground bg-success/10 dark:border-green-900/50 dark:text-green-400 dark:bg-green-900/10'}`}>
+                                                    r.status === 'ESCALATED' ? 'border-red-200 text-destructive dark:text-red-400 font-bold bg-destructive/10 dark:border-red-900/50 dark:text-red-400 dark:bg-red-900/10' :
+                                                        'border-green-200 text-green-700 dark:text-green-400 font-bold bg-success/10 dark:border-green-900/50 dark:text-green-400 dark:bg-green-900/10'}`}>
                                                 {r.status || "UNKNOWN"}
                                             </Badge>
                                         </TableCell>

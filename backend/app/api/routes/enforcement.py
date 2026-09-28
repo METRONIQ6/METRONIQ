@@ -10,6 +10,7 @@ from app.api.deps import get_current_user, get_current_officer, get_current_admi
 from app.models.enforcement import EnforcementCase
 from app.models.reinspection import Reinspection
 from app.models.inspection import Inspection
+from app.models.product import Product
 
 router = APIRouter()
 
@@ -56,7 +57,16 @@ def escalate_reinspection(payload: EscalateRequest, db: Session = Depends(get_db
 
 @router.get("")
 def get_cases(db: Session = Depends(get_db), current_user = Depends(get_current_user)):
-    return db.query(EnforcementCase).all()
+    query = db.query(EnforcementCase)
+    if current_user.role == "MANUFACTURER":
+        query = query.join(Inspection, EnforcementCase.original_inspection_id == Inspection.id)\
+                     .join(Product, Inspection.product_id == Product.id)\
+                     .filter(Product.owner_id == current_user.id)
+    elif current_user.role == "OFFICER":
+        # Usually can see all cases or just cases assigned to them
+        pass
+    
+    return query.all()
 
 class StatusUpdate(BaseModel):
     status: str
@@ -87,3 +97,4 @@ def update_case_status(case_id: str, payload: StatusUpdate, db: Session = Depend
     db.commit()
     db.refresh(case)
     return case
+

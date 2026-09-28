@@ -188,7 +188,7 @@ export default function NoticesPage() {
                                                 <Badge variant="outline" className={`font-mono text-xs uppercase px-2 py-0.5 rounded-sm border
                                                 ${n.status === 'ISSUED' ? 'border-orange-200 text-orange-700 bg-orange-50 dark:border-orange-900/50 dark:text-orange-400 dark:bg-orange-900/10' :
                                                         n.status === 'RECTIFICATION_SUBMITTED' ? 'border-blue-200 text-primary bg-primary/10 dark:border-blue-900/50 dark:text-blue-400 dark:bg-blue-900/10' :
-                                                            'border-green-200 text-success-foreground bg-success/10 dark:border-green-900/50 dark:text-green-400 dark:bg-green-900/10'}`}>
+                                                            'border-green-200 text-green-700 dark:text-green-400 font-bold bg-success/10 dark:border-green-900/50 dark:text-green-400 dark:bg-green-900/10'}`}>
                                                     {t('status.' + (n.status || 'UNKNOWN'))}
                                                 </Badge>
                                             </TableCell>
@@ -242,7 +242,7 @@ export default function NoticesPage() {
                                     <Badge variant="outline" className={`font-mono text-xs uppercase px-2 py-0.5 rounded-sm border
                                                 ${selectedNotice.status === 'ISSUED' ? 'border-orange-200 text-orange-700 bg-orange-50' :
                                             selectedNotice.status === 'RECTIFICATION_SUBMITTED' ? 'border-blue-200 text-primary bg-primary/10' :
-                                                'border-green-200 text-success-foreground bg-success/10'}`}>
+                                                'border-green-200 text-green-700 dark:text-green-400 font-bold bg-success/10'}`}>
                                         {t('status.' + (selectedNotice.status || 'UNKNOWN'))}
                                     </Badge>
                                 </span>

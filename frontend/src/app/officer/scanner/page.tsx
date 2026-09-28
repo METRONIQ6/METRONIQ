@@ -322,11 +322,11 @@ export default function AIScannerUnified() {
             <div className="space-y-6 max-w-2xl mx-auto text-center mt-12">
                 <Card className="border-red-200 bg-destructive/10">
                     <CardHeader>
-                        <CardTitle className="text-xl text-destructive-foreground flex justify-center items-center gap-2">
+                        <CardTitle className="text-xl text-destructive dark:text-red-400 font-bold flex justify-center items-center gap-2">
                             <ShieldAlert className="w-6 h-6" />{t('status.invalidImage')}</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
-                        <p className="text-destructive-foreground font-medium">No valid product/package was detected.</p>
+                        <p className="text-destructive dark:text-red-400 font-bold font-medium">No valid product/package was detected.</p>
                         <p className="text-sm text-destructive">
                             {data?.validation_details?.message || 'Please upload or capture a clear image of the product/package.'}
                         </p>

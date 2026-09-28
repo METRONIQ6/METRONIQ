@@ -304,3 +304,4 @@ export default function RuleManagement() {
         </div>
     )
 }
+

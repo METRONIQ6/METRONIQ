@@ -173,7 +173,7 @@ export default function LabelAuditor() {
                                     {scanData.compliance === 'PASS' ? <CheckCircle className="w-8 h-8 text-success" /> :
                                         (scanData.compliance === 'FAIL' ? <ShieldAlert className="w-8 h-8 text-destructive" /> :
                                             <ShieldAlert className="w-8 h-8 text-orange-500" />)}
-                                    <div className={`text-3xl font-extrabold tracking-tight ${scanData.compliance === 'PASS' ? 'text-success-foreground' : (scanData.compliance === 'FAIL' ? 'text-destructive-foreground' : 'text-orange-600')} dark:text-white`}>
+                                    <div className={`text-3xl font-extrabold tracking-tight ${scanData.compliance === 'PASS' ? 'text-green-700 dark:text-green-400 font-bold' : (scanData.compliance === 'FAIL' ? 'text-destructive dark:text-red-400 font-bold' : 'text-orange-600')} dark:text-white`}>
                                         {scanData.compliance === 'PASS' ? (t('scanner.state_verified_compliant') || 'VERIFIED COMPLIANT') :
                                             (scanData.compliance === 'FAIL' ? (t('scanner.state_verified_non_compliant') || 'VERIFIED NON-COMPLIANT') :
                                                 (scanData.compliance === 'INVALID_IMAGE' ? (t('scanner.state_invalid_input') || 'INVALID INPUT') :
@@ -220,7 +220,7 @@ export default function LabelAuditor() {
                                                 </div>
                                                 <p className="text-sm text-muted-foreground font-medium">{data.message}</p>
                                             </div>
-                                            <Badge variant="outline" className={`shrink-0 font-mono text-xs uppercase px-3 py-1 rounded-sm border ${(data.status === 'PASS' || data.status === 'NOT_APPLICABLE') ? 'border-green-300 text-success-foreground bg-success/10/80 shadow-sm' : 'border-red-300 text-destructive-foreground bg-red-100/80 shadow-sm'}`}>
+                                            <Badge variant="outline" className={`shrink-0 font-mono text-xs uppercase px-3 py-1 rounded-sm border ${(data.status === 'PASS' || data.status === 'NOT_APPLICABLE') ? 'border-green-300 text-green-700 dark:text-green-400 font-bold bg-success/10/80 shadow-sm' : 'border-red-300 text-destructive dark:text-red-400 font-bold bg-red-100/80 shadow-sm'}`}>
                                                 {data.status === 'PASS' ? 'CONFORMANT' : (data.status === 'NOT_APPLICABLE' ? 'N/A' : 'VIOLATION')}
                                             </Badge>
                                         </div>

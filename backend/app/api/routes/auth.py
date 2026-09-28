@@ -2,6 +2,8 @@ from fastapi import APIRouter, Depends, HTTPException, status, Body
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from datetime import timedelta
+from jose import jwt, JWTError
+from pydantic import BaseModel
 from app.core.database import get_db
 from app.core.config import settings
 from app.core.security import verify_password, create_access_token, get_password_hash
@@ -9,6 +11,50 @@ from app.models.user import User
 from app.schemas.user import Token, UserCreate, UserOut
 
 router = APIRouter()
+
+class ForgotPassword(BaseModel):
+    email: str
+
+class ResetPassword(BaseModel):
+    token: str
+    new_password: str
+
+@router.post("/forgot-password")
+def forgot_password(payload: ForgotPassword, db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.email == payload.email).first()
+    if not user:
+        # Avoid account enumeration
+        return {"message": "If an account exists, a password reset instruction has been sent.", "dev_token": None}
+    
+    # 15 minutes expiry. We include part of the hashed password so that using the token changes the password hash, instantly invalidating the token from reuse.
+    token_data = {"sub": str(user.id), "type": "reset", "secret_hash": user.hashed_password[-12:]}
+    reset_token = create_access_token(data=token_data, expires_delta=timedelta(minutes=15))
+    
+    return {
+        "message": "If an account exists, a password reset instruction has been sent.",
+        "dev_token": reset_token
+    }
+
+@router.post("/reset-password")
+def reset_password(payload: ResetPassword, db: Session = Depends(get_db)):
+    try:
+        token_payload = jwt.decode(payload.token, settings.SECRET_KEY, algorithms=["HS256"])
+        user_id = token_payload.get("sub")
+        token_type = token_payload.get("type")
+        secret_hash = token_payload.get("secret_hash")
+        
+        if not user_id or token_type != "reset":
+            raise HTTPException(status_code=400, detail="Malfored reset token.")
+            
+        user = db.query(User).filter(User.id == user_id).first()
+        if not user or user.hashed_password[-12:] != secret_hash:
+            raise HTTPException(status_code=400, detail="Token is expired, invalid, or has already been used.")
+            
+        user.hashed_password = get_password_hash(payload.new_password)
+        db.commit()
+        return {"message": "Password updated successfully"}
+    except JWTError:
+        raise HTTPException(status_code=400, detail="Invalid token formatting or expired token.")
 
 @router.post("/register", response_model=UserOut)
 def register(user_in: UserCreate, db: Session = Depends(get_db)):
@@ -66,3 +112,4 @@ def login_access_token(db: Session = Depends(get_db), form_data: OAuth2PasswordR
         data={"sub": str(user.id), "role": user.role}, expires_delta=access_token_expires
     )
     return {"access_token": access_token, "token_type": "bearer", "role": user.role}
+

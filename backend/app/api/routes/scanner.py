@@ -2,6 +2,7 @@ import os
 import shutil
 import uuid
 import logging
+import json
 from typing import Dict, Any
 from fastapi import APIRouter, UploadFile, File, BackgroundTasks, HTTPException, Depends
 from sqlalchemy.orm import Session
@@ -19,7 +20,6 @@ router = APIRouter()
 TEMP_UPLOAD_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "temp_uploads")
 os.makedirs(TEMP_UPLOAD_DIR, exist_ok=True)
 
-# In-memory transient job tracking
 job_store: Dict[str, Dict[str, Any]] = {}
 
 def execute_cv_pipeline(scan_id: str, db: Session):
@@ -31,18 +31,14 @@ def execute_cv_pipeline(scan_id: str, db: Session):
         file_path = job["file_path"]
         job["status"] = "PROCESSING"
 
-        # 1. Read input stream directly to cv2
         image = cv2.imread(file_path)
         if image is None:
             job["status"] = "FAILED"
             job["error"] = "Failed to decode submitted file payload"
             return
-
-        # 2. Execute inference pipeline
+            
         pipeline = ScannerPipeline()
         evidence_payload = pipeline.run(image, filename=os.path.basename(file_path))
-
-        # 3. Handle OCR Hardware / Microservice Failure Cleanly
         meta = evidence_payload.get("metadata", {})
         
         if meta.get("ocr_status") == "FAILED":
@@ -64,23 +60,21 @@ def execute_cv_pipeline(scan_id: str, db: Session):
             }
             evidence_payload["validation"] = validation_output
         else:
-            # 4. Run through Deterministic Legal Metrology Engine
             validator = RulesValidationService(db)
             validation_output = validator.validate(evidence_payload.get("legal_declarations", {}))
             evidence_payload["validation"] = validation_output
             compliance_check = validation_output.get("overall_compliance", "NON_COMPLIANT")
 
-        # 5. Persist to Postgres
         inspection = db.query(Inspection).filter(Inspection.id == scan_id).first()
         if inspection:
             inspection.status = "COMPLETED"
-            inspection.compliance_status = compliance_check
-            inspection.risk_score = validation_output.get("risk_score", 0)
-            inspection.evidence_data = evidence_payload
+            inspection.result = compliance_check
+            inspection.risk_level = validation_output.get("risk_score", "MEDIUM")
+            # Must serialize the dictionary to JSON string
+            inspection.evidence_payload = json.dumps(evidence_payload)
             db.commit()
             db.refresh(inspection)
 
-        # 6. Update In-Memory Job
         job["status"] = "COMPLETED"
         job["result"] = {
             "compliance": compliance_check,
@@ -100,7 +94,7 @@ def execute_cv_pipeline(scan_id: str, db: Session):
         inspection = db.query(Inspection).filter(Inspection.id == scan_id).first()
         if inspection:
             inspection.status = "FAILED"
-            inspection.evidence_data = {"error": str(e)}
+            inspection.evidence_payload = json.dumps({"error": str(e)})
             db.commit()
 
 
@@ -119,14 +113,13 @@ async def upload_image(file: UploadFile = File(...), user: User = Depends(get_cu
         "error": None
     }
     
-    # Store initial unverified entry in postgres
     new_inspection = Inspection(
         id=scan_id,
         officer_id=user.id,
-        image_url=file_path,
         status="UPLOADED",
-        compliance_status="UNVERIFIED",
-        risk_score=0
+        result="UNVERIFIED",
+        risk_level="LOW",
+        evidence_payload=json.dumps({"image_path": file_path})
     )
     db.add(new_inspection)
     db.commit()
@@ -142,7 +135,6 @@ async def process_image(scan_id: str, background_tasks: BackgroundTasks, db: Ses
     if current_status != "UPLOADED":
         return {"id": scan_id, "status": current_status, "message": "Already processing."}
         
-    # Queue inference DB asynchronously
     background_tasks.add_task(execute_cv_pipeline, scan_id, db)
     return {"id": scan_id, "status": "PROCESSING"}
 
@@ -160,13 +152,14 @@ async def get_status(id: str, db: Session = Depends(get_db), user = Depends(get_
 async def get_result(id: str, db: Session = Depends(get_db), user = Depends(get_current_user)):
     db_inspection = db.query(Inspection).filter(Inspection.id == id).first()
     if db_inspection and db_inspection.status == "COMPLETED":
+        payload = json.loads(db_inspection.evidence_payload) if db_inspection.evidence_payload else {}
         return {
             "id": db_inspection.id,
             "status": db_inspection.status,
-            "result": db_inspection.evidence_data.get("validation", {}),
-            "compliance": db_inspection.compliance_status,
-            "risk_score": db_inspection.risk_score,
-            "evidence": db_inspection.evidence_data
+            "result": payload.get("validation", {}),
+            "compliance": db_inspection.result,
+            "risk_score": db_inspection.risk_level,
+            "evidence": payload
         }
         
     if id in job_store:

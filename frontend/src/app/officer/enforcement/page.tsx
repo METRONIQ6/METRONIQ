@@ -28,11 +28,11 @@ const STATE_LABEL: Record<string, string> = {
 }
 
 const STATUS_COLOR: Record<string, string> = {
-    OPEN: 'border-red-200 text-destructive-foreground bg-destructive/10 dark:border-red-900/50 dark:text-red-400 dark:bg-red-900/10',
+    OPEN: 'border-red-200 text-destructive dark:text-red-400 font-bold bg-destructive/10 dark:border-red-900/50 dark:text-red-400 dark:bg-red-900/10',
     UNDER_REVIEW: 'border-orange-200 text-orange-700 bg-orange-50 dark:border-orange-900/50 dark:text-orange-400 dark:bg-orange-900/10',
     PENALTY_PENDING: 'border-blue-200 text-primary bg-primary/10 dark:border-blue-900/50 dark:text-blue-400 dark:bg-blue-900/10',
     PENALTY_ISSUED: 'border-indigo-200 text-indigo-700 bg-indigo-50 dark:border-indigo-900/50 dark:text-indigo-400 dark:bg-indigo-900/10',
-    RESOLVED: 'border-green-200 text-success-foreground bg-success/10 dark:border-green-900/50 dark:text-green-400 dark:bg-green-900/10',
+    RESOLVED: 'border-green-200 text-green-700 dark:text-green-400 font-bold bg-success/10 dark:border-green-900/50 dark:text-green-400 dark:bg-green-900/10',
 }
 
 export default function EnforcementPage() {

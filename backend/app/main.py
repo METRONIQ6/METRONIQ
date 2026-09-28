@@ -102,3 +102,5 @@ if not os.getenv("VERCEL"):
             scheduler.start()
     except ImportError:
         pass
+
+

@@ -13,10 +13,8 @@ import { ModeToggle } from '@/components/mode-toggle'
 
 export default function Login() {
     const { t } = useTranslation();
-    type ViewState = 'signIn' | 'signUp' | 'forgotPassword'
-    const [view, setView] = useState<ViewState>('signIn') // let's default to signIn for stability, or we can make it signUp based on previous feedback. User earlier said "FIRST SIGN UP" so let's default to signUp. Wait! He just told me "FIRST SIGN UP"! Okay, defaulting to signUp again.
-
-    // Oh wait, I'll default to 'signUp' as requested in the previous turn.
+    type ViewState = 'signIn' | 'signUp' | 'forgotPassword' | 'resetPassword'
+    const [view, setView] = useState<ViewState>('signIn')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
@@ -26,6 +24,7 @@ export default function Login() {
     const [successMsg, setSuccessMsg] = useState('')
     const [showPassword, setShowPassword] = useState(false)
     const [isOfficer, setIsOfficer] = useState(false)
+    const [resetToken, setResetToken] = useState('')
     const router = useRouter()
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -35,10 +34,58 @@ export default function Login() {
         setLoading(true)
 
         if (view === 'forgotPassword') {
-            setTimeout(() => {
+            try {
+                const res = await fetch('/api/v1/auth/forgot-password', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email })
+                })
+                const data = await res.json()
+                if (!res.ok) {
+                    throw new Error(data.detail || t('common.error'))
+                }
+                
+                if (data.dev_token) {
+                    setResetToken(data.dev_token)
+                    setSuccessMsg("DEV MODE: Token received automatically.")
+                    setView('resetPassword')
+                } else {
+                    setSuccessMsg(data.message)
+                }
+            } catch (err: any) {
+                setError(err.message || t('common.error'))
+            } finally {
                 setLoading(false)
-                setError(t('loginUI.passwordRecoveryNotConfigured'))
-            }, 800)
+            }
+            return
+        }
+        
+        if (view === 'resetPassword') {
+            if (password !== confirmPassword) {
+                setError(t('loginUI.passwordsDoNotMatch') || 'Passwords do not match')
+                setLoading(false)
+                return
+            }
+            try {
+                const res = await fetch('/api/v1/auth/reset-password', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ token: resetToken, new_password: password })
+                })
+                const data = await res.json()
+                if (!res.ok) {
+                    throw new Error(data.detail || t('common.error'))
+                }
+                setSuccessMsg("Password reset successfully. You can now login.")
+                setView('signIn')
+                setPassword('')
+                setConfirmPassword('')
+                setResetToken('')
+            } catch (err: any) {
+                setError(err.message || t('common.error'))
+            } finally {
+                setLoading(false)
+            }
             return
         }
 
@@ -123,7 +170,6 @@ export default function Login() {
         }
     }
 
-    // Default view
     React.useEffect(() => {
         setView('signUp')
     }, [])
@@ -176,32 +222,34 @@ export default function Login() {
                             {view === 'signIn' && t('loginUI.welcome_back')}
                             {view === 'signUp' && t('loginUI.createAccount')}
                             {view === 'forgotPassword' && t('loginUI.passwordRecovery')}
+                            {view === 'resetPassword' && (t('loginUI.resetPassword') || "Secure Reset Password")}
                         </h2>
                         <p className="text-sm font-medium text-muted-foreground mt-2">
                             {view === 'signIn' && t('loginUI.sign_in_to_your_metr')}
                             {view === 'signUp' && t('loginUI.registerDesc')}
                             {view === 'forgotPassword' && t('loginUI.official_email')}
+                            {view === 'resetPassword' && "Enter your new password securely."}
                         </p>
                     </div>
 
-                    {view !== 'forgotPassword' && (
+                    {(view === 'signIn' || view === 'signUp') && (
                         <div className="flex bg-muted/60 p-1 rounded-lg">
-                            <button type="button" onClick={() => setView('signUp')} className={`flex-1 py-2 text-sm font-bold rounded-md transition-all ${view === 'signUp' ? 'bg-card dark:bg-card shadow-sm text-primary' : 'text-muted-foreground hover:text-foreground'}`}>{t('loginUI.signUp')}</button>
-                            <button type="button" onClick={() => setView('signIn')} className={`flex-1 py-2 text-sm font-bold rounded-md transition-all ${view === 'signIn' ? 'bg-card dark:bg-card shadow-sm text-primary' : 'text-muted-foreground hover:text-foreground'}`}>{t('loginUI.signIn')}</button>
+                            <button type="button" onClick={() => { setView('signUp'); setError(''); setSuccessMsg(''); }} className={`flex-1 py-2 text-sm font-bold rounded-md transition-all ${view === 'signUp' ? 'bg-card dark:bg-card shadow-sm text-primary' : 'text-muted-foreground hover:text-foreground'}`}>{t('loginUI.signUp')}</button>
+                            <button type="button" onClick={() => { setView('signIn'); setError(''); setSuccessMsg(''); }} className={`flex-1 py-2 text-sm font-bold rounded-md transition-all ${view === 'signIn' ? 'bg-card dark:bg-card shadow-sm text-primary' : 'text-muted-foreground hover:text-foreground'}`}>{t('loginUI.signIn')}</button>
                         </div>
                     )}
 
                     <form onSubmit={handleSubmit} className="space-y-4">
                         {error && (
-                            <div className="flex items-center gap-3 p-4 text-sm font-medium text-destructive-foreground bg-destructive/10 border-l-4 border-red-500 rounded-r-md dark:bg-red-900/20 dark:text-red-400">
+                            <div className="flex items-center gap-3 p-4 text-sm font-medium text-destructive dark:text-red-400 font-bold bg-destructive/10 border-l-4 border-red-500 rounded-r-md dark:bg-red-900/20 dark:text-red-400">
                                 <AlertCircle className="w-5 h-5 shrink-0" />
                                 <span>{error}</span>
                             </div>
                         )}
                         {successMsg && (
-                            <div className="flex items-center gap-3 p-4 text-sm font-medium text-success-foreground bg-success/10 border-l-4 border-green-500 rounded-r-md dark:bg-green-900/20 dark:text-green-400">
+                            <div className="flex items-center gap-3 p-4 text-sm font-medium text-green-700 dark:text-green-400 font-bold bg-success/10 border-l-4 border-green-500 rounded-r-md dark:bg-green-900/20 dark:text-green-400">
                                 <ShieldCheck className="w-5 h-5 shrink-0" />
-                                <span>{successMsg}</span>
+                                <span className="break-words">{successMsg}</span>
                             </div>
                         )}
 
@@ -220,23 +268,25 @@ export default function Login() {
                             </div>
                         )}
 
-                        <div className="space-y-2">
-                            <Label htmlFor="email" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">{t('loginUI.official_email')}</Label>
-                            <Input
-                                id="email"
-                                type="email"
-                                placeholder={t('loginUI.nameDomainGov')}
-                                value={email}
-                                onChange={e => setEmail(e.target.value)}
-                                required
-                                className="h-12 border-border/80 focus-visible:ring-[#2563EB]"
-                            />
-                        </div>
+                        {(view !== 'resetPassword') && (
+                            <div className="space-y-2">
+                                <Label htmlFor="email" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">{t('loginUI.official_email')}</Label>
+                                <Input
+                                    id="email"
+                                    type="email"
+                                    placeholder={t('loginUI.nameDomainGov')}
+                                    value={email}
+                                    onChange={e => setEmail(e.target.value)}
+                                    required
+                                    className="h-12 border-border/80 focus-visible:ring-[#2563EB]"
+                                />
+                            </div>
+                        )}
 
-                        {view !== 'forgotPassword' && (
+                        {(view === 'signIn' || view === 'signUp' || view === 'resetPassword') && (
                             <div className="space-y-2 relative">
                                 <div className="flex justify-between items-center">
-                                    <Label htmlFor="password" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">{t('loginUI.password')}</Label>
+                                    <Label htmlFor="password" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">{view==='resetPassword' ? 'New Password' : t('loginUI.password')}</Label>
                                     {view === 'signIn' && (
                                         <button type="button" onClick={() => { setView('forgotPassword'); setError(''); setSuccessMsg(''); }} className="text-xs text-[#2563EB] hover:underline font-semibold tab-index--1">
                                             {t('loginUI.forgotPassword')}
@@ -247,7 +297,7 @@ export default function Login() {
                                     <Input
                                         id="password"
                                         type={showPassword ? "text" : "password"}
-                                        placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+                                        placeholder="••••••••"
                                         value={password}
                                         onChange={e => setPassword(e.target.value)}
                                         required
@@ -265,16 +315,16 @@ export default function Login() {
                             </div>
                         )}
 
-                        {view === 'signUp' && (
+                        {(view === 'signUp' || view === 'resetPassword') && (
                             <div className="space-y-2">
-                                <Label htmlFor="confirmPassword" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">{t('loginUI.confirmPassword')}</Label>
+                                <Label htmlFor="confirmPassword" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">{view==='resetPassword'?'Confirm New Password' : t('loginUI.confirmPassword')}</Label>
                                 <Input
                                     id="confirmPassword"
                                     type={showPassword ? "text" : "password"}
-                                    placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+                                    placeholder="••••••••"
                                     value={confirmPassword}
                                     onChange={e => setConfirmPassword(e.target.value)}
-                                    required={view === 'signUp'}
+                                    required={(view === 'signUp' || view === 'resetPassword')}
                                     className="h-12 border-border/80 focus-visible:ring-[#2563EB]"
                                 />
                             </div>
@@ -304,15 +354,20 @@ export default function Login() {
 
                         <Button type="submit" disabled={loading} className="w-full h-12 text-sm font-bold tracking-wide rounded-md bg-[#2563EB] hover:bg-[#2563EB]/90 text-white shadow hover:shadow-md transition-all mt-4">
                             {loading ? (
-                                <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> {view === 'signIn' ? t('loginUI.authenticating') : (view === 'signUp' ? t('loginUI.registering') : t('loginUI.submit'))}</>
+                                <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> {
+                                    view === 'signIn' ? t('loginUI.authenticating') : 
+                                    (view === 'signUp' ? t('loginUI.registering') : 
+                                    (view === 'resetPassword' ? 'Resetting Password...' : t('loginUI.submit')))}</>
                             ) : (
-                                view === 'signIn' ? t('loginUI.signIn') : (view === 'signUp' ? t('loginUI.signUp') : t('loginUI.submit'))
+                                view === 'signIn' ? t('loginUI.signIn') : 
+                                (view === 'signUp' ? t('loginUI.signUp') : 
+                                (view === 'resetPassword' ? 'Update Password' : t('loginUI.submit')))
                             )}
                         </Button>
 
-                        {view === 'forgotPassword' && (
+                        {(view === 'forgotPassword' || view === 'resetPassword') && (
                             <div className="text-center mt-4">
-                                <button type="button" onClick={() => { setView('signIn'); setError(''); }} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                                <button type="button" onClick={() => { setView('signIn'); setError(''); setSuccessMsg(''); setPassword(''); setConfirmPassword(''); }} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
                                     &larr; {t('loginUI.backToSignIn')}
                                 </button>
                             </div>

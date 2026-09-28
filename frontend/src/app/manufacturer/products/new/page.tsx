@@ -32,7 +32,7 @@ export default function NewProduct() {
     return (
         <div className="max-w-xl mx-auto space-y-6">
             <h2 className="text-2xl font-bold">{t('manufacturer.create_product.registerNew') || 'Add Product'}</h2>
-            {errorKey && <div className="p-4 bg-red-100 text-destructive-foreground rounded">{t('common.error') || 'Error'}: {t(`manufacturer.errors.${errorKey}`)}</div>}
+            {errorKey && <div className="p-4 bg-red-100 text-destructive dark:text-red-400 font-bold rounded">{t('common.error') || 'Error'}: {t(`manufacturer.errors.${errorKey}`)}</div>}
             <Card><CardContent className="space-y-4 pt-4">
                 <Input placeholder="Product Name" onChange={e => setForm({ ...form, name: e.target.value })} />
                 <Input placeholder="Category" onChange={e => setForm({ ...form, category: e.target.value })} />

@@ -212,8 +212,8 @@ export default function UserManagementPage() {
                                                 <TableCell className="text-right space-x-2 whitespace-nowrap">
                                                     {user.status === 'PENDING_APPROVAL' && (
                                                         <>
-                                                            <Button size="sm" variant="outline" className="bg-success/10 text-success-foreground border-green-200 hover:bg-green-100 hover:text-green-800" onClick={() => handleAction(user.id, 'approve')}>{t('adminUI.approve')}</Button>
-                                                            <Button size="sm" variant="outline" className="bg-destructive/10 text-destructive-foreground border-red-200 hover:bg-red-100 hover:text-red-800" onClick={() => handleAction(user.id, 'reject')}>{t('adminUI.reject')}</Button>
+                                                            <Button size="sm" variant="outline" className="bg-success/10 text-green-700 dark:text-green-400 font-bold border-green-200 hover:bg-green-100 hover:text-green-800" onClick={() => handleAction(user.id, 'approve')}>{t('adminUI.approve')}</Button>
+                                                            <Button size="sm" variant="outline" className="bg-destructive/10 text-destructive dark:text-red-400 font-bold border-red-200 hover:bg-red-100 hover:text-red-800" onClick={() => handleAction(user.id, 'reject')}>{t('adminUI.reject')}</Button>
                                                         </>
                                                     )}
                                                     {user.status === 'APPROVED' && (

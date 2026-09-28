@@ -23,6 +23,7 @@ const getOfficerNav = (t: any) => [
 
 const getAdminNav = (t: any) => [
     { name: t('navigation.dashboard'), href: '/admin/dashboard', icon: LayoutDashboard },
+    { name: t('navigation.reports') || 'Reports', href: '/admin/reports', icon: BarChart3 },
     { name: t('adminUI.userManagement'), href: '/admin/users', icon: UserCog },
     { name: t('navigation.geoAnalytics'), href: '/admin/geo', icon: Map },
     { name: t('navigation.rules'), href: '/admin/rules', icon: Ruler },
@@ -30,6 +31,7 @@ const getAdminNav = (t: any) => [
 
 const getManufacturerNav = (t: any) => [
     { name: t('navigation.dashboard'), href: '/manufacturer/dashboard', icon: LayoutDashboard },
+    { name: t('navigation.reports') || 'Reports', href: '/manufacturer/reports', icon: BarChart3 },
     { name: t('navigation.myProducts') || 'My Products', href: '/manufacturer/products', icon: PackageCheck },
     { name: t('navigation.complianceAudit') || 'Compliance Audit', href: '/manufacturer/compliance-audit', icon: FileSearch },
     { name: t('navigation.govSubmissions') || 'Government Submissions', href: '/manufacturer/submissions', icon: UploadCloud },
@@ -379,3 +381,4 @@ export default function DashboardLayout({ children, role }: { children: React.Re
         </div>
     )
 }
+

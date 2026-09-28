@@ -112,7 +112,7 @@ export default function InspectionsPage() {
                                         </TableCell>
                                         <TableCell className="py-4">
                                             <Badge variant="outline" className={`font-mono text-xs uppercase px-2 py-0.5 rounded-sm border
-                                                ${ins.status === 'COMPLETED' ? 'border-green-200 text-success-foreground bg-success/10' :
+                                                ${ins.status === 'COMPLETED' ? 'border-green-200 text-green-700 dark:text-green-400 font-bold bg-success/10' :
                                                     'border-muted text-muted-foreground'}`}>
                                                 {ins.status || 'PENDING'}
                                             </Badge>
