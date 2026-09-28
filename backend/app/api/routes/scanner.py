@@ -3,7 +3,10 @@ from sqlalchemy.orm import Session
 import uuid
 import shutil
 import os
-try:`n    import cv2`nexcept ImportError:`n    cv2 = None
+try:
+    import cv2
+except ImportError:
+    cv2 = None
 import json
 import logging
 from typing import Dict, Any
@@ -213,3 +216,4 @@ async def get_evidence(id: str, db: Session = Depends(get_db), user = Depends(ge
     if job_store[id]["status"] != "COMPLETED":
         raise HTTPException(status_code=400, detail="Scan not completed yet")
     return job_store[id]["evidence"]
+
