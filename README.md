@@ -5,329 +5,214 @@
 > **SIH Problem Statement: SIH26034**  
 > *"Software System to check compliance of Packaged Commodities under Legal Metrology (Packaged Commodities) Rules, 2011 by scanning products, images and labels."*
 
-MetronIQ is a robust, enterprise-grade software system designed to evaluate product packaging against live **Legal Metrology (Packaged Commodities) Rules, 2011**. By integrating YOLO object detection, PaddleOCR, Generative AI declaration extraction, and a deterministic regulation rule engine, MetronIQ serves as the central operational backbone for Government Enforcement Directorates.
+MetronIQ is a smart system for checking compliance of packaged commodities under the Legal Metrology (Packaged Commodities) Rules, 2011 by scanning product images and labels. It integrates YOLO object detection, local PaddleOCR text extraction, Generative AI for declaration parsing, and a deterministic regulation rule engine.
 
 ---
 
-## 🚀 Key Platform Capabilities
+## 🚀 Key Features
 
-### 1. AI Product Compliance Scanner
-- Upload product imagery for automated scanning.
-- **YOLO** detects labeled regions (MRP Area, Net Quantity, Manufacturer Info, Consumer Care).
-- **PaddleOCR** (PP-OCRv4) extracts text from detected regions.
-- **Gemini AI Declaration Extractor** normalizes raw OCR output into structured compliance declarations.
-- Deterministic **Legal Metrology Rule Engine** evaluates MRP, Net Quantity, Manufacturer Address, Best Before Date, and other mandatory fields.
-- Renders legally defensible **PASS / FAIL / NOT VERIFIED** evaluations.
-- OCR failure returns `NOT VERIFIED / OCR SERVICE UNAVAILABLE` — never auto-fails the product.
-
-### 2. Full-Stack Regulatory Enforcement Lifecycle
-- **Improvement Notices**: Generate formal notices targeting deficient manufacturers.
-- **Rectification Workflow**: Manufacturers submit corrections for government review.
-- **Reinspection Queues**: Intelligent scheduling for flagged product follow-ups.
-- **Enforcement & Legal Dockets**: Compounding penalties and legal interventions with audit trails.
-
-### 3. E-Commerce Auto Monitor
-- Deterministic E-Commerce URL crawler using Fast HTTP + Playwright DOM fallback.
-- Cleanly separates **technical crawl states** (SSRF-blocked, timeout, unreachable) from **legal compliance failures**.
-- Automatic scheduled scans (Hourly / Daily / Weekly).
-
-### 4. MetronIQ Copilot (AI)
-- Context-aware virtual assistant powered by **Google Gemini**.
-- Helps officers interpret complex Legal Metrology requirements alongside the active dashboard.
-
-### 5. Multilingual Support
-- Fully localized in **English (EN)**, **Tamil (தமிழ், TA)**, and **Hindi (हिन्दी, HI)**.
-- Language-aware typography with dedicated **Noto Sans Tamil** font for Tamil rendering.
-- Dynamic language switching without page reload.
+- **AI product scanner**: Upload images/labels for automated bounding box detection and OCR.
+- **YOLO11n**: Detects labeled item regions precisely (MRP Area, Net Quantity, Manufacturer Info, Consumer Care).
+- **PaddleOCR**: Local extraction of printed text from the bounding box regions.
+- **Declaration Extraction**: Structured metadata generation powered by Gemini AI.
+- **Deterministic Compliance Validation**: Evaluates MRP, quantity, manufacturer address, and best before dates directly against the rules.
+- **Admin Dashboard**: Approvals, system administration, and analytics.
+- **Officer Dashboard**: Compliance verification, notice drafts, e-commerce monitoring, and reporting.
+- **Manufacturer Workspace**: Pre-market application and secure rectification workflow.
+- **Role-Based Access Control (RBAC)**: Segregated government access and manufacturer self-registration.
+- **Inspection Workflow**: Traceable review processes.
+- **Notices / Rectification**: Structured compliance improvement queue for both sides.
+- **Reinspection & Enforcement**: Follow-up verifications and penalty compounding steps.
+- **Reports / PDF Generation**: Defensible, comprehensive, localized inspection PDFs.
+- **E-Commerce Monitoring**: Crawler tools to flag online listings for review.
+- **MetronIQ Copilot**: Context-aware AI assistant helping officers interpret rule requirements on the dashboard.
+- **Multilingual (i18n)**: English (EN), Tamil (TA), and Hindi (HI). Uses native typography (e.g. Noto Sans Tamil).
+- **Light / Dark Mode & Responsive UI**.
+- **Audit Trail & PostgreSQL persistence**.
 
 ---
 
-## 🔒 Security & Role-Based Access Control (RBAC)
+## 🔒 Role-Based Access Control (RBAC)
 
-Government-level authorization with strict data segregation:
+MetronIQ employs strict data segregation verified by backend JWT authorization protecting restricted APIs:
 
-| Role | Access |
+| Role | Access Permissions |
 |---|---|
-| 👑 **Administrator** | Full control: user management, rule configuration, analytics, geo-dashboard, officer approval/rejection |
-| 👮 **Government Officer** | Legal verification, AI scanner, inspection management, notices, enforcement, reports, e-commerce monitor, Copilot |
-| 📦 **Manufacturer** | Private silo: product registry, pre-market compliance audit, government submissions, rectification center, compliance history |
+| 👑 **ADMIN** | Full control over user management, admin analytics, officer approvals, and system configuration. |
+| 👮 **OFFICER** | Government execution of product verifications, automated AI scanner, inspection review, issuing legal notices, verifying rectifications, reporting, e-commerce evaluations, and interacting with MetronIQ Copilot. |
+| 📦 **MANUFACTURER** | Isolated workspace. Self-registration, product self-audits before market deployment, communication on government notices, resolving rectification queues, and viewing their own compliance history. Cannot view competitor data. |
 
-Officers require Admin approval before gaining access. Manufacturers self-register and operate in isolated ownership contexts.
-
----
-
-## 🏗️ Architecture & Stack
-
-### Frontend
-- **Framework**: Next.js 16 (React 19 / App Router)
-- **Styling**: TailwindCSS v4 + Shadcn/UI components
-- **Data Fetching**: Parallelized REST API calls via `Promise.all`
-- **Visuals**: Recharts (analytics), Leaflet (geo-mapping)
-- **i18n**: Custom multilingual system (EN / TA / HI)
-- **Themes**: Light / Dark mode (next-themes)
-
-### Backend
-- **Framework**: FastAPI (Python 3.12)
-- **Database**: PostgreSQL (mandatory — SQLite is strictly prohibited in production)
-- **ORM**: SQLAlchemy + Alembic migrations
-- **AI**: Google Gemini API (Copilot + declaration extraction)
-- **OCR**: External PaddleOCR microservice (PP-OCRv4) — see OCR Architecture below
-- **YOLO**: Ultralytics YOLO11n for label region detection
-- **Crawler**: httpx Fast HTTP + Playwright fallback pipeline
-- **Background Jobs**: FastAPI BackgroundTasks + APScheduler (for e-commerce scheduling)
-- **PDF Reports**: FPDF2 with i18n font support
-
-### Deployment Architecture
-```
-User Browser
-    │
-    ▼
-Vercel (Frontend — Next.js)
-    │  /api/* rewrites
-    ▼
-Railway (Backend — FastAPI Docker container)
-    │                      │
-    ▼                      ▼
-PostgreSQL           External OCR Microservice
-(Production DB)      (GitHub Codespaces — PaddleOCR PP-OCRv4)
-```
-
-### OCR Architecture
-The backend contacts an external OCR microservice via `OCR_SERVICE_URL`:
-
-```
-Image Upload
-    │
-    ▼
-YOLO Detection (label regions)
-    │
-    ▼
-HTTP POST → OCR Microservice /ocr/extract
-    │         (PaddleOCR PP-OCRv4 running in GitHub Codespaces)
-    ▼
-Text Tokens + Bounding Boxes
-    │
-    ▼
-Gemini Declaration Extractor
-    │
-    ▼
-Legal Metrology Rule Engine (deterministic)
-    │
-    ▼
-PASS / FAIL / NOT VERIFIED
-    │
-    ▼
-PostgreSQL (persisted inspection result)
-    │
-    ▼
-PDF Report Generation
-```
-
-> ⚠️ **OCR Service Limitation**: The external PaddleOCR microservice runs on GitHub Codespaces, which has usage limits, hibernation, and lifecycle restrictions. If the OCR service is unavailable, scans return `NOT VERIFIED / OCR SERVICE UNAVAILABLE`. This is never automatically converted to FAIL or PENALTY.
+> Backend logic rigorously enforces ownership — authenticated users can only interact with entities explicitly permitted by their assigned role.
 
 ---
 
-## 📁 Project Structure
+## 🏗️ Technology Stack
 
+**Frontend:**
+- Next.js 16 (React 19, App Router)
+- TypeScript
+- TailwindCSS v4
+- Shadcn/UI
+- Recharts (analytics)
+- Leaflet (maps)
+- next-themes
+- Custom i18n implementation (EN, TA, HI)
+
+**Backend:**
+- FastAPI (Python 3.12, Uvicorn)
+- PostgreSQL
+- SQLAlchemy
+- Alembic migrations
+- JSON Web Tokens (JWT) + bcrypt (authentication)
+- REST API architecture
+- Playwright & httpx (crawler operations)
+- APScheduler (background scheduling)
+- FPDF2 (PDF logic with embedded i18n fonts)
+
+**AI / ML:**
+- PaddleOCR
+- Ultralytics YOLO11n
+- OpenCV
+- Google Gemini API
+
+---
+
+## ⚙️ Architecture & Scanner Workflow
+
+### Deployment / Demo Architecture
+
+- **Frontend Hosting**: Vercel (Publicly accessible)
+- **Backend Hosting**: Self-hosted Fast API via Cloudflare Tunnel. (Running securely from a local designated demo machine).
+- **Database Hosting**: Local PostgreSQL mapped to backend.
+- **AI Infrastructure**: Local YOLO11n & PaddleOCR natively processed by the backend.
+
+```text
+User Browser / Admin
+    │
+    ▼
+Vercel Frontend (Next.js)
+    │
+    ▼
+Cloudflare Public Tunnel (https://*.trycloudflare.com)
+    │
+    ▼
+Self-Hosted FastAPI Backend (Running Locally on Demo Machine)
+    │                           │                      │
+    ▼                           ▼                      ▼
+PostgreSQL (Local DB)     Local PaddleOCR       YOLO11n Predictor
 ```
+
+> ⚠️ **Demo Limitation**: Because backend APIs and local AI models run on a self-hosted computer via Cloudflare Tunnel, the designated host laptop **must remain powered on and connected to the internet** during the demo. This is a local demo infrastructure and not permanent 24/7 cloud hosting.
+
+### Scanner Workflow
+
+When an image is submitted:
+
+1. **Product Image** → uploaded to backend
+2. **YOLO** → determines precise label coordinates
+3. **PaddleOCR** → runs over coordinates to extract raw strings
+4. **Declaration Extraction** (Gemini) → translates raw tokens into structured fields
+5. **Deterministic Legal Metrology Rule Engine** → runs rigid validation rules against values
+6. **Risk/Compliance Result** → categorizes result as PASS, FAIL, or NOT VERIFIED
+7. **Evidence & Logs** → snapshots saved
+8. **PostgreSQL** → final records persisted
+9. **Reports** → available via frontend tables or PDF export
+
+> ⚠️ **Safe Failure Behavior**: If PaddleOCR or Gemini is unavailable or errors out during a scan, the execution seamlessly degrades to a **NOT VERIFIED / Technical Review** status. OCR failure does **NOT** result in an automatic compliance FAIL against the manufacturer. A human officer is alerted to inspect the image manually.
+
+---
+
+## 💻 Setup Instructions (Windows)
+
+The current self-hosted architecture is automated via the repository batch script.
+
+### 1. Clone repository
+```bash
+git clone https://github.com/TeamMetronIQ/MetronIQ.git
+cd MetronIQ
+```
+
+### 2. Configure environment variables
+Create a `.env` file in the `backend` folder based on `.env.example`. 
+```env
+DATABASE_URL=postgresql://user:password@localhost:5432/metroniq
+GEMINI_API_KEY=AIzaSy...
+SECRET_KEY=a_strong_random_secret_string
+```
+*(Never include real secrets, tokens, or API keys in source control.)*
+
+### 3. Install dependencies
+*(Assuming Python and Node.js are available)*
+```bash
+cd backend
+python -m venv venv
+venv\Scripts\activate
+pip install -r requirements.txt
+alembic upgrade head
+cd ..
+
+cd frontend
+npm install
+cd ..
+```
+
+### 4. Start PostgreSQL
+Ensure the PostgreSQL service is active locally (default port 5432) and the `metroniq` database is created.
+
+### 5. Run Demo Setup
+Use the root batch file, which will automatically bind your backend to an active Cloudflare Tunnel and orchestrate Vercel to reflect the new API tunnel endpoint.
+```cmd
+start_metroniq.bat
+```
+
+### 6. Open MetronIQ
+Wait for the terminal script to complete deployment synchronization, then visit your configured Vercel frontend URL.
+
+---
+
+## 🌐 Internationalization (i18n)
+
+The platform features seamless switching without page-reloads across:
+- **English** (EN)
+- **Tamil** (TA) — Rendered elegantly using native typography (Noto Sans Tamil)
+- **Hindi** (HI)
+
+---
+
+## 🛡️ Security Best Practices
+
+- **Authentication**: JWT access tokens manage session securely.
+- **Password Strength**: Hashed strictly using bcrypt.
+- **Authorization**: Backend RBAC middleware limits data ownership strictly per user.
+- **Cross-Origin**: CORS handles authorized Vercel/localhost domains explicitly.
+- **Exclusion**: All secrets are strictly ignored in source control and remain in `.env`.
+- **SSRF Protections**: Strict URL validations where utilized in the platform crawler functions.
+
+---
+
+## 🧪 Testing / Verification
+
+MetronIQ implements tests with temporary test databases, enforcing strict process workflows properly decoupled from the primary PostgreSQL storage. Testing systematically guards the product pipeline so that technical issues are intercepted and gracefully isolated without causing false legal penalties against citizens or manufacturers.
+
+---
+
+## 📂 Project Structure
+
+```text
 MetronIQ/
-├── frontend/                    # Next.js 16 application
-│   ├── src/app/
-│   │   ├── admin/               # Administrator portal
-│   │   ├── officer/             # Government Officer portal
-│   │   ├── manufacturer/        # Manufacturer portal
-│   │   └── login/               # Authentication pages
-│   ├── src/i18n/                # EN / TA / HI translation files
-│   └── src/lib/                 # API client, auth utilities
-├── backend/                     # FastAPI application
+├── frontend/                # Next.js 16 application
+│   ├── src/app/             # Pages (Admin, Officer, Manufacturer, Login)
+│   ├── src/i18n/            # Dynamic Translation files
+│   └── src/components/      # UI logic and layouts
+├── backend/                 # FastAPI application
 │   ├── app/
-│   │   ├── api/routes/          # All API endpoints
-│   │   ├── ai/                  # OCR, YOLO, extraction, scanner pipeline
-│   │   ├── services/            # Crawler, PDF, rules validation, analytics
-│   │   ├── models/              # SQLAlchemy ORM models
-│   │   └── core/                # Config, database, security
-│   ├── alembic/                 # Database migrations
+│   │   ├── api/routes/      # Endpoint Logic
+│   │   ├── ai/              # Scanner pipeline (YOLO array, PaddleOCR, Evidence)
+│   │   ├── services/        # Enforcements, Notices, Compliance
+│   │   ├── models/          # SQLAlchemy PostgreSQL models
+│   │   └── core/            # Database hooks and Config
+│   ├── alembic/             # Version-controlled migrations
 │   └── requirements.txt
-├── ocr_service/                 # Standalone PaddleOCR microservice
-│   ├── main.py                  # FastAPI OCR microservice entry point
-│   ├── requirements.txt
-│   └── Dockerfile
-├── .devcontainer/               # GitHub Codespaces configuration for OCR microservice
-│   └── devcontainer.json
-├── Dockerfile                   # Railway backend Docker build
-├── railway.toml                 # Railway deployment configuration
-├── vercel.json                  # Vercel deployment configuration (root)
+├── start_metroniq.bat       # Demo Bootstrapper (Vercel + Tunnel + FastAPI)
 └── README.md
 ```
-
----
-
-## 💻 Local Development Setup
-
-### Prerequisites
-- Node.js `v18+`
-- Python `v3.10+`
-- PostgreSQL (running locally or via managed service like Neon/Railway)
-- A valid `GEMINI_API_KEY` from Google AI Studio
-
-### 1. Database Setup
-
-Ensure PostgreSQL is running. Create a database:
-```sql
-CREATE DATABASE metroniq;
-```
-
-### 2. Backend
-
-```bash
-cd backend
-
-# Create virtual environment
-python -m venv venv
-venv\Scripts\activate        # Windows
-# source venv/bin/activate   # Mac/Linux
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Configure environment
-cp .env.example .env
-# Edit .env and fill in:
-#   DATABASE_URL=postgresql://user:pass@localhost:5432/metroniq
-#   GEMINI_API_KEY=your_key_here
-#   JWT_SECRET_KEY=your_random_secret
-
-# Run database migrations
-alembic upgrade head
-
-# Start the backend
-python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
-```
-
-### 3. Frontend
-
-```bash
-cd frontend
-
-npm install
-npm run dev
-```
-
-Open **[http://localhost:3000](http://localhost:3000)** in your browser.
-
-### 4. OCR Microservice (Optional for Local)
-
-If you do not have `OCR_SERVICE_URL` set, the backend will attempt to use a local PaddleOCR installation (requires paddleocr and paddlepaddle packages). For the external microservice:
-
-```bash
-cd ocr_service
-pip install -r requirements.txt
-uvicorn main:app --host 0.0.0.0 --port 7860
-```
-
-Then set in backend `.env`:
-```
-OCR_SERVICE_URL=http://localhost:7860
-```
-
----
-
-## 🌐 Production Deployment
-
-### Frontend → Vercel
-
-The root `vercel.json` configures Vercel to build the `frontend/` Next.js app and proxy all `/api/*` requests to the Railway backend.
-
-**Required Vercel environment variables:**
-
-| Variable | Description |
-|---|---|
-| `NEXT_PUBLIC_API_URL` | Railway backend URL (if not using the default rewrite) |
-
-### Backend → Railway
-
-Railway builds the backend using the root `Dockerfile` and runs the FastAPI container.
-
-**Required Railway environment variables:**
-
-| Variable | Description |
-|---|---|
-| `DATABASE_URL` | PostgreSQL connection string (postgresql://...) |
-| `GEMINI_API_KEY` | Google Gemini API key |
-| `JWT_SECRET_KEY` | Randomly generated JWT signing secret |
-| `CORS_ORIGINS` | Comma-separated allowed origins (e.g., `https://metroniq.vercel.app`) |
-| `OCR_SERVICE_URL` | URL of the external PaddleOCR microservice |
-| `ENVIRONMENT` | Set to `production` |
-
-> ⚠️ Never prefix backend secrets with `NEXT_PUBLIC_` — that exposes them to the browser.
-
-### OCR → GitHub Codespaces
-
-The `ocr_service/` directory and `.devcontainer/devcontainer.json` configure a reproducible GitHub Codespaces environment running the PaddleOCR microservice on port 7860 (public visibility).
-
-**Limitations:**
-- GitHub Codespaces has monthly usage limits (free tier: 120 core-hours/month)
-- Codespaces hibernate after inactivity — the backend retries up to 3 times with delays to handle wake-up
-- The forwarded URL changes when a Codespace is rebuilt
-- This is **not** a permanent 24/7 hosting solution
-
-When the OCR service is unavailable, scans gracefully return `NOT VERIFIED` — no automatic compliance failures are generated.
-
----
-
-## 🧪 Testing
-
-```bash
-cd backend
-
-# Run integration tests (requires test database)
-python -m pytest tests/ -v
-
-# Manual API health check
-curl http://localhost:8000/health
-```
-
----
-
-## 🔐 Environment Variable Reference (No Secrets)
-
-### Backend `.env` (copy from `backend/.env.example`)
-
-```env
-# Required
-DATABASE_URL=postgresql://user:password@host:5432/metroniq
-GEMINI_API_KEY=your_gemini_api_key
-JWT_SECRET_KEY=your_secure_random_string
-
-# Optional
-OCR_SERVICE_URL=https://your-codespace-url.github.dev
-CORS_ORIGINS=https://metroniq.vercel.app,http://localhost:3000
-ENVIRONMENT=production
-```
-
----
-
-## 📜 Legal Metrology Compliance Rules
-
-The system validates the following mandatory declarations under **Legal Metrology (Packaged Commodities) Rules, 2011**:
-
-| Requirement | Rule Reference |
-|---|---|
-| Maximum Retail Price (MRP) | Rule 6(1) |
-| Net Quantity / Net Weight | Rule 6(2) |
-| Manufacturer Name & Address | Rule 6(3) |
-| Country of Origin | Rule 6(4) |
-| Best Before / Expiry Date | Rule 6(5) |
-| Month/Year of Manufacture | Rule 6(6) |
-| Customer Care Contact | Rule 6(7) |
-| FSSAI License (Food Products) | FSSAI Act 2006 |
-
----
-
-## 🏆 Project Context
-
-Developed for the **Smart India Hackathon (SIH) 2026** — Digital Market Surveillance & Enforcement Track.
-
-- **Problem Statement**: SIH26034
-- **Domain**: Legal Metrology / Consumer Affairs / Digital Governance
-- **Submitted By**: Team MetronIQ
