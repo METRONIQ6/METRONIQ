@@ -84,3 +84,4 @@ backend/migrate_workspace.py
 neon_db.txt
 env*.json
 
+.env*
