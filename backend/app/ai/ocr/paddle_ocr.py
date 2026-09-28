@@ -37,12 +37,7 @@ class PaddleOCRWrapper:
         self.ocr = None
 
         if self.ocr_service_url:
-            logger.info(f"Using external OCR Microservice at {self.ocr_service_url}")
-            return
-
-        if not PaddleOCR:
-            logger.warning("PaddleOCR is not installed locally and OCR_SERVICE_URL is not set.")
-            return
+            logger.info(f"Using external OCR Microservice at {self.ocr_service_url} with local fallback")
 
         try:
             # High-efficiency mobile OCR models bounded for cloud environments
@@ -69,7 +64,13 @@ class PaddleOCRWrapper:
     def extract_text(self, image: np.ndarray) -> List[Dict[str, Any]]:
         # Route to external microservice if configured
         if self.ocr_service_url:
-            return self._extract_text_remote(image)
+            try:
+                return self._extract_text_remote(image)
+            except OCRHardwareError as e:
+                logger.warning(f"Remote OCR failed: {e}. Falling back to local OCR engine.")
+                if self.ocr:
+                    return self._extract_text_local(image)
+                raise
 
         if not self.ocr:
             raise OCRHardwareError("OCR_FAILED: No local PaddleOCR engine or OCR_SERVICE_URL available.")
