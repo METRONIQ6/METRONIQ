@@ -135,13 +135,29 @@ export default function AIScannerUnified() {
 
             setLoadingStep(2) // OCR
 
-            await fetch(`/api/v1/scanner/process?scan_id=${sid}`, {
+            const processResp = await fetch(`/api/v1/scanner/${sid}/process`, {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${getToken()}` }
             });
+            if (!processResp.ok) {
+                let errDetail = "Failed to start processing";
+                try {
+                    const errStr = await processResp.json()
+                    if (errStr.detail) errDetail = errStr.detail
+                } catch (e) { }
+                throw new Error(errDetail)
+            }
 
             let status = "PROCESSING";
+            let pollCount = 0;
+            const maxPolls = 75; // 75 * 0.8s = ~60 seconds timeout
+
             while (status === "PROCESSING" || status === "UPLOADED") {
+                if (pollCount >= maxPolls) {
+                    throw new Error("Processing timed out. Please retry.")
+                }
+                pollCount++;
+
                 await new Promise(r => setTimeout(r, 800));
 
                 // Advance visual steps occasionally
