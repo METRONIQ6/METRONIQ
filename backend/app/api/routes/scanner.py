@@ -1,182 +1,140 @@
-from fastapi import APIRouter, File, UploadFile, BackgroundTasks, HTTPException, Depends
-from sqlalchemy.orm import Session
-import uuid
-import shutil
 import os
-try:
-    import cv2
-except ImportError:
-    cv2 = None
-import json
+import shutil
+import uuid
 import logging
-import gc
 from typing import Dict, Any
+from fastapi import APIRouter, UploadFile, File, BackgroundTasks, HTTPException, Depends
+from sqlalchemy.orm import Session
+import cv2
 
-from app.core.database import get_db
-from app.api.deps import get_current_user
+from app.api.deps import get_db, get_current_user
 from app.models.inspection import Inspection
-from app.ai.pipeline.scanner_pipeline import get_scanner_pipeline
+from app.models.user import User
+from app.services.rules_validation_service import RulesValidationService
+from app.ai.pipeline.scanner_pipeline import ScannerPipeline
 
-
+logger = logging.getLogger("MetronIQ-ScannerRoute")
 router = APIRouter()
 
-job_store: Dict[str, Any] = {}
-MAX_JOB_STORE_SIZE = 50
-UPLOAD_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "temp_uploads")
-os.makedirs(UPLOAD_DIR, exist_ok=True)
+TEMP_UPLOAD_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "temp_uploads")
+os.makedirs(TEMP_UPLOAD_DIR, exist_ok=True)
+
+# In-memory transient job tracking
+job_store: Dict[str, Dict[str, Any]] = {}
+
+def execute_cv_pipeline(scan_id: str, db: Session):
+    try:
+        job = job_store.get(scan_id)
+        if not job:
+            return
+
+        file_path = job["file_path"]
+        job["status"] = "PROCESSING"
+
+        # 1. Read input stream directly to cv2
+        image = cv2.imread(file_path)
+        if image is None:
+            job["status"] = "FAILED"
+            job["error"] = "Failed to decode submitted file payload"
+            return
+
+        # 2. Execute inference pipeline
+        pipeline = ScannerPipeline()
+        evidence_payload = pipeline.run(image, filename=os.path.basename(file_path))
+
+        # 3. Handle OCR Hardware / Microservice Failure Cleanly
+        meta = evidence_payload.get("metadata", {})
+        
+        if meta.get("ocr_status") == "FAILED":
+            compliance_check = "NOT VERIFIED / OCR SERVICE UNAVAILABLE"
+            validation_output = {
+                "compliance": compliance_check,
+                "risk_score": "LOW",
+                "evaluations": [],
+                "message": f"OCR service unavailable ({meta.get('ocr_error', 'Unreachable')}). Inspection marked as NOT VERIFIED to prevent false legal violations."
+            }
+            evidence_payload["validation"] = validation_output
+        elif not meta.get("is_valid_image", True):
+            compliance_check = "IMAGE_INVALID"
+            validation_output = {
+                "compliance": compliance_check,
+                "risk_score": "HIGH",
+                "evaluations": [],
+                "message": f"Image Quality Rejection: {meta.get('image_quality', {}).get('reason', 'Poor quality')}"
+            }
+            evidence_payload["validation"] = validation_output
+        else:
+            # 4. Run through Deterministic Legal Metrology Engine
+            validator = RulesValidationService(db)
+            validation_output = validator.validate(evidence_payload.get("legal_declarations", {}))
+            evidence_payload["validation"] = validation_output
+            compliance_check = validation_output.get("overall_compliance", "NON_COMPLIANT")
+
+        # 5. Persist to Postgres
+        inspection = db.query(Inspection).filter(Inspection.id == scan_id).first()
+        if inspection:
+            inspection.status = "COMPLETED"
+            inspection.compliance_status = compliance_check
+            inspection.risk_score = validation_output.get("risk_score", 0)
+            inspection.evidence_data = evidence_payload
+            db.commit()
+            db.refresh(inspection)
+
+        # 6. Update In-Memory Job
+        job["status"] = "COMPLETED"
+        job["result"] = {
+            "compliance": compliance_check,
+            "risk_score": validation_output.get("risk_score", "MEDIUM"),
+            "declarations": evidence_payload.get("legal_declarations", {}),
+            "yolo_detections": evidence_payload.get("yolo_objects", []),
+            "metadata": evidence_payload.get("metadata", {}),
+            "validation_details": validation_output
+        }
+
+    except Exception as e:
+        logger.error(f"Execution Error during Scanning Pipeline: {str(e)}")
+        if scan_id in job_store:
+            job_store[scan_id]["status"] = "FAILED"
+            job_store[scan_id]["error"] = str(e)
+            
+        inspection = db.query(Inspection).filter(Inspection.id == scan_id).first()
+        if inspection:
+            inspection.status = "FAILED"
+            inspection.evidence_data = {"error": str(e)}
+            db.commit()
+
 
 @router.post("/upload")
-async def upload_image(file: UploadFile = File(...), user = Depends(get_current_user)):
-    if file.content_type and not file.content_type.startswith("image/"):
-        raise HTTPException(status_code=400, detail="Must be an image file.")
-        
-    scan_id = f"INSP-{str(uuid.uuid4())[:8].upper()}"
-    file_path = os.path.join(UPLOAD_DIR, f"{scan_id}.jpg")
+async def upload_image(file: UploadFile = File(...), user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    scan_id = f"INSP-{uuid.uuid4().hex[:8].upper()}"
+    file_path = os.path.join(TEMP_UPLOAD_DIR, f"{scan_id}_{file.filename}")
     
     with open(file_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
         
-    # Evict oldest completed jobs if exceeding maximum capacity
-    if len(job_store) >= MAX_JOB_STORE_SIZE:
-        oldest_keys = [k for k, v in job_store.items() if v.get("status") in ["COMPLETED", "FAILED"]][:10]
-        for k in oldest_keys:
-            job_store.pop(k, None)
-            
     job_store[scan_id] = {
-        "id": scan_id,
-        "status": "UPLOADED",
         "file_path": file_path,
+        "status": "UPLOADED",
         "result": None,
-        "evidence": None
+        "error": None
     }
+    
+    # Store initial unverified entry in postgres
+    new_inspection = Inspection(
+        id=scan_id,
+        officer_id=user.id,
+        image_url=file_path,
+        status="UPLOADED",
+        compliance_status="UNVERIFIED",
+        risk_score=0
+    )
+    db.add(new_inspection)
+    db.commit()
     
     return {"id": scan_id, "status": "UPLOADED"}
 
-import hashlib
-from collections import OrderedDict
-
-class LRUCache:
-    def __init__(self, capacity: int):
-        self.cache = OrderedDict()
-        self.capacity = capacity
-        
-    def __contains__(self, key):
-        return key in self.cache
-        
-    def get(self, key):
-        if key not in self.cache:
-            return None
-        self.cache.move_to_end(key)
-        return self.cache[key]
-        
-    def set(self, key, value):
-        if key in self.cache:
-            self.cache.move_to_end(key)
-        self.cache[key] = value
-        if len(self.cache) > self.capacity:
-            self.cache.popitem(last=False)
-
-hash_cache = LRUCache(50)
-
-def calculate_file_hash(file_path: str) -> str:
-    hasher = hashlib.md5()
-    try:
-        with open(file_path, 'rb') as f:
-            buf = f.read()
-            hasher.update(buf)
-    except:
-        pass
-    return hasher.hexdigest()
-
-def execute_cv_pipeline(scan_id: str, db: Session):
-    job = job_store.get(scan_id)
-    if not job:
-        return
-        
-    job["status"] = "PROCESSING"
-    image = None
-    try:
-        f_hash = calculate_file_hash(job["file_path"])
-        if f_hash in hash_cache:
-            import copy
-            evidence_payload = copy.deepcopy(hash_cache.get(f_hash))
-            evidence_payload["metadata"]["filename"] = os.path.basename(job["file_path"])
-            logging.getLogger("MetronIQ-API-Scanner").info(f"Cache hit for image hash {f_hash}")
-        else:
-            image = cv2.imread(job["file_path"])
-            pipeline = get_scanner_pipeline()
-            evidence_payload = pipeline.run(image, filename=os.path.basename(job["file_path"]))
-            if evidence_payload.get("metadata", {}).get("ocr_status") != "FAILED":
-                hash_cache.set(f_hash, evidence_payload)
-        
-        # Free memory immediately after inference
-        if image is not None:
-            del image
-            image = None
-        gc.collect()
-
-        # VALID IMAGE GATE & OCR ENVIRONMENT GATE
-        meta = evidence_payload.get("metadata", {})
-        
-        if meta.get("ocr_status") == "FAILED":
-            compliance_check = "ENVIRONMENT_ERROR"
-            validation_output = {
-                "compliance": compliance_check,
-                "risk_score": "LOW",
-                "evaluations": [],
-                "message": "OCR unavailable in current environment. Hardware incompatible with PaddlePaddle."
-            }
-            evidence_payload["validation"] = validation_output
-        elif not meta.get("is_valid_image", True):
-            compliance_check = "INVALID_IMAGE"
-            validation_output = {
-                "compliance": compliance_check,
-                "risk_score": "LOW",
-                "evaluations": [],
-                "message": meta.get("validation_note", "No valid product/package detected for inspection")
-            }
-            evidence_payload["validation"] = validation_output
-        else:
-            declarations = evidence_payload.get("legal_declarations", {})
-            
-            from app.services.rules_validation_service import RulesValidationService
-            validator = RulesValidationService(db)
-            validation_output = validator.validate(declarations)
-            
-            compliance_check = validation_output["compliance"]
-            evidence_payload["validation"] = validation_output
-        
-        # Write to Database
-        db_inspection = Inspection(
-            id=scan_id,
-            status="COMPLETED",
-            result=compliance_check,
-            risk_level=validation_output["risk_score"],
-            evidence_payload=json.dumps(evidence_payload) if evidence_payload else None
-        )
-        db.add(db_inspection)
-        db.commit()
-        db.refresh(db_inspection)
-        
-        job["result"] = {
-            "compliance": compliance_check,
-            "rules_verified": len(declarations.keys()) if "declarations" in locals() else 0,
-            "risk_score": validation_output["risk_score"],
-            "validation_details": validation_output
-        }
-        job["evidence"] = evidence_payload
-        job["status"] = "COMPLETED"
-    except Exception as e:
-        job["status"] = "FAILED"
-        job["error"] = str(e)
-        logging.getLogger("MetronIQ-API-Scanner").error(f"Scan crash: {str(e)}")
-    finally:
-        if image is not None:
-            del image
-        gc.collect()
-
-@router.post("/process")
-async def process_image(scan_id: str, background_tasks: BackgroundTasks, db: Session = Depends(get_db), user = Depends(get_current_user)):
+@router.post("/{scan_id}/process")
+async def process_image(scan_id: str, background_tasks: BackgroundTasks, db: Session = Depends(get_db)):
     if scan_id not in job_store:
         raise HTTPException(status_code=404, detail="Scan ID not found")
         
@@ -193,42 +151,30 @@ async def get_status(id: str, db: Session = Depends(get_db), user = Depends(get_
     db_inspection = db.query(Inspection).filter(Inspection.id == id).first()
     if db_inspection:
         return {"id": id, "status": db_inspection.status}
-        
-    if id not in job_store:
-        raise HTTPException(status_code=404, detail="Scan ID not found")
-    payload = {"id": id, "status": job_store[id]["status"]}
-    if job_store[id]["status"] == "FAILED":
-        payload["error"] = job_store[id].get("error", "Unknown pipeline crash")
-    return payload
+    
+    if id in job_store:
+        return {"id": id, "status": job_store[id]["status"]}
+    raise HTTPException(status_code=404, detail="Inspection not found")
 
 @router.get("/{id}/result")
 async def get_result(id: str, db: Session = Depends(get_db), user = Depends(get_current_user)):
     db_inspection = db.query(Inspection).filter(Inspection.id == id).first()
     if db_inspection and db_inspection.status == "COMPLETED":
-        evidence = json.loads(db_inspection.evidence_payload) if db_inspection.evidence_payload else {}
-        declarations = evidence.get("legal_declarations", {})
-        validation = evidence.get("validation", {})
         return {
-            "compliance": db_inspection.result,
-            "rules_verified": len(declarations.keys()),
-            "risk_score": db_inspection.risk_level,
-            "validation_details": validation
+            "id": db_inspection.id,
+            "status": db_inspection.status,
+            "result": db_inspection.evidence_data.get("validation", {}),
+            "compliance": db_inspection.compliance_status,
+            "risk_score": db_inspection.risk_score,
+            "evidence": db_inspection.evidence_data
         }
         
-    if id not in job_store:
-        raise HTTPException(status_code=404, detail="Scan ID not found")
-    if job_store[id]["status"] != "COMPLETED":
-        raise HTTPException(status_code=400, detail="Scan not completed yet")
-    return job_store[id]["result"]
-
-@router.get("/{id}/evidence")
-async def get_evidence(id: str, db: Session = Depends(get_db), user = Depends(get_current_user)):
-    db_inspection = db.query(Inspection).filter(Inspection.id == id).first()
-    if db_inspection and db_inspection.evidence_payload:
-        return json.loads(db_inspection.evidence_payload)
+    if id in job_store:
+        job = job_store[id]
+        if job["status"] == "COMPLETED":
+            return {"id": id, "status": job["status"], "result": job["result"]}
+        if job["status"] == "FAILED":
+            return {"id": id, "status": "FAILED", "error": job["error"]}
+        return {"id": id, "status": job["status"]}
         
-    if id not in job_store:
-        raise HTTPException(status_code=404, detail="Scan ID not found")
-    if job_store[id]["status"] != "COMPLETED":
-        raise HTTPException(status_code=400, detail="Scan not completed yet")
-    return job_store[id]["evidence"]
+    raise HTTPException(status_code=404, detail="Inspection not found")

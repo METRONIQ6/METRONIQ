@@ -5,6 +5,9 @@ const defaultBackend = process.env.NODE_ENV === "production" || process.env.VERC
   : "http://127.0.0.1:8000";
 
 const nextConfig: NextConfig = {
+  experimental: {
+    cpus: 1,
+  },
   rewrites: async () => {
     return [
       {

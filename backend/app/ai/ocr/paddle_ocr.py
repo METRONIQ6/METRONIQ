@@ -8,6 +8,17 @@ import logging
 import numpy as np
 from typing import List, Dict, Any
 import traceback
+import time
+
+try:
+    import cv2
+except ImportError:
+    cv2 = None
+
+try:
+    import httpx
+except ImportError:
+    httpx = None
 
 try:
     from paddleocr import PaddleOCR
@@ -17,18 +28,24 @@ except ImportError:
 logger = logging.getLogger("MetronIQ-OCR")
 
 class OCRHardwareError(Exception):
-    """Explicitly tracks local hardware incompatibility crashing Paddles CPU threads."""
+    """Explicitly tracks local hardware incompatibility or external microservice failure."""
     pass
 
 class PaddleOCRWrapper:
     def __init__(self, lang: str = 'en'):
-        if not PaddleOCR:
-            self.ocr = None
+        self.ocr_service_url = os.getenv("OCR_SERVICE_URL", "").strip().rstrip("/")
+        self.ocr = None
+
+        if self.ocr_service_url:
+            logger.info(f"Using external OCR Microservice at {self.ocr_service_url}")
             return
-            
+
+        if not PaddleOCR:
+            logger.warning("PaddleOCR is not installed locally and OCR_SERVICE_URL is not set.")
+            return
+
         try:
-            # High-efficiency mobile OCR models bounded for cloud environments (Railway 1GB RAM limit)
-            # Avoids loading heavy 3D unwarping (UVDoc) and orientation models which cause out-of-memory crashes
+            # High-efficiency mobile OCR models bounded for cloud environments
             self.ocr = PaddleOCR(
                 text_detection_model_name='PP-OCRv4_mobile_det',
                 text_recognition_model_name='PP-OCRv4_mobile_rec',
@@ -50,20 +67,71 @@ class PaddleOCRWrapper:
                 self.ocr = PaddleOCR(use_angle_cls=False, lang=lang)
 
     def extract_text(self, image: np.ndarray) -> List[Dict[str, Any]]:
-        if not self.ocr: return []
-        
+        # Route to external microservice if configured
+        if self.ocr_service_url:
+            return self._extract_text_remote(image)
+
+        if not self.ocr:
+            raise OCRHardwareError("OCR_FAILED: No local PaddleOCR engine or OCR_SERVICE_URL available.")
+
+        return self._extract_text_local(image)
+
+    def _extract_text_remote(self, image: np.ndarray) -> List[Dict[str, Any]]:
+        if httpx is None:
+            raise OCRHardwareError("OCR_FAILED: httpx is required for remote OCR service calls.")
+
+        if cv2 is None:
+            raise OCRHardwareError("OCR_FAILED: cv2 is required for image encoding.")
+
+        # Encode image to JPEG bytes
+        success, encoded_img = cv2.imencode(".jpg", image)
+        if not success:
+            raise OCRHardwareError("OCR_FAILED: Failed to encode image for OCR transmission.")
+        img_bytes = encoded_img.tobytes()
+
+        url = f"{self.ocr_service_url}/ocr/extract"
+        max_retries = 2
+        timeout = httpx.Timeout(connect=10.0, read=30.0, write=10.0, pool=5.0)
+
+        for attempt in range(max_retries + 1):
+            try:
+                with httpx.Client(timeout=timeout) as client:
+                    response = client.post(
+                        url,
+                        files={"file": ("package.jpg", img_bytes, "image/jpeg")}
+                    )
+                if response.status_code == 200:
+                    data = response.json()
+                    return data.get("results", [])
+                else:
+                    logger.warning(f"Remote OCR service returned HTTP {response.status_code}: {response.text}")
+                    if attempt == max_retries:
+                        raise OCRHardwareError(f"OCR_SERVICE_UNAVAILABLE: HTTP {response.status_code}")
+            except (httpx.RequestError, httpx.TimeoutException) as exc:
+                logger.warning(f"Remote OCR attempt {attempt + 1}/{max_retries + 1} failed: {exc}")
+                if attempt == max_retries:
+                    raise OCRHardwareError(f"OCR_SERVICE_UNAVAILABLE: Connection failed: {exc}")
+                time.sleep(1.0)
+            except Exception as e:
+                logger.error(f"Unexpected error calling OCR service: {e}")
+                raise OCRHardwareError(f"OCR_SERVICE_UNAVAILABLE: {e}")
+
+        return []
+
+    def _extract_text_local(self, image: np.ndarray) -> List[Dict[str, Any]]:
         try:
             result = self.ocr.ocr(image)
             data = []
-            if not result or result[0] is None: return data
-            
+            if not result or result[0] is None:
+                return data
+
             # PaddleOCR v3.7.0+ returns a dictionary inside the first array element
             if isinstance(result[0], dict):
                 r_dict = result[0]
                 rec_texts = r_dict.get('rec_texts', [])
                 rec_scores = r_dict.get('rec_scores', [])
                 dt_polys = r_dict.get('dt_polys', [])
-                
+
                 for text, score, box in zip(rec_texts, rec_scores, dt_polys):
                     x_coords, y_coords = [p[0] for p in box], [p[1] for p in box]
                     data.append({
@@ -72,7 +140,7 @@ class PaddleOCRWrapper:
                         "bounding_box": [int(min(x_coords)), int(min(y_coords)), int(max(x_coords)), int(max(y_coords))]
                     })
                 return data
-                
+
             # Legacy PaddleOCR format handling
             for line in result[0]:
                 box = line[0]
@@ -83,9 +151,8 @@ class PaddleOCRWrapper:
                     "bounding_box": [int(min(x_coords)), int(min(y_coords)), int(max(x_coords)), int(max(y_coords))]
                 })
             return data
-            
+
         except Exception as e:
             error_str = str(e)
             logger.error(f"OCR Framework Error [STRICT EVALUATION]: {error_str}")
-            # HARDENING: NEVER silently return fabricated OCR results. Propagate failure cleanly.
             raise OCRHardwareError(f"OCR_FAILED: {error_str}")

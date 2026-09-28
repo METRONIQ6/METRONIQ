@@ -27,7 +27,12 @@ class ScannerPipeline:
         
         # 2. Extract bounding objects via Pre-trained YOLO
         # Target classes: MRP Area, Net Quantity Area, Manufacturer Area, Consumer Care Area
-        objects = self.detector.scan_package(processed)
+        objects = []
+        try:
+            objects = self.detector.scan_package(processed)
+        except Exception as e:
+            logger.warning(f"YOLO detector unavailable or bypassed: {e}")
+            objects = []
         
         # 3. Read text strictly bounded to detected regions using PaddleOCR
         all_texts = []
