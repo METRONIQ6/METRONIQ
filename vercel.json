@@ -4,11 +4,5 @@
       "src": "frontend/package.json",
       "use": "@vercel/next"
     }
-  ],
-  "rewrites": [
-    {
-      "source": "/api/(.*)",
-      "destination": "https://metroniq-backend-production.up.railway.app/api/$1"
-    }
   ]
 }
