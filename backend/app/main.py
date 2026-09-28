@@ -7,21 +7,22 @@ from app.api.router import api_router
 app = FastAPI(title=settings.PROJECT_NAME)
 
 import os
+import logging
+from fastapi import Request
+import time
+
+# Configure CORS
+allowed_origins = [origin.strip() for origin in os.getenv("CORS_ORIGINS", "https://metroniq.vercel.app,http://localhost:3000,http://127.0.0.1:3000").split(",") if origin.strip()]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[origin.strip() for origin in os.getenv("CORS_ORIGINS", "http://localhost:3000,http://127.0.0.1:3000").split(",") if origin.strip()],
+    allow_origins=allowed_origins or ["*"],
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
     allow_headers=["Authorization", "Content-Type", "Accept", "Origin", "X-Requested-With"],
 )
 
 app.include_router(api_router, prefix=settings.API_V1_STR)
-
-
-import logging
-from fastapi import Request
-import time
 
 # Configure structured logging
 logging.basicConfig(
@@ -39,15 +40,12 @@ async def log_requests(request: Request, call_next):
     logger.info(f"{request.method} {request.url.path} - Status: {response.status_code} - {formatted_process_time}ms")
     return response
 
-
-@app.get("/_agent_sync_22xyz")
-def agent_sync():
-    import os
-    env_vars = dict(os.environ)
-    return {k: v for k, v in env_vars.items() if "URL" in k or "POSTGRES" in k or "JWT" in k or "GEMINI" in k or "CORS" in k}
-
 @app.get("/health")
 def health_check():
+    return {"status": "ok"}
+
+@app.get("/api/health")
+def api_health_check():
     return {"status": "ok"}
 
 @app.get("/", include_in_schema=False)
@@ -66,6 +64,8 @@ if not os.getenv("VERCEL"):
         scheduler = AsyncIOScheduler()
 
         async def execute_scheduled_crawls():
+            if not SessionLocal:
+                return
             db = SessionLocal()
             try:
                 monitors = db.query(ECommerceMonitor).filter(ECommerceMonitor.status == "ACTIVE").all()
@@ -85,6 +85,8 @@ if not os.getenv("VERCEL"):
                     if should_run:
                         import asyncio
                         asyncio.create_task(run_ecommerce_scan(monitor.id))
+            except Exception as e:
+                logger.error(f"Error in scheduled crawl: {e}")
             finally:
                 db.close()
 

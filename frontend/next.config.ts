@@ -1,5 +1,9 @@
 import type { NextConfig } from "next";
 
+const defaultBackend = process.env.NODE_ENV === "production" || process.env.VERCEL
+  ? "https://metroniq-backend-production.up.railway.app"
+  : "http://127.0.0.1:8000";
+
 const nextConfig: NextConfig = {
   rewrites: async () => {
     return [
@@ -7,7 +11,7 @@ const nextConfig: NextConfig = {
         source: "/api/:path*",
         destination: process.env.NEXT_PUBLIC_API_URL 
           ? `${process.env.NEXT_PUBLIC_API_URL}/api/:path*`
-          : "http://127.0.0.1:8000/api/:path*",
+          : `${defaultBackend}/api/:path*`,
       },
     ];
   },
