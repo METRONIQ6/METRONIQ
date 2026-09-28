@@ -98,8 +98,8 @@ async def run_ecommerce_scan(monitor_id: uuid.UUID):
                 "evidence": None
             }
             
-            await asyncio.to_thread(execute_cv_pipeline, scan_id, db)
-            
+            await asyncio.to_thread(execute_cv_pipeline, scan_id)
+
             job = job_store.get(scan_id)
             if job and job["status"] == "COMPLETED":
                 monitor.last_scan_result = job["result"].get("compliance") if job.get("result") else "FAIL"
