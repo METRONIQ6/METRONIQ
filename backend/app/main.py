@@ -83,8 +83,8 @@ if not os.getenv("VERCEL"):
                             should_run = True
 
                     if should_run:
-                        import asyncio
-                        asyncio.create_task(run_ecommerce_scan(monitor.id))
+                        # Run scheduled crawls sequentially to prevent concurrent memory spikes in container
+                        await run_ecommerce_scan(monitor.id)
             except Exception as e:
                 logger.error(f"Error in scheduled crawl: {e}")
             finally:
@@ -92,7 +92,13 @@ if not os.getenv("VERCEL"):
 
         @app.on_event("startup")
         async def startup_event():
-            scheduler.add_job(execute_scheduled_crawls, "interval", minutes=1)
+            scheduler.add_job(
+                execute_scheduled_crawls,
+                "interval",
+                minutes=1,
+                max_instances=1,
+                coalesce=True
+            )
             scheduler.start()
     except ImportError:
         pass

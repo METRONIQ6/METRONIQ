@@ -90,3 +90,12 @@ class ScannerPipeline:
         }
         
         return self.generator.generate(objects, all_texts, declarations, meta)
+
+# Module-level singleton to prevent duplicate model instantiation
+_scanner_pipeline_instance = None
+
+def get_scanner_pipeline() -> ScannerPipeline:
+    global _scanner_pipeline_instance
+    if _scanner_pipeline_instance is None:
+        _scanner_pipeline_instance = ScannerPipeline()
+    return _scanner_pipeline_instance

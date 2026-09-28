@@ -12,11 +12,13 @@ import httpx
 import re
 import time
 import asyncio
+import gc
 
 class SSRFError(Exception):
     pass
 
 CRAWL_CACHE = {}
+MAX_CRAWL_CACHE = 50
 CACHE_TTL = 3600
 
 def validate_url(url: str):
@@ -46,7 +48,7 @@ def parse_html_fast(html, url):
     title = title_match.group(1).strip() if title_match else ""
     
     json_ld_raw = None
-    scripts = re.findall(r'<script(?:[^>]*?)type=["\']application/ld\+json["\'][^>]*>(.*?)</script>', html, re.I | re.S)
+    scripts = re.findall(r'<script(?:[^>]*?)type=[\"\']application/ld\+json[\"\'][^>]*>(.*?)</script>', html, re.I | re.S)
     for s in scripts:
         try:
             data = json.loads(s)
@@ -60,7 +62,7 @@ def parse_html_fast(html, url):
         
     dom_price = None
     if not json_ld_raw:
-        price_match = re.search(r'class="[^"]*(price|mrp)[^"]*">([^<]+)<', html, re.I)
+        price_match = re.search(r'class=\"[^\"]*(price|mrp)[^\"]*\">([^<]+)<', html, re.I)
         if price_match: dom_price = price_match.group(2).strip()
             
     is_valid = bool(json_ld_raw or dom_price or "product" in url.lower())
@@ -97,13 +99,22 @@ async def scrape_and_screenshot(url: str):
         if resp.status_code == 200:
             is_valid, parsed_data = parse_html_fast(resp.text, url)
             if is_valid and parsed_data["product_data"]: 
+                if len(CRAWL_CACHE) >= MAX_CRAWL_CACHE:
+                    CRAWL_CACHE.pop(next(iter(CRAWL_CACHE)), None)
                 CRAWL_CACHE[norm_url] = {"time": time.time(), "data": parsed_data}
                 return parsed_data
     except Exception:
         pass
         
+    browser = None
+    context = None
+    page = None
     async with async_playwright() as p:
-        browser = await p.chromium.launch(headless=True)
+        # Launch Chromium with memory-conserving flags for containerized environments
+        browser = await p.chromium.launch(
+            headless=True,
+            args=["--no-sandbox", "--disable-dev-shm-usage", "--disable-gpu", "--single-process"]
+        )
         context = await browser.new_context(viewport={'width': 1280, 'height': 2000})
         page = await context.new_page()
         await page.route("**/*", block_resources)
@@ -161,6 +172,8 @@ async def scrape_and_screenshot(url: str):
                 "dom_seller": seller,
                 "automation": "PLAYWRIGHT"
             }
+            if len(CRAWL_CACHE) >= MAX_CRAWL_CACHE:
+                CRAWL_CACHE.pop(next(iter(CRAWL_CACHE)), None)
             CRAWL_CACHE[norm_url] = {"time": time.time(), "data": res_data}
             return res_data
         except Exception as e:
@@ -169,4 +182,13 @@ async def scrape_and_screenshot(url: str):
             if "Timeout" in err_msg: raise Exception("CRAWL_TIMEOUT")
             raise Exception(f"Crawler error: {err_msg}")
         finally:
-            await browser.close()
+            try:
+                if page: await page.close()
+            except Exception: pass
+            try:
+                if context: await context.close()
+            except Exception: pass
+            try:
+                if browser: await browser.close()
+            except Exception: pass
+            gc.collect()

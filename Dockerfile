@@ -19,6 +19,9 @@ RUN pip install --no-cache-dir torch torchvision --index-url https://download.py
 COPY backend/requirements.txt requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Pre-cache lightweight mobile PaddleOCR models into image so container startup requires no network downloads
+RUN python -c "from paddleocr import PaddleOCR; PaddleOCR(text_detection_model_name='PP-OCRv4_mobile_det', text_recognition_model_name='PP-OCRv4_mobile_rec', use_doc_orientation_classify=False, use_doc_unwarping=False, use_textline_orientation=False)" || true
+
 # Install Playwright Chromium browser and its system dependencies, then clean apt cache
 RUN playwright install chromium && \
     playwright install-deps chromium && \

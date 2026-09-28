@@ -9,18 +9,19 @@ except ImportError:
     cv2 = None
 import json
 import logging
+import gc
 from typing import Dict, Any
 
 from app.core.database import get_db
 from app.api.deps import get_current_user
 from app.models.inspection import Inspection
-from app.ai.pipeline.scanner_pipeline import ScannerPipeline
+from app.ai.pipeline.scanner_pipeline import get_scanner_pipeline
 
 
 router = APIRouter()
-pipeline = None
 
 job_store: Dict[str, Any] = {}
+MAX_JOB_STORE_SIZE = 50
 UPLOAD_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "temp_uploads")
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
@@ -35,6 +36,12 @@ async def upload_image(file: UploadFile = File(...), user = Depends(get_current_
     with open(file_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
         
+    # Evict oldest completed jobs if exceeding maximum capacity
+    if len(job_store) >= MAX_JOB_STORE_SIZE:
+        oldest_keys = [k for k, v in job_store.items() if v.get("status") in ["COMPLETED", "FAILED"]][:10]
+        for k in oldest_keys:
+            job_store.pop(k, None)
+            
     job_store[scan_id] = {
         "id": scan_id,
         "status": "UPLOADED",
@@ -87,6 +94,7 @@ def execute_cv_pipeline(scan_id: str, db: Session):
         return
         
     job["status"] = "PROCESSING"
+    image = None
     try:
         f_hash = calculate_file_hash(job["file_path"])
         if f_hash in hash_cache:
@@ -96,13 +104,17 @@ def execute_cv_pipeline(scan_id: str, db: Session):
             logging.getLogger("MetronIQ-API-Scanner").info(f"Cache hit for image hash {f_hash}")
         else:
             image = cv2.imread(job["file_path"])
-            global pipeline
-            if pipeline is None:
-                pipeline = ScannerPipeline()
+            pipeline = get_scanner_pipeline()
             evidence_payload = pipeline.run(image, filename=os.path.basename(job["file_path"]))
             if evidence_payload.get("metadata", {}).get("ocr_status") != "FAILED":
                 hash_cache.set(f_hash, evidence_payload)
         
+        # Free memory immediately after inference
+        if image is not None:
+            del image
+            image = None
+        gc.collect()
+
         # VALID IMAGE GATE & OCR ENVIRONMENT GATE
         meta = evidence_payload.get("metadata", {})
         
@@ -148,7 +160,7 @@ def execute_cv_pipeline(scan_id: str, db: Session):
         
         job["result"] = {
             "compliance": compliance_check,
-            "rules_verified": len(declarations.keys()),
+            "rules_verified": len(declarations.keys()) if "declarations" in locals() else 0,
             "risk_score": validation_output["risk_score"],
             "validation_details": validation_output
         }
@@ -158,6 +170,10 @@ def execute_cv_pipeline(scan_id: str, db: Session):
         job["status"] = "FAILED"
         job["error"] = str(e)
         logging.getLogger("MetronIQ-API-Scanner").error(f"Scan crash: {str(e)}")
+    finally:
+        if image is not None:
+            del image
+        gc.collect()
 
 @router.post("/process")
 async def process_image(scan_id: str, background_tasks: BackgroundTasks, db: Session = Depends(get_db), user = Depends(get_current_user)):
@@ -208,12 +224,11 @@ async def get_result(id: str, db: Session = Depends(get_db), user = Depends(get_
 @router.get("/{id}/evidence")
 async def get_evidence(id: str, db: Session = Depends(get_db), user = Depends(get_current_user)):
     db_inspection = db.query(Inspection).filter(Inspection.id == id).first()
-    if db_inspection and db_inspection.status == "COMPLETED":
-        return json.loads(db_inspection.evidence_payload) if db_inspection.evidence_payload else None
+    if db_inspection and db_inspection.evidence_payload:
+        return json.loads(db_inspection.evidence_payload)
         
     if id not in job_store:
         raise HTTPException(status_code=404, detail="Scan ID not found")
     if job_store[id]["status"] != "COMPLETED":
         raise HTTPException(status_code=400, detail="Scan not completed yet")
     return job_store[id]["evidence"]
-
