@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from app.api.deps import get_db, get_current_user
+from app.api.deps import get_db, get_current_officer
 from sqlalchemy import func, desc
 from datetime import datetime, date
 
@@ -13,7 +13,7 @@ from app.models.enforcement import EnforcementCase
 router = APIRouter()
 
 @router.get("/summary")
-def get_dashboard_summary(db: Session = Depends(get_db), user = Depends(get_current_user)):
+def get_dashboard_summary(db: Session = Depends(get_db), user = Depends(get_current_officer)):
     from sqlalchemy import case
     today = date.today()
     
@@ -51,7 +51,7 @@ def get_dashboard_summary(db: Session = Depends(get_db), user = Depends(get_curr
     }
 
 @router.get("/activity")
-def get_recent_activity(db: Session = Depends(get_db), user = Depends(get_current_user)):
+def get_recent_activity(db: Session = Depends(get_db), user = Depends(get_current_officer)):
     logs = db.query(AuditLog).order_by(desc(AuditLog.created_at)).limit(10).all()
     return [{
         "id": str(log.id),

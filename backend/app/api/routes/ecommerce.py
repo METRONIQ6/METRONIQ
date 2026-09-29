@@ -32,8 +32,7 @@ def create_monitor(payload: MonitorCreate, db: Session = Depends(get_db), curren
     return monitor
 
 @router.get("")
-@router.get("")
-def get_monitors(db: Session = Depends(get_db), current_user = Depends(get_current_user)):
+def get_monitors(db: Session = Depends(get_db), current_user = Depends(get_current_officer)):
     return db.query(ECommerceMonitor).all()
 
 from app.core.database import get_db, SessionLocal
@@ -154,7 +153,7 @@ async def trigger_scan(monitor_id: str, background_tasks: BackgroundTasks, db: S
     return {"status": "SCAN_TRIGGERED", "monitor_id": str(m_id)}
 
 @router.get('/{monitor_id}/status')
-async def get_scan_status(monitor_id: str, db: Session = Depends(get_db)):
+async def get_scan_status(monitor_id: str, db: Session = Depends(get_db), current_user = Depends(get_current_officer)):
     try: m_id = uuid.UUID(monitor_id)
     except: raise HTTPException(status_code=400, detail='Invalid ID')
     monitor = db.query(ECommerceMonitor).filter(ECommerceMonitor.id == m_id).first()

@@ -8,7 +8,7 @@ from fastapi import APIRouter, UploadFile, File, BackgroundTasks, HTTPException,
 from sqlalchemy.orm import Session
 import cv2
 
-from app.api.deps import get_db, get_current_user
+from app.api.deps import get_db, get_current_officer
 from app.core.database import SessionLocal
 from app.models.inspection import Inspection
 from app.models.user import User
@@ -140,7 +140,7 @@ def execute_cv_pipeline(scan_id: str):
 
 
 @router.post("/upload")
-async def upload_image(file: UploadFile = File(...), user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+async def upload_image(file: UploadFile = File(...), user: User = Depends(get_current_officer), db: Session = Depends(get_db)):
     scan_id = f"INSP-{uuid.uuid4().hex[:8].upper()}"
     file_path = os.path.join(TEMP_UPLOAD_DIR, f"{scan_id}_{file.filename}")
     
@@ -171,14 +171,14 @@ async def upload_image(file: UploadFile = File(...), user: User = Depends(get_cu
 async def process_image_query(
     background_tasks: BackgroundTasks,
     scan_id: str = Query(..., description="The scan ID to process"),
-    user = Depends(get_current_user),
+    user = Depends(get_current_officer),
     db: Session = Depends(get_db)
 ):
     """Process endpoint accepting scan_id as query parameter (frontend's format)."""
     return await _do_process(scan_id, background_tasks, db)
 
 @router.post("/{scan_id}/process")
-async def process_image_path(scan_id: str, background_tasks: BackgroundTasks, user = Depends(get_current_user), db: Session = Depends(get_db)):
+async def process_image_path(scan_id: str, background_tasks: BackgroundTasks, user = Depends(get_current_officer), db: Session = Depends(get_db)):
     """Process endpoint accepting scan_id as path parameter (backwards compat)."""
     return await _do_process(scan_id, background_tasks, db)
 
@@ -210,7 +210,7 @@ async def _do_process(scan_id: str, background_tasks: BackgroundTasks, db: Sessi
         return {"id": scan_id, "status": "PROCESSING"}
 
 @router.get("/{id}/status")
-async def get_status(id: str, db: Session = Depends(get_db), user = Depends(get_current_user)):
+async def get_status(id: str, db: Session = Depends(get_db), user = Depends(get_current_officer)):
     # Prefer in-memory status (updated immediately by background task)
     if id in job_store:
         return {"id": id, "status": job_store[id]["status"]}
@@ -223,7 +223,7 @@ async def get_status(id: str, db: Session = Depends(get_db), user = Depends(get_
     raise HTTPException(status_code=404, detail="Inspection not found")
 
 @router.get("/{id}/result")
-async def get_result(id: str, db: Session = Depends(get_db), user = Depends(get_current_user)):
+async def get_result(id: str, db: Session = Depends(get_db), user = Depends(get_current_officer)):
     db_inspection = db.query(Inspection).filter(Inspection.id == id).first()
     if db_inspection and db_inspection.status == "COMPLETED":
         payload = json.loads(db_inspection.evidence_payload) if db_inspection.evidence_payload else {}

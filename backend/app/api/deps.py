@@ -30,6 +30,9 @@ def get_current_user(db: Session = Depends(get_db), token: str = Depends(oauth2_
     user = db.query(User).filter(User.id == user_uuid).first()
     if user is None:
         raise credentials_exception
+    if not getattr(user, "is_active", True):
+        raise HTTPException(status_code=403, detail="User account is suspended or inactive")
+        
     return user
 
 def get_current_admin(current_user: User = Depends(get_current_user)) -> User:
@@ -40,6 +43,8 @@ def get_current_admin(current_user: User = Depends(get_current_user)) -> User:
 def get_current_officer(current_user: User = Depends(get_current_user)) -> User:
     if current_user.role not in ["OFFICER", "ADMIN"]:
         raise HTTPException(status_code=403, detail="Not enough permissions: Officer required")
+    if current_user.role == "OFFICER" and current_user.status != "APPROVED":
+        raise HTTPException(status_code=403, detail="Officer account is pending admin approval")
     return current_user
 
 def get_current_manufacturer(current_user: User = Depends(get_current_user)) -> User:
