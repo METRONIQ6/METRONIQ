@@ -173,7 +173,10 @@ export default function ComplianceAudit() {
                 headers: { 'Authorization': `Bearer ${token}` },
                 body: fd
             })
-            if (!upRes.ok) throw new Error("Upload failed")
+            if (!upRes.ok) {
+                const errText = await upRes.text().catch(() => "Unknown");
+                throw new Error(`Upload failed: [${upRes.status}] ${errText}`);
+            }
             const { id } = await upRes.json()
 
             // 2. Process
@@ -185,21 +188,48 @@ export default function ComplianceAudit() {
 
             // 3. Poll
             let completed = false
+            let pollCount = 0
+            let consecutiveErrors = 0
             while (!completed) {
-                await new Promise(r => setTimeout(r, 800))
-                const stRes = await fetch(`/api/v1/scanner/${id}/status`, { headers: { 'Authorization': `Bearer ${token}` } })
-                const stData = await stRes.json()
-                if (stData.status === 'COMPLETED') completed = true
-                else if (stData.status === 'FAILED') throw new Error(stData.error || "Processing failed")
+                if (pollCount >= 180) throw new Error("Processing timed out. Please retry.")
+                pollCount++
+                await new Promise(r => setTimeout(r, 1000))
+                try {
+                    const stRes = await fetch(`/api/v1/scanner/${id}/status`, { headers: { 'Authorization': `Bearer ${token}` } })
+                    if (!stRes.ok) {
+                        consecutiveErrors++
+                        if (consecutiveErrors >= 10) throw new Error("Failed to check status.")
+                        continue
+                    }
+                    consecutiveErrors = 0
+                    const stData = await stRes.json()
+                    if (stData.status === 'COMPLETED') completed = true
+                    else if (stData.status === 'FAILED') throw new Error(stData.error || "Processing failed")
+                } catch (netErr: any) {
+                    consecutiveErrors++
+                    if (consecutiveErrors >= 10) throw netErr
+                }
             }
 
             // 4. Result & Evidence
             setStatusKey("fetching")
-            const resData = await (await fetch(`/api/v1/scanner/${id}/result`, { headers: { 'Authorization': `Bearer ${token}` } })).json()
-            const evData = await (await fetch(`/api/v1/scanner/${id}/evidence`, { headers: { 'Authorization': `Bearer ${token}` } })).json()
+            let resData = null
+            for (let attempt = 0; attempt < 5; attempt++) {
+                try {
+                    const res = await fetch(`/api/v1/scanner/${id}/result`, { headers: { 'Authorization': `Bearer ${token}` } })
+                    if (res.ok) {
+                        resData = await res.json()
+                        break
+                    }
+                } catch (fetchErr) {
+                    // brief pause before retry
+                }
+                await new Promise(r => setTimeout(r, 1000))
+            }
+            if (!resData) throw new Error("Failed to retrieve audit result")
 
             setResult(resData)
-            setEvidence(evData)
+            setEvidence(resData.evidence)
         } catch (e: any) {
             console.error(e)
             setResult({ compliance: "AUDIT_ERROR", errorKey: mapManufacturerError(undefined, e.message) })

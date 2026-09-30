@@ -42,36 +42,19 @@ async def log_requests(request: Request, call_next):
 
 @app.get("/health")
 def health_check():
-    import httpx
-    ocr_service_url = os.getenv("OCR_SERVICE_URL", "").strip().rstrip("/")
-    is_railway = bool(os.getenv("RAILWAY_ENVIRONMENT") or os.getenv("RAILWAY_PROJECT_ID"))
-    
     ocr_status = "unconfigured"
     status = "healthy"
     
-    if ocr_service_url and is_railway:
-        try:
-            with httpx.Client(timeout=2.0) as client:
-                res = client.get(f"{ocr_service_url}/health")
-                if res.status_code == 200:
-                    ocr_status = "healthy"
-                else:
-                    ocr_status = f"unhealthy ({res.status_code})"
-                    status = "unhealthy"
-        except Exception:
-            ocr_status = "unreachable"
-            status = "unhealthy"
-    else:
-        try:
-            from app.ai.pipeline.scanner_pipeline import get_scanner_pipeline
-            pipeline = get_scanner_pipeline()
-            if getattr(pipeline.ocr, 'ocr', None) is not None:
-                ocr_status = "local"
-            else:
-                ocr_status = "uninitialized"
-        except Exception as e:
-            ocr_status = f"error: {str(e)}"
-            status = "unhealthy"
+    try:
+        from app.ai.pipeline.scanner_pipeline import get_scanner_pipeline
+        pipeline = get_scanner_pipeline()
+        if getattr(pipeline.ocr, 'ocr', None) is not None:
+            ocr_status = "local"
+        else:
+            ocr_status = "uninitialized"
+    except Exception as e:
+        ocr_status = f"error: {str(e)}"
+        status = "unhealthy"
             
     return {
         "status": status,

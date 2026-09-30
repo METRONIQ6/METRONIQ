@@ -138,7 +138,7 @@ export default function AIScannerUnified() {
 
             setLoadingStep(2) // OCR
 
-            const processResp = await fetch(`/api/v1/scanner/${sid}/process`, {
+            const processResp = await fetch(`/api/v1/scanner/process?scan_id=${sid}`, {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${getToken()}` }
             });
@@ -146,17 +146,27 @@ export default function AIScannerUnified() {
                 if (processResp.status === 502 || processResp.status === 504 || processResp.status === 530) {
                     throw new Error("Backend Unavailable. Please ensure the backend is running and the tunnel is active.")
                 }
-                let errDetail = "Failed to start processing";
+                let errDetail = `Failed to start processing`;
+                let bodyText = "";
                 try {
-                    const errStr = await processResp.json()
-                    if (errStr.detail) errDetail = errStr.detail
+                    bodyText = await processResp.text();
+                    const errStr = JSON.parse(bodyText);
+                    if (errStr.detail) errDetail = errStr.detail;
                 } catch (e) { }
-                throw new Error(errDetail)
+                throw new Error(JSON.stringify({
+                    error: errDetail,
+                    method: 'POST',
+                    endpoint: `/api/v1/scanner/process?scan_id=${sid}`,
+                    scan_id: sid,
+                    status: processResp.status,
+                    body: bodyText
+                }));
             }
 
             let status = "PROCESSING";
             let pollCount = 0;
-            const maxPolls = 75; // 75 * 0.8s = ~60 seconds timeout
+            const maxPolls = 180; // Allow up to 3 minutes for local AI models
+            let consecutiveErrors = 0;
 
             while (status === "PROCESSING" || status === "UPLOADED") {
                 if (pollCount >= maxPolls) {
@@ -164,23 +174,43 @@ export default function AIScannerUnified() {
                 }
                 pollCount++;
 
-                await new Promise(r => setTimeout(r, 800));
+                await new Promise(r => setTimeout(r, 1000));
 
                 // Advance visual steps occasionally
                 setLoadingStep(prev => prev < 4 ? prev + 1 : prev)
 
-                const statusResp = await fetch(`/api/v1/scanner/${sid}/status`, {
-                    headers: { 'Authorization': `Bearer ${getToken()}` }
-                });
-
-                if (!statusResp.ok) {
-                    if (statusResp.status === 502 || statusResp.status === 504 || statusResp.status === 530) {
-                        throw new Error("Backend Unavailable. Please ensure the backend is running and the tunnel is active.")
+                let statusResp;
+                try {
+                    statusResp = await fetch(`/api/v1/scanner/${sid}/status`, {
+                        headers: { 'Authorization': `Bearer ${getToken()}` }
+                    });
+                } catch (netErr) {
+                    consecutiveErrors++;
+                    if (consecutiveErrors >= 10) {
+                        throw new Error("Connection lost while checking status. Please retry.")
                     }
-                    throw new Error("Failed to check status.")
+                    continue;
                 }
 
-                const statusData = await statusResp.json();
+                if (!statusResp.ok) {
+                    consecutiveErrors++;
+                    if (consecutiveErrors >= 10) {
+                        if (statusResp.status === 502 || statusResp.status === 504 || statusResp.status === 530) {
+                            throw new Error("Backend Unavailable. Please ensure the backend is running.")
+                        }
+                        throw new Error("Failed to check status.")
+                    }
+                    continue;
+                }
+
+                consecutiveErrors = 0;
+                let statusData;
+                try {
+                    statusData = await statusResp.json();
+                } catch (jsonErr) {
+                    continue;
+                }
+
                 status = statusData.status;
                 if (status === "FAILED") {
                     throw new Error("Backend processing failed")
@@ -189,16 +219,25 @@ export default function AIScannerUnified() {
 
             setLoadingStep(5)
 
-            const resultResp = await fetch(`/api/v1/scanner/${sid}/result`, {
-                headers: { 'Authorization': `Bearer ${getToken()}` }
-            });
-            if (!resultResp.ok) {
-                if (resultResp.status === 502 || resultResp.status === 504 || resultResp.status === 530) {
-                    throw new Error("Backend Unavailable. Please ensure the backend is running and the tunnel is active.")
+            let resultData = null;
+            for (let attempt = 0; attempt < 5; attempt++) {
+                try {
+                    const resultResp = await fetch(`/api/v1/scanner/${sid}/result`, {
+                        headers: { 'Authorization': `Bearer ${getToken()}` }
+                    });
+                    if (resultResp.ok) {
+                        resultData = await resultResp.json();
+                        break;
+                    }
+                } catch (fetchErr) {
+                    // brief pause before retry
                 }
+                await new Promise(r => setTimeout(r, 1000));
+            }
+
+            if (!resultData) {
                 throw new Error("Failed to fetch result.")
             }
-            const resultData = await resultResp.json();
 
             const urlParams = new window.URLSearchParams(window.location.search);
             const reinId = urlParams.get('reinspection') || sessionStorage.getItem('currentReinspectionId');

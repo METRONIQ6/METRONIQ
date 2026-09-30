@@ -8,12 +8,12 @@ from fastapi import APIRouter, UploadFile, File, BackgroundTasks, HTTPException,
 from sqlalchemy.orm import Session
 import cv2
 
-from app.api.deps import get_db, get_current_officer
+from app.api.deps import get_db, get_current_user
 from app.core.database import SessionLocal
 from app.models.inspection import Inspection
 from app.models.user import User
 from app.services.rules_validation_service import RulesValidationService
-from app.ai.pipeline.scanner_pipeline import ScannerPipeline
+from app.ai.pipeline.scanner_pipeline import ScannerPipeline, get_scanner_pipeline
 
 logger = logging.getLogger("MetronIQ-ScannerRoute")
 router = APIRouter()
@@ -47,7 +47,7 @@ def execute_cv_pipeline(scan_id: str):
             job["error"] = "Failed to decode submitted file payload"
             return
             
-        pipeline = ScannerPipeline()
+        pipeline = get_scanner_pipeline()
         evidence_payload = pipeline.run(image, filename=os.path.basename(file_path))
         meta = evidence_payload.get("metadata", {})
         
@@ -140,7 +140,7 @@ def execute_cv_pipeline(scan_id: str):
 
 
 @router.post("/upload")
-async def upload_image(file: UploadFile = File(...), user: User = Depends(get_current_officer), db: Session = Depends(get_db)):
+async def upload_image(file: UploadFile = File(...), user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     scan_id = f"INSP-{uuid.uuid4().hex[:8].upper()}"
     file_path = os.path.join(TEMP_UPLOAD_DIR, f"{scan_id}_{file.filename}")
     
@@ -171,14 +171,14 @@ async def upload_image(file: UploadFile = File(...), user: User = Depends(get_cu
 async def process_image_query(
     background_tasks: BackgroundTasks,
     scan_id: str = Query(..., description="The scan ID to process"),
-    user = Depends(get_current_officer),
+    user = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     """Process endpoint accepting scan_id as query parameter (frontend's format)."""
     return await _do_process(scan_id, background_tasks, db)
 
 @router.post("/{scan_id}/process")
-async def process_image_path(scan_id: str, background_tasks: BackgroundTasks, user = Depends(get_current_officer), db: Session = Depends(get_db)):
+async def process_image_path(scan_id: str, background_tasks: BackgroundTasks, user = Depends(get_current_user), db: Session = Depends(get_db)):
     """Process endpoint accepting scan_id as path parameter (backwards compat)."""
     return await _do_process(scan_id, background_tasks, db)
 
@@ -201,7 +201,7 @@ async def _do_process(scan_id: str, background_tasks: BackgroundTasks, db: Sessi
         return {"id": scan_id, "status": current_status, "message": "Already processing."}
         
     # Keep the execution contextualized for serverless architectures:
-    if os.environ.get("VERCEL", "1"):
+    if os.environ.get("VERCEL") == "1":
         import asyncio
         await asyncio.to_thread(execute_cv_pipeline, scan_id)
         return {"id": scan_id, "status": "COMPLETED"}
@@ -210,7 +210,7 @@ async def _do_process(scan_id: str, background_tasks: BackgroundTasks, db: Sessi
         return {"id": scan_id, "status": "PROCESSING"}
 
 @router.get("/{id}/status")
-async def get_status(id: str, db: Session = Depends(get_db), user = Depends(get_current_officer)):
+async def get_status(id: str, db: Session = Depends(get_db), user = Depends(get_current_user)):
     # Prefer in-memory status (updated immediately by background task)
     if id in job_store:
         return {"id": id, "status": job_store[id]["status"]}
@@ -223,7 +223,7 @@ async def get_status(id: str, db: Session = Depends(get_db), user = Depends(get_
     raise HTTPException(status_code=404, detail="Inspection not found")
 
 @router.get("/{id}/result")
-async def get_result(id: str, db: Session = Depends(get_db), user = Depends(get_current_officer)):
+async def get_result(id: str, db: Session = Depends(get_db), user = Depends(get_current_user)):
     db_inspection = db.query(Inspection).filter(Inspection.id == id).first()
     if db_inspection and db_inspection.status == "COMPLETED":
         payload = json.loads(db_inspection.evidence_payload) if db_inspection.evidence_payload else {}

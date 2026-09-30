@@ -105,7 +105,7 @@ export default function EcommercePage() {
             return
         }
         try {
-            const res = await fetch(`/api/v1/ecommerce/`, {
+            const res = await fetch(`/api/v1/ecommerce`, {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${getToken()}`, 'Content-Type': 'application/json' },
                 body: JSON.stringify({ target_url: newUrl, monitoring_frequency: "DAILY" })
@@ -262,11 +262,11 @@ export default function EcommercePage() {
 
         return (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 p-6 bg-muted/10 rounded-b-lg">
-                
+
                 {/* LEFT SIDE: Product & Price Information */}
                 <div className="flex flex-col gap-6">
                     <div className="space-y-6 bg-card p-6 rounded-xl border border-border shadow-sm h-full">
-                        
+
                         <div>
                             <h3 className="text-sm font-bold uppercase tracking-widest text-muted-foreground mb-4 border-b border-border pb-2">{t('ecommerce.results.productSummary') || "Product"}</h3>
                             <div className="space-y-4">
@@ -315,15 +315,15 @@ export default function EcommercePage() {
                 {/* RIGHT SIDE: Compliance & Rules */}
                 <div className="flex flex-col gap-6">
                     <div className="space-y-6 bg-card p-6 rounded-xl border border-border shadow-sm h-full max-h-[800px] overflow-y-auto custom-scrollbar">
-                        
+
                         <div className="flex items-center justify-between border-b border-border pb-4">
                             <h3 className="text-sm font-bold uppercase tracking-widest text-muted-foreground">{t('ecommerce.results.complianceSummary') || "Compliance Evaluator"}</h3>
                             <div className="flex items-center space-x-2">
-                                {result.complianceStatus === 'PASS' || result.complianceStatus === 'COMPLIANT' 
-                                    ? <CheckCircle2 className="w-6 h-6 text-success" /> 
-                                    : result.complianceStatus === 'FAIL' 
-                                    ? <XCircle className="w-6 h-6 text-destructive" /> 
-                                    : <AlertTriangle className="w-6 h-6 text-orange-500" />}
+                                {result.complianceStatus === 'PASS' || result.complianceStatus === 'COMPLIANT'
+                                    ? <CheckCircle2 className="w-6 h-6 text-success" />
+                                    : result.complianceStatus === 'FAIL'
+                                        ? <XCircle className="w-6 h-6 text-destructive" />
+                                        : <AlertTriangle className="w-6 h-6 text-orange-500" />}
                                 <span className={`font-black text-xl tracking-wide ${result.complianceStatus === 'PASS' || result.complianceStatus === 'COMPLIANT' ? 'text-success' : result.complianceStatus === 'FAIL' ? 'text-destructive' : 'text-orange-500'}`}>{result.complianceStatus}</span>
                             </div>
                         </div>
@@ -371,7 +371,7 @@ export default function EcommercePage() {
                                 )}
                             </div>
                         </div>
-                        
+
                     </div>
                 </div>
 

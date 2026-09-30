@@ -19,7 +19,6 @@ class MonitorCreate(BaseModel):
     monitoring_frequency: str = "DAILY"
 
 @router.post("")
-@router.post("")
 def create_monitor(payload: MonitorCreate, db: Session = Depends(get_db), current_user = Depends(get_current_officer)):
     monitor = ECommerceMonitor(
         target_url=payload.target_url,
@@ -96,6 +95,17 @@ async def run_ecommerce_scan(monitor_id: uuid.UUID):
                 "result": None,
                 "evidence": None
             }
+
+            from app.models.inspection import Inspection
+            db_inspection = Inspection(
+                id=scan_id,
+                status="UPLOADED",
+                result="UNVERIFIED",
+                risk_level="LOW",
+                evidence_payload=json.dumps({"image_path": data["screenshot_path"], "ecommerce_monitor_id": str(monitor_id)})
+            )
+            db.add(db_inspection)
+            db.commit()
             
             await asyncio.to_thread(execute_cv_pipeline, scan_id)
 
@@ -128,7 +138,11 @@ async def run_ecommerce_scan(monitor_id: uuid.UUID):
         err_msg = str(e)
         if "NOT_PRODUCT_PAGE" in err_msg:
             monitor.last_scan_result = "NOT_PRODUCT_PAGE"
-        elif "Timeout" in err_msg:
+        elif "PAGE_NOT_FOUND" in err_msg:
+            monitor.last_scan_result = "PAGE_NOT_FOUND"
+        elif "ACCESS_DENIED" in err_msg:
+            monitor.last_scan_result = "ACCESS_DENIED"
+        elif "Timeout" in err_msg or "CRAWL_TIMEOUT" in err_msg:
             monitor.last_scan_result = "CRAWL_TIMEOUT"
         else:
             monitor.last_scan_result = "CRAWL_ERROR"
@@ -149,6 +163,8 @@ async def trigger_scan(monitor_id: str, background_tasks: BackgroundTasks, db: S
     if not monitor:
         raise HTTPException(status_code=404, detail="Monitor not found")
         
+    monitor.last_scan_result = "SCANNING..."
+    db.commit()
     background_tasks.add_task(run_ecommerce_scan, m_id)
     return {"status": "SCAN_TRIGGERED", "monitor_id": str(m_id)}
 
@@ -169,7 +185,7 @@ async def get_scan_status(monitor_id: str, db: Session = Depends(get_db), curren
     }
     
     terminals_success = ['PASS', 'FAIL', 'COMPLIANT', 'NON_COMPLIANT']
-    terminals_error = ['CRAWL_ERROR', 'CRAWL_TIMEOUT', 'SECURITY_BLOCKED', 'NOT_PRODUCT_PAGE', 'INVALID_URL', 'FAIL_PROCESSING']
+    terminals_error = ['CRAWL_ERROR', 'CRAWL_TIMEOUT', 'SECURITY_BLOCKED', 'NOT_PRODUCT_PAGE', 'INVALID_URL', 'FAIL_PROCESSING', 'IMAGE_INVALID', 'NOT VERIFIED / OCR SERVICE UNAVAILABLE', 'NOT VERIFIED / PROCESSING ERROR', 'PAGE_NOT_FOUND', 'ACCESS_DENIED']
     
     if monitor.last_scan_result in terminals_success:
         res['status'] = 'SUCCESS'

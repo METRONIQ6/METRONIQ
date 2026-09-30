@@ -73,23 +73,50 @@ export default function LabelAuditor() {
 
             setProgressStatus('Executing primary rule processing matrix...')
             let status = "PROCESSING"
+            let pollCount = 0
+            let consecutiveErrors = 0
             while (status === "PROCESSING" || status === "UPLOADED") {
-                await new Promise(r => setTimeout(r, 800))
-                const statusResp = await fetch(`/api/v1/scanner/${sid}/status`, {
-                    headers: { 'Authorization': `Bearer ${getToken()}` }
-                })
-                const statusData = await statusResp.json()
-                status = statusData.status
-                if (status === "FAILED") throw new Error("Pipeline aborted: Processing failure")
+                if (pollCount >= 180) throw new Error("Processing timed out. Please retry.")
+                pollCount++
+                await new Promise(r => setTimeout(r, 1000))
+                try {
+                    const statusResp = await fetch(`/api/v1/scanner/${sid}/status`, {
+                        headers: { 'Authorization': `Bearer ${getToken()}` }
+                    })
+                    if (!statusResp.ok) {
+                        consecutiveErrors++
+                        if (consecutiveErrors >= 10) throw new Error("Failed to check status.")
+                        continue
+                    }
+                    consecutiveErrors = 0
+                    const statusData = await statusResp.json()
+                    status = statusData.status
+                    if (status === "FAILED") throw new Error("Pipeline aborted: Processing failure")
+                } catch (netErr: any) {
+                    consecutiveErrors++
+                    if (consecutiveErrors >= 10) throw netErr
+                }
             }
 
             setProgressStatus('Finalizing validation matrix...')
-            const resultResp = await fetch(`/api/v1/scanner/${sid}/result`, {
-                headers: { 'Authorization': `Bearer ${getToken()}` }
-            })
-            if (!resultResp.ok) throw new Error("Failed to retrieve metrics")
+            let resultData = null
+            for (let attempt = 0; attempt < 5; attempt++) {
+                try {
+                    const resultResp = await fetch(`/api/v1/scanner/${sid}/result`, {
+                        headers: { 'Authorization': `Bearer ${getToken()}` }
+                    })
+                    if (resultResp.ok) {
+                        resultData = await resultResp.json()
+                        break
+                    }
+                } catch (fetchErr) {
+                    // brief pause before retry
+                }
+                await new Promise(r => setTimeout(r, 1000))
+            }
+            if (!resultData) throw new Error("Failed to retrieve metrics")
 
-            setScanData(await resultResp.json())
+            setScanData(resultData)
             setFlowState('RESULT')
 
         } catch (e: any) {

@@ -33,57 +33,39 @@ class OCRHardwareError(Exception):
 
 class PaddleOCRWrapper:
     def __init__(self, lang: str = 'en'):
-        self.ocr_service_url = os.getenv("OCR_SERVICE_URL", "").strip().rstrip("/")
         self.ocr = None
-        self.is_railway = bool(os.getenv("RAILWAY_ENVIRONMENT") or os.getenv("RAILWAY_PROJECT_ID"))
 
-        if self.ocr_service_url:
-            logger.info(f"Using external OCR Microservice at {self.ocr_service_url}")
-
-        if self.is_railway:
-            logger.info("Railway environment detected. Local PaddleOCR is DISABLED to prevent OOM/Exit 137.")
-        else:
-            logger.info("Self-hosted local environment detected. Initializing local PaddleOCR...")
-            if PaddleOCR is not None:
+        logger.info("Self-hosted local environment detected. Initializing local PaddleOCR...")
+        if PaddleOCR is not None:
+            try:
+                self.ocr = PaddleOCR(
+                    text_detection_model_name='PP-OCRv4_mobile_det',
+                    text_recognition_model_name='PP-OCRv4_mobile_rec',
+                    use_doc_orientation_classify=False,
+                    use_doc_unwarping=False,
+                    use_textline_orientation=False,
+                    enable_mkldnn=False
+                )
+            except Exception as e:
+                logger.warning(f"Primary local PaddleOCR initialization failed {e}, trying fallback...")
                 try:
                     self.ocr = PaddleOCR(
-                        text_detection_model_name='PP-OCRv4_mobile_det',
-                        text_recognition_model_name='PP-OCRv4_mobile_rec',
                         use_doc_orientation_classify=False,
                         use_doc_unwarping=False,
                         use_textline_orientation=False,
+                        lang=lang,
                         enable_mkldnn=False
                     )
-                except Exception as e:
-                    logger.warning(f"Primary local PaddleOCR initialization failed {e}, trying fallback...")
-                    try:
-                        self.ocr = PaddleOCR(
-                            use_doc_orientation_classify=False,
-                            use_doc_unwarping=False,
-                            use_textline_orientation=False,
-                            lang=lang,
-                            enable_mkldnn=False
-                        )
-                    except Exception:
-                        self.ocr = PaddleOCR(use_angle_cls=False, lang=lang)
-            else:
-                logger.error("paddleocr library is not installed locally.")
+                except Exception:
+                    self.ocr = PaddleOCR(use_angle_cls=False, lang=lang)
+        else:
+            logger.error("paddleocr library is not installed locally.")
 
     def extract_text(self, image: np.ndarray) -> List[Dict[str, Any]]:
-        if self.ocr_service_url:
-            try:
-                return self._extract_text_remote(image)
-            except OCRHardwareError as e:
-                logger.warning(f"Remote OCR failed: {e}.")
-                if self.ocr:
-                    logger.info("Falling back to local OCR engine.")
-                    return self._extract_text_local(image)
-                raise
-        
         if self.ocr:
             return self._extract_text_local(image)
 
-        raise OCRHardwareError("OCR_SERVICE_UNAVAILABLE: No external OCR_SERVICE_URL configured and local OCR fallback is disabled or unavailable.")
+        raise OCRHardwareError("OCR_SERVICE_UNAVAILABLE: Local OCR engine is unavailable.")
 
     def _extract_text_local(self, image: np.ndarray) -> List[Dict[str, Any]]:
         try:

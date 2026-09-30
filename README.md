@@ -77,96 +77,91 @@ MetronIQ employs strict data segregation verified by backend JWT authorization p
 
 ---
 
-## ⚙️ Architecture & Scanner Workflow
+## ⚙️ Architecture & Local Execution
 
-### Deployment / Demo Architecture
+MetronIQ can run either as a fully local environment or in a hybrid cloud configuration.
 
-- **Frontend Hosting**: Vercel (Publicly accessible)
-- **Backend Hosting**: Self-hosted Fast API via Cloudflare Tunnel. (Running securely from a local designated demo machine).
-- **Database Hosting**: Local PostgreSQL mapped to backend.
-- **AI Infrastructure**: Local YOLO11n & PaddleOCR natively processed by the backend.
+### Local Host Architecture
 
 ```text
-User Browser / Admin
+Officer / Manufacturer Browser (http://localhost:3000)
     │
     ▼
-Vercel Frontend (Next.js)
+Next.js Frontend (Port 3000, App Router, React 19, TailwindCSS)
     │
     ▼
-Cloudflare Public Tunnel (https://*.trycloudflare.com)
-    │
-    ▼
-Self-Hosted FastAPI Backend (Running Locally on Demo Machine)
-    │                           │                      │
-    ▼                           ▼                      ▼
-PostgreSQL (Local DB)     Local PaddleOCR       YOLO11n Predictor
+FastAPI Backend (http://127.0.0.1:8000)
+    ├── Local In-Memory AI Singleton (Ultralytics YOLO11n + PaddleOCR PP-OCRv4)
+    ├── Google Gemini API (Structured Legal Metrology Declaration Extraction)
+    ├── Deterministic Rule Engine (PCR 2011 Compliance Verification)
+    ├── Playwright Web Scraper (E-Commerce Catalog & Snapshot Crawler)
+    └── PostgreSQL Database (Port 5432, metroniq)
 ```
-
-> ⚠️ **Demo Limitation**: Because backend APIs and local AI models run on a self-hosted computer via Cloudflare Tunnel, the designated host laptop **must remain powered on and connected to the internet** during the demo. This is a local demo infrastructure and not permanent 24/7 cloud hosting.
-
-### Scanner Workflow
-
-When an image is submitted:
-
-1. **Product Image** → uploaded to backend
-2. **YOLO** → determines precise label coordinates
-3. **PaddleOCR** → runs over coordinates to extract raw strings
-4. **Declaration Extraction** (Gemini) → translates raw tokens into structured fields
-5. **Deterministic Legal Metrology Rule Engine** → runs rigid validation rules against values
-6. **Risk/Compliance Result** → categorizes result as PASS, FAIL, or NOT VERIFIED
-7. **Evidence & Logs** → snapshots saved
-8. **PostgreSQL** → final records persisted
-9. **Reports** → available via frontend tables or PDF export
-
-> ⚠️ **Safe Failure Behavior**: If PaddleOCR or Gemini is unavailable or errors out during a scan, the execution seamlessly degrades to a **NOT VERIFIED / Technical Review** status. OCR failure does **NOT** result in an automatic compliance FAIL against the manufacturer. A human officer is alerted to inspect the image manually.
 
 ---
 
-## 💻 Setup Instructions (Windows)
+## 🔑 Login Credentials
 
-The current self-hosted architecture is automated via the repository batch script.
+The local database is seeded with role-segregated test accounts:
+
+| Role | Email | Password | Access Scope |
+|---|---|---|---|
+| **ADMIN** | `admin@metroniq.local` | `password` | User approvals, global audit logs, rule configuration, geo analytics |
+| **OFFICER** | `officer@metroniq.local` | `password` | AI product scanner, inspections, legal notices, reinspections, e-commerce crawler |
+| **MANUFACTURER** | `manufacturer@metroniq.local` | `password` | Pre-market compliance auditor, notice responses, rectification submission queue |
+
+---
+
+## 💻 Setup & Run Instructions (Windows / Local Host)
 
 ### 1. Clone repository
 ```bash
-git clone https://github.com/TeamMetronIQ/MetronIQ.git
-cd MetronIQ
+git clone https://github.com/METRONIQ6/METRONIQ.git
+cd METRONIQ
 ```
 
 ### 2. Configure environment variables
-Create a `.env` file in the `backend` folder based on `.env.example`. 
+Backend (`backend/.env`):
 ```env
-DATABASE_URL=postgresql://user:password@localhost:5432/metroniq
-GEMINI_API_KEY=AIzaSy...
-SECRET_KEY=a_strong_random_secret_string
+DATABASE_URL=postgresql://postgres:postgres@localhost:5432/metroniq
+SECRET_KEY=your_secure_randomly_generated_string_here
+GEMINI_API_KEY=your_gemini_api_key_here
 ```
-*(Never include real secrets, tokens, or API keys in source control.)*
+
+Frontend (`frontend/.env.local`):
+```env
+NEXT_PUBLIC_API_URL=http://127.0.0.1:8000
+```
 
 ### 3. Install dependencies
-*(Assuming Python and Node.js are available)*
+Backend:
 ```bash
 cd backend
 python -m venv venv
 venv\Scripts\activate
 pip install -r requirements.txt
+playwright install chromium
 alembic upgrade head
 cd ..
+```
 
+Frontend:
+```bash
 cd frontend
 npm install
 cd ..
 ```
 
-### 4. Start PostgreSQL
-Ensure the PostgreSQL service is active locally (default port 5432) and the `metroniq` database is created.
-
-### 5. Run Demo Setup
-Use the root batch file, which will automatically bind your backend to an active Cloudflare Tunnel and orchestrate Vercel to reflect the new API tunnel endpoint.
+### 4. Start Local Host Services
+Simply double-click or run the repository batch script:
 ```cmd
 start_metroniq.bat
 ```
 
-### 6. Open MetronIQ
-Wait for the terminal script to complete deployment synchronization, then visit your configured Vercel frontend URL.
+This starts:
+- **Frontend**: [http://localhost:3000](http://localhost:3000)
+- **Backend API**: [http://127.0.0.1:8000](http://127.0.0.1:8000)
+- **Interactive Swagger Docs**: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
 
 ---
 
