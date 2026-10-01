@@ -9,6 +9,9 @@ import {
     FileText, ListChecks, FileSearch, ShieldAlert, CheckCircle, HelpCircle, Activity,
     RefreshCw, BarChart3, ChevronRight, Eye
 } from 'lucide-react'
+import {
+    BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell
+} from 'recharts'
 import Link from 'next/link'
 import { getToken, getLoggedInUser } from '@/lib/auth'
 import { useTranslation } from "@/i18n"
@@ -352,8 +355,171 @@ export default function OfficerDashboard() {
 
             {/* Bottom Row Charts */}
             <div className="grid lg:grid-cols-2 gap-6 pt-2 min-h-[280px]">
-                <EmptyChartState title={t('officerUI.riskDistribution') || 'Risk Distribution'} />
-                <EmptyChartState title={t('officerUI.complianceTrend') || 'Compliance Trend'} />
+                {/* 1. Risk Distribution Chart */}
+                {summary?.riskDistribution && summary.riskDistribution.some((r: any) => r.value > 0) ? (
+                    <Card className="rounded-lg shadow-xs border border-border bg-card h-full flex flex-col">
+                        <CardHeader className="pb-2 border-b border-border">
+                            <div className="flex justify-between items-center">
+                                <CardTitle className="text-sm font-semibold text-foreground">
+                                    {t('officerUI.riskDistribution') || 'Risk Distribution'}
+                                </CardTitle>
+                                <span className="text-xs text-muted-foreground border border-border rounded px-2 py-0.5">
+                                    {t('officerUI.thisWeek')}
+                                </span>
+                            </div>
+                        </CardHeader>
+                        <CardContent className="flex-grow p-4 flex flex-col justify-between">
+                            <div className="h-[180px] w-full pt-2">
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <BarChart
+                                        data={summary.riskDistribution}
+                                        margin={{ top: 10, right: 15, left: -20, bottom: 0 }}
+                                    >
+                                        <CartesianGrid strokeDasharray="3 3" vertical={false} className="stroke-border/40" />
+                                        <XAxis
+                                            dataKey="key"
+                                            tickFormatter={(val) => translateRiskScore(val, language)}
+                                            className="text-[11px] fill-muted-foreground"
+                                            tickLine={false}
+                                        />
+                                        <YAxis
+                                            allowDecimals={false}
+                                            className="text-[11px] fill-muted-foreground"
+                                            tickLine={false}
+                                            axisLine={false}
+                                        />
+                                        <Tooltip
+                                            formatter={(value: any, name: any, item: any) => [
+                                                value,
+                                                translateRiskScore(item.payload.key, language)
+                                            ]}
+                                            contentStyle={{
+                                                backgroundColor: 'var(--card)',
+                                                borderColor: 'var(--border)',
+                                                borderRadius: '8px',
+                                                fontSize: '12px'
+                                            }}
+                                        />
+                                        <Bar dataKey="value" radius={[4, 4, 0, 0]}>
+                                            {summary.riskDistribution.map((entry: any, index: number) => {
+                                                let fillColor = '#16a34a';
+                                                if (entry.key === 'MEDIUM') fillColor = '#d97706';
+                                                if (entry.key === 'HIGH') fillColor = '#dc2626';
+                                                return <Cell key={`cell-${index}`} fill={fillColor} />;
+                                            })}
+                                        </Bar>
+                                    </BarChart>
+                                </ResponsiveContainer>
+                            </div>
+                            <div className="grid grid-cols-3 gap-2 pt-2 border-t border-border/50 text-center">
+                                <div className="p-1.5 rounded-md bg-emerald-500/10">
+                                    <p className="text-[10px] font-semibold text-emerald-600 dark:text-emerald-400 uppercase">
+                                        {translateRiskScore('LOW', language)}
+                                    </p>
+                                    <p className="text-sm font-bold text-foreground font-mono">{summary.lowRiskCases || 0}</p>
+                                </div>
+                                <div className="p-1.5 rounded-md bg-amber-500/10">
+                                    <p className="text-[10px] font-semibold text-amber-600 dark:text-amber-400 uppercase">
+                                        {translateRiskScore('MEDIUM', language)}
+                                    </p>
+                                    <p className="text-sm font-bold text-foreground font-mono">{summary.mediumRiskCases || 0}</p>
+                                </div>
+                                <div className="p-1.5 rounded-md bg-red-500/10">
+                                    <p className="text-[10px] font-semibold text-red-600 dark:text-red-400 uppercase">
+                                        {translateRiskScore('HIGH', language)}
+                                    </p>
+                                    <p className="text-sm font-bold text-foreground font-mono">{summary.highRiskCases || 0}</p>
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
+                ) : (
+                    <EmptyChartState title={t('officerUI.riskDistribution') || 'Risk Distribution'} />
+                )}
+
+                {/* 2. Compliance Trend Chart */}
+                {summary?.complianceTrend && summary.complianceTrend.length > 0 && summary.complianceTrend.some((t: any) => t.total > 0) ? (
+                    <Card className="rounded-lg shadow-xs border border-border bg-card h-full flex flex-col">
+                        <CardHeader className="pb-2 border-b border-border">
+                            <div className="flex justify-between items-center">
+                                <CardTitle className="text-sm font-semibold text-foreground">
+                                    {t('officerUI.complianceTrend') || 'Compliance Trend'}
+                                </CardTitle>
+                                <span className="text-xs text-muted-foreground border border-border rounded px-2 py-0.5">
+                                    {t('officerUI.thisWeek')}
+                                </span>
+                            </div>
+                        </CardHeader>
+                        <CardContent className="flex-grow p-4 flex flex-col justify-between">
+                            <div className="h-[180px] w-full pt-2">
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <BarChart
+                                        data={summary.complianceTrend}
+                                        margin={{ top: 10, right: 15, left: -20, bottom: 0 }}
+                                    >
+                                        <CartesianGrid strokeDasharray="3 3" vertical={false} className="stroke-border/40" />
+                                        <XAxis
+                                            dataKey="date"
+                                            tickFormatter={(val) => {
+                                                try {
+                                                    const d = new Date(val);
+                                                    return d.toLocaleDateString(language === 'hi' ? 'hi-IN' : language === 'ta' ? 'ta-IN' : 'en-GB', { day: 'numeric', month: 'short' });
+                                                } catch {
+                                                    return val;
+                                                }
+                                            }}
+                                            className="text-[11px] fill-muted-foreground"
+                                            tickLine={false}
+                                        />
+                                        <YAxis
+                                            allowDecimals={false}
+                                            className="text-[11px] fill-muted-foreground"
+                                            tickLine={false}
+                                            axisLine={false}
+                                        />
+                                        <Tooltip
+                                            formatter={(value: any, name: any) => [
+                                                value,
+                                                name === 'passed' ? (t('officerUI.passedInspections') || 'Passed') : (t('officerUI.failedInspections') || 'Failed')
+                                            ]}
+                                            labelFormatter={(label: any) => {
+                                                try {
+                                                    return new Date(String(label)).toLocaleDateString(language === 'hi' ? 'hi-IN' : language === 'ta' ? 'ta-IN' : 'en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+                                                } catch {
+                                                    return String(label || '');
+                                                }
+                                            }}
+                                            contentStyle={{
+                                                backgroundColor: 'var(--card)',
+                                                borderColor: 'var(--border)',
+                                                borderRadius: '8px',
+                                                fontSize: '12px'
+                                            }}
+                                        />
+                                        <Bar dataKey="passed" name="passed" fill="#16a34a" stackId="a" radius={[0, 0, 0, 0]} />
+                                        <Bar dataKey="failed" name="failed" fill="#dc2626" stackId="a" radius={[4, 4, 0, 0]} />
+                                    </BarChart>
+                                </ResponsiveContainer>
+                            </div>
+                            <div className="grid grid-cols-2 gap-2 pt-2 border-t border-border/50 text-center">
+                                <div className="p-1.5 rounded-md bg-emerald-500/10 flex items-center justify-between px-3">
+                                    <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400">
+                                        ● {t('officerUI.passedInspections') || 'Passed'}
+                                    </span>
+                                    <span className="text-sm font-bold text-foreground font-mono">{summary.passedInspections || 0}</span>
+                                </div>
+                                <div className="p-1.5 rounded-md bg-red-500/10 flex items-center justify-between px-3">
+                                    <span className="text-xs font-semibold text-red-600 dark:text-red-400">
+                                        ● {t('officerUI.failedInspections') || 'Failed'}
+                                    </span>
+                                    <span className="text-sm font-bold text-foreground font-mono">{summary.failedInspections || 0}</span>
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
+                ) : (
+                    <EmptyChartState title={t('officerUI.complianceTrend') || 'Compliance Trend'} />
+                )}
             </div>
 
         </div>
