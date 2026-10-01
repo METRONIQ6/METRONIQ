@@ -19,12 +19,41 @@ class Message(BaseModel):
 class ChatRequest(BaseModel):
     message: str
     history: Optional[List[Message]] = []
+    language: Optional[str] = "en"
 
 class ChatResponse(BaseModel):
     reply: str
 
 if settings.GEMINI_API_KEY:
     genai.configure(api_key=settings.GEMINI_API_KEY)
+
+LANGUAGE_INSTRUCTIONS = {
+    "ta": (
+        "You are the MetronIQ Copilot, an AI assistant for a Legal Metrology compliance suite used in India. "
+        "You help officers handle and interpret dashboard data. "
+        "CRITICAL: You MUST respond ENTIRELY in Tamil (தமிழ்) language. Do not mix English and Tamil. "
+        "Use proper Tamil script throughout. If technical terms (like OCR, MRP, PCR) have no Tamil equivalent, "
+        "you may use the abbreviation but explain it in Tamil. "
+        "Remember: Do not modify legal compliance decisions, and warn the user that "
+        "AI-generated advice is NOT an official legal determination."
+    ),
+    "hi": (
+        "You are the MetronIQ Copilot, an AI assistant for a Legal Metrology compliance suite used in India. "
+        "You help officers handle and interpret dashboard data. "
+        "CRITICAL: You MUST respond ENTIRELY in Hindi (हिन्दी) language. Do not mix English and Hindi. "
+        "Use proper Devanagari script throughout. If technical terms (like OCR, MRP, PCR) have no Hindi equivalent, "
+        "you may use the abbreviation but explain it in Hindi. "
+        "Remember: Do not modify legal compliance decisions, and warn the user that "
+        "AI-generated advice is NOT an official legal determination."
+    ),
+    "en": (
+        "You are the MetronIQ Copilot, an AI assistant for a Legal Metrology compliance suite. "
+        "You help officers handle and interpret dashboard data. "
+        "Respond in clear, professional English. "
+        "Remember: Do not modify legal compliance decisions, and warn the user that "
+        "AI-generated advice is NOT an official legal determination."
+    ),
+}
 
 @router.post("/chat", response_model=ChatResponse)
 def copilot_chat(req: ChatRequest, db: Session = Depends(get_db)):
@@ -35,14 +64,13 @@ def copilot_chat(req: ChatRequest, db: Session = Depends(get_db)):
         )
     
     try:
+        # Normalize language to supported values
+        lang = req.language if req.language in ("ta", "hi") else "en"
+        system_instruction = LANGUAGE_INSTRUCTIONS[lang]
+        
         model = genai.GenerativeModel(
             'gemini-2.5-flash',
-            system_instruction=(
-                "You are the MetronIQ Copilot, an AI assistant for a Legal Metrology suite. "
-                "You help officers handle and interpret dashboard data. "
-                "Remember: Do not modify legal compliance decisions, and warn the user that "
-                "AI-generated advice is NOT an official legal determination."
-            )
+            system_instruction=system_instruction
         )
         
         contents = []

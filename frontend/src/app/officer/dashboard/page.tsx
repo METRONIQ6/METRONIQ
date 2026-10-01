@@ -149,35 +149,35 @@ export default function OfficerDashboard() {
                     <h1 className="text-2xl font-bold tracking-tight text-[#0B1F3A] dark:text-white flex items-center gap-2">
                         {t('dashboard.greeting')} {getDisplayUser()}
                     </h1>
-                    <p className="text-xs text-muted-foreground mt-1">Legal Metrology Packaged Commodities inspection summary and daily operations.</p>
+                    <p className="text-xs text-muted-foreground mt-1">{t('officerUI.dashboardSubtitle') || 'Legal Metrology Packaged Commodities inspection summary and daily operations.'}</p>
                 </div>
             </div>
 
             {/* KPI Header Grid */}
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3.5">
                 <KpiCard
-                    icon={<ClipboardList className="w-4 h-4" />} title="Total Inspections" value={summary.totalInspections}
-                    status={`↑ ${summary.inspectionsToday} today`} statusColor="text-emerald-600 dark:text-emerald-400"
+                    icon={<ClipboardList className="w-4 h-4" />} title={t('officerUI.totalInspections') || 'Total Inspections'} value={summary.totalInspections}
+                    status={`↑ ${summary.inspectionsToday} ${t('officerUI.inspectionsToday') || 'today'}`} statusColor="text-emerald-600 dark:text-emerald-400"
                 />
                 <KpiCard
-                    icon={<Clock className="w-4 h-4" />} title="Pending Reviews" value={summary.pendingRectifications}
-                    status="High Priority" statusColor="text-amber-600 dark:text-amber-400"
+                    icon={<Clock className="w-4 h-4" />} title={t('officerUI.pendingReviews') || 'Pending Reviews'} value={summary.pendingRectifications}
+                    status={t('officerUI.highPriority') || 'High Priority'} statusColor="text-amber-600 dark:text-amber-400"
                 />
                 <KpiCard
-                    icon={<AlertTriangle className="w-4 h-4" />} title="Failed Inspections" value={summary.failedInspections}
-                    status="Action Required" statusColor="text-red-600 dark:text-red-400"
+                    icon={<AlertTriangle className="w-4 h-4" />} title={t('officerUI.failedInspections') || 'Failed Inspections'} value={summary.failedInspections}
+                    status={t('officerUI.actionRequired') || 'Action Required'} statusColor="text-red-600 dark:text-red-400"
                 />
                 <KpiCard
-                    icon={<CheckCircle2 className="w-4 h-4" />} title="Passed Inspections" value={summary.passedInspections}
-                    status="Sustained" statusColor="text-muted-foreground"
+                    icon={<CheckCircle2 className="w-4 h-4" />} title={t('officerUI.passedInspections') || 'Passed Inspections'} value={summary.passedInspections}
+                    status={t('officerUI.sustained') || 'Sustained'} statusColor="text-muted-foreground"
                 />
                 <KpiCard
-                    icon={<CalendarCheck className="w-4 h-4" />} title="Reinspections Due" value={summary.reinspectionsDue}
-                    status="Due this week" statusColor="text-[#2563EB] dark:text-blue-400"
+                    icon={<CalendarCheck className="w-4 h-4" />} title={t('officerUI.reinspectionsDue') || 'Reinspections Due'} value={summary.reinspectionsDue}
+                    status={t('officerUI.dueThisWeek') || 'Due this week'} statusColor="text-[#2563EB] dark:text-blue-400"
                 />
                 <KpiCard
-                    icon={<Scale className="w-4 h-4" />} title="Enforcement Cases" value={summary.activeEnforcement}
-                    status="Under Review" statusColor="text-amber-600 dark:text-amber-400"
+                    icon={<Scale className="w-4 h-4" />} title={t('officerUI.enforcementCases') || 'Enforcement Cases'} value={summary.activeEnforcement}
+                    status={t('officerUI.underReview') || 'Under Review'} statusColor="text-amber-600 dark:text-amber-400"
                 />
             </div>
 
@@ -212,7 +212,7 @@ export default function OfficerDashboard() {
                                             <TableCell colSpan={7} className="text-center py-12 text-muted-foreground">
                                                 <div className="flex flex-col items-center justify-center">
                                                     <FileText className="w-10 h-10 mb-3 opacity-20" />
-                                                    <p>No recent inspections found.</p>
+                                                    <p>{t('officerUI.noRecentInspections') || 'No recent inspections found.'}</p>
                                                 </div>
                                             </TableCell>
                                         </TableRow>

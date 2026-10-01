@@ -142,7 +142,7 @@ export default function LabelAuditor() {
                     {t('manufacturer.preMarketAuditor')}
                 </h1>
                 <p className="text-sm text-muted-foreground mt-1">
-                    Verify pre-packaged commodity packaging artwork against statutory Legal Metrology rules prior to commercial batch printing.
+                    {t('manufacturerUI.auditorSubtitle') || 'Verify pre-packaged commodity packaging artwork against statutory Legal Metrology rules prior to commercial batch printing.'}
                 </p>
             </div>
 

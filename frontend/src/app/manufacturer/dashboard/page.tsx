@@ -54,7 +54,7 @@ export default function Dashboard() {
                     {t('manufacturer.dashboard.title')}
                 </h1>
                 <p className="text-sm text-muted-foreground mt-1">
-                    Pre-market statutory Legal Metrology compliance overview, product declarations, and regulatory actions.
+                    {t('manufacturerUI.dashboardSubtitle') || 'Pre-market statutory Legal Metrology compliance overview, product declarations, and regulatory actions.'}
                 </p>
             </div>
 

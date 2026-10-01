@@ -50,7 +50,7 @@ export default function NewProduct() {
                         {t('manufacturer.create_product.registerNew') || 'Register New Product'}
                     </h1>
                     <p className="text-xs text-muted-foreground mt-0.5">
-                        Create a product declaration draft prior to pre-market Legal Metrology self-audit.
+                        {t('manufacturerUI.newProductSubtitle') || 'Create a product declaration draft prior to pre-market Legal Metrology self-audit.'}
                     </p>
                 </div>
             </div>

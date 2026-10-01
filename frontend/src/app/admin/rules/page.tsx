@@ -147,7 +147,7 @@ export default function RuleManagement() {
                         {t('adminUI.metrologyRulesEngine')}
                     </h1>
                     <p className="text-sm text-muted-foreground mt-1">
-                        Manage and version statutory Legal Metrology compliance regulations powering the AI validation engine.
+                        {t('admin.rulesSubtitle') || 'Manage and version statutory Legal Metrology compliance regulations powering the AI validation engine.'}
                     </p>
                 </div>
 

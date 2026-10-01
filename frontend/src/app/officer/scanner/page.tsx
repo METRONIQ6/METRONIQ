@@ -38,13 +38,13 @@ export default function AIScannerUnified() {
     const canvasRef = useRef<HTMLCanvasElement>(null)
     const [stream, setStream] = useState<MediaStream | null>(null)
 
-    const steps = [
-        "Uploading...",
-        "Preprocessing...",
-        "OCR Extraction...",
-        "Rules Validation...",
-        "Generating Evidence...",
-        "Complete"
+    const getSteps = () => [
+        t('scanner.stepUploading') || 'Uploading...',
+        t('scanner.stepPreprocessing') || 'Preprocessing...',
+        t('scanner.stepOcr') || 'OCR Extraction...',
+        t('scanner.stepRules') || 'Rules Validation...',
+        t('scanner.stepEvidence') || 'Generating Evidence...',
+        t('scanner.stepComplete') || 'Complete'
     ]
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -134,7 +134,7 @@ export default function AIScannerUnified() {
             });
             if (!uploadResp.ok) {
                 if (uploadResp.status === 502 || uploadResp.status === 504 || uploadResp.status === 530) {
-                    throw new Error("Backend Unavailable. Please ensure the backend is running and the tunnel is active.")
+                    throw new Error(t('scanner.backendUnavailable') || 'Backend Unavailable. Please ensure the backend is running.')
                 }
                 let errDetail = "Failed to upload image"
                 try {
@@ -181,7 +181,7 @@ export default function AIScannerUnified() {
 
             while (status === "PROCESSING" || status === "UPLOADED") {
                 if (pollCount >= maxPolls) {
-                    throw new Error("Processing timed out. Please retry.")
+                    throw new Error(t('scanner.processingTimedOut') || 'Processing timed out. Please retry.')
                 }
                 pollCount++;
 
@@ -421,12 +421,12 @@ export default function AIScannerUnified() {
                             <div className="w-full h-2 bg-muted rounded-full overflow-hidden border border-border">
                                 <div 
                                     className="h-full bg-[#2563EB] transition-all duration-500 ease-out" 
-                                    style={{ width: `${Math.max(10, ((loadingStep + 1) / steps.length) * 100)}%` }}
+                                    style={{ width: `${Math.max(10, ((loadingStep + 1) / getSteps().length) * 100)}%` }}
                                 />
                             </div>
                             <div className="flex justify-between text-[11px] text-muted-foreground font-mono">
-                                <span>{language === 'ta' ? 'படி' : language === 'hi' ? 'चरण' : 'Step'} {loadingStep + 1} / {steps.length}</span>
-                                <span>{Math.round(((loadingStep + 1) / steps.length) * 100)}%</span>
+                                <span>{language === 'ta' ? 'படி' : language === 'hi' ? 'चरण' : 'Step'} {loadingStep + 1} / {getSteps().length}</span>
+                                <span>{Math.round(((loadingStep + 1) / getSteps().length) * 100)}%</span>
                             </div>
                         </div>
 
@@ -505,7 +505,7 @@ export default function AIScannerUnified() {
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border pb-4">
                 <div>
                     <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-semibold bg-blue-50 text-blue-800 dark:bg-blue-950/40 dark:text-blue-300 border border-blue-200 dark:border-blue-900 mb-1.5">
-                        {language === 'ta' ? 'சட்ட அளவியல் சரிபார்ப்பு அறிக்கை' : language === 'hi' ? 'विधिक मापविज्ञान सत्यापन रिपोर्ट' : 'Legal Metrology Verification Report'}
+                        {t('scanner.legalMetrologyReport') || 'Legal Metrology Verification Report'}
                     </div>
                     <h2 className="text-2xl font-bold tracking-tight text-foreground">{t('scanner.complianceResult')}</h2>
                     <p className="text-xs text-muted-foreground">{data?.validation_details ? (language === 'ta' ? 'PCR 2011 விதிகளின்படி சரிபார்ப்பு முடிந்தது' : language === 'hi' ? 'PCR 2011 नियमों के तहत सत्यापन पूर्ण' : 'Deterministic Rule Engine PCR 2011 Complete') : ''}</p>

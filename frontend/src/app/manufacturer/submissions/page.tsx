@@ -45,7 +45,7 @@ export default function SubmissionsPage() {
                     {t('manufacturer.submissions.title') || 'Government Submissions'}
                 </h1>
                 <p className="text-sm text-muted-foreground mt-1">
-                    Formal statutory submissions filed with the Legal Metrology Department for pre-market regulatory approval.
+                    {t('manufacturerUI.submissionsSubtitle') || 'Formal statutory submissions filed with the Legal Metrology Department for pre-market regulatory approval.'}
                 </p>
             </div>
 

@@ -275,7 +275,7 @@ export default function ComplianceAudit() {
                     {t('manufacturer.compliance_audit.title')}
                 </h1>
                 <p className="text-sm text-muted-foreground mt-1">
-                    Pre-market automated statutory Legal Metrology compliance verification and declaration audit.
+                    {t('manufacturerUI.complianceAuditSubtitle') || 'Pre-market automated statutory Legal Metrology compliance verification and declaration audit.'}
                 </p>
             </div>
 

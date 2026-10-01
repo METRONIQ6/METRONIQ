@@ -148,34 +148,51 @@ npm install
 
 ---
 
-## 💻 Running the Application (Two PowerShell Windows)
+## 🚀 Starting MetronIQ Locally
 
-MetronIQ is designed to run locally using two terminal windows:
+### ✅ Easiest Method — Double-Click Startup (Recommended)
 
-### Window 1 — Frontend (Next.js)
+Once the one-time setup is complete, the simplest way to start MetronIQ is using the included startup script:
+
+> **Just double-click `start_metroniq.bat`** in the repository root directory (or run it from any terminal).
+
+What it does automatically:
+- 🔓 Frees ports `3000` and `8000` if they are in use
+- 🗄️ Starts PostgreSQL service
+- ⚙️ Activates the Python virtual environment and starts the FastAPI backend (`uvicorn`)
+- 🌐 Installs any missing Node dependencies and starts the Next.js frontend (`npm run dev`)
+
+After a few seconds:
+- **Frontend:** [http://localhost:3000](http://localhost:3000)
+- **Backend API:** [http://127.0.0.1:8000](http://127.0.0.1:8000)
+- **Health Check:** [http://127.0.0.1:8000/api/health](http://127.0.0.1:8000/api/health)
+- **Swagger Docs:** [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+
+---
+
+### 🔧 Alternative — Manual PowerShell Startup
+
+If you prefer to start services manually (e.g., for debugging), use two PowerShell windows:
+
+#### Window 1 — Backend (FastAPI)
+
+```powershell
+cd backend
+.\venv\Scripts\Activate.ps1
+uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
+```
+
+#### Window 2 — Frontend (Next.js)
 
 ```powershell
 cd frontend
 npm run dev
 ```
 
-> **Frontend URL:** [http://localhost:3000](http://localhost:3000)
-
-### Window 2 — Backend (FastAPI)
-
-```powershell
-cd backend
-.\venv\Scripts\Activate.ps1
-uvicorn app.main:app --host 127.0.0.1 --port 8000
-```
-
+> **Frontend:** [http://localhost:3000](http://localhost:3000)  
 > **Backend API:** [http://127.0.0.1:8000](http://127.0.0.1:8000)  
 > **Health Check:** [http://127.0.0.1:8000/api/health](http://127.0.0.1:8000/api/health)  
-> **Interactive Swagger Docs:** [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
-
-*(Alternative: You can also start both services simultaneously using the root convenience script `start_metroniq.bat`)*
-
----
+> **Swagger Docs:** [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
 
 ## 🔑 Default Seeded Accounts
 

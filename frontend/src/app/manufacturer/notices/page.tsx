@@ -42,7 +42,7 @@ export default function NoticesCenter() {
                     Government Notices
                 </h1>
                 <p className="text-sm text-muted-foreground mt-1">
-                    Statutory show-cause notices and advisory communications issued by Legal Metrology regulatory authorities.
+                    {t('manufacturerUI.noticesSubtitle') || 'Statutory show-cause notices and advisory communications issued by Legal Metrology regulatory authorities.'}
                 </p>
             </div>
 

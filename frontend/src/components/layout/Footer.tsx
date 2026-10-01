@@ -11,10 +11,10 @@ export default function Footer({ className = "" }: { className?: string }) {
                 <div className="flex items-center gap-2 text-foreground font-bold text-sm">
                     <ShieldCheck className="w-5 h-5 text-[#2563EB]" />
                     <span>{t('common.metroniq')}</span>
-                    <span className="text-muted-foreground font-normal text-xs hidden sm:inline">| Legal Metrology Compliance Platform</span>
+                    <span className="text-muted-foreground font-normal text-xs hidden sm:inline">| {t('layout.compliancePlatform') || 'Legal Metrology Compliance Platform'}</span>
                 </div>
                 <p className="text-xs text-muted-foreground text-center sm:text-right">
-                    © 2026 METRONIQ. All operations logged and audited under Legal Metrology Act, 2011.
+                    {t('layout.footerCopyright') || '© 2026 METRONIQ. All operations logged and audited under Legal Metrology Act, 2011.'}
                 </p>
             </div>
         </footer>
