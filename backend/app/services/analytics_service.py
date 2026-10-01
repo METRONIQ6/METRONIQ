@@ -37,13 +37,13 @@ class AnalyticsService:
         # SQLite dialect compatible date extraction (using Date truncation theoretically across sqlalchemy)
         # Using string slicing for generic SQLite YYYY-MM-DD
         results = db.query(
-            func.substr(Inspection.created_at, 1, 10).label('date'),
+            func.date(Inspection.created_at).label('date'),
             func.count(Inspection.id).label('count')
         ).filter(Inspection.created_at >= start_date) \
-         .group_by('date') \
-         .order_by('date').all()
+         .group_by(func.date(Inspection.created_at)) \
+         .order_by(func.date(Inspection.created_at)).all()
          
-        trends = [{"date": r[0], "inspections": r[1]} for r in results]
+        trends = [{"date": str(r[0]), "inspections": r[1]} for r in results]
         return trends
 
     def get_ai_observations(self, db: Session):

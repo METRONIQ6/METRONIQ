@@ -7,7 +7,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import {
     ClipboardList, Clock, AlertTriangle, CheckCircle2, CalendarCheck, Scale,
     FileText, ListChecks, FileSearch, ShieldAlert, CheckCircle, HelpCircle, Activity,
-    ScanLine, RefreshCw, BarChart3, ChevronRight, Eye
+    RefreshCw, BarChart3, ChevronRight, Eye
 } from 'lucide-react'
 import Link from 'next/link'
 import { getToken, getLoggedInUser } from '@/lib/auth'
@@ -354,84 +354,6 @@ export default function OfficerDashboard() {
             <div className="grid lg:grid-cols-2 gap-6 pt-2 min-h-[280px]">
                 <EmptyChartState title={t('officerUI.riskDistribution') || 'Risk Distribution'} />
                 <EmptyChartState title={t('officerUI.complianceTrend') || 'Compliance Trend'} />
-            </div>
-
-            {/* Quick Actions Panel */}
-            <div className="pt-6 mt-4">
-                <h2 className="text-lg font-bold text-foreground mb-4">{t('officerUI.quickActions')}</h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-
-                    <Link href="/officer/scanner" className="block">
-                        <Card className="rounded-xl border border-border bg-card hover:bg-muted/50 transition-colors cursor-pointer h-full">
-                            <CardContent className="p-4 flex items-center gap-3">
-                                <div className="p-2.5 rounded-lg bg-[#0B1F3A] text-white shrink-0">
-                                    <ScanLine className="w-5 h-5" />
-                                </div>
-                                <div>
-                                    <div className="font-semibold text-sm text-foreground">{t('officerUI.startVerification')}</div>
-                                    <div className="text-xs text-muted-foreground mt-0.5">{t('officerUI.scanNewProduct')}</div>
-                                </div>
-                            </CardContent>
-                        </Card>
-                    </Link>
-
-                    <Link href="/officer/reinspections" className="block">
-                        <Card className="rounded-xl border border-border bg-card hover:bg-muted/50 transition-colors cursor-pointer h-full">
-                            <CardContent className="p-4 flex items-center gap-3">
-                                <div className="p-2.5 rounded-lg bg-[#0B1F3A] text-white shrink-0">
-                                    <CalendarCheck className="w-5 h-5" />
-                                </div>
-                                <div>
-                                    <div className="font-semibold text-sm text-foreground">{t('navigation.reinspections')}</div>
-                                    <div className="text-xs text-muted-foreground mt-0.5">{t('officerUI.seeScheduled')}</div>
-                                </div>
-                            </CardContent>
-                        </Card>
-                    </Link>
-
-                    <Link href="/officer/notices" className="block">
-                        <Card className="rounded-xl border border-border bg-card hover:bg-muted/50 transition-colors cursor-pointer h-full">
-                            <CardContent className="p-4 flex items-center gap-3">
-                                <div className="p-2.5 rounded-lg bg-[#0B1F3A] text-white shrink-0">
-                                    <FileText className="w-5 h-5" />
-                                </div>
-                                <div>
-                                    <div className="font-semibold text-sm text-foreground">{t('notices.title')}</div>
-                                    <div className="text-xs text-muted-foreground mt-0.5">{t('officerUI.manageIssuedNotices')}</div>
-                                </div>
-                            </CardContent>
-                        </Card>
-                    </Link>
-
-                    <Link href="/officer/enforcement" className="block">
-                        <Card className="rounded-xl border border-border bg-card hover:bg-muted/50 transition-colors cursor-pointer h-full">
-                            <CardContent className="p-4 flex items-center gap-3">
-                                <div className="p-2.5 rounded-lg bg-[#0B1F3A] text-white shrink-0">
-                                    <Scale className="w-5 h-5" />
-                                </div>
-                                <div>
-                                    <div className="font-semibold text-sm text-foreground">{t('navigation.enforcement')}</div>
-                                    <div className="text-xs text-muted-foreground mt-0.5">{t('officerUI.reviewCases')}</div>
-                                </div>
-                            </CardContent>
-                        </Card>
-                    </Link>
-
-                    <Link href="/officer/reports" className="block">
-                        <Card className="rounded-xl border border-border bg-card hover:bg-muted/50 transition-colors cursor-pointer h-full">
-                            <CardContent className="p-4 flex items-center gap-3">
-                                <div className="p-2.5 rounded-lg bg-[#0B1F3A] text-white shrink-0">
-                                    <BarChart3 className="w-5 h-5" />
-                                </div>
-                                <div>
-                                    <div className="font-semibold text-sm text-foreground">{t('navigation.reports')}</div>
-                                    <div className="text-xs text-muted-foreground mt-0.5">{t('officerUI.viewLogTrails')}</div>
-                                </div>
-                            </CardContent>
-                        </Card>
-                    </Link>
-
-                </div>
             </div>
 
         </div>
