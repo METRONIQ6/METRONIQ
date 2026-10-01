@@ -24,7 +24,6 @@ const getOfficerNav = (t: any) => [
 
 const getAdminNav = (t: any) => [
     { name: t('navigation.dashboard'), href: '/admin/dashboard', icon: LayoutDashboard },
-    { name: t('navigation.reports') || 'Reports', href: '/admin/reports', icon: BarChart3 },
     { name: t('adminUI.userManagement'), href: '/admin/users', icon: UserCog },
     { name: t('navigation.geoAnalytics'), href: '/admin/geo', icon: Map },
     { name: t('navigation.rules'), href: '/admin/rules', icon: Ruler },
