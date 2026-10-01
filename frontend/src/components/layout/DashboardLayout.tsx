@@ -15,6 +15,7 @@ const getOfficerNav = (t: any) => [
     { name: t('navigation.dashboard'), href: '/officer/dashboard', icon: LayoutDashboard },
     { name: t('navigation.aiScanner'), href: '/officer/scanner', icon: ShieldCheck },
     { name: t('navigation.inspections'), href: '/officer/inspection', icon: FileText },
+    { name: t('navigation.geoAnalytics'), href: '/officer/geo', icon: Map },
     { name: t('navigation.notices'), href: '/officer/notices', icon: ShieldAlert },
     { name: t('navigation.reinspections'), href: '/officer/reinspections', icon: ListChecks },
     { name: t('navigation.enforcement'), href: '/officer/enforcement', icon: ShieldAlert },

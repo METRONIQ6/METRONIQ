@@ -153,6 +153,18 @@ def seed_demo_data():
                 "manufacturer_name": "Telangana Packaged Commodities Ltd, Hyderabad, Telangana - 500001",
                 "country_of_origin": "India",
                 "manufacturer_id": created_manufacturers["Telangana Packaged Commodities Ltd"].id
+            },
+            {
+                "name": "Filter Coffee Roast & Ground 500g",
+                "category": "Beverages",
+                "sku": "MFG-COF-008",
+                "status": "APPROVED",
+                "net_quantity": "500 g",
+                "mrp": "₹320.00 (incl. of all taxes)",
+                "generic_name": "Coffee Powder",
+                "manufacturer_name": "Deccan Consumer Goods Ltd, Electronic City, Bengaluru, Karnataka - 560100",
+                "country_of_origin": "India",
+                "manufacturer_id": created_manufacturers["Deccan Consumer Goods Ltd"].id
             }
         ]
 
@@ -419,6 +431,16 @@ def seed_demo_data():
                 "result": "PENDING_RULES",
                 "evidence_payload": make_evidence_payload("Salted Cashews 200g", "Metron Foods & Dairy Pvt Ltd", "200 g", "₹310.00", "09/2026", True, "LOW"),
                 "created_at": now - timedelta(minutes=45)
+            },
+            {
+                "id": "INSP-DEMO-011",
+                "product_id": created_products[7].id,
+                "officer_id": off_user.id,
+                "status": "COMPLETED",
+                "risk_level": "LOW",
+                "result": "PASS",
+                "evidence_payload": make_evidence_payload("Filter Coffee Roast & Ground 500g", "Deccan Consumer Goods Ltd", "500 g", "₹320.00", "09/2026", True, "LOW"),
+                "created_at": now - timedelta(days=2, hours=8)
             }
         ]
 

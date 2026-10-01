@@ -57,9 +57,13 @@ MetronIQ operates completely as a local-first system with no external cloud host
 - **Deterministic Rule Engine**: Direct verification against Legal Metrology Rules, 2011 (MRP format, unit sale price, date declarations, consumer care details).
 - **Audit Reports & Defensible PDFs**: Instant localized PDF report generation with embedded native fonts (Noto Sans Tamil, Devanagari, English).
 - **Role-Based Workspaces (RBAC)**:
-  - **👑 Admin**: System management, user approvals, rule configurations, geographic analytics.
-  - **👮 Legal Metrology Officer**: AI label scanning, inspection reviews, issuing improvement notices, penalty compounding, e-commerce catalog monitoring.
+  - **👑 Admin**: System management, user approvals, rule configurations, system-wide geographic analytics (`Admin → Geo Analytics`).
+  - **👮 Legal Metrology Officer**: AI label scanning, inspection reviews, role-scoped geographic analytics (`Officer → Geo Analytics`), issuing improvement notices, penalty compounding, e-commerce catalog monitoring.
   - **📦 Manufacturer**: Pre-market compliance validation, notice response submissions, rectification management.
+- **Geospatial Compliance Intelligence (Geo Analytics)**:
+  - **Admin View (`Admin → Geo Analytics`)**: System-wide spatial heatmap, jurisdiction-level compliance density, high-risk enforcement hotspots, and inspection tracking across national territories.
+  - **Officer View (`Officer → Geo Analytics`)**: Role-scoped geospatial enforcement visualization displaying assigned jurisdiction records and regional risk profiles.
+  - **Database-Backed Aggregation**: Derives coordinates, compliance rates, and risk density directly from PostgreSQL inspection records and manufacturer jurisdiction registries.
 - **Multilingual Support (i18n)**: Seamless live switching across English (`EN`), Tamil (`TA`), and Hindi (`HI`).
 - **Light & Dark Mode**: Professional, government-grade visual presentation.
 
@@ -200,8 +204,8 @@ The database comes pre-configured with role-segregated test accounts:
 
 | Role | Email | Password | Access Scope |
 |---|---|---|---|
-| **ADMIN** | `admin@metroniq.local` | `password` | User approvals, audit logs, rule configuration, geo analytics |
-| **OFFICER** | `officer@metroniq.local` | `password` | AI product scanner, inspections, notices, reinspections, e-commerce monitor |
+| **ADMIN** | `admin@metroniq.local` | `password` | User approvals, audit logs, rule configuration, system-wide geo analytics |
+| **OFFICER** | `officer@metroniq.local` | `password` | AI product scanner, inspections, role-scoped geo analytics, notices, reinspections, e-commerce monitor |
 | **MANUFACTURER** | `manufacturer@metroniq.local` | `password` | Pre-market compliance auditor, notice responses, rectification queue |
 
 ---

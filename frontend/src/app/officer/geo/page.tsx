@@ -2,6 +2,6 @@
 import React from 'react'
 import GeoAnalyticsView from '@/components/geo/GeoAnalyticsView'
 
-export default function AdminGeoPage() {
-    return <GeoAnalyticsView role="admin" />
+export default function OfficerGeoPage() {
+    return <GeoAnalyticsView role="officer" />
 }
