@@ -85,35 +85,35 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
                                 {prod.status}
                             </Badge>
                         </div>
-                        <p className="text-xs text-muted-foreground mt-0.5">Product ID: <span className="font-mono">{prod.id}</span></p>
+                        <p className="text-xs text-muted-foreground mt-0.5">{t('manufacturerUI.productId')} <span className="font-mono">{prod.id}</span></p>
                     </div>
                 </div>
             </div>
 
             <Card className="rounded-lg border border-border bg-card shadow-xs overflow-hidden">
                 <div className="bg-muted/30 px-5 py-3 border-b border-border">
-                    <h2 className="text-sm font-semibold text-foreground tracking-tight">Statutory Declarations Specification</h2>
+                    <h2 className="text-sm font-semibold text-foreground tracking-tight">{t('manufacturerUI.statutoryDeclarationsSpec')}</h2>
                 </div>
                 <CardContent className="p-5 space-y-6">
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
                         <div className="space-y-1">
-                            <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Category</span>
+                            <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("products.category")}</span>
                             <p className="text-sm font-medium text-foreground">{prod.category || 'N/A'}</p>
                         </div>
                         <div className="space-y-1">
-                            <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">MRP</span>
+                            <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("products.mrp")}</span>
                             <p className="text-sm font-mono font-medium text-foreground">{prod.mrp || 'N/A'}</p>
                         </div>
                         <div className="space-y-1">
-                            <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Net Quantity</span>
+                            <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("products.netQuantity")}</span>
                             <p className="text-sm font-mono font-medium text-foreground">{prod.net_quantity || 'N/A'}</p>
                         </div>
                         <div className="space-y-1">
-                            <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Country of Origin</span>
+                            <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("products.countryOfOrigin")}</span>
                             <p className="text-sm font-medium text-foreground">{prod.country_of_origin || 'N/A'}</p>
                         </div>
                         <div className="space-y-1 sm:col-span-2">
-                            <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Manufacturer / Packer</span>
+                            <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("products.manufacturerName")}</span>
                             <p className="text-sm font-medium text-foreground">{prod.manufacturer_name || 'N/A'}</p>
                         </div>
                     </div>
@@ -124,7 +124,7 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
                                 <Link href={`/manufacturer/compliance-audit?product_id=${prod.id}`}>
                                     <Button variant="outline" className="h-9 text-xs font-medium">
                                         <ShieldCheck className="w-3.5 h-3.5 mr-1.5 text-[#2563EB]" />
-                                        Run Compliance Audit
+                                        {t('manufacturerUI.runComplianceAudit')}
                                     </Button>
                                 </Link>
                                 <Button 
@@ -133,7 +133,7 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
                                     className="bg-[#0B1F3A] hover:bg-[#0B1F3A]/90 dark:bg-[#2563EB] dark:hover:bg-[#2563EB]/90 text-white h-9 text-xs font-medium"
                                 >
                                     <Send className="w-3.5 h-3.5 mr-1.5" />
-                                    {submittingGov ? 'Submitting...' : 'Submit for Government Review'}
+                                    {submittingGov ? t('manufacturerUI.submitting') : t('manufacturerUI.submitGovReview')}
                                 </Button>
                             </>
                         )}
@@ -142,7 +142,7 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
                                 <Link href={`/manufacturer/compliance-audit?product_id=${prod.id}`}>
                                     <Button variant="outline" className="h-9 text-xs font-medium border-destructive/30 text-destructive hover:bg-destructive/10">
                                         <AlertTriangle className="w-3.5 h-3.5 mr-1.5" />
-                                        Correct & Re-Audit
+                                        {t('manufacturerUI.correctAndReaudit')}
                                     </Button>
                                 </Link>
                                 <Button 
@@ -151,7 +151,7 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
                                     className="bg-[#0B1F3A] hover:bg-[#0B1F3A]/90 dark:bg-[#2563EB] dark:hover:bg-[#2563EB]/90 text-white h-9 text-xs font-medium"
                                 >
                                     <Send className="w-3.5 h-3.5 mr-1.5" />
-                                    {submittingGov ? 'Submitting...' : 'Resubmit'}
+                                    {submittingGov ? t('manufacturerUI.submitting') : t('manufacturerUI.resubmit')}
                                 </Button>
                             </>
                         )}

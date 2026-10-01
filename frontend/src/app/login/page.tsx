@@ -302,7 +302,7 @@ export default function Login() {
                                     {view === 'signIn' && t('loginUI.sign_in_to_your_metr')}
                                     {view === 'signUp' && t('loginUI.registerDesc')}
                                     {view === 'forgotPassword' && t('loginUI.official_email')}
-                                    {view === 'resetPassword' && "Enter your new password securely."}
+                                    {view === 'resetPassword' && (t("loginUI.enterNewPassword") || "Enter your new password securely.")}
                                 </p>
                             </div>
 
@@ -398,7 +398,7 @@ export default function Login() {
                                         <div className="space-y-1.5">
                                             <div className="flex justify-between items-center">
                                                 <Label htmlFor="password" className="text-xs font-semibold text-foreground">
-                                                    {view === 'resetPassword' ? 'New Password' : t('loginUI.password')}
+                                                    {view === 'resetPassword' ? (t("loginUI.newPassword") || "New Password") : t('loginUI.password')}
                                                 </Label>
                                                 {view === 'signIn' && (
                                                     <button 
@@ -436,7 +436,7 @@ export default function Login() {
                                     {(view === 'signUp' || view === 'resetPassword') && (
                                         <div className="space-y-1.5 animate-in fade-in-50 slide-in-from-top-1 duration-200">
                                             <Label htmlFor="confirmPassword" className="text-xs font-semibold text-foreground">
-                                                {view === 'resetPassword' ? 'Confirm New Password' : t('loginUI.confirmPassword')}
+                                                {view === 'resetPassword' ? (t("loginUI.confirmNewPassword") || "Confirm New Password") : t('loginUI.confirmPassword')}
                                             </Label>
                                             <div className="relative">
                                                 <Input
@@ -494,12 +494,12 @@ export default function Login() {
                                                 <Loader2 className="w-4 h-4 animate-spin" />
                                                 {view === 'signIn' ? t('loginUI.authenticating') : 
                                                  view === 'signUp' ? t('loginUI.registering') : 
-                                                 view === 'resetPassword' ? 'Resetting Password...' : t('loginUI.submit')}
+                                                 view === 'resetPassword' ? (t("loginUI.resettingPassword") || "Resetting Password...") : t('loginUI.submit')}
                                             </span>
                                         ) : (
                                             view === 'signIn' ? t('loginUI.signIn') : 
                                             view === 'signUp' ? t('loginUI.signUp') : 
-                                            view === 'resetPassword' ? 'Update Password' : t('loginUI.submit')
+                                            view === 'resetPassword' ? (t("loginUI.updatePassword") || "Update Password") : t('loginUI.submit')
                                         )}
                                     </Button>
 

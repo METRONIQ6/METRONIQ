@@ -159,7 +159,7 @@ export default function NoticesPage() {
                                         <TableCell colSpan={5} className="text-center py-14 text-muted-foreground">
                                             <ShieldCheck className="w-8 h-8 mb-2.5 mx-auto text-green-600/40" />
                                             <p className="text-sm font-semibold text-foreground">{t('notices.noNotices')}</p>
-                                            <p className="text-xs text-muted-foreground mt-0.5">No pending regulatory non-compliance notices on record.</p>
+                                            <p className="text-xs text-muted-foreground mt-0.5">{t('notices.noNotices')}</p>
                                         </TableCell>
                                     </TableRow>
                                 ) : (

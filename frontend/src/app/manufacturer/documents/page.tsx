@@ -38,10 +38,10 @@ export default function DocumentCenter() {
             <div className="border-b border-border pb-4">
                 <h1 className="text-2xl font-bold tracking-tight text-foreground flex items-center gap-2.5">
                     <FolderOpen className="w-6 h-6 text-[#2563EB]" />
-                    Document Center
+                    {t('manufacturerUI.documentCenter')}
                 </h1>
                 <p className="text-sm text-muted-foreground mt-1">
-                    Statutory certificates, test reports, and compliance records archived for regulatory inspection.
+                    {t('manufacturerUI.documentsSubtitle')}
                 </p>
             </div>
 
@@ -50,9 +50,9 @@ export default function DocumentCenter() {
                     <Table>
                         <TableHeader>
                             <TableRow className="border-border bg-muted/20">
-                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground h-9">Title</TableHead>
+                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground h-9">{t("common.title") || "Title"}</TableHead>
                                 <TableHead className="text-xs font-semibold uppercase text-muted-foreground h-9">{t('manufacturer.documents.category')}</TableHead>
-                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground h-9 text-right">Date</TableHead>
+                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground h-9 text-right">{t("common.date") || "Date"}</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -63,8 +63,8 @@ export default function DocumentCenter() {
                                             <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center text-muted-foreground mb-1">
                                                 <FileText className="w-5 h-5 opacity-60" />
                                             </div>
-                                            <p className="text-sm font-semibold text-foreground">No Documents Found</p>
-                                            <p className="text-xs text-muted-foreground">Uploaded dossiers, declarations, and certificates will appear here.</p>
+                                            <p className="text-sm font-semibold text-foreground">{t('manufacturerUI.noDocuments')}</p>
+                                            <p className="text-xs text-muted-foreground">{t('manufacturerUI.noDocumentsDesc')}</p>
                                         </div>
                                     </TableCell>
                                 </TableRow>

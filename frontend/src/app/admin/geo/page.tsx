@@ -23,7 +23,7 @@ export default function GeoHeatmap() {
                 <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center mb-3">
                     <MapPinOff className="w-6 h-6 text-muted-foreground" />
                 </div>
-                <h3 className="text-base font-semibold text-foreground mb-1">No Geographic Records Available</h3>
+                <h3 className="text-base font-semibold text-foreground mb-1">{t('adminUI.noGeoRecords') || 'No Geographic Records Available'}</h3>
                 <p className="text-sm text-muted-foreground max-w-md">
                     Insufficient jurisdiction coordinate data from recent field inspections to generate spatial density heatmaps.
                 </p>

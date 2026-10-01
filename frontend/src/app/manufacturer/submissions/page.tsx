@@ -68,7 +68,7 @@ export default function SubmissionsPage() {
                                         <div className="flex flex-col items-center justify-center">
                                             <FileText className="w-8 h-8 mb-2 opacity-30 text-muted-foreground" />
                                             <p className="text-sm font-medium text-foreground">{t('manufacturer.submissions.noSubmissions') || 'No submissions yet'}</p>
-                                            <p className="text-xs text-muted-foreground mt-0.5">Submit your products for compliance review to track them here.</p>
+                                            <p className="text-xs text-muted-foreground mt-0.5">{t('submissions.noSubmissionsDesc')}</p>
                                         </div>
                                     </TableCell>
                                 </TableRow>

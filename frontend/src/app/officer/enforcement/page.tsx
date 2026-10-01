@@ -130,7 +130,7 @@ export default function EnforcementPage() {
             <div className="flex flex-col items-center justify-center min-h-[60vh] p-12 bg-card border border-border rounded-xl shadow-sm">
                 <ServerCrash className="w-12 h-12 text-destructive mb-4" />
                 <h3 className="text-xl font-bold text-foreground">{t('error.escalationApiOffline')}</h3>
-                <p className="text-muted-foreground mt-2 text-center max-w-sm">Unable to connect to dynamic enforcement service.</p>
+                <p className="text-muted-foreground mt-2 text-center max-w-sm">{t('officerUI.enforcementUnreachable')}</p>
                 <Button className="mt-6 bg-[#0B1F3A] text-white hover:bg-[#0B1F3A]/90" onClick={fetchCases}>
                     <RefreshCw className="w-4 h-4 mr-2" />{t('error.retryEngineConnection')}</Button>
             </div>
@@ -163,7 +163,7 @@ export default function EnforcementPage() {
                             {t('enforcement.issuePenaltyAssessment')}
                         </DialogTitle>
                         <DialogDescription className="text-xs text-muted-foreground pt-1">
-                            {t('enforcement.enterPenaltyAmount')}<strong className="text-foreground ml-1">PENALTY_PENDING</strong>.
+                            {t('enforcement.enterPenaltyAmount')}<strong className="text-foreground ml-1">{translateComplianceStatus('PENALTY_PENDING', language)}</strong>.
                         </DialogDescription>
                     </DialogHeader>
                     <div className="space-y-3 pt-3">
@@ -227,7 +227,7 @@ export default function EnforcementPage() {
                                         <TableCell colSpan={5} className="text-center py-14 text-muted-foreground">
                                             <CheckCircle className="w-8 h-8 mb-2.5 mx-auto text-green-600/40" />
                                             <p className="text-sm font-semibold text-foreground">{t('enforcement.noCases')}</p>
-                                            <p className="text-xs text-muted-foreground mt-0.5">No formal statutory penalty actions or escalations currently active.</p>
+                                            <p className="text-xs text-muted-foreground mt-0.5">{t('enforcement.noCases')}</p>
                                         </TableCell>
                                     </TableRow>
                                 ) : (

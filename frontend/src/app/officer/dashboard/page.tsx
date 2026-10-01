@@ -88,7 +88,7 @@ export default function OfficerDashboard() {
             <div className="flex flex-col items-center justify-center min-h-[60vh] p-12 bg-card border border-border rounded-xl shadow-sm">
                 <ShieldAlert className="w-12 h-12 text-destructive mb-4" />
                 <h3 className="text-xl font-bold text-foreground">{t('error.failedLoad')}</h3>
-                <p className="text-muted-foreground mt-2 text-center max-w-sm">Please check your network connection and try again.</p>
+                <p className="text-muted-foreground mt-2 text-center max-w-sm">{t('error.checkNetwork')}</p>
                 <Button className="mt-6 bg-[#0B1F3A] hover:bg-[#0B1F3A]/90 text-white" onClick={() => window.location.reload()}>{t("common.retry")}</Button>
             </div>
         )
@@ -123,8 +123,8 @@ export default function OfficerDashboard() {
             </CardHeader>
             <CardContent className="flex-grow flex flex-col items-center justify-center p-8 text-center text-muted-foreground">
                 <BarChart3 className="w-8 h-8 mb-2 opacity-30 text-muted-foreground" />
-                <p className="text-sm font-medium">Data visualization unavailable.</p>
-                <p className="text-xs mt-1">Sufficient historical records required.</p>
+                <p className="text-sm font-medium">{t('officerUI.dataVizUnavailable')}</p>
+                <p className="text-xs mt-1">{t('officerUI.recordsRequired')}</p>
             </CardContent>
         </Card>
     )
@@ -352,8 +352,8 @@ export default function OfficerDashboard() {
 
             {/* Bottom Row Charts */}
             <div className="grid lg:grid-cols-2 gap-6 pt-2 min-h-[280px]">
-                <EmptyChartState title="Risk Distribution" />
-                <EmptyChartState title="Compliance Trend" />
+                <EmptyChartState title={t('officerUI.riskDistribution') || 'Risk Distribution'} />
+                <EmptyChartState title={t('officerUI.complianceTrend') || 'Compliance Trend'} />
             </div>
 
             {/* Quick Actions Panel */}

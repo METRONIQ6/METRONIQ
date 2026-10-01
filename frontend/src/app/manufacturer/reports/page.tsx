@@ -44,7 +44,7 @@ export default function ReportsPage() {
                     {t('reports.auditReportsHub')}
                 </h1>
                 <p className="text-sm text-muted-foreground mt-1">
-                    Statutory audit certifications and compliance verification dossiers generated from automated label reviews.
+                    {t('reports.mfgSubtitle')}
                 </p>
             </div>
 
@@ -55,9 +55,9 @@ export default function ReportsPage() {
                             <TableRow className="border-border bg-muted/20">
                                 <TableHead className="text-xs font-semibold uppercase text-muted-foreground h-9">{t('enforcement.caseId') || 'Report ID'}</TableHead>
                                 <TableHead className="text-xs font-semibold uppercase text-muted-foreground h-9 text-center">{t('common.status')}</TableHead>
-                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground h-9 text-center">Result</TableHead>
-                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground h-9 text-center">Risk</TableHead>
-                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground h-9">Date</TableHead>
+                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground h-9 text-center">{t("reports.result") || "Result"}</TableHead>
+                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground h-9 text-center">{t("reports.risk") || "Risk"}</TableHead>
+                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground h-9">{t("common.date") || "Date"}</TableHead>
                                 <TableHead className="text-xs font-semibold uppercase text-muted-foreground h-9 text-right">{t('common.action')}</TableHead>
                             </TableRow>
                         </TableHeader>
@@ -65,14 +65,14 @@ export default function ReportsPage() {
                             {loading && (
                                 <TableRow>
                                     <TableCell colSpan={6} className="text-center text-muted-foreground py-12 animate-pulse text-sm">
-                                        Loading reports...
+                                        {t('reports.loadingReports')}
                                     </TableCell>
                                 </TableRow>
                             )}
                             {!loading && reports.length === 0 && (
                                 <TableRow>
                                     <TableCell colSpan={6} className="text-center text-muted-foreground py-12 text-sm">
-                                        No audit reports available. Run a Compliance Audit to generate a report.
+                                        {t('reports.noAuditReports')}
                                     </TableCell>
                                 </TableRow>
                             )}

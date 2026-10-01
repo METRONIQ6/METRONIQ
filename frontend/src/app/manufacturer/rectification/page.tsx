@@ -61,7 +61,7 @@ export default function RectificationCenter() {
                     <Table>
                         <TableHeader>
                             <TableRow className="border-border bg-muted/20">
-                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground h-9">Task ID</TableHead>
+                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground h-9">{t('rectification.taskId')}</TableHead>
                                 <TableHead className="text-xs font-semibold uppercase text-muted-foreground h-9">{t('manufacturer.rectification.issue') || 'Issue'}</TableHead>
                                 <TableHead className="text-xs font-semibold uppercase text-muted-foreground h-9">{t('manufacturer.rectification.requiredAction') || 'Action Required'}</TableHead>
                                 <TableHead className="text-xs font-semibold uppercase text-muted-foreground h-9 text-center">{t('manufacturer.submissions.status') || 'Status'}</TableHead>

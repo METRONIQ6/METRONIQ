@@ -86,7 +86,7 @@ export default function AdminDashboard() {
             <div className="flex flex-col items-center justify-center min-h-[60vh] p-12 bg-card border border-border rounded-xl shadow-sm">
                 <ServerCrash className="w-12 h-12 text-destructive mb-4" />
                 <h3 className="text-xl font-bold text-foreground">{t('adminUI.system_control_conso') || 'System Control Console'}</h3>
-                <p className="text-muted-foreground mt-2 text-center max-w-sm">Unable to reach the root analytics service.</p>
+                <p className="text-muted-foreground mt-2 text-center max-w-sm">{t('adminUI.unableToReachAnalytics') || 'Unable to reach the root analytics service.'}</p>
                 <Button className="mt-6 bg-[#0B1F3A] text-white hover:bg-[#0B1F3A]/90" onClick={() => window.location.reload()}>{t("common.retry") || 'Retry'}</Button>
             </div>
         )
@@ -141,28 +141,28 @@ export default function AdminDashboard() {
                 <SystemKpiCard
                     title={t("adminUI.totalUsers") || "Total Users"}
                     value={(userCounts?.manufacturers || 0) + (userCounts?.officers_total || 0)}
-                    subtitle="System Wide"
+                    subtitle={t('adminUI.systemWide') || 'System Wide'}
                     icon={<Users className="w-4 h-4" />}
                     iconColorClass="text-[#0B1F3A] dark:text-white"
                 />
                 <SystemKpiCard
                     title={t("adminUI.totalManufacturers") || "Manufacturers"}
                     value={userCounts?.manufacturers || 0}
-                    subtitle="Registered Entities"
+                    subtitle={t('adminUI.registeredEntities') || 'Registered Entities'}
                     icon={<Building2 className="w-4 h-4" />}
                     iconColorClass="text-[#2563EB]"
                 />
                 <SystemKpiCard
                     title={t("adminUI.totalOfficers") || "Government Officers"}
                     value={userCounts?.officers_total || 0}
-                    subtitle="System Operators"
+                    subtitle={t('adminUI.systemOperators') || 'System Operators'}
                     icon={<UserCheck className="w-4 h-4" />}
                     iconColorClass="text-[#2563EB]"
                 />
                 <SystemKpiCard
                     title={t("adminUI.pendingApprovals") || "Pending Approvals"}
                     value={userCounts?.officers_pending || 0}
-                    subtitle="Awaiting Review"
+                    subtitle={t('adminUI.awaitingReview') || 'Awaiting Review'}
                     icon={<UserCheck className="w-4 h-4" />}
                     iconColorClass="text-amber-600 dark:text-amber-400"
                 />
@@ -170,28 +170,28 @@ export default function AdminDashboard() {
                 <SystemKpiCard
                     title={t("dashboard.totalInspections") || "Total Inspections"}
                     value={stats.total_inspections || 0}
-                    subtitle="Global registry"
+                    subtitle={t('adminUI.globalRegistry') || 'Global registry'}
                     icon={<FileText className="w-4 h-4" />}
                     iconColorClass="text-[#0B1F3A] dark:text-white"
                 />
                 <SystemKpiCard
                     title={t("dashboard.complianceRate") || "Compliance Rate"}
                     value={stats.compliance_rate || "0%"}
-                    subtitle="National Average"
+                    subtitle={t('adminUI.nationalAverage') || 'National Average'}
                     icon={<CheckCircle className="w-4 h-4" />}
                     iconColorClass="text-green-600 dark:text-green-400"
                 />
                 <SystemKpiCard
                     title={t("dashboard.openNotices") || "Open Notices"}
                     value={stats.total_violations || 0}
-                    subtitle="Needs Rectification"
+                    subtitle={t('adminUI.needsRectification') || 'Needs Rectification'}
                     icon={<ShieldAlert className="w-4 h-4" />}
                     iconColorClass="text-amber-600 dark:text-amber-400"
                 />
                 <SystemKpiCard
                     title={t("dashboard.activeEnforcement") || "Active Enforcement"}
                     value={stats.high_risk_cases || 0}
-                    subtitle="Escalated Actions"
+                    subtitle={t('adminUI.escalatedActions') || 'Escalated Actions'}
                     icon={<Scale className="w-4 h-4" />}
                     iconColorClass="text-destructive dark:text-red-400"
                 />
@@ -210,7 +210,7 @@ export default function AdminDashboard() {
                         <BarChart3 className="w-10 h-10 mb-3 text-muted-foreground/30" />
                         <h4 className="text-sm font-semibold text-foreground mb-1">{t('adminUI.insufficient_histori')}</h4>
                         <p className="text-xs text-muted-foreground max-w-md">
-                            The platform requires at least one full reporting cycle (30 days) to aggregate and render national structural trends securely.
+                            {t('adminUI.reportingCycleNote')}
                         </p>
                     </CardContent>
                 </Card>

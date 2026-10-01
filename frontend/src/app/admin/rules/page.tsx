@@ -130,7 +130,7 @@ export default function RuleManagement() {
             <div className="flex flex-col items-center justify-center min-h-[60vh] p-12 bg-card border border-border rounded-xl shadow-sm">
                 <ServerCrash className="w-12 h-12 text-destructive mb-4" />
                 <h3 className="text-xl font-bold text-foreground">{t('error.rulesEngineApiOffline')}</h3>
-                <p className="text-muted-foreground mt-2 text-center max-w-sm">Unable to fetch statutory compliance configurations.</p>
+                <p className="text-muted-foreground mt-2 text-center max-w-sm">{t('adminUI.unableToFetchRules')}</p>
                 <Button className="mt-6 bg-[#0B1F3A] text-white hover:bg-[#0B1F3A]/90" onClick={loadRules}>
                     <RefreshCw className="w-4 h-4 mr-2" />{t('error.retryConnection')}</Button>
             </div>
@@ -197,9 +197,9 @@ export default function RuleManagement() {
                                     onChange={e => setNewCategory(e.target.value)}
                                     required
                                 >
-                                    <option value="FOOD_PACKAGING">Food Packaging</option>
-                                    <option value="PACKAGING">Packaging</option>
-                                    <option value="DISPLAY">Display / General</option>
+                                    <option value="FOOD_PACKAGING">{t("adminUI.foodPackaging") || "Food Packaging"}</option>
+                                    <option value="PACKAGING">{t("adminUI.packaging") || "Packaging"}</option>
+                                    <option value="DISPLAY">{t("adminUI.displayGeneral") || "Display / General"}</option>
                                 </select>
                             </div>
                             <div className="space-y-3 rounded-lg border border-border p-3.5 bg-muted/20">
@@ -271,7 +271,7 @@ export default function RuleManagement() {
                                 <TableRow>
                                     <TableCell colSpan={6} className="text-center py-12 text-muted-foreground">
                                         <Scale className="w-8 h-8 mb-2 mx-auto opacity-30" />
-                                        <p className="text-sm font-medium">No active regulations populated.</p>
+                                        <p className="text-sm font-medium">{t('adminUI.noActiveRules')}</p>
                                     </TableCell>
                                 </TableRow>
                             ) : (

@@ -68,7 +68,7 @@ export default function NewProduct() {
                             Product Name <span className="text-destructive">*</span>
                         </Label>
                         <Input 
-                            placeholder="e.g. Pure Desi Ghee 1L" 
+                            placeholder={t('manufacturerUI.placeholderProdName')} 
                             value={form.name}
                             onChange={e => setForm({ ...form, name: e.target.value })} 
                             className="h-9"
@@ -81,7 +81,7 @@ export default function NewProduct() {
                                 Category
                             </Label>
                             <Input 
-                                placeholder="e.g. Dairy / Food Packaging" 
+                                placeholder={t('manufacturerUI.placeholderCategory')} 
                                 value={form.category}
                                 onChange={e => setForm({ ...form, category: e.target.value })} 
                                 className="h-9"
@@ -92,7 +92,7 @@ export default function NewProduct() {
                                 Generic Name
                             </Label>
                             <Input 
-                                placeholder="e.g. Clarified Butter" 
+                                placeholder={t('manufacturerUI.placeholderGenericName')} 
                                 value={form.generic_name}
                                 onChange={e => setForm({ ...form, generic_name: e.target.value })} 
                                 className="h-9"
@@ -106,7 +106,7 @@ export default function NewProduct() {
                                 Net Quantity
                             </Label>
                             <Input 
-                                placeholder="e.g. 1 L or 905 g" 
+                                placeholder={t('manufacturerUI.placeholderNetQty')} 
                                 value={form.net_quantity}
                                 onChange={e => setForm({ ...form, net_quantity: e.target.value })} 
                                 className="h-9"
@@ -117,7 +117,7 @@ export default function NewProduct() {
                                 MRP (₹)
                             </Label>
                             <Input 
-                                placeholder="e.g. ₹650.00 (incl. of all taxes)" 
+                                placeholder={t('manufacturerUI.placeholderMrp')} 
                                 value={form.mrp}
                                 onChange={e => setForm({ ...form, mrp: e.target.value })} 
                                 className="h-9"
@@ -130,7 +130,7 @@ export default function NewProduct() {
                             Manufacturer Name & Address
                         </Label>
                         <Input 
-                            placeholder="e.g. Metron Foods Pvt Ltd, Plot 42, Industrial Area, Chennai" 
+                            placeholder={t('manufacturerUI.placeholderMfgName')} 
                             value={form.manufacturer_name}
                             onChange={e => setForm({ ...form, manufacturer_name: e.target.value })} 
                             className="h-9"
@@ -142,7 +142,7 @@ export default function NewProduct() {
                             Country of Origin
                         </Label>
                         <Input 
-                            placeholder="e.g. India" 
+                            placeholder={t('manufacturerUI.placeholderCountry')} 
                             value={form.country_of_origin}
                             onChange={e => setForm({ ...form, country_of_origin: e.target.value })} 
                             className="h-9"

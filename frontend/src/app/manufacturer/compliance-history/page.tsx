@@ -47,8 +47,8 @@ export default function HistoryCenter() {
             {(!hist || !Array.isArray(hist) || hist.length === 0) ? (
                 <Card className="rounded-lg border border-dashed border-border bg-card/50 p-12 text-center">
                     <Clock className="w-8 h-8 text-muted-foreground mx-auto mb-2 opacity-40" />
-                    <p className="text-sm font-medium text-foreground">No compliance history available</p>
-                    <p className="text-xs text-muted-foreground mt-0.5">Historical verification events will be logged here as you audit products.</p>
+                    <p className="text-sm font-medium text-foreground">{t('manufacturerUI.noHistory')}</p>
+                    <p className="text-xs text-muted-foreground mt-0.5">{t('manufacturerUI.noHistoryDesc')}</p>
                 </Card>
             ) : (
                 <div className="space-y-4 relative border-l-2 border-border/80 ml-3 pl-6 my-4">

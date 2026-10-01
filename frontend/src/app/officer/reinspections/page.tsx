@@ -71,7 +71,7 @@ export default function ReinspectionsPage() {
             <div className="flex flex-col items-center justify-center min-h-[60vh] p-12 bg-card border border-border rounded-xl shadow-sm">
                 <ServerCrash className="w-12 h-12 text-destructive mb-4" />
                 <h3 className="text-xl font-bold text-foreground">{t('error.apiConnectionDisrupted')}</h3>
-                <p className="text-muted-foreground mt-2 text-center max-w-sm">Reinspection subsystem is temporarily unreachable.</p>
+                <p className="text-muted-foreground mt-2 text-center max-w-sm">{t('officerUI.reinspectionUnreachable')}</p>
                 <Button className="mt-6 bg-[#0B1F3A] text-white hover:bg-[#0B1F3A]/90" onClick={fetchReinspections}>
                     <RefreshCw className="w-4 h-4 mr-2" />{t('error.retryConnection')}</Button>
             </div>
@@ -123,15 +123,15 @@ export default function ReinspectionsPage() {
                                     <TableRow>
                                         <TableCell colSpan={5} className="text-center py-12 text-muted-foreground">
                                             <RefreshCw className="w-5 h-5 animate-spin mx-auto mb-2 text-[#2563EB]" />
-                                            <span className="text-xs font-medium">Loading task queues...</span>
+                                            <span className="text-xs font-medium">{t('officerUI.loadingQueues')}</span>
                                         </TableCell>
                                     </TableRow>
                                 ) : reinspections.length === 0 ? (
                                     <TableRow>
                                         <TableCell colSpan={5} className="text-center py-14 text-muted-foreground">
                                             <ClipboardList className="w-8 h-8 mb-2.5 mx-auto text-muted-foreground/40" />
-                                            <p className="text-sm font-semibold text-foreground">Reinspection queue empty</p>
-                                            <p className="text-xs text-muted-foreground mt-0.5">Your reinspection and rectification verification queue is currently clear.</p>
+                                            <p className="text-sm font-semibold text-foreground">{t('officerUI.reinspectionQueueEmpty')}</p>
+                                            <p className="text-xs text-muted-foreground mt-0.5">{t('officerUI.reinspectionQueueClear')}</p>
                                         </TableCell>
                                     </TableRow>
                                 ) : (

@@ -47,7 +47,7 @@ export default function InspectionsPage() {
             <div className="flex flex-col items-center justify-center min-h-[60vh] p-12 bg-card border border-border rounded-xl shadow-sm">
                 <ServerCrash className="w-12 h-12 text-destructive mb-4" />
                 <h3 className="text-xl font-bold text-foreground">{t('error.apiConnectionDisrupted')}</h3>
-                <p className="text-muted-foreground mt-2 text-center max-w-sm">Inspection subsystem is temporarily unreachable.</p>
+                <p className="text-muted-foreground mt-2 text-center max-w-sm">{t('officerUI.inspectionUnreachable')}</p>
                 <Button className="mt-6 bg-[#0B1F3A] text-white hover:bg-[#0B1F3A]/90" onClick={fetchInspections}>
                     <RefreshCw className="w-4 h-4 mr-2" />{t('error.retryConnection')}</Button>
             </div>
@@ -107,15 +107,15 @@ export default function InspectionsPage() {
                                     <TableRow>
                                         <TableCell colSpan={5} className="text-center py-12 text-muted-foreground">
                                             <RefreshCw className="w-5 h-5 animate-spin mx-auto mb-2 text-[#2563EB]" />
-                                            <span className="text-xs font-medium">Retrieving network records...</span>
+                                            <span className="text-xs font-medium">{t('officerUI.retrievingRecords')}</span>
                                         </TableCell>
                                     </TableRow>
                                 ) : inspections.length === 0 ? (
                                     <TableRow>
                                         <TableCell colSpan={5} className="text-center py-14 text-muted-foreground">
                                             <Archive className="w-8 h-8 mb-2.5 mx-auto text-muted-foreground/40" />
-                                            <p className="text-sm font-semibold text-foreground">No formal inspections recorded</p>
-                                            <p className="text-xs text-muted-foreground mt-0.5 max-w-sm mx-auto">No regulatory inspections have been executed on this node yet.</p>
+                                            <p className="text-sm font-semibold text-foreground">{t('officerUI.noInspectionsRecorded')}</p>
+                                            <p className="text-xs text-muted-foreground mt-0.5 max-w-sm mx-auto">{t('officerUI.noInspectionsNode')}</p>
                                             <Link href="/officer/scanner" className="inline-block mt-4">
                                                 <Button size="sm" variant="outline" className="h-8 text-xs font-medium">
                                                     <Search className="w-3.5 h-3.5 mr-1.5" />

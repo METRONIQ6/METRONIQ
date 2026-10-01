@@ -392,9 +392,9 @@ export default function EcommercePage() {
             <div className="flex flex-col items-center justify-center min-h-[60vh] p-12 bg-card border border-border rounded-xl shadow-sm">
                 <ServerCrash className="w-12 h-12 text-destructive mb-4" />
                 <h3 className="text-xl font-bold text-foreground">{t('error.apiConnectionDisrupted') || "API Connection Disrupted"}</h3>
-                <p className="text-muted-foreground mt-2 text-center max-w-sm">E-commerce subsystem is temporarily unreachable.</p>
+                <p className="text-muted-foreground mt-2 text-center max-w-sm">{t('ecommerce.unreachable')}</p>
                 <Button className="mt-6 bg-[#0B1F3A] text-white hover:bg-[#0B1F3A]/90" onClick={fetchMonitors}>
-                    <RefreshCw className="w-4 h-4 mr-2" />Retry Connection</Button>
+                    <RefreshCw className="w-4 h-4 mr-2" />{t('common.retry')}</Button>
             </div>
         )
     }
@@ -469,15 +469,15 @@ export default function EcommercePage() {
                                     <TableRow>
                                         <TableCell colSpan={5} className="text-center py-12 text-muted-foreground">
                                             <RefreshCw className="w-5 h-5 animate-spin mx-auto mb-2 text-[#2563EB]" />
-                                            <span className="text-xs font-medium">Retrieving digital surveillance monitors...</span>
+                                            <span className="text-xs font-medium">{t('ecommerce.retrievingMonitors')}</span>
                                         </TableCell>
                                     </TableRow>
                                 ) : monitors.length === 0 ? (
                                     <TableRow>
                                         <TableCell colSpan={5} className="text-center py-14 text-muted-foreground">
                                             <ShieldCheck className="w-8 h-8 mb-2.5 mx-auto text-muted-foreground/40" />
-                                            <p className="text-sm font-semibold text-foreground">No digital market surveillance trackers deployed</p>
-                                            <p className="text-xs text-muted-foreground mt-0.5">Enter an e-commerce product URL above to begin statutory monitoring.</p>
+                                            <p className="text-sm font-semibold text-foreground">{t('ecommerce.noMonitors')}</p>
+                                            <p className="text-xs text-muted-foreground mt-0.5">{t('ecommerce.enterUrlToStart')}</p>
                                         </TableCell>
                                     </TableRow>
                                 ) : (
@@ -520,14 +520,14 @@ export default function EcommercePage() {
                                                                     {m.last_scan_result === 'SCANNING...' ? (
                                                                         <>
                                                                             <RefreshCw className="w-5 h-5 animate-spin mb-2 text-[#2563EB]" />
-                                                                            <p className="text-xs">Evaluating web telemetry and legal metrology declarations...</p>
+                                                                            <p className="text-xs">{t('ecommerce.evaluatingTelemetry')}</p>
                                                                         </>
                                                                     ) : (
                                                                         <>
                                                                             <AlertTriangle className="w-6 h-6 mb-2 text-destructive opacity-80" />
                                                                             <h3 className="font-semibold text-xs text-destructive uppercase tracking-wider mb-1">{t('ecommerce.technicalError') || "TECHNICAL ERROR"}</h3>
                                                                             <p className="text-xs">Status: {m.last_scan_result}</p>
-                                                                            <p className="text-xs text-muted-foreground mt-0.5">Technical failure occurred before legal evaluation.</p>
+                                                                            <p className="text-xs text-muted-foreground mt-0.5">{t('ecommerce.technicalFailure')}</p>
                                                                         </>
                                                                     )}
                                                                 </div>
