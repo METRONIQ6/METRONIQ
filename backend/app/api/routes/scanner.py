@@ -200,14 +200,8 @@ async def _do_process(scan_id: str, background_tasks: BackgroundTasks, db: Sessi
     if current_status != "UPLOADED":
         return {"id": scan_id, "status": current_status, "message": "Already processing."}
         
-    # Keep the execution contextualized for serverless architectures:
-    if os.environ.get("VERCEL") == "1":
-        import asyncio
-        await asyncio.to_thread(execute_cv_pipeline, scan_id)
-        return {"id": scan_id, "status": "COMPLETED"}
-    else:
-        background_tasks.add_task(execute_cv_pipeline, scan_id)
-        return {"id": scan_id, "status": "PROCESSING"}
+    background_tasks.add_task(execute_cv_pipeline, scan_id)
+    return {"id": scan_id, "status": "PROCESSING"}
 
 @router.get("/{id}/status")
 async def get_status(id: str, db: Session = Depends(get_db), user = Depends(get_current_user)):

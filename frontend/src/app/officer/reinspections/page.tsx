@@ -9,9 +9,10 @@ import Link from 'next/link'
 import { getToken } from '@/lib/auth'
 import { useToast } from "@/components/ui/use-toast"
 import { useTranslation } from '@/i18n'
+import { translateComplianceStatus } from '@/lib/complianceI18n'
 
 export default function ReinspectionsPage() {
-    const { t } = useTranslation()
+    const { t, language } = useTranslation()
     const { toast } = useToast()
 
     const [reinspections, setReinspections] = useState<any[]>([])
@@ -78,92 +79,111 @@ export default function ReinspectionsPage() {
     }
 
     return (
-        <div className="space-y-6 pt-2 pb-8 max-w-[1600px] w-full mx-auto">
+        <div className="space-y-6 max-w-7xl w-full mx-auto">
             {/* Header */}
-            <div className="flex justify-between items-end mb-8">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-border/60">
                 <div>
-                    <h1 className="text-3xl font-bold tracking-tight text-[#0B1F3A] dark:text-white flex items-center gap-3">
-                        <ListChecks className="w-8 h-8 text-[#2563EB]" />{t('navigation.reinspections')}</h1>
-                    <p className="text-muted-foreground mt-1.5 font-medium">Verify rectifications and escalate persistent non-compliance.</p>
+                    <h1 className="text-2xl font-bold tracking-tight text-[#0B1F3A] dark:text-white flex items-center gap-2.5">
+                        <ListChecks className="w-6 h-6 text-[#2563EB]" />
+                        {t('navigation.reinspections')}
+                    </h1>
+                    <p className="text-sm text-muted-foreground mt-0.5">
+                        Verify corrective rectifications and escalate persistent non-compliance to enforcement dockets.
+                    </p>
                 </div>
-                <Button variant="outline" className="border-border shadow-sm h-11 px-6 font-semibold" onClick={fetchReinspections}>
-                    <RefreshCw className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''}`} />{t('common.refreshFeed')}</Button>
+                <Button variant="outline" size="sm" className="h-9 px-3 border-border shadow-xs text-xs font-medium" onClick={fetchReinspections} disabled={loading}>
+                    <RefreshCw className={`w-3.5 h-3.5 mr-1.5 ${loading ? 'animate-spin' : ''}`} />
+                    {t('common.refreshFeed')}
+                </Button>
             </div>
 
-            <Card className="rounded-xl shadow-sm border border-border bg-card overflow-hidden">
-                <CardHeader className="pb-3 border-b border-border/40 bg-card/50 flex flex-row items-center justify-between">
-                    <CardTitle className="text-base font-semibold text-foreground tracking-tight">{t('reinspections.activeVerifications')}</CardTitle>
+            <Card className="rounded-lg shadow-xs border border-border bg-card overflow-hidden">
+                <CardHeader className="py-3 px-5 border-b border-border/60 bg-muted/30 flex flex-row items-center justify-between">
+                    <CardTitle className="text-sm font-semibold text-foreground tracking-tight flex items-center gap-2">
+                        {t('reinspections.activeVerifications')}
+                        {reinspections.length > 0 && (
+                            <span className="text-xs font-mono font-normal text-muted-foreground">({reinspections.length})</span>
+                        )}
+                    </CardTitle>
                 </CardHeader>
                 <CardContent className="p-0">
                     <div className="overflow-x-auto">
-<Table>
-                        <TableHeader className="bg-muted/30">
-                            <TableRow className="border-border">
-                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">{t('reinspections.taskIdentifier')}</TableHead>
-                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">{t('reinspections.originalAuditRef')}</TableHead>
-                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-center">{t('common.status')}</TableHead>
-                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">{t('reinspections.assignee')}</TableHead>
-                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-right pr-4">{t('reinspections.executionAction')}</TableHead>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            {loading ? (
+                        <Table>
+                            <TableHeader>
                                 <TableRow>
-                                    <TableCell colSpan={5} className="text-center py-10 text-muted-foreground">
-                                        <RefreshCw className="w-6 h-6 animate-spin mx-auto mb-2 opacity-50" />
-                                        <span className="text-sm">Loading task queues...</span>
-                                    </TableCell>
+                                    <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 pl-5">{t('reinspections.taskIdentifier')}</TableHead>
+                                    <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">{t('reinspections.originalAuditRef')}</TableHead>
+                                    <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-center">{t('common.status')}</TableHead>
+                                    <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">{t('reinspections.assignee')}</TableHead>
+                                    <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-right pr-5">{t('reinspections.executionAction')}</TableHead>
                                 </TableRow>
-                            ) : reinspections.length === 0 ? (
-                                <TableRow>
-                                    <TableCell colSpan={5} className="text-center py-12 text-muted-foreground">
-                                        <ClipboardList className="w-8 h-8 mb-3 mx-auto opacity-20 text-primary" />
-                                        <p className="text-sm font-medium">Your reinspection queue is currently empty.</p>
-                                    </TableCell>
-                                </TableRow>
-                            ) : (
-                                reinspections.map((r, i) => (
-                                    <TableRow key={i} className="border-border hover:bg-muted/40 transition-colors">
-                                        <TableCell className="font-mono text-sm font-bold text-[#0B1F3A] dark:text-blue-400 py-4">
-                                            {r.id.substring(0, 8).toUpperCase()}
-                                        </TableCell>
-                                        <TableCell className="font-mono text-xs text-muted-foreground py-4">
-                                            {r.original_inspection_id?.substring(0, 8).toUpperCase() || 'UNKNOWN'}
-                                        </TableCell>
-                                        <TableCell className="text-center py-4">
-                                            <Badge variant="outline" className={`font-mono text-xs uppercase px-2 py-0.5 rounded-sm border
-                                                ${r.status === 'SCHEDULED' ? 'border-orange-200 text-orange-700 bg-orange-50 dark:border-orange-900/50 dark:text-orange-400 dark:bg-orange-900/10' :
-                                                    r.status === 'ESCALATED' ? 'border-red-200 text-destructive dark:text-red-400 font-bold bg-destructive/10 dark:border-red-900/50 dark:text-red-400 dark:bg-red-900/10' :
-                                                        'border-green-200 text-green-700 dark:text-green-400 font-bold bg-success/10 dark:border-green-900/50 dark:text-green-400 dark:bg-green-900/10'}`}>
-                                                {r.status || "UNKNOWN"}
-                                            </Badge>
-                                        </TableCell>
-                                        <TableCell className="text-sm py-4 text-foreground font-medium">{t('reinspections.selfAssigned')}</TableCell>
-                                        <TableCell className="text-right py-4 pr-4">
-                                            <div className="flex gap-2 justify-end">
-                                                {r.status === 'SCHEDULED' ? (
-                                                    <Link href={`/officer/scanner?reinspection=${r.id}`}>
-                                                        <Button size="sm" className="h-8 bg-[#2563EB] hover:bg-[#2563EB]/90 text-white font-semibold text-xs shadow-sm">
-                                                            <Search className="w-3.5 h-3.5 mr-1.5" />{t('reinspections.scanProtocol')}</Button>
-                                                    </Link>
-                                                ) : r.status === 'COMPLETED' ? (
-                                                    <>
-                                                        <Button size="sm" variant="outline" className="h-8 border-border hover:bg-muted font-semibold text-xs">{t('common.view')}</Button>
-                                                        <Button size="sm" className="h-8 bg-[#0B1F3A] hover:bg-[#0B1F3A]/90 text-white font-semibold text-xs shadow-sm"
-                                                            disabled={actionLoading === r.id} onClick={() => escalateReinspection(r.id)}>
-                                                            <ArrowUpRight className="w-3.5 h-3.5 mr-1.5" />{t('reinspections.escalate')}</Button>
-                                                    </>
-                                                ) : (
-                                                    <Button size="sm" variant="ghost" disabled className="h-8 text-xs font-semibold px-4 opacity-50">{t('reinspections.archived')}</Button>
-                                                )}
-                                            </div>
+                            </TableHeader>
+                            <TableBody>
+                                {loading ? (
+                                    <TableRow>
+                                        <TableCell colSpan={5} className="text-center py-12 text-muted-foreground">
+                                            <RefreshCw className="w-5 h-5 animate-spin mx-auto mb-2 text-[#2563EB]" />
+                                            <span className="text-xs font-medium">Loading task queues...</span>
                                         </TableCell>
                                     </TableRow>
-                                ))
-                            )}
-                        </TableBody>
-                    </Table>
-</div>
+                                ) : reinspections.length === 0 ? (
+                                    <TableRow>
+                                        <TableCell colSpan={5} className="text-center py-14 text-muted-foreground">
+                                            <ClipboardList className="w-8 h-8 mb-2.5 mx-auto text-muted-foreground/40" />
+                                            <p className="text-sm font-semibold text-foreground">Reinspection queue empty</p>
+                                            <p className="text-xs text-muted-foreground mt-0.5">Your reinspection and rectification verification queue is currently clear.</p>
+                                        </TableCell>
+                                    </TableRow>
+                                ) : (
+                                    reinspections.map((r, i) => (
+                                        <TableRow key={i} className="border-border hover:bg-muted/40 transition-colors">
+                                            <TableCell className="font-mono text-xs font-semibold text-[#0B1F3A] dark:text-blue-400 py-3.5 pl-5">
+                                                {r.id.substring(0, 8).toUpperCase()}
+                                            </TableCell>
+                                            <TableCell className="font-mono text-xs text-muted-foreground py-3.5">
+                                                {r.original_inspection_id?.substring(0, 8).toUpperCase() || 'UNKNOWN'}
+                                            </TableCell>
+                                            <TableCell className="text-center py-3.5">
+                                                <Badge variant="outline" className={`font-mono text-[11px] uppercase px-2 py-0.5 rounded-sm font-semibold border ${
+                                                    r.status === 'SCHEDULED' ? 'border-amber-200 text-amber-700 bg-amber-50 dark:border-amber-900/50 dark:text-amber-400 dark:bg-amber-900/10' :
+                                                    r.status === 'ESCALATED' ? 'border-red-200 text-destructive bg-destructive/10 dark:border-red-900/50 dark:text-red-400 dark:bg-red-900/10' :
+                                                    'border-green-200 text-green-700 bg-green-50 dark:border-green-900/50 dark:text-green-400 dark:bg-green-900/10'
+                                                }`}>
+                                                    {translateComplianceStatus(r.status, language)}
+                                                </Badge>
+                                            </TableCell>
+                                            <TableCell className="text-xs py-3.5 text-foreground font-medium">{t('reinspections.selfAssigned')}</TableCell>
+                                            <TableCell className="text-right py-3.5 pr-5">
+                                                <div className="flex gap-2 justify-end items-center">
+                                                    {r.status === 'SCHEDULED' ? (
+                                                        <Link href={`/officer/scanner?reinspection=${r.id}`}>
+                                                            <Button size="sm" className="h-7 px-3 bg-[#2563EB] hover:bg-[#2563EB]/90 text-white font-semibold text-xs shadow-xs">
+                                                                <Search className="w-3 h-3 mr-1" />
+                                                                {t('reinspections.scanProtocol')}
+                                                            </Button>
+                                                        </Link>
+                                                    ) : r.status === 'COMPLETED' ? (
+                                                        <>
+                                                            <Button size="sm" variant="outline" className="h-7 px-2.5 text-xs font-medium border-border hover:bg-muted">
+                                                                {t('common.view')}
+                                                            </Button>
+                                                            <Button size="sm" className="h-7 px-3 bg-[#0B1F3A] hover:bg-[#0B1F3A]/90 text-white font-semibold text-xs shadow-xs"
+                                                                disabled={actionLoading === r.id} onClick={() => escalateReinspection(r.id)}>
+                                                                <ArrowUpRight className="w-3 h-3 mr-1" />
+                                                                {t('reinspections.escalate')}
+                                                            </Button>
+                                                        </>
+                                                    ) : (
+                                                        <span className="text-xs font-semibold px-2 py-1 text-muted-foreground opacity-60">{t('reinspections.archived')}</span>
+                                                    )}
+                                                </div>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))
+                                )}
+                            </TableBody>
+                        </Table>
+                    </div>
                 </CardContent>
             </Card>
         </div>

@@ -195,8 +195,17 @@ def get_case_audit_trail(id: str, db: Session = Depends(get_db), current_user = 
         if case.status == "RESOLVED":
             timeline.append({"event": "RESOLUTION", "status": case.status, "timestamp": case.resolved_at})
         
-    timeline.sort(key=lambda x: x["timestamp"].timestamp() if getattr(x["timestamp"], "timestamp", None) else 0)
-    
+    evidence = {}
+    if orig_insp and orig_insp.evidence_payload:
+        try:
+            evidence = json.loads(orig_insp.evidence_payload)
+        except Exception:
+            pass
+
+    validation = evidence.get("validation", {})
+    declarations = evidence.get("legal_declarations", {})
+    metadata = evidence.get("metadata", {})
+
     return {
         "case_id": str(case.id) if case else None,
         "case_status": case.status if case else None,
@@ -204,6 +213,8 @@ def get_case_audit_trail(id: str, db: Session = Depends(get_db), current_user = 
         "inspection": {
             "id": orig_insp.id if orig_insp else None,
             "result": orig_insp.result if orig_insp else None,
+            "status": orig_insp.status if orig_insp else None,
+            "risk_level": orig_insp.risk_level if orig_insp else None,
         },
         "notice": {
             "id": str(notice.id) if notice else None,
@@ -214,7 +225,10 @@ def get_case_audit_trail(id: str, db: Session = Depends(get_db), current_user = 
             "status": rein.status if rein else None,
             "result": new_insp.result if new_insp else None
         },
-        "timeline": timeline
+        "timeline": timeline,
+        "validation": validation,
+        "declarations": {k: v for k, v in declarations.items() if not k.startswith("_META")},
+        "metadata": metadata,
     }
 
 @router.get("/{id}/pdf")

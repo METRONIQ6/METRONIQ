@@ -5,209 +5,241 @@
 > **SIH Problem Statement: SIH26034**  
 > *"Software System to check compliance of Packaged Commodities under Legal Metrology (Packaged Commodities) Rules, 2011 by scanning products, images and labels."*
 
-MetronIQ is a smart system for checking compliance of packaged commodities under the Legal Metrology (Packaged Commodities) Rules, 2011 by scanning product images and labels. It integrates YOLO object detection, local PaddleOCR text extraction, Generative AI for declaration parsing, and a deterministic regulation rule engine.
+MetronIQ is a comprehensive, local-first intelligent compliance and enforcement system designed to verify packaged commodity labels against the Legal Metrology (Packaged Commodities) Rules, 2011 (PCR 2011). It features a local computer vision pipeline (YOLO11n + PaddleOCR), AI-driven declaration extraction, a deterministic compliance rule engine, multi-role dashboards, multilingual support (English, Tamil, Hindi), and verifiable localized PDF audit report generation.
 
 ---
 
-## 🚀 Key Features
+## 🏗️ Architecture
 
-- **AI product scanner**: Upload images/labels for automated bounding box detection and OCR.
-- **YOLO11n**: Detects labeled item regions precisely (MRP Area, Net Quantity, Manufacturer Info, Consumer Care).
-- **PaddleOCR**: Local extraction of printed text from the bounding box regions.
-- **Declaration Extraction**: Structured metadata generation powered by Gemini AI.
-- **Deterministic Compliance Validation**: Evaluates MRP, quantity, manufacturer address, and best before dates directly against the rules.
-- **Admin Dashboard**: Approvals, system administration, and analytics.
-- **Officer Dashboard**: Compliance verification, notice drafts, e-commerce monitoring, and reporting.
-- **Manufacturer Workspace**: Pre-market application and secure rectification workflow.
-- **Role-Based Access Control (RBAC)**: Segregated government access and manufacturer self-registration.
-- **Inspection Workflow**: Traceable review processes.
-- **Notices / Rectification**: Structured compliance improvement queue for both sides.
-- **Reinspection & Enforcement**: Follow-up verifications and penalty compounding steps.
-- **Reports / PDF Generation**: Defensible, comprehensive, localized inspection PDFs.
-- **E-Commerce Monitoring**: Crawler tools to flag online listings for review.
-- **MetronIQ Copilot**: Context-aware AI assistant helping officers interpret rule requirements on the dashboard.
-- **Multilingual (i18n)**: English (EN), Tamil (TA), and Hindi (HI). Uses native typography (e.g. Noto Sans Tamil).
-- **Light / Dark Mode & Responsive UI**.
-- **Audit Trail & PostgreSQL persistence**.
-
----
-
-## 🔒 Role-Based Access Control (RBAC)
-
-MetronIQ employs strict data segregation verified by backend JWT authorization protecting restricted APIs:
-
-| Role | Access Permissions |
-|---|---|
-| 👑 **ADMIN** | Full control over user management, admin analytics, officer approvals, and system configuration. |
-| 👮 **OFFICER** | Government execution of product verifications, automated AI scanner, inspection review, issuing legal notices, verifying rectifications, reporting, e-commerce evaluations, and interacting with MetronIQ Copilot. |
-| 📦 **MANUFACTURER** | Isolated workspace. Self-registration, product self-audits before market deployment, communication on government notices, resolving rectification queues, and viewing their own compliance history. Cannot view competitor data. |
-
-> Backend logic rigorously enforces ownership — authenticated users can only interact with entities explicitly permitted by their assigned role.
-
----
-
-## 🏗️ Technology Stack
-
-**Frontend:**
-- Next.js 16 (React 19, App Router)
-- TypeScript
-- TailwindCSS v4
-- Shadcn/UI
-- Recharts (analytics)
-- Leaflet (maps)
-- next-themes
-- Custom i18n implementation (EN, TA, HI)
-
-**Backend:**
-- FastAPI (Python 3.12, Uvicorn)
-- PostgreSQL
-- SQLAlchemy
-- Alembic migrations
-- JSON Web Tokens (JWT) + bcrypt (authentication)
-- REST API architecture
-- Playwright & httpx (crawler operations)
-- APScheduler (background scheduling)
-- FPDF2 (PDF logic with embedded i18n fonts)
-
-**AI / ML:**
-- PaddleOCR
-- Ultralytics YOLO11n
-- OpenCV
-- Google Gemini API
-
----
-
-## ⚙️ Architecture & Local Execution
-
-MetronIQ can run either as a fully local environment or in a hybrid cloud configuration.
-
-### Local Host Architecture
+MetronIQ operates completely as a local-first system with no external cloud hosting dependency:
 
 ```text
-Officer / Manufacturer Browser (http://localhost:3000)
-    │
-    ▼
-Next.js Frontend (Port 3000, App Router, React 19, TailwindCSS)
-    │
-    ▼
-FastAPI Backend (http://127.0.0.1:8000)
-    ├── Local In-Memory AI Singleton (Ultralytics YOLO11n + PaddleOCR PP-OCRv4)
-    ├── Google Gemini API (Structured Legal Metrology Declaration Extraction)
-    ├── Deterministic Rule Engine (PCR 2011 Compliance Verification)
-    ├── Playwright Web Scraper (E-Commerce Catalog & Snapshot Crawler)
-    └── PostgreSQL Database (Port 5432, metroniq)
+┌─────────────────────────────────────────────────────────────┐
+│                       Browser Client                        │
+│                   http://localhost:3000                     │
+└──────────────────────────────┬──────────────────────────────┘
+                               │
+                               ▼
+┌─────────────────────────────────────────────────────────────┐
+│                    Next.js Frontend (Port 3000)             │
+│        • React 19 / App Router / TypeScript                 │
+│        • Multilingual i18n (English, Tamil, Hindi)          │
+│        • Role-Based Workspaces (Admin / Officer / Mfg)      │
+│        • Proxies /api requests to Backend                   │
+└──────────────────────────────┬──────────────────────────────┘
+                               │
+                               ▼
+┌─────────────────────────────────────────────────────────────┐
+│                    FastAPI Backend (Port 8000)              │
+│        • REST API / JWT Authentication / RBAC               │
+│        • Deterministic Legal Metrology Rule Engine          │
+│        • Local AI Singleton (PaddleOCR + YOLO11n)           │
+│        • Gemini AI Declaration Structuring                  │
+│        • FPDF2 Multilingual PDF Report Generator            │
+└──────────────────────────────┬──────────────────────────────┘
+                               │
+                               ▼
+┌─────────────────────────────────────────────────────────────┐
+│                 Local PostgreSQL Database                   │
+│             postgresql://localhost:5432/metroniq            │
+│        • Inspections, Reports, Notices, Audit Trails        │
+└─────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## 🔑 Login Credentials
+## 🚀 Key Modules & Capabilities
 
-The local database is seeded with role-segregated test accounts:
-
-| Role | Email | Password | Access Scope |
-|---|---|---|---|
-| **ADMIN** | `admin@metroniq.local` | `password` | User approvals, global audit logs, rule configuration, geo analytics |
-| **OFFICER** | `officer@metroniq.local` | `password` | AI product scanner, inspections, legal notices, reinspections, e-commerce crawler |
-| **MANUFACTURER** | `manufacturer@metroniq.local` | `password` | Pre-market compliance auditor, notice responses, rectification submission queue |
+- **AI Product Scanner**: Upload product package images for bounding-box detection and text extraction.
+- **Local YOLO Detection**: Detects mandatory declaration regions (MRP area, Net Quantity, Manufacturer details, Consumer Care).
+- **Local PaddleOCR**: On-device optical character recognition (`PP-OCRv4`).
+- **Declaration Extraction**: Structured metadata extraction powered by Gemini AI.
+- **Deterministic Rule Engine**: Direct verification against Legal Metrology Rules, 2011 (MRP format, unit sale price, date declarations, consumer care details).
+- **Audit Reports & Defensible PDFs**: Instant localized PDF report generation with embedded native fonts (Noto Sans Tamil, Devanagari, English).
+- **Role-Based Workspaces (RBAC)**:
+  - **👑 Admin**: System management, user approvals, rule configurations, geographic analytics.
+  - **👮 Legal Metrology Officer**: AI label scanning, inspection reviews, issuing improvement notices, penalty compounding, e-commerce catalog monitoring.
+  - **📦 Manufacturer**: Pre-market compliance validation, notice response submissions, rectification management.
+- **Multilingual Support (i18n)**: Seamless live switching across English (`EN`), Tamil (`TA`), and Hindi (`HI`).
+- **Light & Dark Mode**: Professional, government-grade visual presentation.
 
 ---
 
-## 💻 Setup & Run Instructions (Windows / Local Host)
+## 📋 Prerequisites
 
-### 1. Clone repository
-```bash
+Ensure the following tools are installed on your local system:
+
+1. **Node.js**: `v18.x` or `v20.x` (with `npm`)
+2. **Python**: `3.10+` / `3.11+` / `3.12+`
+3. **PostgreSQL**: `15+` or `16+` running locally on port `5432`
+4. **Git**
+
+---
+
+## 📥 Clone the Repository
+
+```powershell
 git clone https://github.com/METRONIQ6/METRONIQ.git
 cd METRONIQ
 ```
 
-### 2. Configure environment variables
-Backend (`backend/.env`):
+---
+
+## ⚙️ Environment Configuration
+
+### 1. Backend Configuration (`backend/.env`)
+
+Create `backend/.env` (or copy from `backend/.env.example`):
+
 ```env
 DATABASE_URL=postgresql://postgres:postgres@localhost:5432/metroniq
-SECRET_KEY=your_secure_randomly_generated_string_here
+SECRET_KEY=your_secure_random_secret_key_here
 GEMINI_API_KEY=your_gemini_api_key_here
+ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=1440
 ```
 
-Frontend (`frontend/.env.local`):
+### 2. Frontend Configuration (`frontend/.env.local`)
+
+Create `frontend/.env.local`:
+
 ```env
 NEXT_PUBLIC_API_URL=http://127.0.0.1:8000
 ```
 
-### 3. Install dependencies
-Backend:
-```bash
+---
+
+## 📦 Installation & Database Setup
+
+### Step 1: Backend Setup
+
+Open a **PowerShell** window:
+
+```powershell
 cd backend
+
+# Create virtual environment
 python -m venv venv
-venv\Scripts\activate
+
+# Activate virtual environment
+.\venv\Scripts\Activate.ps1
+
+# Install dependencies
 pip install -r requirements.txt
-playwright install chromium
+
+# Run database migrations
 alembic upgrade head
-cd ..
+
+# Seed initial system users and rules (if setting up fresh DB)
+python seed_users.py
+python seed_rules.py
 ```
 
-Frontend:
-```bash
+### Step 2: Frontend Setup
+
+Open a **second PowerShell** window:
+
+```powershell
 cd frontend
+
+# Install Node dependencies
 npm install
-cd ..
 ```
 
-### 4. Start Local Host Services
-Simply double-click or run the repository batch script:
-```cmd
-start_metroniq.bat
+---
+
+## 💻 Running the Application (Two PowerShell Windows)
+
+MetronIQ is designed to run locally using two terminal windows:
+
+### Window 1 — Frontend (Next.js)
+
+```powershell
+cd frontend
+npm run dev
 ```
 
-This starts:
-- **Frontend**: [http://localhost:3000](http://localhost:3000)
-- **Backend API**: [http://127.0.0.1:8000](http://127.0.0.1:8000)
-- **Interactive Swagger Docs**: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+> **Frontend URL:** [http://localhost:3000](http://localhost:3000)
+
+### Window 2 — Backend (FastAPI)
+
+```powershell
+cd backend
+.\venv\Scripts\Activate.ps1
+uvicorn app.main:app --host 127.0.0.1 --port 8000
+```
+
+> **Backend API:** [http://127.0.0.1:8000](http://127.0.0.1:8000)  
+> **Health Check:** [http://127.0.0.1:8000/api/health](http://127.0.0.1:8000/api/health)  
+> **Interactive Swagger Docs:** [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+
+*(Alternative: You can also start both services simultaneously using the root convenience script `start_metroniq.bat`)*
 
 ---
 
-## 🌐 Internationalization (i18n)
+## 🔑 Default Seeded Accounts
 
-The platform features seamless switching without page-reloads across:
-- **English** (EN)
-- **Tamil** (TA) — Rendered elegantly using native typography (Noto Sans Tamil)
-- **Hindi** (HI)
+The database comes pre-configured with role-segregated test accounts:
 
----
-
-## 🛡️ Security Best Practices
-
-- **Authentication**: JWT access tokens manage session securely.
-- **Password Strength**: Hashed strictly using bcrypt.
-- **Authorization**: Backend RBAC middleware limits data ownership strictly per user.
-- **Cross-Origin**: CORS handles authorized Vercel/localhost domains explicitly.
-- **Exclusion**: All secrets are strictly ignored in source control and remain in `.env`.
-- **SSRF Protections**: Strict URL validations where utilized in the platform crawler functions.
+| Role | Email | Password | Access Scope |
+|---|---|---|---|
+| **ADMIN** | `admin@metroniq.local` | `password` | User approvals, audit logs, rule configuration, geo analytics |
+| **OFFICER** | `officer@metroniq.local` | `password` | AI product scanner, inspections, notices, reinspections, e-commerce monitor |
+| **MANUFACTURER** | `manufacturer@metroniq.local` | `password` | Pre-market compliance auditor, notice responses, rectification queue |
 
 ---
 
-## 🧪 Testing / Verification
+## 🔍 Verification & Demo Flow
 
-MetronIQ implements tests with temporary test databases, enforcing strict process workflows properly decoupled from the primary PostgreSQL storage. Testing systematically guards the product pipeline so that technical issues are intercepted and gracefully isolated without causing false legal penalties against citizens or manufacturers.
+To verify the complete end-to-end pipeline on your local machine:
+
+1. Open **[http://localhost:3000](http://localhost:3000)** in your browser.
+2. Click **Sign In** and log in with `officer@metroniq.local` / `password`.
+3. Navigate to **Scanner** (`/officer/scanner`).
+4. Upload a packaged product image or label (JPEG/PNG).
+5. The system performs:
+   - **Local YOLO Object Detection** for declaration zones.
+   - **Local PaddleOCR** for text reading.
+   - **Gemini AI** for declaration structuring.
+   - **Rule Engine Validation** against Legal Metrology Rules, 2011.
+6. Review the resulting **Compliance Report** with detailed checks (MRP, Net Quantity, Dates, Manufacturer).
+7. Click **View Full Details** and click **Download PDF Report** to verify multi-page localized PDF generation.
 
 ---
 
-## 📂 Project Structure
+## 🛠️ Troubleshooting
+
+| Issue | Cause | Solution |
+|---|---|---|
+| **Backend fails with DB Connection Error** | PostgreSQL service is stopped or port 5432 is blocked. | Verify PostgreSQL is running (`net start postgresql` or via Services app). Ensure database `metroniq` exists. |
+| **Port 8000 or 3000 already in use** | An existing process is listening on the port. | In PowerShell: `Get-Process -Id (Get-NetTCPConnection -LocalPort 8000).OwningProcess | Stop-Process` (repeat for 3000). |
+| **`Activate.ps1 cannot be loaded because running scripts is disabled`** | PowerShell Execution Policy restriction. | Run `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser` in PowerShell. |
+| **`ModuleNotFoundError` on Backend Startup** | Dependencies not installed in active virtual environment. | Ensure venv is active (`.\venv\Scripts\Activate.ps1`) and run `pip install -r requirements.txt`. |
+| **PaddleOCR / YOLO Model Initialization Delay** | First-run model initialization loads weights into memory. | The backend AI singleton caches models on startup; subsequent scans execute rapidly. |
+
+---
+
+## 📂 Repository Structure
 
 ```text
 MetronIQ/
-├── frontend/                # Next.js 16 application
-│   ├── src/app/             # Pages (Admin, Officer, Manufacturer, Login)
-│   ├── src/i18n/            # Dynamic Translation files
-│   └── src/components/      # UI logic and layouts
-├── backend/                 # FastAPI application
+├── frontend/                     # Next.js 16 (React 19, TypeScript, TailwindCSS)
+│   ├── src/app/                  # App Router pages (admin, officer, manufacturer, login)
+│   ├── src/components/           # Reusable UI components & layouts
+│   ├── src/i18n/                 # Multilingual translation dictionaries (EN, TA, HI)
+│   ├── src/lib/                  # Auth, utilities, and API client helpers
+│   └── package.json
+├── backend/                      # FastAPI Python Application
 │   ├── app/
-│   │   ├── api/routes/      # Endpoint Logic
-│   │   ├── ai/              # Scanner pipeline (YOLO array, PaddleOCR, Evidence)
-│   │   ├── services/        # Enforcements, Notices, Compliance
-│   │   ├── models/          # SQLAlchemy PostgreSQL models
-│   │   └── core/            # Database hooks and Config
-│   ├── alembic/             # Version-controlled migrations
-│   └── requirements.txt
-├── start_metroniq.bat       # Demo Bootstrapper (Vercel + Tunnel + FastAPI)
-└── README.md
+│   │   ├── ai/                   # Local YOLO & PaddleOCR pipeline
+│   │   ├── api/routes/           # API endpoints (scanner, reports, auth, notices, admin)
+│   │   ├── core/                 # Database configuration, security, JWT
+│   │   ├── models/               # SQLAlchemy ORM models
+│   │   ├── schemas/              # Pydantic data validation schemas
+│   │   └── services/             # Rule engine, PDF generation, enforcement logic
+│   ├── alembic/                  # Database migration scripts
+│   ├── requirements.txt
+│   └── seed_users.py             # User seeding script
+├── start_metroniq.bat            # Local startup script
+└── README.md                     # Documentation
 ```

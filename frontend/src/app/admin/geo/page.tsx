@@ -8,17 +8,24 @@ export default function GeoHeatmap() {
     const { t } = useTranslation();
 
     return (
-        <div className="space-y-6 max-w-6xl mx-auto">
-            <div>
-                <h2 className="text-2xl font-bold tracking-tight">{t('navigation.geoAnalytics')}</h2>
-                <p className="text-muted-foreground pb-2">Geographic distribution of compliance activities.</p>
+        <div className="space-y-6 max-w-7xl mx-auto">
+            <div className="border-b border-border pb-4">
+                <h1 className="text-2xl font-bold tracking-tight text-foreground flex items-center gap-2.5">
+                    <Map className="w-6 h-6 text-[#2563EB]" />
+                    {t('navigation.geoAnalytics')}
+                </h1>
+                <p className="text-sm text-muted-foreground mt-1">
+                    Geographic distribution and regional density of statutory compliance enforcement activities.
+                </p>
             </div>
 
-            <Card className="flex flex-col items-center justify-center p-24 text-center border border-dashed border-border bg-card">
-                <MapPinOff className="w-12 h-12 text-muted-foreground mb-4" />
-                <h3 className="text-xl font-semibold mb-2">No records available.</h3>
-                <p className="text-muted-foreground max-w-md">
-                    Insufficient geographic data from recent inspections to generate meaningful analytics maps.
+            <Card className="flex flex-col items-center justify-center p-16 text-center border border-dashed border-border bg-card/50 rounded-lg">
+                <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center mb-3">
+                    <MapPinOff className="w-6 h-6 text-muted-foreground" />
+                </div>
+                <h3 className="text-base font-semibold text-foreground mb-1">No Geographic Records Available</h3>
+                <p className="text-sm text-muted-foreground max-w-md">
+                    Insufficient jurisdiction coordinate data from recent field inspections to generate spatial density heatmaps.
                 </p>
             </Card>
         </div>

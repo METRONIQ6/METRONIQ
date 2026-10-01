@@ -1,7 +1,0 @@
-backend/venv
-frontend/node_modules
-frontend/.next
-__pycache__
-backend/temp_uploads
-node_modules
-.git

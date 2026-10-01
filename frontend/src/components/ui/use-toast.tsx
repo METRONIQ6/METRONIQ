@@ -1,6 +1,8 @@
 "use client"
 import React, { createContext, useContext, useState, useCallback, ReactNode } from 'react'
 
+import { CheckCircle2, AlertCircle, AlertTriangle, Info, ShieldCheck, X } from 'lucide-react'
+
 export type ToastType = 'success' | 'error' | 'warning' | 'info' | 'platform'
 
 export interface ToastMessage {
@@ -24,31 +26,74 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => {
         setToasts((prev) => [...prev, { id, type, message, description }]);
         setTimeout(() => {
             setToasts((prev) => prev.filter((t) => t.id !== id));
-        }, 5000); // 5 second auto-dismiss
+        }, 5000);
     }, []);
 
     const removeToast = (id: string) => {
         setToasts((prev) => prev.filter((t) => t.id !== id));
     };
 
+    const getIcon = (type: ToastType) => {
+        switch (type) {
+            case 'success':
+                return <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />;
+            case 'error':
+                return <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-400 shrink-0 mt-0.5" />;
+            case 'warning':
+                return <AlertTriangle className="w-5 h-5 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />;
+            case 'platform':
+                return <ShieldCheck className="w-5 h-5 text-[#2563EB] shrink-0 mt-0.5" />;
+            case 'info':
+            default:
+                return <Info className="w-5 h-5 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" />;
+        }
+    };
+
+    const getTypeStyles = (type: ToastType) => {
+        switch (type) {
+            case 'success':
+                return 'border-l-4 border-l-emerald-600 bg-card border-border text-foreground dark:bg-card';
+            case 'error':
+                return 'border-l-4 border-l-red-600 bg-card border-border text-foreground dark:bg-card';
+            case 'warning':
+                return 'border-l-4 border-l-amber-500 bg-card border-border text-foreground dark:bg-card';
+            case 'platform':
+                return 'border-l-4 border-l-[#2563EB] bg-[#0B1F3A] text-white border-[#132F54] dark:bg-[#0C182B]';
+            case 'info':
+            default:
+                return 'border-l-4 border-l-blue-600 bg-card border-border text-foreground dark:bg-card';
+        }
+    };
+
     return (
         <ToastContext.Provider value={{ toast }}>
             {children}
-            <div className="fixed top-4 right-4 z-[100] flex flex-col gap-2 pointer-events-none">
+            <div 
+                aria-live="polite"
+                role="status"
+                className="fixed bottom-4 right-4 z-[100] flex flex-col gap-2.5 pointer-events-none max-w-[420px] w-full px-4 sm:px-0 sm:right-6 sm:bottom-6"
+            >
                 {toasts.map((t) => (
                     <div
                         key={t.id}
-                        className={`pointer-events-auto flex flex-col p-4 w-[350px] shadow-lg rounded-md border text-sm transition-all animate-in slide-in-from-right-full ${t.type === 'success' ? 'bg-green-700 border-green-800 text-white dark:bg-green-900 dark:border-green-800' :
-                            t.type === 'error' ? 'bg-red-700 border-red-800 text-white dark:bg-red-900 dark:border-red-800' :
-                                t.type === 'warning' ? 'bg-amber-600 border-amber-700 text-white dark:bg-amber-900 dark:border-amber-800' :
-                                    t.type === 'platform' ? 'bg-[#0B1F3A] border-[#0B1F3A] text-white shadow-xl shadow-[#0B1F3A]/20 ring-1 ring-[#2563EB]/50' :
-                                        'bg-blue-700 border-blue-800 text-white dark:bg-blue-900 dark:border-blue-800'
-                            }`}>
-                        <div className="flex justify-between items-start gap-2">
-                            <span className="font-semibold">{t.message}</span>
-                            <button onClick={() => removeToast(t.id)} className="text-white/70 hover:text-white opacity-80 hover:opacity-100 transition-opacity">×</button>
+                        className={`pointer-events-auto flex items-start gap-3 p-4 rounded-lg shadow-lg border text-sm transition-all duration-300 animate-in slide-in-from-bottom-3 ${getTypeStyles(t.type)}`}
+                    >
+                        {getIcon(t.type)}
+                        <div className="flex-1 min-w-0">
+                            <h4 className="font-semibold text-sm leading-tight">{t.message}</h4>
+                            {t.description && (
+                                <div className="mt-1 text-xs opacity-90 leading-relaxed font-normal">
+                                    {t.description}
+                                </div>
+                            )}
                         </div>
-                        {t.description && <div className="mt-1 opacity-90">{t.description}</div>}
+                        <button
+                            onClick={() => removeToast(t.id)}
+                            className="text-muted-foreground hover:text-foreground p-1 rounded transition-colors"
+                            aria-label="Dismiss notification"
+                        >
+                            <X className="w-4 h-4" />
+                        </button>
                     </div>
                 ))}
             </div>

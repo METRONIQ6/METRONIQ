@@ -6,31 +6,37 @@ import { ShieldAlert, LogOut, Loader2 } from 'lucide-react'
 import Link from 'next/link'
 
 import { useTranslation } from "@/i18n"
+import { ModeToggle } from '@/components/mode-toggle'
 import LanguageSelector from '@/components/LanguageSelector'
 
 export default function PendingApprovalPage() {
     const { t } = useTranslation()
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen p-12 bg-background border border-border shadow-sm relative">
-            <div className="absolute top-6 right-6">
+        <div className="flex flex-col items-center justify-center min-h-screen p-6 bg-muted/30 relative font-sans">
+            <div className="absolute top-6 right-6 flex items-center gap-3">
                 <LanguageSelector />
+                <ModeToggle />
             </div>
-            <Card className="rounded-xl shadow-lg border border-border bg-card max-w-md w-full">
+            <Card className="max-w-md w-full shadow-sm border border-border bg-card">
                 <CardContent className="p-8 flex flex-col items-center justify-center text-center space-y-4">
-                    <div className="p-4 bg-orange-100 text-orange-600 rounded-full dark:bg-orange-900/30 dark:text-orange-400">
-                        <ShieldAlert className="w-12 h-12" />
+                    <div className="p-3.5 bg-amber-50 text-amber-700 rounded-full border border-amber-200 dark:bg-amber-950/40 dark:text-amber-300 dark:border-amber-800">
+                        <ShieldAlert className="w-10 h-10" />
                     </div>
-                    <h2 className="text-2xl font-bold tracking-tight text-foreground">{t('pendingApproval.title')}</h2>
-                    <h3 className="text-lg font-medium text-orange-600 dark:text-orange-400">{t('pendingApproval.subtitle')}</h3>
-                    <p className="text-muted-foreground mt-2 text-sm leading-relaxed">
+                    <div>
+                        <h2 className="text-xl font-bold tracking-tight text-foreground">{t('pendingApproval.title')}</h2>
+                        <span className="inline-block mt-1 px-2.5 py-0.5 rounded text-xs font-semibold bg-amber-50 text-amber-800 border border-amber-200 dark:bg-amber-950/40 dark:text-amber-300 dark:border-amber-800">
+                            {t('pendingApproval.subtitle')}
+                        </span>
+                    </div>
+                    <p className="text-muted-foreground text-xs leading-relaxed max-w-sm">
                         {t('pendingApproval.desc1')}
                     </p>
-                    <p className="text-muted-foreground mt-2 text-sm">
+                    <p className="text-muted-foreground text-xs leading-relaxed max-w-sm">
                         {t('pendingApproval.desc2')}
                     </p>
-                    <div className="pt-6 w-full flex flex-col gap-3">
+                    <div className="pt-4 w-full">
                         <Link href="/login" className="w-full">
-                            <Button className="w-full bg-[#0B1F3A] hover:bg-[#0B1F3A]/90 text-white rounded-md">
+                            <Button className="w-full bg-[#0B1F3A] hover:bg-[#132F54] text-white">
                                 <LogOut className="w-4 h-4 mr-2" />
                                 {t('pendingApproval.return')}
                             </Button>

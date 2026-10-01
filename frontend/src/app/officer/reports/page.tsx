@@ -3,16 +3,17 @@ import { useTranslation } from '@/i18n'
 
 import React from 'react'
 import { useToast } from "@/components/ui/use-toast"
-import { Card } from "@/components/ui/card"
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import Link from 'next/link'
 import { getToken } from '@/lib/auth'
 import { FileText } from 'lucide-react'
+import { translateComplianceStatus, translateRiskScore } from '@/lib/complianceI18n'
 
 export default function ReportsPage() {
-    const { t } = useTranslation();
+    const { t, language } = useTranslation();
     const { toast } = useToast()
     const [reports, setReports] = React.useState<any[]>([])
     const [loading, setLoading] = React.useState(true)
@@ -37,66 +38,107 @@ export default function ReportsPage() {
     }
 
     return (
-        <div className="space-y-6">
-            <div className="flex items-center gap-3">
-                <FileText className="w-6 h-6 text-primary" />
-                <h2 className="text-2xl font-bold tracking-tight">{t('reports.auditReportsHub')}</h2>
-            </div>
-            <Card>
-                <div className="overflow-x-auto">
-                    <Table>
-                        <TableHeader>
-                            <TableRow>
-                                <TableHead>{t('enforcement.caseId') || 'Report ID'}</TableHead>
-                                <TableHead>{t('common.status')}</TableHead>
-                                <TableHead>Result</TableHead>
-                                <TableHead>Risk</TableHead>
-                                <TableHead>Date</TableHead>
-                                <TableHead>{t('common.action')}</TableHead>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            {loading && (
-                                <TableRow>
-                                    <TableCell colSpan={6} className="text-center text-muted-foreground py-6 animate-pulse">Loading reports...</TableCell>
-                                </TableRow>
-                            )}
-                            {!loading && reports.length === 0 && (
-                                <TableRow>
-                                    <TableCell colSpan={6} className="text-center text-muted-foreground py-6">No inspection reports available. Scan a product to generate a report.</TableCell>
-                                </TableRow>
-                            )}
-                            {reports.map((r, i) => (
-                                <TableRow key={i}>
-                                    <TableCell className="font-mono text-xs">{r.id}</TableCell>
-                                    <TableCell>
-                                        <Badge variant="outline">
-                                            {r.status}
-                                        </Badge>
-                                    </TableCell>
-                                    <TableCell>
-                                        <Badge variant={getBadgeVariant(r.result)}>
-                                            {r.result || 'PENDING'}
-                                        </Badge>
-                                    </TableCell>
-                                    <TableCell>
-                                        <span className={`text-xs font-semibold uppercase ${r.risk_level === 'HIGH' ? 'text-destructive' : r.risk_level === 'MEDIUM' ? 'text-orange-500' : 'text-green-600'}`}>
-                                            {r.risk_level || 'N/A'}
-                                        </span>
-                                    </TableCell>
-                                    <TableCell className="text-xs text-muted-foreground">
-                                        {r.created_at ? new Date(r.created_at).toLocaleDateString() : '-'}
-                                    </TableCell>
-                                    <TableCell>
-                                        <Link href={`/officer/reports/${r.id}`} target="_blank">
-                                            <Button size="sm" variant="secondary">{t('reports.viewFullReport')}</Button>
-                                        </Link>
-                                    </TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
+        <div className="space-y-6 max-w-7xl w-full mx-auto">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-border/60">
+                <div>
+                    <h1 className="text-2xl font-bold tracking-tight text-[#0B1F3A] dark:text-white flex items-center gap-2.5">
+                        <FileText className="w-6 h-6 text-[#2563EB]" />
+                        {t('reports.auditReportsHub')}
+                    </h1>
+                    <p className="text-sm text-muted-foreground mt-0.5">
+                        Official repository of statutory compliance inspection dossiers and certificates.
+                    </p>
                 </div>
+            </div>
+
+            <Card className="rounded-lg shadow-xs border border-border bg-card overflow-hidden">
+                <CardHeader className="py-3 px-5 border-b border-border/60 bg-muted/30">
+                    <CardTitle className="text-sm font-semibold text-foreground tracking-tight flex items-center gap-2">
+                        {t('reports.auditReportsHub')}
+                        {reports.length > 0 && (
+                            <span className="text-xs font-mono font-normal text-muted-foreground">({reports.length})</span>
+                        )}
+                    </CardTitle>
+                </CardHeader>
+                <CardContent className="p-0">
+                    <div className="overflow-x-auto">
+                        <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 pl-5">{t('enforcement.caseId') || (language === 'ta' ? 'அறிக்கை எண்' : language === 'hi' ? 'रिपोर्ट आईडी' : 'Report ID')}</TableHead>
+                                    <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">{t('common.status')}</TableHead>
+                                    <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">{language === 'ta' ? 'முடிவு' : language === 'hi' ? 'परिणाम' : 'Result'}</TableHead>
+                                    <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">{language === 'ta' ? 'ஆபத்து' : language === 'hi' ? 'जोखिम' : 'Risk'}</TableHead>
+                                    <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">{language === 'ta' ? 'தேதி' : language === 'hi' ? 'तिथि' : 'Date'}</TableHead>
+                                    <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-right pr-5">{t('common.action')}</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {loading && (
+                                    <TableRow>
+                                        <TableCell colSpan={6} className="text-center py-12 text-muted-foreground">
+                                            <span className="text-xs font-medium">{language === 'ta' ? 'அறிக்கைகள் ஏற்றப்படுகின்றன...' : language === 'hi' ? 'रिपोर्ट लोड हो रही है...' : 'Loading reports...'}</span>
+                                        </TableCell>
+                                    </TableRow>
+                                )}
+                                {!loading && reports.length === 0 && (
+                                    <TableRow>
+                                        <TableCell colSpan={6} className="text-center py-14 text-muted-foreground">
+                                            <FileText className="w-8 h-8 mb-2.5 mx-auto text-muted-foreground/40" />
+                                            <p className="text-sm font-semibold text-foreground">{language === 'ta' ? 'ஆய்வு அறிக்கைகள் எதுவும் கிடைக்கவில்லை' : language === 'hi' ? 'कोई निरीक्षण रिपोर्ट उपलब्ध नहीं है' : 'No inspection reports available'}</p>
+                                            <p className="text-xs text-muted-foreground mt-0.5">{language === 'ta' ? 'இணக்க ஆவணத்தை உருவாக்க ஒரு பொருளை ஸ்கேன் செய்யவும்.' : language === 'hi' ? 'औपचारिक अनुपालन डोजियर तैयार करने के लिए किसी उत्पाद को स्कैन करें।' : 'Scan a product to generate a formal compliance dossier.'}</p>
+                                        </TableCell>
+                                    </TableRow>
+                                )}
+                                {reports.map((r, i) => (
+                                    <TableRow key={i} className="border-border hover:bg-muted/40 transition-colors">
+                                        <TableCell className="font-mono text-xs font-semibold text-[#0B1F3A] dark:text-blue-400 py-3.5 pl-5">
+                                            {r.id.substring(0, 10).toUpperCase()}
+                                        </TableCell>
+                                        <TableCell className="py-3.5">
+                                            <Badge variant="outline" className="font-mono text-[11px] uppercase px-2 py-0.5 rounded-sm font-semibold">
+                                                {translateComplianceStatus(r.status || 'FINAL', language)}
+                                            </Badge>
+                                        </TableCell>
+                                        <TableCell className="py-3.5">
+                                            {r.result === 'PASS' || r.result === 'COMPLIANT' ? (
+                                                <Badge variant="success" className="text-xs font-semibold">
+                                                    {translateComplianceStatus(r.result, language)}
+                                                </Badge>
+                                            ) : r.result === 'FAIL' || r.result === 'NON_COMPLIANT' ? (
+                                                <Badge variant="destructive" className="text-xs font-semibold">
+                                                    {translateComplianceStatus(r.result, language)}
+                                                </Badge>
+                                            ) : (
+                                                <Badge variant="neutral" className="text-xs font-semibold">
+                                                    {translateComplianceStatus(r.result || 'PENDING', language)}
+                                                </Badge>
+                                            )}
+                                        </TableCell>
+                                        <TableCell className="py-3.5">
+                                            <span className={`text-xs font-mono font-bold uppercase ${
+                                                r.risk_level === 'HIGH' ? 'text-destructive' : r.risk_level === 'MEDIUM' ? 'text-amber-600 dark:text-amber-400' : 'text-green-600 dark:text-green-400'
+                                            }`}>
+                                                {translateRiskScore(r.risk_level, language)}
+                                            </span>
+                                        </TableCell>
+                                        <TableCell className="text-xs font-mono text-muted-foreground py-3.5">
+                                            {r.created_at ? new Date(r.created_at).toLocaleDateString() : '-'}
+                                        </TableCell>
+                                        <TableCell className="text-right py-3.5 pr-5">
+                                            <Link href={`/officer/reports/${r.id}`} target="_blank">
+                                                <Button size="sm" variant="outline" className="h-7 px-2.5 text-xs font-medium border-border hover:bg-muted">
+                                                    <FileText className="w-3.5 h-3.5 mr-1" />
+                                                    {t('reports.viewFullReport')}
+                                                </Button>
+                                            </Link>
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </div>
+                </CardContent>
             </Card>
         </div>
     )

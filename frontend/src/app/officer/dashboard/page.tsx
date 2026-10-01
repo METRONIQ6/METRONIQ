@@ -10,12 +10,13 @@ import {
     ScanLine, RefreshCw, BarChart3, ChevronRight, Eye
 } from 'lucide-react'
 import Link from 'next/link'
-import { getToken } from '@/lib/auth'
+import { getToken, getLoggedInUser } from '@/lib/auth'
 import { useTranslation } from "@/i18n"
 import { useToast } from "@/components/ui/use-toast"
+import { translateComplianceStatus, translateRiskScore } from '@/lib/complianceI18n'
 
 export default function OfficerDashboard() {
-    const { t } = useTranslation()
+    const { t, language } = useTranslation()
     const { toast } = useToast()
 
     const [summary, setSummary] = useState<any>(null)
@@ -94,97 +95,89 @@ export default function OfficerDashboard() {
     }
 
     const KpiCard = ({ icon, title, value, status, statusColor, bgColor, iconColor }: any) => (
-        <Card className="rounded-xl shadow-sm border border-border overflow-hidden bg-card transition-all hover:shadow-md">
-            <CardContent className="p-4 flex flex-col h-full justify-between gap-4">
-                <div className="flex items-start justify-between">
-                    <div className={`p-2.5 rounded-full ${bgColor} ${iconColor}`}>
+        <Card className="rounded-lg shadow-xs border border-border bg-card transition-all hover:border-[#2563EB]/40">
+            <CardContent className="p-4 flex flex-col h-full justify-between gap-3">
+                <div className="flex items-start justify-between gap-2">
+                    <div className="p-2 rounded-md bg-blue-50 text-[#2563EB] dark:bg-blue-950/50 dark:text-blue-400 border border-blue-100 dark:border-blue-900 shrink-0">
                         {icon}
                     </div>
                     <div className="text-right">
-                        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">{title}</p>
+                        <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">{title}</p>
                     </div>
                 </div>
                 <div>
-                    <div className="text-2xl font-bold text-foreground">{value}</div>
-                    <p className={`text-xs mt-1 font-medium ${statusColor}`}>{status}</p>
+                    <div className="text-2xl font-bold font-mono text-foreground">{value}</div>
+                    <p className={`text-xs mt-0.5 font-medium ${statusColor}`}>{status}</p>
                 </div>
             </CardContent>
         </Card>
     )
 
     const EmptyChartState = ({ title }: { title: string }) => (
-        <Card className="rounded-xl shadow-sm border border-border bg-card h-full flex flex-col">
-            <CardHeader className="pb-2 border-b border-border/40">
+        <Card className="rounded-lg shadow-xs border border-border bg-card h-full flex flex-col">
+            <CardHeader className="pb-2 border-b border-border">
                 <div className="flex justify-between items-center">
                     <CardTitle className="text-sm font-semibold text-foreground">{title}</CardTitle>
-                    <span className="text-xs text-muted-foreground border border-border/50 rounded px-2 py-1">{t('officerUI.thisWeek')}</span>
+                    <span className="text-xs text-muted-foreground border border-border rounded px-2 py-0.5">{t('officerUI.thisWeek')}</span>
                 </div>
             </CardHeader>
             <CardContent className="flex-grow flex flex-col items-center justify-center p-8 text-center text-muted-foreground">
-                <BarChart3 className="w-10 h-10 mb-3 opacity-20" />
-                <p className="text-sm">Data visualization unavailable.</p>
+                <BarChart3 className="w-8 h-8 mb-2 opacity-30 text-muted-foreground" />
+                <p className="text-sm font-medium">Data visualization unavailable.</p>
                 <p className="text-xs mt-1">Sufficient historical records required.</p>
             </CardContent>
         </Card>
     )
 
     const getDisplayUser = () => {
-        if (!userAuthData) return t('roles.officer')
-        const actualName = userAuthData.name || userAuthData.full_name || userAuthData.first_name
-        if (actualName) return actualName
-
-        if (userAuthData.role) {
-            const roleKey = `roles.${userAuthData.role.toLowerCase()}`
-            const translatedRole = t(roleKey)
-            if (translatedRole !== roleKey) return translatedRole
+        const loggedUser = getLoggedInUser('officer');
+        if (loggedUser.name && loggedUser.name.toLowerCase() !== 'officer') {
+            return loggedUser.name;
         }
-        return t('roles.officer')
+        if (userAuthData?.name || userAuthData?.full_name || userAuthData?.first_name) {
+            return userAuthData.name || userAuthData.full_name || userAuthData.first_name;
+        }
+        return loggedUser.name || t('roles.officer');
     }
 
     return (
-        <div className="space-y-6 pt-2 pb-8 max-w-[1600px] w-full mx-auto">
+        <div className="space-y-6 pt-1 pb-8 max-w-[1600px] w-full mx-auto font-sans">
 
             {/* Header Greeting */}
-            <div className="flex justify-between items-end mb-8">
+            <div className="flex justify-between items-end mb-6 border-b border-border pb-4">
                 <div>
-                    <h1 className="text-3xl font-bold tracking-tight text-[#0B1F3A] dark:text-white flex items-center gap-2">
-                        {t('dashboard.greeting')} {getDisplayUser()} <span className="text-2xl animate-wave">👋</span>
+                    <h1 className="text-2xl font-bold tracking-tight text-[#0B1F3A] dark:text-white flex items-center gap-2">
+                        {t('dashboard.greeting')} {getDisplayUser()}
                     </h1>
-                    <p className="text-muted-foreground mt-1.5 font-medium">Here's what's happening with inspections today.</p>
+                    <p className="text-xs text-muted-foreground mt-1">Legal Metrology Packaged Commodities inspection summary and daily operations.</p>
                 </div>
             </div>
 
             {/* KPI Header Grid */}
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3.5">
                 <KpiCard
-                    icon={<ClipboardList className="w-5 h-5" />} title="Total Inspections" value={summary.totalInspections}
-                    status={`↑ ${summary.inspectionsToday} today`} statusColor="text-success dark:text-green-400"
-                    bgColor="bg-[#0B1F3A]" iconColor="text-white"
+                    icon={<ClipboardList className="w-4 h-4" />} title="Total Inspections" value={summary.totalInspections}
+                    status={`↑ ${summary.inspectionsToday} today`} statusColor="text-emerald-600 dark:text-emerald-400"
                 />
                 <KpiCard
-                    icon={<Clock className="w-5 h-5" />} title="Pending Reviews" value={summary.pendingRectifications}
-                    status="High Priority" statusColor="text-orange-600 dark:text-orange-400"
-                    bgColor="bg-[#0B1F3A]" iconColor="text-white"
+                    icon={<Clock className="w-4 h-4" />} title="Pending Reviews" value={summary.pendingRectifications}
+                    status="High Priority" statusColor="text-amber-600 dark:text-amber-400"
                 />
                 <KpiCard
-                    icon={<AlertTriangle className="w-5 h-5" />} title="Failed Inspections" value={summary.failedInspections}
-                    status="Action Required" statusColor="text-orange-600 dark:text-orange-400"
-                    bgColor="bg-[#0B1F3A]" iconColor="text-white" // Modified base styling instead of multi-colored branded buckets
+                    icon={<AlertTriangle className="w-4 h-4" />} title="Failed Inspections" value={summary.failedInspections}
+                    status="Action Required" statusColor="text-red-600 dark:text-red-400"
                 />
                 <KpiCard
-                    icon={<CheckCircle2 className="w-5 h-5" />} title="Passed Inspections" value={summary.passedInspections}
+                    icon={<CheckCircle2 className="w-4 h-4" />} title="Passed Inspections" value={summary.passedInspections}
                     status="Sustained" statusColor="text-muted-foreground"
-                    bgColor="bg-[#0B1F3A]" iconColor="text-white"
                 />
                 <KpiCard
-                    icon={<CalendarCheck className="w-5 h-5" />} title="Reinspections Due" value={summary.reinspectionsDue}
-                    status="Due this week" statusColor="text-primary dark:text-blue-400"
-                    bgColor="bg-[#0B1F3A]" iconColor="text-white"
+                    icon={<CalendarCheck className="w-4 h-4" />} title="Reinspections Due" value={summary.reinspectionsDue}
+                    status="Due this week" statusColor="text-[#2563EB] dark:text-blue-400"
                 />
                 <KpiCard
-                    icon={<Scale className="w-5 h-5" />} title="Enforcement Cases" value={summary.activeEnforcement}
-                    status="Under Review" statusColor="text-orange-600 dark:text-orange-400"
-                    bgColor="bg-[#0B1F3A]" iconColor="text-white"
+                    icon={<Scale className="w-4 h-4" />} title="Enforcement Cases" value={summary.activeEnforcement}
+                    status="Under Review" statusColor="text-amber-600 dark:text-amber-400"
                 />
             </div>
 
@@ -240,18 +233,18 @@ export default function OfficerDashboard() {
                                                         ${insp.risk_level === 'MEDIUM' ? 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400' : ''}
                                                         ${insp.risk_level === 'LOW' ? 'bg-green-100 text-green-700 dark:text-green-400 font-bold dark:bg-green-900/30 dark:text-green-400' : ''}
                                                         ${!insp.risk_level && 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-400'}`}>
-                                                        {insp.risk_level || 'UNKNOWN'}
+                                                        {translateRiskScore(insp.risk_level || 'UNKNOWN', language)}
                                                     </span>
                                                 </TableCell>
                                                 <TableCell className="text-center py-3">
                                                     <Badge variant="outline" className={`font-mono text-xs uppercase px-2 py-0.5 rounded-sm border
-                                                        ${insp.result === 'PASS' ? 'border-green-200 text-green-700 dark:text-green-400 font-bold bg-success/10 dark:border-green-900/50 dark:text-green-400 dark:bg-green-900/10' : ''}
-                                                        ${insp.result === 'FAIL' ? 'border-red-200 text-destructive dark:text-red-400 font-bold bg-destructive/10 dark:border-red-900/50 dark:text-red-400 dark:bg-red-900/10' : ''}`}>
-                                                        {insp.result || 'PENDING'}
+                                                        ${insp.result === 'PASS' || insp.result === 'COMPLIANT' ? 'border-green-200 text-green-700 dark:text-green-400 font-bold bg-success/10 dark:border-green-900/50 dark:text-green-400 dark:bg-green-900/10' : ''}
+                                                        ${insp.result === 'FAIL' || insp.result === 'NON_COMPLIANT' ? 'border-red-200 text-destructive dark:text-red-400 font-bold bg-destructive/10 dark:border-red-900/50 dark:text-red-400 dark:bg-red-900/10' : ''}`}>
+                                                        {translateComplianceStatus(insp.result || 'PENDING', language)}
                                                     </Badge>
                                                 </TableCell>
                                                 <TableCell className="text-center py-3">
-                                                    <span className="text-xs text-muted-foreground whitespace-nowrap">{insp.status || "Completed"}</span>
+                                                    <span className="text-xs text-muted-foreground whitespace-nowrap">{translateComplianceStatus(insp.status || "Completed", language)}</span>
                                                 </TableCell>
                                                 <TableCell className="text-right py-3 pr-4">
                                                     <Link href={`/officer/reports/${insp.id}`}>

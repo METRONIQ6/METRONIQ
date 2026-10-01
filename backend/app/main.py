@@ -12,7 +12,7 @@ from fastapi import Request
 import time
 
 # Configure CORS
-allowed_origins = [origin.strip() for origin in os.getenv("CORS_ORIGINS", "https://metroniq.vercel.app,http://localhost:3000,http://127.0.0.1:3000").split(",") if origin.strip()]
+allowed_origins = [origin.strip() for origin in os.getenv("CORS_ORIGINS", "http://localhost:3000,http://127.0.0.1:3000").split(",") if origin.strip()]
 
 app.add_middleware(
     CORSMiddleware,
@@ -70,53 +70,52 @@ def api_health_check():
 def root():
     return RedirectResponse(url="/docs")
 
-# ── Scheduler (only runs when NOT on Vercel serverless) ──
-if not os.getenv("VERCEL"):
-    try:
-        from apscheduler.schedulers.asyncio import AsyncIOScheduler
-        from app.core.database import SessionLocal
-        from app.models.ecommerce import ECommerceMonitor
-        from app.api.routes.ecommerce import run_ecommerce_scan
-        import datetime
+# ── Scheduler (Automated E-commerce background crawls) ──
+try:
+    from apscheduler.schedulers.asyncio import AsyncIOScheduler
+    from app.core.database import SessionLocal
+    from app.models.ecommerce import ECommerceMonitor
+    from app.api.routes.ecommerce import run_ecommerce_scan
+    import datetime
 
-        scheduler = AsyncIOScheduler()
+    scheduler = AsyncIOScheduler()
 
-        async def execute_scheduled_crawls():
-            if not SessionLocal:
-                return
-            db = SessionLocal()
-            try:
-                monitors = db.query(ECommerceMonitor).filter(ECommerceMonitor.status == "ACTIVE").all()
-                for monitor in monitors:
-                    should_run = False
-                    if not monitor.last_run_at:
+    async def execute_scheduled_crawls():
+        if not SessionLocal:
+            return
+        db = SessionLocal()
+        try:
+            monitors = db.query(ECommerceMonitor).filter(ECommerceMonitor.status == "ACTIVE").all()
+            for monitor in monitors:
+                should_run = False
+                if not monitor.last_run_at:
+                    should_run = True
+                else:
+                    elapsed = datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc) - monitor.last_run_at.replace(tzinfo=datetime.timezone.utc)
+                    if monitor.monitoring_frequency == "HOURLY" and elapsed.total_seconds() >= 3600:
                         should_run = True
-                    else:
-                        elapsed = datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc) - monitor.last_run_at.replace(tzinfo=datetime.timezone.utc)
-                        if monitor.monitoring_frequency == "HOURLY" and elapsed.total_seconds() >= 3600:
-                            should_run = True
-                        elif monitor.monitoring_frequency == "DAILY" and elapsed.total_seconds() >= 86400:
-                            should_run = True
-                        elif monitor.monitoring_frequency == "WEEKLY" and elapsed.total_seconds() >= 604800:
-                            should_run = True
+                    elif monitor.monitoring_frequency == "DAILY" and elapsed.total_seconds() >= 86400:
+                        should_run = True
+                    elif monitor.monitoring_frequency == "WEEKLY" and elapsed.total_seconds() >= 604800:
+                        should_run = True
 
-                    if should_run:
-                        # Run scheduled crawls sequentially to prevent concurrent memory spikes in container
-                        await run_ecommerce_scan(monitor.id)
-            except Exception as e:
-                logger.error(f"Error in scheduled crawl: {e}")
-            finally:
-                db.close()
+                if should_run:
+                    # Run scheduled crawls sequentially to prevent concurrent memory spikes in container
+                    await run_ecommerce_scan(monitor.id)
+        except Exception as e:
+            logger.error(f"Error in scheduled crawl: {e}")
+        finally:
+            db.close()
 
-        @app.on_event("startup")
-        async def startup_event():
-            scheduler.add_job(
-                execute_scheduled_crawls,
-                "interval",
-                minutes=1,
-                max_instances=1,
-                coalesce=True
-            )
-            scheduler.start()
-    except ImportError:
-        pass
+    @app.on_event("startup")
+    async def startup_event():
+        scheduler.add_job(
+            execute_scheduled_crawls,
+            "interval",
+            minutes=1,
+            max_instances=1,
+            coalesce=True
+        )
+        scheduler.start()
+except ImportError:
+    pass

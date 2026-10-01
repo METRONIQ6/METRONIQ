@@ -8,9 +8,10 @@ import { getToken } from '@/lib/auth'
 import { useToast } from "@/components/ui/use-toast"
 import { useTranslation } from '@/i18n'
 import { mapManufacturerError } from '@/lib/errorUtils'
+import { translateField, translateComplianceStatus, translateEvaluationMessage } from '@/lib/complianceI18n'
 
 export default function LabelAuditor() {
-    const { t } = useTranslation()
+    const { t, language } = useTranslation()
     const [errorKey, setErrorKey] = useState<string | null>(null)
     const { toast } = useToast()
 
@@ -125,50 +126,59 @@ export default function LabelAuditor() {
         }
     }
 
-    if (errorKey) return <div className="p-4 text-red-500">{t('common.error') || 'Error'}: {t(`manufacturer.errors.${errorKey}`)}</div>
-
+    if (errorKey) return (
+        <div className="p-6 max-w-7xl mx-auto">
+            <div className="p-4 rounded-lg border border-destructive/20 bg-destructive/10 text-destructive text-sm font-medium">
+                {t('common.error') || 'Error'}: {t(`manufacturer.errors.${errorKey}`)}
+            </div>
+        </div>
+    )
 
     return (
-        <div className="space-y-6 pt-2 pb-8 max-w-[1400px] w-full mx-auto">
-            <div className="flex justify-between items-end mb-8">
-                <div>
-                    <h1 className="text-3xl font-bold tracking-tight text-[#0B1F3A] dark:text-white flex items-center gap-3">
-                        <FileSearch className="w-8 h-8 text-[#2563EB]" />{t('manufacturer.preMarketAuditor')}</h1>
-                    <p className="text-muted-foreground mt-1.5 font-medium">Verify packaging artwork against semantic legal rules prior to mass production.</p>
-                </div>
+        <div className="space-y-6 max-w-7xl mx-auto">
+            <div className="border-b border-border pb-4">
+                <h1 className="text-2xl font-bold tracking-tight text-foreground flex items-center gap-2.5">
+                    <FileSearch className="w-6 h-6 text-[#2563EB]" />
+                    {t('manufacturer.preMarketAuditor')}
+                </h1>
+                <p className="text-sm text-muted-foreground mt-1">
+                    Verify pre-packaged commodity packaging artwork against statutory Legal Metrology rules prior to commercial batch printing.
+                </p>
             </div>
 
             {flowState === 'IDLE' && (
-                <Card className="rounded-xl shadow-sm border border-border bg-card overflow-hidden transition-all duration-300 hover:border-[#2563EB]/40">
-                    <CardContent className="flex flex-col items-center justify-center py-24 px-8 text-center relative overflow-hidden">
-
-                        {/* Decorative background vectors */}
-                        <div className="absolute top-0 left-0 w-full h-full opacity-5 pointer-events-none">
-                            <div className="absolute top-[-20%] right-[-10%] w-[60%] h-[140%] bg-gradient-to-br from-[#2563EB] to-[#0B1F3A] blur-[120px] rounded-full transform rotate-12"></div>
-                        </div>
-
+                <Card className="rounded-lg shadow-xs border border-border bg-card overflow-hidden">
+                    <CardContent className="flex flex-col items-center justify-center py-16 px-6 text-center">
                         {!preview ? (
                             <>
-                                <div className="p-5 rounded-2xl bg-muted/40 mb-6 group-hover:scale-105 transition-transform">
-                                    <UploadCloud className="w-16 h-16 text-[#2563EB]" />
+                                <div className="p-4 rounded-full bg-muted/60 mb-4">
+                                    <UploadCloud className="w-10 h-10 text-[#2563EB]" />
                                 </div>
-                                <h3 className="text-2xl font-bold text-[#0B1F3A] mb-2 z-10">{t('scanner.uploadLabelMatrix')}</h3>
-                                <p className="text-muted-foreground mb-8 font-medium max-w-sm z-10">Drop digital artwork assets (supported: PNG, JPG) to initiate autonomous compliance verification.</p>
-                                <label className="z-10 cursor-pointer">
+                                <h3 className="text-lg font-bold text-foreground mb-1">{t('scanner.uploadLabelMatrix')}</h3>
+                                <p className="text-xs text-muted-foreground mb-6 max-w-sm">
+                                    Upload digital artwork packaging assets (PNG, JPG) to initiate autonomous compliance verification.
+                                </p>
+                                <label className="cursor-pointer">
                                     <input type="file" className="hidden" accept="image/*" onChange={handleFileChange} />
-                                    <div className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 shadow h-12 px-10 bg-[#0B1F3A] hover:bg-[#0B1F3A]/90 text-white cursor-pointer hover:-translate-y-0.5 ease-out duration-200">{t('scanner.selectTargetMedia')}</div>
+                                    <div className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring shadow-xs h-9 px-5 bg-[#0B1F3A] hover:bg-[#0B1F3A]/90 dark:bg-[#2563EB] dark:hover:bg-[#2563EB]/90 text-white cursor-pointer">
+                                        {t('scanner.selectTargetMedia')}
+                                    </div>
                                 </label>
                             </>
                         ) : (
-                            <div className="flex flex-col items-center w-full z-10 max-w-3xl">
-                                <h3 className="text-lg font-bold uppercase tracking-widest text-[#0B1F3A] mb-4">{t('scanner.targetVisualization')}</h3>
-                                <div className="p-2 border-2 border-dashed border-[#2563EB]/30 rounded-xl bg-card shadow-sm mb-8 w-full max-h-[400px] flex items-center justify-center overflow-hidden relative">
-                                    <img src={preview} alt="Target Layer" className="max-h-[380px] object-contain rounded-md" />
+                            <div className="flex flex-col items-center w-full max-w-2xl">
+                                <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">{t('scanner.targetVisualization')}</h3>
+                                <div className="p-2 border border-border rounded-lg bg-muted/20 mb-6 w-full max-h-[360px] flex items-center justify-center overflow-hidden">
+                                    <img src={preview} alt="Target Layer" className="max-h-[340px] object-contain rounded" />
                                 </div>
-                                <div className="flex gap-4">
-                                    <Button variant="outline" className="h-11 px-6 font-semibold" onClick={resetAuditor}>{t('scanner.discardTarget')}</Button>
-                                    <Button className="h-11 px-8 font-semibold bg-[#2563EB] hover:bg-[#2563EB]/90 text-white shadow-sm" onClick={runComplianceAudit}>
-                                        <PlayCircle className="w-4 h-4 mr-2" />{t('scanner.executeProtocol')}</Button>
+                                <div className="flex gap-3">
+                                    <Button variant="outline" size="sm" className="h-9 px-4 text-xs font-medium" onClick={resetAuditor}>
+                                        {t('scanner.discardTarget')}
+                                    </Button>
+                                    <Button className="h-9 px-5 text-xs font-medium bg-[#0B1F3A] hover:bg-[#0B1F3A]/90 dark:bg-[#2563EB] dark:hover:bg-[#2563EB]/90 text-white" onClick={runComplianceAudit}>
+                                        <PlayCircle className="w-3.5 h-3.5 mr-1.5" />
+                                        {t('scanner.executeProtocol')}
+                                    </Button>
                                 </div>
                             </div>
                         )}
@@ -177,91 +187,89 @@ export default function LabelAuditor() {
             )}
 
             {flowState === 'PROCESSING' && (
-                <Card className="rounded-xl shadow-sm border border-[#2563EB]/30 bg-card">
-                    <CardContent className="flex flex-col items-center justify-center py-28 relative overflow-hidden">
-                        <div className="absolute inset-0 bg-[#2563EB]/5 animate-pulse"></div>
-                        <RefreshCw className="w-16 h-16 text-[#2563EB] animate-spin mb-8 relative z-10" />
-                        <h3 className="text-2xl font-bold text-[#0B1F3A] mb-3 relative z-10 text-center tracking-tight">{t('scanner.activeNeuralProcessing')}</h3>
-                        <p className="text-muted-foreground font-medium relative z-10 text-sm max-w-md text-center">{progressStatus}</p>
+                <Card className="rounded-lg shadow-xs border border-border bg-card">
+                    <CardContent className="flex flex-col items-center justify-center py-20 text-center">
+                        <RefreshCw className="w-10 h-10 text-[#2563EB] animate-spin mb-4" />
+                        <h3 className="text-base font-bold text-foreground mb-1">{t('scanner.activeNeuralProcessing')}</h3>
+                        <p className="text-xs text-muted-foreground max-w-md">{progressStatus}</p>
                     </CardContent>
                 </Card>
             )}
 
             {flowState === 'RESULT' && scanData && (
-                <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <Card className="rounded-xl border border-border shadow-sm bg-card overflow-hidden relative">
-                            <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-bl-full pointer-events-none"></div>
-                            <CardHeader className="pb-2">
-                                <CardTitle className="text-xs font-bold text-muted-foreground uppercase tracking-widest">{t('common.complianceStatus')}</CardTitle>
+                <div className="space-y-6">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <Card className="rounded-lg border border-border shadow-xs bg-card p-4">
+                            <CardHeader className="p-0 pb-2">
+                                <CardTitle className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">{t('common.complianceStatus')}</CardTitle>
                             </CardHeader>
-                            <CardContent>
-                                <div className="flex items-center gap-3">
-                                    {scanData.compliance === 'PASS' ? <CheckCircle className="w-8 h-8 text-success" /> :
-                                        (scanData.compliance === 'FAIL' ? <ShieldAlert className="w-8 h-8 text-destructive" /> :
-                                            <ShieldAlert className="w-8 h-8 text-orange-500" />)}
-                                    <div className={`text-3xl font-extrabold tracking-tight ${scanData.compliance === 'PASS' ? 'text-green-700 dark:text-green-400 font-bold' : (scanData.compliance === 'FAIL' ? 'text-destructive dark:text-red-400 font-bold' : 'text-orange-600')} dark:text-white`}>
-                                        {scanData.compliance === 'PASS' ? (t('scanner.state_verified_compliant') || 'VERIFIED COMPLIANT') :
-                                            (scanData.compliance === 'FAIL' ? (t('scanner.state_verified_non_compliant') || 'VERIFIED NON-COMPLIANT') :
-                                                (scanData.compliance === 'INVALID_IMAGE' ? (t('scanner.state_invalid_input') || 'INVALID INPUT') :
-                                                    (scanData.compliance === 'ENVIRONMENT_ERROR' ? (t('scanner.state_audit_error') || 'AUDIT ERROR') :
-                                                        (t('scanner.state_not_verified') || 'NOT VERIFIED'))))}
+                            <CardContent className="p-0 pt-2">
+                                <div className="flex items-center gap-2.5">
+                                    {scanData.compliance === 'PASS' ? <CheckCircle className="w-6 h-6 text-emerald-600 dark:text-emerald-400" /> :
+                                        (scanData.compliance === 'FAIL' ? <ShieldAlert className="w-6 h-6 text-destructive" /> :
+                                            <ShieldAlert className="w-6 h-6 text-amber-500" />)}
+                                    <div className={`text-xl font-bold tracking-tight ${scanData.compliance === 'PASS' || scanData.compliance === 'COMPLIANT' ? 'text-emerald-600 dark:text-emerald-400' : (scanData.compliance === 'FAIL' || scanData.compliance === 'NON_COMPLIANT' ? 'text-destructive' : 'text-amber-600')}`}>
+                                        {translateComplianceStatus(scanData.compliance, language)}
                                     </div>
                                 </div>
                             </CardContent>
                         </Card>
 
-                        <Card className="rounded-xl border border-border shadow-sm bg-card relative overflow-hidden md:col-span-2">
-                            <CardHeader className="pb-2">
-                                <CardTitle className="text-xs font-bold text-muted-foreground uppercase tracking-widest">{t('scanner.auditRiskVector')}</CardTitle>
+                        <Card className="rounded-lg border border-border shadow-xs bg-card p-4 md:col-span-2">
+                            <CardHeader className="p-0 pb-2">
+                                <CardTitle className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">{t('scanner.auditRiskVector')}</CardTitle>
                             </CardHeader>
-                            <CardContent>
-                                <div className="space-y-3">
+                            <CardContent className="p-0 pt-2">
+                                <div className="space-y-2">
                                     <div className="flex justify-between items-baseline">
-                                        <span className={`text-4xl font-extrabold tracking-tight ${(scanData.validation_details?.numerical_risk ?? 0) > 60 ? 'text-red-500' : (scanData.validation_details?.numerical_risk ?? 0) > 30 ? 'text-orange-500' : 'text-green-500'}`}>
+                                        <span className={`text-2xl font-bold font-mono tracking-tight ${(scanData.validation_details?.numerical_risk ?? 0) > 60 ? 'text-destructive' : (scanData.validation_details?.numerical_risk ?? 0) > 30 ? 'text-amber-500' : 'text-emerald-600 dark:text-emerald-400'}`}>
                                             {typeof scanData.validation_details?.numerical_risk === 'number' ? `${scanData.validation_details.numerical_risk}%` : (t('scanner.state_risk_not_available') || 'RISK NOT AVAILABLE')}
                                         </span>
-                                        <span className="text-sm font-semibold text-muted-foreground">{t('scanner.confidenceDelta')}</span>
+                                        <span className="text-xs text-muted-foreground">{t('scanner.confidenceDelta')}</span>
                                     </div>
-                                    <div className="h-2 bg-muted rounded-full overflow-hidden w-full">
-                                        <div className={`h-full transition-all duration-500 ${(scanData.validation_details?.numerical_risk ?? 0) > 60 ? 'bg-destructive/100' : (scanData.validation_details?.numerical_risk ?? 0) > 30 ? 'bg-orange-500' : 'bg-transparent'}`} style={{ width: typeof scanData.validation_details?.numerical_risk === 'number' ? `${scanData.validation_details.numerical_risk}%` : '0%' }}></div>
+                                    <div className="h-1.5 bg-muted rounded-full overflow-hidden w-full">
+                                        <div className={`h-full transition-all duration-500 ${(scanData.validation_details?.numerical_risk ?? 0) > 60 ? 'bg-destructive' : (scanData.validation_details?.numerical_risk ?? 0) > 30 ? 'bg-amber-500' : 'bg-emerald-500'}`} style={{ width: typeof scanData.validation_details?.numerical_risk === 'number' ? `${scanData.validation_details.numerical_risk}%` : '0%' }}></div>
                                     </div>
                                 </div>
                             </CardContent>
                         </Card>
                     </div>
 
-                    <Card className="rounded-xl shadow-sm border border-border bg-card">
-                        <CardHeader className="border-b border-border/50 pb-4 bg-muted/20">
-                            <CardTitle className="text-base font-bold text-[#0B1F3A] flex items-center gap-2">
-                                <Layers className="w-5 h-5 text-[#2563EB]" />{t('scanner.deterministicRuleEvaluation')}</CardTitle>
+                    <Card className="rounded-lg shadow-xs border border-border bg-card overflow-hidden">
+                        <CardHeader className="border-b border-border py-3 px-4 bg-muted/20">
+                            <CardTitle className="text-sm font-semibold text-foreground flex items-center gap-2">
+                                <Layers className="w-4 h-4 text-[#2563EB]" />
+                                {t('scanner.deterministicRuleEvaluation')}
+                            </CardTitle>
                         </CardHeader>
                         <CardContent className="p-0">
-                            <div className="divide-y divide-border/50 border-t border-border/50">
+                            <div className="divide-y divide-border">
                                 {(scanData.validation_details?.evaluations && scanData.validation_details.evaluations.length > 0) ? (
                                     scanData.validation_details.evaluations.map((data: any, idx: number) => (
-                                        <div key={idx} className={`p-5 flex flex-col md:flex-row md:justify-between md:items-center gap-3 ${(data.status === 'PASS' || data.status === 'NOT_APPLICABLE') ? 'hover:bg-muted/30' : 'bg-destructive/10/50 hover:bg-destructive/10'}`}>
+                                        <div key={idx} className={`p-4 flex flex-col md:flex-row md:justify-between md:items-center gap-3 ${(data.status === 'PASS' || data.status === 'NOT_APPLICABLE') ? 'hover:bg-muted/30' : 'bg-destructive/5 hover:bg-destructive/10'}`}>
                                             <div>
-                                                <div className="flex items-center gap-2 mb-1">
-                                                    <span className="font-bold text-[#0B1F3A] capitalize">{data.field.replace(/_/g, ' ')}</span>
+                                                <div className="flex items-center gap-2 mb-0.5">
+                                                    <span className="font-semibold text-sm text-foreground">{translateField(data.field, language)}</span>
                                                 </div>
-                                                <p className="text-sm text-muted-foreground font-medium">{data.message}</p>
+                                                <p className="text-xs text-muted-foreground">{translateEvaluationMessage(data.message, data.field, language)}</p>
                                             </div>
-                                            <Badge variant="outline" className={`shrink-0 font-mono text-xs uppercase px-3 py-1 rounded-sm border ${(data.status === 'PASS' || data.status === 'NOT_APPLICABLE') ? 'border-green-300 text-green-700 dark:text-green-400 font-bold bg-success/10/80 shadow-sm' : 'border-red-300 text-destructive dark:text-red-400 font-bold bg-red-100/80 shadow-sm'}`}>
-                                                {data.status === 'PASS' ? 'CONFORMANT' : (data.status === 'NOT_APPLICABLE' ? 'N/A' : 'VIOLATION')}
+                                            <Badge variant={(data.status === 'PASS' || data.status === 'NOT_APPLICABLE' || data.status === 'COMPLIANT') ? 'success' : 'destructive'} className="shrink-0 font-mono text-xs uppercase">
+                                                {translateComplianceStatus(data.status, language)}
                                             </Badge>
                                         </div>
                                     ))
                                 ) : (
-                                    <div className="p-8 text-center text-muted-foreground font-medium">{t('scanner.state_audit_unverified') || 'Audit could not be verified because required telemetry is unavailable.'}</div>
+                                    <div className="p-8 text-center text-xs text-muted-foreground">{t('scanner.state_audit_unverified') || 'Audit could not be verified because required telemetry is unavailable.'}</div>
                                 )}
                             </div>
                         </CardContent>
                     </Card>
 
-                    <div className="flex gap-4 justify-end pt-4">
-                        <Button variant="outline" className="h-11 px-8 font-semibold shadow-sm" onClick={resetAuditor}>
-                            <RefreshCw className="w-4 h-4 mr-2" />{t('scanner.resetAuditor')}</Button>
+                    <div className="flex justify-end pt-2">
+                        <Button variant="outline" size="sm" className="h-9 px-4 text-xs font-medium" onClick={resetAuditor}>
+                            <RefreshCw className="w-3.5 h-3.5 mr-1.5" />
+                            {t('scanner.resetAuditor')}
+                        </Button>
                     </div>
                 </div>
             )}

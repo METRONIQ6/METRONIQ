@@ -4,9 +4,10 @@ import Link from 'next/link'
 import { useTranslation } from '@/i18n'
 import { usePathname, useRouter } from 'next/navigation'
 import { LayoutDashboard, FileSearch, ShieldCheck, ListChecks, FileText, Settings, ShieldAlert, LogOut, Map, BarChart3, Ruler, MessageSquare, X, Menu, Send, Loader2, UserCog, PackageCheck, UploadCloud, AlertTriangle, Clock } from 'lucide-react'
-import { getToken, removeToken } from '@/lib/auth'
+import { getToken, removeToken, getLoggedInUser } from '@/lib/auth'
 import LanguageSelector from '@/components/LanguageSelector'
 import { ModeToggle } from '@/components/mode-toggle'
+import Footer from '@/components/layout/Footer'
 import ReactMarkdown from 'react-markdown'
 import { useToast } from '@/components/ui/use-toast'
 
@@ -45,6 +46,7 @@ export default function DashboardLayout({ children, role }: { children: React.Re
     const pathname = usePathname()
     const router = useRouter()
     const { t } = useTranslation()
+    const [userName, setUserName] = useState<string>('')
     const [copilotOpen, setCopilotOpen] = useState(false)
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
     const [messages, setMessages] = useState<{ role: 'user' | 'assistant', content: string }[]>([])
@@ -54,6 +56,11 @@ export default function DashboardLayout({ children, role }: { children: React.Re
     const messagesEndRef = React.useRef<HTMLDivElement>(null)
     const { toast } = useToast()
     const lastPendingCount = React.useRef<number>(0)
+
+    React.useEffect(() => {
+        const u = getLoggedInUser(role)
+        setUserName(u.name)
+    }, [role])
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -182,13 +189,23 @@ export default function DashboardLayout({ children, role }: { children: React.Re
     return (
         <div className="flex h-screen bg-muted/30 overflow-hidden">
             {/* Desktop Sidebar */}
-            <div className="hidden md:flex w-64 bg-card border-r border-border flex-col flex-shrink-0">
-                <div className="flex items-center h-16 px-6 border-b border-border">
-                    <ShieldCheck className="w-6 h-6 text-primary mr-2" />
-                    <span className="font-bold text-xl tracking-tight text-foreground">{t('common.metroniq')}</span>
+            <aside className="hidden md:flex w-64 bg-card border-r border-border flex-col flex-shrink-0 z-20">
+                <div className="flex items-center gap-3 h-16 px-5 border-b border-border bg-card">
+                    <div className="flex items-center justify-center w-9 h-9 rounded-md bg-[#0B1F3A] text-white dark:bg-[#2563EB] shadow-xs">
+                        <ShieldCheck className="w-5 h-5" />
+                    </div>
+                    <div className="flex flex-col">
+                        <span className="font-bold text-base tracking-tight text-foreground leading-none">{t('common.metroniq')}</span>
+                        <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider mt-1">Legal Metrology</span>
+                    </div>
                 </div>
-                <div className="flex-1 overflow-y-auto py-4">
-                    <nav className="space-y-1 px-3">
+                <div className="flex-1 overflow-y-auto py-3">
+                    <div className="px-3 mb-2">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground px-2">
+                            {role === 'admin' ? (t('adminUI.administration') || 'Administration') : role === 'officer' ? (t('officerUI.enforcement') || 'Enforcement') : (t('manufacturerUI.workspace') || 'Manufacturer Portal')}
+                        </span>
+                    </div>
+                    <nav className="space-y-0.5 px-2">
                         {navItems.map((item) => {
                             const isActive = pathname.startsWith(item.href)
                             const Icon = item.icon
@@ -196,39 +213,59 @@ export default function DashboardLayout({ children, role }: { children: React.Re
                                 <Link
                                     key={item.href}
                                     href={item.href}
-                                    className={`flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors ${isActive ? 'bg-primary/10 text-primary' : 'text-foreground/80 hover:bg-muted'}`}
+                                    className={`flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors ${
+                                        isActive
+                                            ? 'bg-[#0B1F3A]/8 text-[#0B1F3A] font-semibold dark:bg-[#2563EB]/15 dark:text-[#3B82F6]'
+                                            : 'text-muted-foreground hover:text-foreground hover:bg-muted/60'
+                                    }`}
                                 >
-                                    <Icon className={`w-5 h-5 mr-3 flex-shrink-0 ${isActive ? 'text-primary' : 'text-muted-foreground/80'}`} />
-                                    {item.name}
+                                    <Icon className={`w-4 h-4 mr-3 flex-shrink-0 ${isActive ? 'text-[#2563EB] dark:text-[#3B82F6]' : 'text-muted-foreground'}`} />
+                                    <span className="truncate">{item.name}</span>
                                 </Link>
                             )
                         })}
                     </nav>
                 </div>
-                <div className="p-4 border-t border-border">
-                    <button onClick={() => { removeToken(); router.push('/login'); }} className="flex w-full items-center px-3 py-2 text-sm font-medium text-foreground/80 rounded-md hover:bg-muted transition-colors">
-                        <LogOut className="w-5 h-5 mr-3 text-muted-foreground/80" />
+                <div className="p-3 border-t border-border bg-muted/20">
+                    <div className="flex items-center justify-between px-2 py-1.5 mb-2 rounded bg-card border border-border">
+                        <div className="flex items-center gap-2 min-w-0">
+                            <div className="w-6 h-6 rounded bg-[#0B1F3A] text-white dark:bg-[#2563EB] flex items-center justify-center text-xs font-bold uppercase shrink-0">
+                                {(userName || role)[0]}
+                            </div>
+                            <span className="text-xs font-semibold text-foreground tracking-wide truncate">{userName || role}</span>
+                        </div>
+                        <span className="text-[10px] font-medium px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 shrink-0">
+                            {t('common.active') || 'Active'}
+                        </span>
+                    </div>
+                    <button 
+                        onClick={() => { removeToken(); router.push('/login'); }} 
+                        className="flex w-full items-center px-3 py-2 text-sm font-medium text-muted-foreground hover:text-destructive rounded-md hover:bg-destructive/10 transition-colors"
+                    >
+                        <LogOut className="w-4 h-4 mr-2.5" />
                         {t('common.logout')}
                     </button>
                 </div>
-            </div>
+            </aside>
 
             {/* Mobile Sidebar Overlay */}
             {mobileMenuOpen && (
                 <div className="fixed inset-0 z-50 flex md:hidden">
-                    <div className="fixed inset-0 bg-background/80 backdrop-blur-sm" onClick={() => setMobileMenuOpen(false)}></div>
-                    <div className="relative flex w-64 flex-col bg-card border-r border-border h-full z-50">
-                        <div className="flex items-center justify-between h-16 px-6 border-b border-border">
-                            <div className="flex items-center">
-                                <ShieldCheck className="w-6 h-6 text-primary mr-2" />
-                                <span className="font-bold text-xl tracking-tight text-foreground">{t('common.metroniq')}</span>
+                    <div className="fixed inset-0 bg-background/80 backdrop-blur-xs" onClick={() => setMobileMenuOpen(false)}></div>
+                    <div className="relative flex w-64 flex-col bg-card border-r border-border h-full z-50 shadow-xl">
+                        <div className="flex items-center justify-between h-16 px-5 border-b border-border">
+                            <div className="flex items-center gap-2.5">
+                                <div className="flex items-center justify-center w-8 h-8 rounded-md bg-[#0B1F3A] text-white dark:bg-[#2563EB]">
+                                    <ShieldCheck className="w-4 h-4" />
+                                </div>
+                                <span className="font-bold text-base tracking-tight text-foreground">{t('common.metroniq')}</span>
                             </div>
-                            <button onClick={() => setMobileMenuOpen(false)} className="text-muted-foreground hover:text-foreground">
+                            <button onClick={() => setMobileMenuOpen(false)} className="text-muted-foreground hover:text-foreground p-1 rounded">
                                 <X className="w-5 h-5" />
                             </button>
                         </div>
-                        <div className="flex-1 overflow-y-auto py-4">
-                            <nav className="space-y-1 px-3">
+                        <div className="flex-1 overflow-y-auto py-3">
+                            <nav className="space-y-0.5 px-2">
                                 {navItems.map((item) => {
                                     const isActive = pathname.startsWith(item.href)
                                     const Icon = item.icon
@@ -236,18 +273,36 @@ export default function DashboardLayout({ children, role }: { children: React.Re
                                         <Link
                                             key={item.href}
                                             href={item.href}
-                                            className={`flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors ${isActive ? 'bg-primary/10 text-primary' : 'text-foreground/80 hover:bg-muted'}`}
+                                            className={`flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors ${
+                                                isActive
+                                                    ? 'bg-[#0B1F3A]/8 text-[#0B1F3A] font-semibold dark:bg-[#2563EB]/15 dark:text-[#3B82F6]'
+                                                    : 'text-muted-foreground hover:text-foreground hover:bg-muted/60'
+                                            }`}
                                         >
-                                            <Icon className={`w-5 h-5 mr-3 flex-shrink-0 ${isActive ? 'text-primary' : 'text-muted-foreground/80'}`} />
+                                            <Icon className={`w-4 h-4 mr-3 flex-shrink-0 ${isActive ? 'text-[#2563EB] dark:text-[#3B82F6]' : 'text-muted-foreground'}`} />
                                             {item.name}
                                         </Link>
                                     )
                                 })}
                             </nav>
                         </div>
-                        <div className="p-4 border-t border-border">
-                            <button onClick={() => { removeToken(); router.push('/login'); }} className="flex w-full items-center px-3 py-2 text-sm font-medium text-foreground/80 rounded-md hover:bg-muted transition-colors">
-                                <LogOut className="w-5 h-5 mr-3 text-muted-foreground/80" />
+                        <div className="p-3 border-t border-border bg-muted/20">
+                            <div className="flex items-center justify-between px-2 py-1.5 mb-2 rounded bg-card border border-border">
+                                <div className="flex items-center gap-2 min-w-0">
+                                    <div className="w-6 h-6 rounded bg-[#0B1F3A] text-white dark:bg-[#2563EB] flex items-center justify-center text-xs font-bold uppercase shrink-0">
+                                        {(userName || role)[0]}
+                                    </div>
+                                    <span className="text-xs font-semibold text-foreground tracking-wide truncate">{userName || role}</span>
+                                </div>
+                                <span className="text-[10px] font-medium px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 shrink-0">
+                                    {t('common.active') || 'Active'}
+                                </span>
+                            </div>
+                            <button 
+                                onClick={() => { removeToken(); router.push('/login'); }} 
+                                className="flex w-full items-center px-3 py-2 text-sm font-medium text-muted-foreground hover:text-destructive rounded-md hover:bg-destructive/10 transition-colors"
+                            >
+                                <LogOut className="w-4 h-4 mr-2.5" />
                                 {t('common.logout')}
                             </button>
                         </div>
@@ -257,36 +312,43 @@ export default function DashboardLayout({ children, role }: { children: React.Re
 
             {/* Main Content */}
             <div className="flex-1 flex flex-col relative w-full overflow-hidden">
-                <header className="h-16 bg-card border-b border-border flex items-center justify-between px-4 sm:px-6 shadow-sm z-10 flex-shrink-0">
-                    <div className="flex items-center">
-                        <button onClick={() => setMobileMenuOpen(true)} className="md:hidden mr-4 text-muted-foreground hover:text-foreground">
-                            <Menu className="w-6 h-6" />
+                <header className="h-16 bg-card border-b border-border flex items-center justify-between px-4 sm:px-6 z-10 flex-shrink-0 shadow-xs">
+                    <div className="flex items-center min-w-0">
+                        <button 
+                            onClick={() => setMobileMenuOpen(true)} 
+                            className="md:hidden mr-3 p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted"
+                            aria-label="Open mobile menu"
+                        >
+                            <Menu className="w-5 h-5" />
                         </button>
-                        <h1 className="text-lg sm:text-xl font-semibold text-foreground capitalize truncate">
-                            {navItems.find((n: { href: string, name: string }) => n.href === pathname)?.name || pathname.split('/').pop()?.replace('-', ' ') || 'Dashboard'}
-                        </h1>
+                        <div className="flex items-center gap-2 truncate">
+                            <span className="text-xs uppercase font-semibold text-muted-foreground tracking-wider hidden lg:inline">
+                                Legal Metrology
+                            </span>
+                            <span className="text-muted-foreground hidden lg:inline">/</span>
+                            <h1 className="text-base sm:text-lg font-semibold text-foreground capitalize truncate">
+                                {navItems.find((n: { href: string, name: string }) => n.href === pathname)?.name || pathname.split('/').pop()?.replace('-', ' ') || 'Dashboard'}
+                            </h1>
+                        </div>
                     </div>
-                    <div className="flex items-center gap-2 sm:gap-4">
+                    <div className="flex items-center gap-2 sm:gap-3">
                         <button
                             onClick={() => setCopilotOpen(!copilotOpen)}
-                            className="flex items-center justify-center sm:justify-start text-sm font-medium text-muted-foreground bg-muted hover:bg-muted/80 w-8 h-8 sm:w-auto sm:px-3 sm:py-1.5 rounded-full transition-colors"
-                            title="AI Copilot"
+                            className="flex items-center justify-center text-xs font-semibold text-foreground bg-muted/70 hover:bg-muted border border-border px-3 py-1.5 rounded-md transition-colors shadow-xs"
+                            title="Legal Metrology AI Copilot"
                         >
-                            <MessageSquare className="w-4 h-4 sm:mr-2" /> <span className="hidden sm:inline">{t('layout.copilot')}</span>
+                            <MessageSquare className="w-3.5 h-3.5 text-[#2563EB] mr-1.5" />
+                            <span>{t('layout.copilot') || 'Copilot'}</span>
                         </button>
                         <LanguageSelector />
                         <ModeToggle />
-                        <div className="h-6 w-px bg-border hidden sm:block"></div>
-                        <div className="flex items-center">
-                            <div className="w-8 h-8 rounded-full bg-primary/20 border border-blue-200 flex items-center justify-center text-primary font-bold uppercase">
-                                {role[0]}
-                            </div>
-                            <span className="ml-2 text-sm font-medium text-foreground/80 hidden sm:block">{role.toUpperCase()}</span>
-                        </div>
                     </div>
                 </header>
-                <main className="flex-1 w-full overflow-y-auto bg-muted/30 p-4 sm:p-6 z-0">
-                    {children}
+                <main className="flex-1 w-full overflow-y-auto bg-muted/30 p-4 sm:p-6 z-0 flex flex-col justify-between">
+                    <div className="flex-1">
+                        {children}
+                    </div>
+                    <Footer className="mt-8 -mx-4 -mb-4 sm:-mx-6 sm:-mb-6" />
                 </main>
 
                 {/* Copilot Sidebar */}

@@ -1,8 +1,6 @@
 import type { NextConfig } from "next";
 
-const defaultBackend = process.env.NODE_ENV === "production" || process.env.VERCEL
-  ? "http://127.0.0.1:8000"
-  : "http://127.0.0.1:8000";
+const defaultBackend = "http://127.0.0.1:8000";
 
 const nextConfig: NextConfig = {
   experimental: {

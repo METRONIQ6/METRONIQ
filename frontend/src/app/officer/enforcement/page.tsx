@@ -9,6 +9,7 @@ import { getToken } from '@/lib/auth'
 import { Scale, FileText, ServerCrash, RefreshCw, AlertTriangle, CheckCircle, ArrowRight } from 'lucide-react'
 import { useTranslation } from '@/i18n'
 import { useToast } from "@/components/ui/use-toast"
+import { translateComplianceStatus } from '@/lib/complianceI18n'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -36,7 +37,7 @@ const STATUS_COLOR: Record<string, string> = {
 }
 
 export default function EnforcementPage() {
-    const { t } = useTranslation()
+    const { t, language } = useTranslation()
     const { toast } = useToast()
 
     const [cases, setCases] = React.useState<any[]>([])
@@ -137,80 +138,96 @@ export default function EnforcementPage() {
     }
 
     return (
-        <div className="space-y-6 pt-2 pb-8 max-w-[1600px] w-full mx-auto">
+        <div className="space-y-6 max-w-7xl w-full mx-auto">
             {/* Header */}
-            <div className="flex justify-between items-end mb-8">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-border/60">
                 <div>
-                    <h1 className="text-3xl font-bold tracking-tight text-[#0B1F3A] dark:text-white flex items-center gap-3">
-                        <Scale className="w-8 h-8 text-[#2563EB]" />{t('enforcement.enforcementDocket')}</h1>
-                    <p className="text-muted-foreground mt-1.5 font-medium">{t('enforcement.subtitle')}</p>
+                    <h1 className="text-2xl font-bold tracking-tight text-[#0B1F3A] dark:text-white flex items-center gap-2.5">
+                        <Scale className="w-6 h-6 text-[#2563EB]" />
+                        {t('enforcement.enforcementDocket')}
+                    </h1>
+                    <p className="text-sm text-muted-foreground mt-0.5">{t('enforcement.subtitle')}</p>
                 </div>
-                <Button variant="outline" className="border-border shadow-sm h-11 px-6 font-semibold" onClick={fetchCases}>
-                    <RefreshCw className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''}`} />{t('enforcement.syncDatabase')}</Button>
+                <Button variant="outline" size="sm" className="h-9 px-3 border-border shadow-xs text-xs font-medium" onClick={fetchCases} disabled={loading}>
+                    <RefreshCw className={`w-3.5 h-3.5 mr-1.5 ${loading ? 'animate-spin' : ''}`} />
+                    {t('enforcement.syncDatabase')}
+                </Button>
             </div>
 
             {/* Penalty Amount Dialog */}
             <Dialog open={penaltyModal !== null} onOpenChange={(v) => { if (!v) setPenaltyModal(null) }}>
-                <DialogContent className="sm:max-w-[425px]">
+                <DialogContent className="sm:max-w-[440px] p-6">
                     <DialogHeader>
-                        <DialogTitle className="text-xl font-bold text-[#0B1F3A] dark:text-white flex items-center gap-2">
-                            <AlertTriangle className="w-5 h-5 text-orange-600" />{t('enforcement.issuePenaltyAssessment')}</DialogTitle>
-                        <DialogDescription className="pt-2">{t('enforcement.enterPenaltyAmount')}<strong className="text-foreground">PENALTY_PENDING</strong>.
+                        <DialogTitle className="text-lg font-bold text-[#0B1F3A] dark:text-white flex items-center gap-2">
+                            <AlertTriangle className="w-5 h-5 text-amber-600" />
+                            {t('enforcement.issuePenaltyAssessment')}
+                        </DialogTitle>
+                        <DialogDescription className="text-xs text-muted-foreground pt-1">
+                            {t('enforcement.enterPenaltyAmount')}<strong className="text-foreground ml-1">PENALTY_PENDING</strong>.
                         </DialogDescription>
                     </DialogHeader>
-                    <div className="space-y-4 pt-4">
-                        <div className="space-y-2">
-                            <Label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">{t('enforcement.penaltyAmountLabel')}</Label>
-                            <Input
-                                type="number"
-                                min="0"
-                                step="100"
-                                value={penaltyInput}
-                                onChange={e => setPenaltyInput(e.target.value)}
-                                className="h-11 font-mono text-lg"
-                                placeholder={t('enforcement.egPenaltyAmount')}
-                            />
+                    <div className="space-y-3 pt-3">
+                        <div className="space-y-1.5">
+                            <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t('enforcement.penaltyAmountLabel')}</Label>
+                            <div className="relative">
+                                <span className="absolute left-3 top-2.5 text-sm font-semibold text-muted-foreground">₹</span>
+                                <Input
+                                    type="number"
+                                    min="0"
+                                    step="100"
+                                    value={penaltyInput}
+                                    onChange={e => setPenaltyInput(e.target.value)}
+                                    className="h-10 pl-7 font-mono text-base font-semibold"
+                                    placeholder={t('enforcement.egPenaltyAmount')}
+                                />
+                            </div>
                         </div>
                     </div>
-                    <DialogFooter className="mt-6">
-                        <Button variant="ghost" onClick={() => setPenaltyModal(null)} disabled={actionLoading}>{t('common.cancel')}</Button>
-                        <Button className="bg-[#2563EB] hover:bg-[#2563EB]/90 text-white font-semibold" onClick={handlePenaltySubmit} disabled={actionLoading}>
-                            {actionLoading ? <RefreshCw className="w-4 h-4 mr-2 animate-spin" /> : null}
+                    <DialogFooter className="mt-4 border-t border-border/60 pt-3">
+                        <Button variant="outline" size="sm" className="h-8 text-xs font-medium" onClick={() => setPenaltyModal(null)} disabled={actionLoading}>{t('common.cancel')}</Button>
+                        <Button size="sm" className="h-8 px-4 bg-[#2563EB] hover:bg-[#2563EB]/90 text-white font-semibold text-xs" onClick={handlePenaltySubmit} disabled={actionLoading}>
+                            {actionLoading ? <RefreshCw className="w-3.5 h-3.5 mr-1.5 animate-spin" /> : null}
                             {t("enforcement.issuePenalty")}
                         </Button>
                     </DialogFooter>
                 </DialogContent>
             </Dialog>
 
-            <Card className="rounded-xl shadow-sm border border-border bg-card overflow-hidden">
-                <CardHeader className="pb-3 border-b border-border/40 bg-card/50 flex flex-row items-center justify-between">
-                    <CardTitle className="text-base font-semibold text-foreground tracking-tight">{t('enforcement.activeCaseDirectory')}</CardTitle>
+            <Card className="rounded-lg shadow-xs border border-border bg-card overflow-hidden">
+                <CardHeader className="py-3 px-5 border-b border-border/60 bg-muted/30 flex flex-row items-center justify-between">
+                    <CardTitle className="text-sm font-semibold text-foreground tracking-tight flex items-center gap-2">
+                        {t('enforcement.activeCaseDirectory')}
+                        {cases.length > 0 && (
+                            <span className="text-xs font-mono font-normal text-muted-foreground">({cases.length})</span>
+                        )}
+                    </CardTitle>
                 </CardHeader>
                 <CardContent className="p-0">
                     <div className="overflow-x-auto">
                         <Table>
-                            <TableHeader className="bg-muted/30">
-                                <TableRow className="border-border">
-                                    <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">{t('enforcement.caseId')}</TableHead>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 pl-5">{t('enforcement.caseId')}</TableHead>
                                     <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">{t('enforcement.referenceReinspection')}</TableHead>
                                     <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-center">{t('common.status')}</TableHead>
                                     <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-right">{t('enforcement.penaltyAssessed')}</TableHead>
-                                    <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-right pr-4">{t('common.action')}</TableHead>
+                                    <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-right pr-5">{t('common.action')}</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
                                 {loading && cases.length === 0 ? (
                                     <TableRow>
-                                        <TableCell colSpan={5} className="text-center py-10 text-muted-foreground">
-                                            <RefreshCw className="w-6 h-6 animate-spin mx-auto mb-2 opacity-50" />
-                                            <span className="text-sm">{t('enforcement.loadingRecords')}</span>
+                                        <TableCell colSpan={5} className="text-center py-12 text-muted-foreground">
+                                            <RefreshCw className="w-5 h-5 animate-spin mx-auto mb-2 text-[#2563EB]" />
+                                            <span className="text-xs font-medium">{t('enforcement.loadingRecords')}</span>
                                         </TableCell>
                                     </TableRow>
                                 ) : cases.length === 0 ? (
                                     <TableRow>
-                                        <TableCell colSpan={5} className="text-center py-12 text-muted-foreground">
-                                            <CheckCircle className="w-8 h-8 mb-3 mx-auto opacity-20 text-success" />
-                                            <p className="text-sm font-medium">{t('enforcement.noCases')}</p>
+                                        <TableCell colSpan={5} className="text-center py-14 text-muted-foreground">
+                                            <CheckCircle className="w-8 h-8 mb-2.5 mx-auto text-green-600/40" />
+                                            <p className="text-sm font-semibold text-foreground">{t('enforcement.noCases')}</p>
+                                            <p className="text-xs text-muted-foreground mt-0.5">No formal statutory penalty actions or escalations currently active.</p>
                                         </TableCell>
                                     </TableRow>
                                 ) : (
@@ -219,38 +236,40 @@ export default function EnforcementPage() {
                                         const actionLabel = STATE_LABEL[c.status]
                                         return (
                                             <TableRow key={i} className="border-border hover:bg-muted/40 transition-colors">
-                                                <TableCell className="font-mono text-sm font-bold text-[#0B1F3A] dark:text-blue-400 py-4">
+                                                <TableCell className="font-mono text-xs font-semibold text-[#0B1F3A] dark:text-blue-400 py-3.5 pl-5">
                                                     {c.id.substring(0, 8).toUpperCase()}
                                                 </TableCell>
-                                                <TableCell className="font-mono text-xs text-muted-foreground py-4">
-                                                    {c.reinspection_id?.substring(0, 8).toUpperCase()}
+                                                <TableCell className="font-mono text-xs text-muted-foreground py-3.5">
+                                                    {c.reinspection_id?.substring(0, 8).toUpperCase() || '—'}
                                                 </TableCell>
-                                                <TableCell className="text-center py-4">
-                                                    <Badge variant="outline" className={`font-mono text-xs uppercase px-2 py-0.5 rounded-sm border ${STATUS_COLOR[c.status] || 'border-border text-foreground'}`}>
-                                                        {c.status || "UNKNOWN"}
+                                                <TableCell className="text-center py-3.5">
+                                                    <Badge variant="outline" className={`font-mono text-[11px] uppercase px-2 py-0.5 rounded-sm font-semibold border ${STATUS_COLOR[c.status] || 'border-border text-foreground'}`}>
+                                                        {translateComplianceStatus(c.status, language)}
                                                     </Badge>
                                                 </TableCell>
-                                                <TableCell className="text-right py-4 font-mono font-medium text-foreground">
-                                                    {c.penalty_amount ? `₹${c.penalty_amount.toLocaleString()}` : <span className="opacity-50">—</span>}
+                                                <TableCell className="text-right py-3.5 font-mono text-xs font-bold text-foreground">
+                                                    {c.penalty_amount ? `₹${c.penalty_amount.toLocaleString()}` : <span className="text-muted-foreground font-normal opacity-50">—</span>}
                                                 </TableCell>
-                                                <TableCell className="text-right py-4 pr-4">
-                                                    <div className="flex gap-2 justify-end">
+                                                <TableCell className="text-right py-3.5 pr-5">
+                                                    <div className="flex gap-2 justify-end items-center">
                                                         <Link href={`/officer/reports/${c.id}`} target="_blank">
-                                                            <Button size="sm" variant="outline" className="h-8 border-border hover:bg-muted font-semibold text-xs">
-                                                                <FileText className="w-3.5 h-3.5 mr-1.5" />{t('enforcement.auditHistory')}</Button>
+                                                            <Button size="sm" variant="outline" className="h-7 px-2.5 text-xs font-medium border-border hover:bg-muted">
+                                                                <FileText className="w-3.5 h-3.5 mr-1" />{t('enforcement.auditHistory')}
+                                                            </Button>
                                                         </Link>
                                                         {nextStatus ? (
                                                             <Button
                                                                 size="sm"
-                                                                className="h-8 bg-[#2563EB] hover:bg-[#2563EB]/90 text-white font-semibold text-xs"
+                                                                className="h-7 px-3 bg-[#2563EB] hover:bg-[#2563EB]/90 text-white font-semibold text-xs shadow-xs"
                                                                 disabled={actionLoading}
                                                                 onClick={() => handleAdvanceState(c.id, c.status)}
                                                             >
-                                                                {t(actionLabel)} <ArrowRight className="w-3 h-3 ml-1.5" />
+                                                                {t(actionLabel)} <ArrowRight className="w-3 h-3 ml-1" />
                                                             </Button>
                                                         ) : (
-                                                            <Button size="sm" variant="ghost" disabled className="h-8 text-xs font-semibold px-4 opacity-50">
-                                                                <CheckCircle className="w-3.5 h-3.5 mr-1.5 text-success" />{t('enforcement.concluded')}</Button>
+                                                            <span className="text-xs font-semibold px-2 py-1 text-green-700 dark:text-green-400 flex items-center">
+                                                                <CheckCircle className="w-3 h-3 mr-1 text-green-600" />{t('enforcement.concluded')}
+                                                            </span>
                                                         )}
                                                     </div>
                                                 </TableCell>

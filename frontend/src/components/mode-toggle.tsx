@@ -17,27 +17,29 @@ export function ModeToggle() {
 
     if (!mounted) {
         return (
-            <div className="w-8 h-8 rounded-full bg-muted animate-pulse"></div>
+            <div className="w-16 h-8 rounded-md bg-muted animate-pulse"></div>
         )
     }
 
     return (
-        <div className="relative inline-flex items-center rounded-full border border-border bg-card p-1 shadow-sm">
+        <div className="relative inline-flex items-center rounded-md border border-border bg-card p-0.5 shadow-xs h-8">
             <button
                 onClick={() => setTheme("light")}
-                className={`rounded-full p-1.5 transition-colors ${theme === 'light' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground'}`}
+                className={`rounded px-1.5 py-1 transition-colors flex items-center justify-center ${theme === 'light' ? 'bg-[#0B1F3A] dark:bg-[#2563EB] text-white shadow-xs' : 'text-muted-foreground hover:text-foreground'}`}
                 title="Light Mode"
+                aria-label="Light Mode"
             >
-                <Sun className="h-4 w-4" />
+                <Sun className="h-3.5 w-3.5" />
                 <span className="sr-only">{t('common.lightTheme')}</span>
             </button>
 
             <button
                 onClick={() => setTheme("dark")}
-                className={`rounded-full p-1.5 transition-colors ${theme === 'dark' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground'}`}
+                className={`rounded px-1.5 py-1 transition-colors flex items-center justify-center ${theme === 'dark' ? 'bg-[#2563EB] text-white shadow-xs' : 'text-muted-foreground hover:text-foreground'}`}
                 title="Dark Mode"
+                aria-label="Dark Mode"
             >
-                <Moon className="h-4 w-4" />
+                <Moon className="h-3.5 w-3.5" />
                 <span className="sr-only">{t('common.darkTheme')}</span>
             </button>
         </div>

@@ -8,6 +8,7 @@ import { getToken } from '@/lib/auth'
 import { useTranslation } from '@/i18n'
 import { mapManufacturerError } from '@/lib/errorUtils'
 import { useToast } from "@/components/ui/use-toast"
+import { translateField, translateComplianceStatus, translateRiskScore, translateEvaluationMessage, translateEvidence } from '@/lib/complianceI18n'
 
 export default function ComplianceAudit() {
     const [file, setFile] = useState<File | null>(null)
@@ -16,7 +17,7 @@ export default function ComplianceAudit() {
     const [evidence, setEvidence] = useState<any>(null)
     const [loading, setLoading] = useState(false)
     const [statusKey, setStatusKey] = useState("")
-    const { t } = useTranslation()
+    const { t, language } = useTranslation()
     const { toast } = useToast()
     const [isSubmittingToGov, setIsSubmittingToGov] = useState(false)
     const [isSubmittedToGov, setIsSubmittedToGov] = useState(false)
@@ -255,70 +256,87 @@ export default function ComplianceAudit() {
 
         return {
             ruleKey,
-            ruleStr: rawField ? (t(`manufacturer.rules.${ruleKey}`) || rawField) : (t('common.unknown') || "Compliance rule"),
-            statusStr: t(`manufacturer.status.${statusObj}`) || statusObj,
+            ruleStr: rawField ? translateField(rawField, language) : (t('common.unknown') || "Compliance rule"),
+            statusStr: translateComplianceStatus(statusObj, language),
             isPass: statusObj === 'PASS',
             isFail: statusObj === 'FAIL' || statusObj === 'INVALID_IMAGE',
             isNotApplicable: statusObj === 'NOT_APPLICABLE' || statusObj === 'NOT_REQUIRED',
             isNotVerified: statusObj === 'NOT_VERIFIED' || statusObj === 'OCR_UNCERTAIN' || statusObj === 'REVIEW_REQUIRED',
-            reason: ev.message || ev.reason || '',
-            evidence: ev.evidence || ''
+            reason: translateEvaluationMessage(ev.message || ev.reason || '', rawField, language),
+            evidence: translateEvidence(ev.evidence || '', language)
         };
     };
 
     return (
         <div className="space-y-6 max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold tracking-tight text-[#0B1F3A] dark:text-white">{t('manufacturer.compliance_audit.title')}</h2>
+            <div className="border-b border-border pb-4">
+                <h1 className="text-2xl font-bold tracking-tight text-foreground flex items-center gap-2.5">
+                    <ShieldCheck className="w-6 h-6 text-[#2563EB]" />
+                    {t('manufacturer.compliance_audit.title')}
+                </h1>
+                <p className="text-sm text-muted-foreground mt-1">
+                    Pre-market automated statutory Legal Metrology compliance verification and declaration audit.
+                </p>
+            </div>
 
-            <Card className="rounded-xl border border-border shadow-sm">
-                <CardContent className="pt-6 space-y-6">
-                    <div className="flex flex-col sm:flex-row gap-4">
+            <Card className="rounded-lg border border-border shadow-xs bg-card">
+                <CardContent className="p-5 space-y-5">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <Button
                             variant="outline"
-                            className="flex-1 h-32 flex flex-col items-center justify-center gap-3 border-dashed border-2 hover:bg-muted/50 transition-colors bg-card"
+                            className="h-28 flex flex-col items-center justify-center gap-2.5 border-dashed border-2 hover:bg-muted/40 transition-colors bg-card rounded-lg"
                             onClick={() => document.getElementById('photo-upload')?.click()}
                         >
-                            <UploadCloud className="w-10 h-10 text-muted-foreground" />
-                            <span className="font-semibold text-foreground/80">{t('scanner.uploadImage') || "Upload Photo"}</span>
+                            <UploadCloud className="w-8 h-8 text-muted-foreground" />
+                            <span className="font-medium text-sm text-foreground">{t('scanner.uploadImage') || "Upload Photo"}</span>
                             <input id="photo-upload" type="file" onChange={handleFileChange} className="hidden" accept="image/*" />
                         </Button>
                         <Button
                             variant="outline"
-                            className="flex-1 h-32 flex flex-col items-center justify-center gap-3 border-dashed border-2 hover:bg-muted/50 transition-colors bg-card"
+                            className="h-28 flex flex-col items-center justify-center gap-2.5 border-dashed border-2 hover:bg-muted/40 transition-colors bg-card rounded-lg"
                             onClick={startCamera}
                         >
-                            <Camera className="w-10 h-10 text-muted-foreground" />
-                            <span className="font-semibold text-foreground/80">{t('scanner.liveCamera') || "Live Camera"}</span>
+                            <Camera className="w-8 h-8 text-muted-foreground" />
+                            <span className="font-medium text-sm text-foreground">{t('scanner.liveCamera') || "Live Camera"}</span>
                         </Button>
                     </div>
 
                     {isCameraActive && (
-                        <div className="relative border rounded-xl overflow-hidden bg-black flex flex-col items-center min-h-[400px] shadow-sm">
-                            <video ref={videoRef} className="w-full max-h-[60vh] object-contain" autoPlay playsInline muted />
+                        <div className="relative border border-border rounded-lg overflow-hidden bg-black flex flex-col items-center min-h-[360px]">
+                            <video ref={videoRef} className="w-full max-h-[50vh] object-contain" autoPlay playsInline muted />
                             <canvas ref={canvasRef} className="hidden" />
-                            <div className="absolute bottom-6 left-0 right-0 flex justify-center gap-4">
-                                <Button onClick={captureImage} className="bg-white text-black hover:bg-gray-200 shadow-xl h-12 px-8 rounded-full font-bold">{t('scanner.takePhoto') || "Take Photo"}</Button>
-                                <Button variant="destructive" onClick={stopCamera} className="shadow-xl h-12 px-6 rounded-full">{t('common.cancel') || "Cancel"}</Button>
+                            <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-3">
+                                <Button onClick={captureImage} className="bg-white text-black hover:bg-gray-100 shadow-md h-9 px-5 rounded-md font-medium text-sm">
+                                    {t('scanner.takePhoto') || "Take Photo"}
+                                </Button>
+                                <Button variant="destructive" size="sm" onClick={stopCamera} className="h-9 px-4 rounded-md text-sm">
+                                    {t('common.cancel') || "Cancel"}
+                                </Button>
                             </div>
                         </div>
                     )}
 
                     {preview && !isCameraActive && (
-                        <div className="relative border rounded-xl overflow-hidden bg-muted/20 p-4 shadow-inner">
-                            <img src={preview} alt="Preview" className="w-full max-h-[50vh] object-contain rounded-md shadow-sm border" />
+                        <div className="relative border border-border rounded-lg overflow-hidden bg-muted/20 p-3">
+                            <img src={preview} alt="Preview" className="w-full max-h-[45vh] object-contain rounded border border-border" />
                             <Button
                                 variant="destructive"
                                 size="icon"
-                                className="absolute top-6 right-6 rounded-full h-10 w-10 shadow-lg"
+                                className="absolute top-5 right-5 rounded-full h-8 w-8 shadow-sm"
                                 onClick={clearSelection}
                             >
-                                <X className="w-5 h-5" />
+                                <X className="w-4 h-4" />
                             </Button>
                         </div>
                     )}
 
-                    <div className="flex justify-end pt-5 border-t w-full">
-                        <Button onClick={scan} disabled={!file || loading} className="w-full sm:w-auto bg-[#0B1F3A] hover:bg-[#0B1F3A]/90 text-white shadow-sm font-semibold h-12 px-8 text-lg rounded-xl transition-all">
+                    <div className="flex justify-end pt-3 border-t border-border">
+                        <Button 
+                            onClick={scan} 
+                            disabled={!file || loading} 
+                            className="w-full sm:w-auto bg-[#0B1F3A] hover:bg-[#0B1F3A]/90 dark:bg-[#2563EB] dark:hover:bg-[#2563EB]/90 text-white font-medium h-9 px-5 text-sm rounded-md transition-colors"
+                        >
+                            {loading && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
                             {dispStatus}
                         </Button>
                     </div>
@@ -326,65 +344,72 @@ export default function ComplianceAudit() {
             </Card>
 
             {result && (
-                <Card className="rounded-xl border border-border mt-8 shadow-sm">
-                    <CardContent className="pt-6 space-y-4">
-                        <h3 className="text-2xl font-bold tracking-tight mb-4">{t('manufacturer.compliance_audit.auditResult')}</h3>
-                        <div className="flex gap-4 flex-wrap">
-                            <Badge variant={isFail(result.compliance) ? 'destructive' : 'default'} className="text-base font-semibold tracking-wide py-1.5 px-4 shadow-sm">
-                                {t(`manufacturer.status.${result.compliance}`) || result.compliance || "UNKNOWN"}
+                <Card className="rounded-lg border border-border shadow-xs bg-card overflow-hidden">
+                    <div className="bg-muted/30 px-5 py-3 border-b border-border flex items-center justify-between">
+                        <h3 className="text-sm font-semibold text-foreground tracking-tight">
+                            {t('manufacturer.compliance_audit.auditResult')}
+                        </h3>
+                        <div className="flex items-center gap-2">
+                            <Badge variant={isFail(result.compliance) ? 'destructive' : 'success'} className="font-mono text-xs uppercase">
+                                {translateComplianceStatus(result.compliance, language)}
                             </Badge>
-                            <Badge variant="outline" className="text-base font-semibold tracking-wide py-1.5 px-4 shadow-sm bg-card">
-                                {t('manufacturer.compliance_audit.risk')} {result.risk_score ? (t(`manufacturer.risk.${result.risk_score.toUpperCase()}`) || result.risk_score) : (t('manufacturer.compliance_audit.na'))}
+                            <Badge variant="outline" className="font-mono text-xs uppercase">
+                                {t('manufacturer.compliance_audit.risk')}: {translateRiskScore(result.risk_score, language)}
                             </Badge>
                         </div>
-
-                        {result.errorKey && <p className="text-red-500 font-medium py-2">{t(`manufacturer.errors.${result.errorKey}`)}</p>}
-                        {result.error && !result.errorKey && <p className="text-red-500 font-medium py-2">{result.error}</p>}
-                        {result.validation_details?.message && <p className="text-orange-500 font-medium">{result.validation_details.message}</p>}
+                    </div>
+                    <CardContent className="p-5 space-y-4">
+                        {result.errorKey && <p className="text-sm text-destructive font-medium">{t(`manufacturer.errors.${result.errorKey}`)}</p>}
+                        {result.error && !result.errorKey && <p className="text-sm text-destructive font-medium">{result.error}</p>}
+                        {result.validation_details?.message && <p className="text-sm text-amber-600 dark:text-amber-400 font-medium">{result.validation_details.message}</p>}
 
                         {result.validation_details?.evaluations && result.validation_details.evaluations.length > 0 && (
-                            <div className="pt-4">
-                                <h4 className="font-bold text-lg mb-4 tracking-tight border-b pb-2">{t('manufacturer.compliance_audit.complianceChecklist')}</h4>
-                                <ul className="space-y-4 pt-2">
+                            <div className="space-y-3 pt-2">
+                                <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                                    {t('manufacturer.compliance_audit.complianceChecklist')}
+                                </h4>
+                                <ul className="space-y-2.5">
                                     {result.validation_details.evaluations.map((ev: any, idx: number) => {
                                         const norm = normalizeAuditEvaluation(ev);
                                         let bgClass = 'border-border bg-card'
-                                        let iconClass = 'bg-muted text-muted-foreground'
-                                        let textClass = 'text-foreground'
+                                        let badgeVar: "success" | "destructive" | "warning" | "neutral" = "neutral"
 
                                         if (norm.isFail) {
-                                            bgClass = 'border-red-200 bg-red-50/50 dark:bg-red-900/10'
-                                            iconClass = 'bg-red-100 text-red-600'
-                                            textClass = 'text-destructive'
+                                            bgClass = 'border-destructive/20 bg-destructive/5'
+                                            badgeVar = "destructive"
                                         } else if (norm.isPass) {
-                                            bgClass = 'border-green-200 bg-green-50/50 dark:bg-green-900/10'
-                                            iconClass = 'bg-green-100 text-green-600'
-                                            textClass = 'text-green-600'
+                                            bgClass = 'border-emerald-500/20 bg-emerald-500/5'
+                                            badgeVar = "success"
                                         } else if (norm.isNotVerified) {
-                                            bgClass = 'border-amber-200 bg-amber-50/50 dark:bg-amber-900/10'
-                                            iconClass = 'bg-amber-100 text-amber-600'
-                                            textClass = 'text-amber-600'
+                                            bgClass = 'border-amber-500/20 bg-amber-500/5'
+                                            badgeVar = "warning"
                                         } else if (norm.isNotApplicable) {
-                                            bgClass = 'border-muted bg-muted/20'
-                                            iconClass = 'bg-slate-100 text-slate-500'
-                                            textClass = 'text-muted-foreground'
+                                            bgClass = 'border-border bg-muted/20'
+                                            badgeVar = "neutral"
                                         }
 
                                         return (
-                                            <li key={idx} className={`flex gap-4 items-start p-4 rounded-xl border shadow-sm ${bgClass}`}>
-                                                <div className={`mt-0.5 rounded-full p-1.5 ${iconClass}`}>
-                                                    {norm.isPass ? <ShieldCheck className="w-5 h-5" /> : <ShieldAlert className="w-5 h-5" />}
+                                            <li key={idx} className={`p-3.5 rounded-lg border text-sm flex items-start gap-3 ${bgClass}`}>
+                                                <div className="mt-0.5 shrink-0">
+                                                    {norm.isPass ? (
+                                                        <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                                                    ) : (
+                                                        <ShieldAlert className="w-4 h-4 text-destructive" />
+                                                    )}
                                                 </div>
-                                                <div className="flex-1">
-                                                    <div className="font-semibold text-foreground text-lg">
-                                                        {norm.ruleStr}: <span className={`ml-1 font-bold ${textClass}`}>{norm.statusStr}</span>
+                                                <div className="flex-1 min-w-0">
+                                                    <div className="flex items-center justify-between gap-2">
+                                                        <span className="font-semibold text-foreground text-sm">{norm.ruleStr}</span>
+                                                        <Badge variant={badgeVar} className="font-mono text-xs uppercase shrink-0">
+                                                            {norm.statusStr}
+                                                        </Badge>
                                                     </div>
                                                     {norm.evidence && norm.evidence !== "MISSING_FROM_PACKAGE" && norm.evidence !== "Field not present" && (
-                                                        <div className="mt-2 p-2 bg-background/50 rounded border text-sm font-mono text-muted-foreground break-all">
-                                                            Detected Value: {norm.evidence}
+                                                        <div className="mt-1.5 p-2 bg-background rounded border border-border text-xs font-mono text-muted-foreground break-all">
+                                                            Detected Value: <span className="text-foreground">{norm.evidence}</span>
                                                         </div>
                                                     )}
-                                                    {norm.reason && <p className="text-sm mt-2 text-muted-foreground">{norm.reason}</p>}
+                                                    {norm.reason && <p className="text-xs mt-1 text-muted-foreground">{norm.reason}</p>}
                                                 </div>
                                             </li>
                                         );
@@ -394,18 +419,22 @@ export default function ComplianceAudit() {
                         )}
 
                         {/* Submission Button */}
-                        <div className="pt-6 mt-6 border-t flex justify-end gap-4">
+                        <div className="pt-4 border-t border-border flex justify-end">
                             <Button
                                 onClick={submitForGovApproval}
                                 disabled={isSubmittingToGov || isSubmittedToGov}
-                                className={`h-14 px-8 text-lg font-bold shadow-md rounded-xl transition-all ${isSubmittedToGov ? 'bg-green-600 hover:bg-green-700 text-white' : 'bg-primary hover:bg-primary/90 text-primary-foreground'}`}
+                                className={`h-9 px-5 text-sm font-medium transition-colors ${
+                                    isSubmittedToGov 
+                                        ? 'bg-emerald-600 hover:bg-emerald-700 text-white' 
+                                        : 'bg-[#0B1F3A] hover:bg-[#0B1F3A]/90 dark:bg-[#2563EB] dark:hover:bg-[#2563EB]/90 text-white'
+                                }`}
                             >
                                 {isSubmittingToGov ? (
-                                    <><Loader2 className="w-5 h-5 mr-3 animate-spin" /> {t('common.processing') || "Processing..."}</>
+                                    <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> {t('common.processing') || "Processing..."}</>
                                 ) : isSubmittedToGov ? (
-                                    <><CheckCircle2 className="w-5 h-5 mr-3" /> {t('manufacturer.compliance_audit.submitted') || "Submitted for Approval"}</>
+                                    <><CheckCircle2 className="w-4 h-4 mr-2" /> {t('manufacturer.compliance_audit.submitted') || "Submitted for Approval"}</>
                                 ) : (
-                                    <><Send className="w-5 h-5 mr-3" /> {t('manufacturer.compliance_audit.sendForApproval') || "Send for Government Approval"}</>
+                                    <><Send className="w-4 h-4 mr-2" /> {t('manufacturer.compliance_audit.sendForApproval') || "Send for Government Approval"}</>
                                 )}
                             </Button>
                         </div>

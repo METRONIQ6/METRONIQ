@@ -10,9 +10,10 @@ import { ServerCrash, RefreshCw, Search, Plus, Globe, MousePointerClick, ShieldC
 import { getToken } from '@/lib/auth'
 import { useToast } from "@/components/ui/use-toast"
 import { useTranslation } from '@/i18n'
+import { translateComplianceStatus } from '@/lib/complianceI18n'
 
 export default function EcommercePage() {
-    const { t } = useTranslation()
+    const { t, language } = useTranslation()
     const { toast } = useToast()
 
     const [monitors, setMonitors] = useState<any[]>([])
@@ -324,7 +325,7 @@ export default function EcommercePage() {
                                     : result.complianceStatus === 'FAIL'
                                         ? <XCircle className="w-6 h-6 text-destructive" />
                                         : <AlertTriangle className="w-6 h-6 text-orange-500" />}
-                                <span className={`font-black text-xl tracking-wide ${result.complianceStatus === 'PASS' || result.complianceStatus === 'COMPLIANT' ? 'text-success' : result.complianceStatus === 'FAIL' ? 'text-destructive' : 'text-orange-500'}`}>{result.complianceStatus}</span>
+                                <span className={`font-black text-xl tracking-wide ${result.complianceStatus === 'PASS' || result.complianceStatus === 'COMPLIANT' ? 'text-success' : result.complianceStatus === 'FAIL' ? 'text-destructive' : 'text-orange-500'}`}>{translateComplianceStatus(result.complianceStatus, language)}</span>
                             </div>
                         </div>
 
@@ -338,7 +339,7 @@ export default function EcommercePage() {
                                             <div className="px-4 py-2.5 flex justify-between items-center border-b border-border/50 bg-muted/10">
                                                 <span className="font-semibold text-xs text-foreground uppercase tracking-wider">{rule.name}</span>
                                                 <Badge variant="outline" className={`font-bold px-2 py-0 text-[10px] rounded border ${getRuleBadgeStatus(rule.status)}`}>
-                                                    {rule.status}
+                                                    {translateComplianceStatus(rule.status, language)}
                                                 </Badge>
                                             </div>
                                             <div className="p-3.5 bg-card flex flex-col gap-3">
@@ -399,104 +400,112 @@ export default function EcommercePage() {
     }
 
     return (
-        <div className="p-8 max-w-7xl mx-auto space-y-8 animate-in fade-in zoom-in-95 duration-500">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="space-y-6 max-w-7xl w-full mx-auto">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-border/60">
                 <div>
-                    <h1 className="text-3xl font-bold tracking-tight text-foreground flex items-center">
-                        <Globe className="w-8 h-8 mr-3 text-primary opacity-80" />
+                    <h1 className="text-2xl font-bold tracking-tight text-[#0B1F3A] dark:text-white flex items-center gap-2.5">
+                        <Globe className="w-6 h-6 text-[#2563EB]" />
                         {t('ecommerce.title') || "E-Commerce Monitor"}
                     </h1>
-                    <p className="text-muted-foreground mt-1">{t('ecommerce.digitalMarketSurveillance') || "Digital Market Surveillance"}</p>
+                    <p className="text-sm text-muted-foreground mt-0.5">{t('ecommerce.digitalMarketSurveillance') || "Digital Market Surveillance & Online Mandatory Declarations Tracking"}</p>
                 </div>
-                <div className="bg-card border border-border px-4 py-2 rounded-lg flex items-center shadow-sm">
-                    <span className="relative flex h-3 w-3 mr-3">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-3 w-3 bg-primary"></span>
-                    </span>
-                    <span className="text-sm font-medium">{t('ecommerce.activeCrawlerSentinels') || "Active Crawler Sentinels"}</span>
+                <div className="bg-card border border-border px-3 py-1.5 rounded-md flex items-center gap-2 shadow-xs text-xs">
+                    <span className="h-2 w-2 rounded-full bg-green-600 inline-block"></span>
+                    <span className="font-semibold text-foreground">{t('ecommerce.activeCrawlerSentinels') || "Active Crawler Sentinels"}</span>
                 </div>
             </div>
 
-            <Card className="border-border shadow-sm border-t-4 border-t-primary overflow-hidden">
-                <CardHeader className="bg-muted/10 border-b border-border pb-6">
-                    <CardTitle className="text-lg font-semibold flex items-center">
-                        <Plus className="w-5 h-5 mr-2 text-primary" />
+            <Card className="rounded-lg shadow-xs border border-border bg-card overflow-hidden">
+                <CardHeader className="py-3 px-5 border-b border-border/60 bg-muted/30">
+                    <CardTitle className="text-sm font-semibold flex items-center gap-2 text-foreground">
+                        <Plus className="w-4 h-4 text-[#2563EB]" />
                         {t('ecommerce.addMonitor') || "Add Monitor"}
                     </CardTitle>
-                    <p className="text-sm text-muted-foreground mt-1">
+                    <p className="text-xs text-muted-foreground mt-0.5">
                         {t('ecommerce.registerDomain') || "Register digital marketplace domain for monitoring (e.g. https://flipkart.com/product/123)"}
                     </p>
                 </CardHeader>
-                <CardContent className="pt-6">
-                    <div className="flex gap-4">
+                <CardContent className="p-5">
+                    <div className="flex flex-col sm:flex-row gap-3">
                         <div className="relative flex-1">
-                            <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                            <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
                             <Input
                                 placeholder={t('ecommerce.productUrl') || "Product URL"}
                                 value={newUrl}
                                 onChange={(e) => setNewUrl(e.target.value)}
-                                className="pl-9 bg-background focus-visible:ring-primary shadow-sm"
+                                className="pl-9 h-9 text-xs bg-background shadow-xs font-mono"
                             />
                         </div>
-                        <Button onClick={addMonitor} className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm shrink-0">
+                        <Button onClick={addMonitor} size="sm" className="h-9 px-4 bg-[#0B1F3A] hover:bg-[#0B1F3A]/90 text-white font-semibold text-xs shadow-xs shrink-0">
                             {t('ecommerce.activateTracker') || "Activate Tracker"}
                         </Button>
                     </div>
                 </CardContent>
             </Card>
 
-            <Card className="border-border shadow-sm overflow-hidden">
+            <Card className="rounded-lg shadow-xs border border-border bg-card overflow-hidden">
+                <CardHeader className="py-3 px-5 border-b border-border/60 bg-muted/30">
+                    <CardTitle className="text-sm font-semibold text-foreground tracking-tight flex items-center gap-2">
+                        {t('ecommerce.networkTargetUrl') || "Marketplace Surveillance Registry"}
+                        {monitors.length > 0 && (
+                            <span className="text-xs font-mono font-normal text-muted-foreground">({monitors.length})</span>
+                        )}
+                    </CardTitle>
+                </CardHeader>
                 <CardContent className="p-0">
                     <div className="overflow-x-auto">
                         <Table>
-                            <TableHeader className="bg-muted/30">
-                                <TableRow className="border-border">
-                                    <TableHead className="w-10"></TableHead>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead className="w-10 pl-4"></TableHead>
                                     <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">{t('ecommerce.networkTargetUrl') || "Target URL"}</TableHead>
                                     <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3">{t('ecommerce.intervalCycle') || "Interval Cycle"}</TableHead>
                                     <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-center">{t('ecommerce.telemetryStatus') || "Telemetry Status"}</TableHead>
-                                    <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-right pr-4">{t('ecommerce.taskOverride') || "Task Override"}</TableHead>
+                                    <TableHead className="text-xs font-semibold uppercase text-muted-foreground py-3 text-right pr-5">{t('ecommerce.taskOverride') || "Task Override"}</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
                                 {loading ? (
                                     <TableRow>
-                                        <TableCell colSpan={5} className="text-center py-10 text-muted-foreground">
-                                            <RefreshCw className="w-6 h-6 animate-spin mx-auto mb-2 opacity-50" />
-                                            <span className="text-sm">Retrieving digital sentinels...</span>
+                                        <TableCell colSpan={5} className="text-center py-12 text-muted-foreground">
+                                            <RefreshCw className="w-5 h-5 animate-spin mx-auto mb-2 text-[#2563EB]" />
+                                            <span className="text-xs font-medium">Retrieving digital surveillance monitors...</span>
                                         </TableCell>
                                     </TableRow>
                                 ) : monitors.length === 0 ? (
                                     <TableRow>
-                                        <TableCell colSpan={5} className="text-center py-12 text-muted-foreground">
-                                            <ShieldCheck className="w-8 h-8 mb-3 mx-auto opacity-20 text-primary" />
-                                            <p className="text-sm font-medium">No digital market surveillance trackers deployed.</p>
+                                        <TableCell colSpan={5} className="text-center py-14 text-muted-foreground">
+                                            <ShieldCheck className="w-8 h-8 mb-2.5 mx-auto text-muted-foreground/40" />
+                                            <p className="text-sm font-semibold text-foreground">No digital market surveillance trackers deployed</p>
+                                            <p className="text-xs text-muted-foreground mt-0.5">Enter an e-commerce product URL above to begin statutory monitoring.</p>
                                         </TableCell>
                                     </TableRow>
                                 ) : (
                                     monitors.map((m, i) => (
                                         <React.Fragment key={i}>
                                             <TableRow className={`border-border hover:bg-muted/40 transition-colors ${expandedRows[m.id] ? 'bg-muted/20' : ''}`}>
-                                                <TableCell className="w-10 pl-4 py-4 cursor-pointer" onClick={() => toggleRow(m.id)}>
+                                                <TableCell className="w-10 pl-4 py-3.5 cursor-pointer" onClick={() => toggleRow(m.id)}>
                                                     {expandedRows[m.id] ? <ChevronDown className="w-4 h-4 text-muted-foreground" /> : <ChevronRight className="w-4 h-4 text-muted-foreground" />}
                                                 </TableCell>
-                                                <TableCell className="text-sm py-4 max-w-[400px] truncate">
-                                                    <a href={m.target_url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-mono font-medium flex items-center">
-                                                        <MousePointerClick className="w-3.5 h-3.5 mr-2 opacity-50" />
+                                                <TableCell className="text-xs py-3.5 max-w-[400px] truncate">
+                                                    <a href={m.target_url} target="_blank" rel="noopener noreferrer" className="text-[#2563EB] hover:underline font-mono font-medium flex items-center">
+                                                        <MousePointerClick className="w-3.5 h-3.5 mr-1.5 opacity-60" />
                                                         {m.target_url}
                                                     </a>
                                                 </TableCell>
-                                                <TableCell className="font-mono text-xs text-muted-foreground py-4 uppercase">
+                                                <TableCell className="font-mono text-xs text-muted-foreground py-3.5 uppercase">
                                                     {m.monitoring_frequency}
                                                 </TableCell>
-                                                <TableCell className="text-center py-4">
-                                                    <Badge variant="outline" className={`font-mono text-xs uppercase px-2 py-0.5 rounded-sm border ${getBadgeStatus(m.last_scan_result)}`}>
-                                                        {m.last_scan_result || "PENDING"}
+                                                <TableCell className="text-center py-3.5">
+                                                    <Badge variant="outline" className={`font-mono text-[11px] uppercase px-2 py-0.5 rounded-sm font-semibold border ${getBadgeStatus(m.last_scan_result)}`}>
+                                                        {m.last_scan_result === 'SCANNING...'
+                                                            ? (language === 'ta' ? 'வருடுகிறது...' : language === 'hi' ? 'स्कैन हो रहा है...' : 'Scanning...')
+                                                            : translateComplianceStatus(m.last_scan_result || "PENDING", language)}
                                                     </Badge>
                                                 </TableCell>
-                                                <TableCell className="text-right py-4 pr-4">
-                                                    <Button size="sm" variant="outline" className="h-8 border-border hover:bg-muted font-semibold text-xs" onClick={() => triggerScan(m.id)} disabled={m.last_scan_result === 'SCANNING...'}>
-                                                        <RefreshCw className={`w-3.5 h-3.5 mr-1.5 ${m.last_scan_result === 'SCANNING...' ? 'animate-spin' : ''}`} />{t('ecommerce.forceCrawl') || "Force Crawl"}
+                                                <TableCell className="text-right py-3.5 pr-5">
+                                                    <Button size="sm" variant="outline" className="h-7 px-2.5 border-border hover:bg-muted font-medium text-xs" onClick={() => triggerScan(m.id)} disabled={m.last_scan_result === 'SCANNING...'}>
+                                                        <RefreshCw className={`w-3 h-3 mr-1 ${m.last_scan_result === 'SCANNING...' ? 'animate-spin' : ''}`} />{t('ecommerce.forceCrawl') || "Force Crawl"}
                                                     </Button>
                                                 </TableCell>
                                             </TableRow>
@@ -507,18 +516,18 @@ export default function EcommercePage() {
                                                             {scanResults[m.id] ? (
                                                                 renderExpandedResult(scanResults[m.id], m)
                                                             ) : (
-                                                                <div className="flex flex-col items-center justify-center p-8 m-6 text-muted-foreground bg-card border border-border border-dashed rounded-lg">
+                                                                <div className="flex flex-col items-center justify-center p-8 m-4 text-muted-foreground bg-card border border-border border-dashed rounded-lg">
                                                                     {m.last_scan_result === 'SCANNING...' ? (
                                                                         <>
-                                                                            <RefreshCw className="w-6 h-6 animate-spin mb-3 text-primary" />
-                                                                            <p className="text-sm">Evaluating web telemetry and legal metrology declarations...</p>
+                                                                            <RefreshCw className="w-5 h-5 animate-spin mb-2 text-[#2563EB]" />
+                                                                            <p className="text-xs">Evaluating web telemetry and legal metrology declarations...</p>
                                                                         </>
                                                                     ) : (
                                                                         <>
-                                                                            <AlertTriangle className="w-8 h-8 mb-3 text-destructive opacity-80" />
-                                                                            <h3 className="font-semibold text-destructive uppercase tracking-wider mb-2">{t('ecommerce.technicalError') || "TECHNICAL ERROR"}</h3>
-                                                                            <p className="text-sm">Status: {m.last_scan_result}</p>
-                                                                            <p className="text-sm mt-1">Technical failure occurred before legal evaluation.</p>
+                                                                            <AlertTriangle className="w-6 h-6 mb-2 text-destructive opacity-80" />
+                                                                            <h3 className="font-semibold text-xs text-destructive uppercase tracking-wider mb-1">{t('ecommerce.technicalError') || "TECHNICAL ERROR"}</h3>
+                                                                            <p className="text-xs">Status: {m.last_scan_result}</p>
+                                                                            <p className="text-xs text-muted-foreground mt-0.5">Technical failure occurred before legal evaluation.</p>
                                                                         </>
                                                                     )}
                                                                 </div>

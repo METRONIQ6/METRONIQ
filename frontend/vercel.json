@@ -1,8 +1,0 @@
-{
-  "rewrites": [
-    {
-      "source": "/api/:path*",
-      "destination": "https://metroniq-backend-production.up.railway.app/api/:path*"
-    }
-  ]
-}

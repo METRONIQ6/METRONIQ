@@ -9,6 +9,8 @@ import { getToken } from '@/lib/auth'
 import { useTranslation } from '@/i18n'
 import { mapManufacturerError } from '@/lib/errorUtils'
 
+import { FileCheck } from 'lucide-react'
+
 export default function SubmissionsPage() {
     const { t } = useTranslation()
     const [errorKey, setErrorKey] = useState<string | null>(null)
@@ -27,22 +29,36 @@ export default function SubmissionsPage() {
         }).catch(e => setErrorKey(mapManufacturerError(undefined, e.message)))
     }, [])
 
-    if (errorKey) return <div className="p-4 text-red-500">{t('common.error') || 'Error'}: {t(`manufacturer.errors.${errorKey}`)}</div>
-
+    if (errorKey) return (
+        <div className="p-6 max-w-7xl mx-auto">
+            <div className="p-4 rounded-lg border border-destructive/20 bg-destructive/10 text-destructive text-sm font-medium">
+                {t('common.error') || 'Error'}: {t(`manufacturer.errors.${errorKey}`)}
+            </div>
+        </div>
+    )
 
     return (
-        <div className="space-y-6">
-            <h2 className="text-2xl font-bold">{t('manufacturer.submissions.title') || 'Government Submissions'}</h2>
-            <Card>
+        <div className="space-y-6 max-w-7xl mx-auto">
+            <div className="border-b border-border pb-4">
+                <h1 className="text-2xl font-bold tracking-tight text-foreground flex items-center gap-2.5">
+                    <FileCheck className="w-6 h-6 text-[#2563EB]" />
+                    {t('manufacturer.submissions.title') || 'Government Submissions'}
+                </h1>
+                <p className="text-sm text-muted-foreground mt-1">
+                    Formal statutory submissions filed with the Legal Metrology Department for pre-market regulatory approval.
+                </p>
+            </div>
+
+            <Card className="rounded-lg shadow-xs border border-border bg-card overflow-hidden">
                 <div className="overflow-x-auto">
                     <Table>
                         <TableHeader>
-                            <TableRow>
-                                <TableHead>{t('manufacturer.submissions.id') || 'Submission ID'}</TableHead>
-                                <TableHead>{t('manufacturer.submissions.product') || 'Product'}</TableHead>
-                                <TableHead>{t('manufacturer.submissions.date') || 'Date'}</TableHead>
-                                <TableHead>{t('manufacturer.submissions.status') || 'Status'}</TableHead>
-                                <TableHead>{t('manufacturer.submissions.comments') || 'Comments'}</TableHead>
+                            <TableRow className="border-border bg-muted/20">
+                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground h-9">{t('manufacturer.submissions.id') || 'Submission ID'}</TableHead>
+                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground h-9">{t('manufacturer.submissions.product') || 'Product'}</TableHead>
+                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground h-9">{t('manufacturer.submissions.date') || 'Date'}</TableHead>
+                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground h-9 text-center">{t('manufacturer.submissions.status') || 'Status'}</TableHead>
+                                <TableHead className="text-xs font-semibold uppercase text-muted-foreground h-9">{t('manufacturer.submissions.comments') || 'Comments'}</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -50,20 +66,24 @@ export default function SubmissionsPage() {
                                 <TableRow>
                                     <TableCell colSpan={5} className="text-center py-12 text-muted-foreground">
                                         <div className="flex flex-col items-center justify-center">
-                                            <FileText className="w-10 h-10 mb-3 opacity-20" />
-                                            <p className="font-semibold text-foreground">{t('manufacturer.submissions.noSubmissions') || 'No submissions yet'}</p>
-                                            <p className="text-sm">Submit your products for compliance review to see them here.</p>
+                                            <FileText className="w-8 h-8 mb-2 opacity-30 text-muted-foreground" />
+                                            <p className="text-sm font-medium text-foreground">{t('manufacturer.submissions.noSubmissions') || 'No submissions yet'}</p>
+                                            <p className="text-xs text-muted-foreground mt-0.5">Submit your products for compliance review to track them here.</p>
                                         </div>
                                     </TableCell>
                                 </TableRow>
                             )}
                             {(Array.isArray(subs) ? subs : []).map(s => (
-                                <TableRow key={s.id}>
-                                    <TableCell>{s.id.slice(0, 8)}</TableCell>
-                                    <TableCell>{s.product_name}</TableCell>
-                                    <TableCell>{new Date(s.created_at).toLocaleDateString()}</TableCell>
-                                    <TableCell><Badge>{t(`manufacturer.status.${s.status}`) || s.status}</Badge></TableCell>
-                                    <TableCell>{s.comments || '-'}</TableCell>
+                                <TableRow key={s.id} className="border-border hover:bg-muted/40 transition-colors">
+                                    <TableCell className="font-mono text-xs font-semibold text-foreground py-3">{s.id.slice(0, 8).toUpperCase()}</TableCell>
+                                    <TableCell className="text-sm font-medium text-foreground py-3">{s.product_name}</TableCell>
+                                    <TableCell className="text-xs text-muted-foreground py-3 font-mono">{new Date(s.created_at).toLocaleDateString()}</TableCell>
+                                    <TableCell className="text-center py-3">
+                                        <Badge variant={s.status === 'APPROVED' ? 'success' : (s.status === 'CHANGES_REQUIRED' ? 'destructive' : (s.status === 'UNDER_REVIEW' ? 'warning' : 'neutral'))} className="font-mono text-xs uppercase">
+                                            {t(`manufacturer.status.${s.status}`) || s.status}
+                                        </Badge>
+                                    </TableCell>
+                                    <TableCell className="text-xs text-muted-foreground py-3 max-w-xs truncate">{s.comments || '-'}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
