@@ -71,12 +71,59 @@ MetronIQ operates completely as a local-first system with no external cloud host
 
 ## 📋 Prerequisites
 
-Ensure the following tools are installed on your local system:
+Ensure the following tools are installed on your local Windows system before starting the setup.
 
-1. **Node.js**: `v18.x` or `v20.x` (with `npm`)
-2. **Python**: `3.10+` / `3.11+` / `3.12+`
-3. **PostgreSQL**: `15+` or `16+` running locally on port `5432`
-4. **Git**
+### 1. Windows 10/11
+- **Purpose**: The local deployment architecture and provided startup scripts (`.bat` and PowerShell) are designed for Windows.
+- **Verification**: 
+  ```powershell
+  winver
+  ```
+
+### 2. Git
+- **Purpose**: To clone the repository and manage version control.
+- **Version**: 2.x+
+- **Verification**: 
+  ```powershell
+  git --version
+  ```
+
+### 3. Node.js & npm
+- **Purpose**: To install frontend dependencies and run the Next.js React 19 application.
+- **Version**: v18.x or v20.x+
+- **Verification**:
+  ```powershell
+  node --version
+  npm --version
+  ```
+
+### 4. Python & pip
+- **Purpose**: To run the FastAPI backend, AI rule engine, and machine learning models.
+- **Version**: 3.10, 3.11, or 3.12 (Python 3.13+ may have compatibility issues with PaddleOCR).
+- **Verification**:
+  ```powershell
+  python --version
+  pip --version
+  ```
+
+### 5. PostgreSQL
+- **Purpose**: Relational database for storing inspections, reports, users, and audit logs.
+- **Version**: 15 or 16
+- **Verification**:
+  ```powershell
+  psql --version
+  ```
+  *(Ensure the PostgreSQL service is running on port `5432`)*
+
+### 6. Visual C++ Build Tools
+- **Purpose**: Required on Windows to compile native C++ extensions for Python AI libraries (`paddlepaddle`, `paddleocr`, `opencv-python-headless`).
+- **Verification**: Check for "Desktop development with C++" in the Visual Studio Installer.
+
+### 7. Core AI & Machine Learning Dependencies (Installed via pip)
+The following are automatically installed during backend setup via `requirements.txt`, but are critical to the system:
+- **PaddlePaddle & PaddleOCR**: Provides local Optical Character Recognition (`PP-OCRv4`) for extracting text from product labels.
+- **Ultralytics (YOLO11n)**: Provides local computer vision object detection for finding mandatory declaration zones.
+- **OpenCV (`opencv-python-headless`)**: Used for image processing, cropping, and bounding box drawing.
 
 ---
 
